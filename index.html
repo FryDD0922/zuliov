@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZULIOV — Transparent Non-Profit Infrastructure & Impact Intelligence</title>
-    <meta name="description" content="ZULIOV provides real-time financial auditing and verifiable proof of impact for non-profit organizations and conscious donors.">
+    <meta name="description" content="ZULIOV provides real-time financial auditing, verifiable proof of impact, and audited user profiles for non-profits and conscious donors.">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Pro / Free Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -28,9 +28,11 @@
                         primary: {
                             50: '#eff6ff',
                             100: '#dbeafe',
+                            200: '#bfdbfe',
                             500: '#3b82f6',
-                            600: '#2563eb', // Primary Blue requested
-                            700: '#1d4ed8', // Secondary requested
+                            600: '#2563eb', // Zuliov Primary Blue
+                            700: '#1d4ed8', // Secondary Deep Blue
+                            800: '#1e40af',
                             900: '#1e3a8a',
                         },
                         surface: '#F8FAFC',
@@ -40,13 +42,13 @@
                         'subtle': '0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.03)',
                         'card': '0 4px 6px -1px rgba(15, 23, 42, 0.03), 0 2px 4px -2px rgba(15, 23, 42, 0.03)',
                         'glass': '0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03)',
+                        'floating': '0 20px 30px -10px rgba(15, 23, 42, 0.15)',
                     }
                 }
             }
         }
     </script>
 
-    <!-- Custom Micro-styles & Main Page Scrollbar Customization -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -55,48 +57,37 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* -------------------------------------------------------------
-           ZULIOV Premium Main Page Vertical Scrollbar
-           Applies exclusively to root HTML viewport (no internal overflow elements)
-           ------------------------------------------------------------- */
-        
-        /* Firefox support */
+        /* WebKit / Blink Custom Scrollbar */
         html {
             scrollbar-width: auto;
             scrollbar-color: #94A3B8 #F8FAFC;
         }
 
-        /* WebKit / Blink (Chromium & Safari) Main Page Scrollbar Width (13px) */
         html::-webkit-scrollbar {
             width: 13px;
             height: 13px;
         }
 
-        /* Soft & Minimal Scrollbar Track */
         html::-webkit-scrollbar-track {
             background: #F8FAFC;
             border-left: 1px solid #E2E8F0;
         }
 
-        /* Polished Floating Thumb with Rounded Corners & Subtle Depth */
         html::-webkit-scrollbar-thumb {
             background-color: #94A3B8;
             border-radius: 10px;
-            border: 3px solid #F8FAFC; /* Creates floating pill look */
+            border: 3px solid #F8FAFC;
             background-clip: padding-box;
-            box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
             transition: background-color 0.2s ease, border-width 0.2s ease;
         }
 
-        /* Hover State: Visually expands thumb and increases color contrast */
         html::-webkit-scrollbar-thumb:hover {
-            background-color: #475569; /* Slate 600 */
-            border-width: 2px; /* Expands grab handle slightly */
+            background-color: #475569;
+            border-width: 2px;
         }
 
-        /* Active / Pressed State: Zuliov Signature Blue accent */
         html::-webkit-scrollbar-thumb:active {
-            background-color: #2563eb; /* Primary Zuliov Blue */
+            background-color: #2563eb;
             border-width: 2px;
         }
 
@@ -104,29 +95,68 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
+
+        /* Custom Cover Mesh Pattern */
+        .bg-zuliov-mesh {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.35) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(29, 78, 216, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(15, 23, 42, 0.8) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(30, 58, 138, 0.4) 0px, transparent 50%);
+        }
+
+        .bg-grid-pattern {
+            background-size: 32px 32px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-modal-in {
+            animation: fadeInScale 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .cursor-grab { cursor: grab; }
+        .cursor-grabbing { cursor: grabbing; }
     </style>
 </head>
 <body class="h-full flex flex-col antialiased selection:bg-primary-100 selection:text-primary-700">
 
     <script>
-        // Internationalization Dictionaries (ES / EN)
         const locales = {
             es: {
                 nav_howItWorks: "Cómo funciona",
                 nav_browse: "Explorar proyectos",
-                nav_demo: "Ver demo",
-                nav_ngoRegister: "Para ONGs: Unirse",
+                nav_profile: "Mi Perfil Auditado",
+                nav_donor_feed: "Mi Muro",
+                nav_ngo_dash: "Panel ONG",
                 hero_tag: "Infraestructura de Transparencia Real",
                 hero_title: "Conoce tu impacto.",
                 hero_subtitle: "Descubre exactamente cómo cada donación genera un cambio real a través de historias transparentes, actualizaciones verificadas e impacto medible.",
                 hero_btn_demo: "Ver demo",
                 hero_btn_projects: "Explorar proyectos",
-                hero_widget_title: "Pozo Kitui #12",
-                hero_widget_status: "Libro Contable Auditado",
-                hero_widget_update: "Actualización #4",
-                hero_widget_entry: "SISTEMA DE BOMBEO SOLAR SUBMERSIBLE",
-                hero_widget_receipt: "Recibo-EASL-0982.pdf",
-                hero_widget_view: "Ver en vivo",
+                profile_title: "Perfil de Impacto Verificado",
+                profile_subtitle: "Gestión de identidad, imágenes de portada, credenciales de auditoría y registros de transparencia.",
+                change_photo: "Cambiar foto",
+                change_cover: "Cambiar portada",
+                reposition_cover: "Reposicionar",
+                remove_photo: "Eliminar foto",
+                remove_cover: "Restablecer portada",
+                empty_photo_label: "Sin Foto de Perfil",
+                empty_cover_label: "Portada Predeterminada Zuliov",
+                save_changes: "Guardar Cambios",
+                cancel: "Cancelar",
+                uploading: "Procesando e Incriptando...",
+                sim_controller: "Controlador de Simulación",
+                sim_desc: "Intercambia roles y prueba los estados de imagen vacía o personalizaciones en tiempo real.",
+                sim_donor_btn: "Sarah (Donante)",
+                sim_ngo_btn: "Marcus (ONG)",
                 pillars_title: "Diseñado para cerrar la brecha de confianza",
                 pillars_sub: "Construimos rastros de evidencia nivel Stripe combinados con narrativas de campo reales.",
                 pillar1_title: "1. Bóveda Digital de Recibos",
@@ -141,74 +171,45 @@
                 browse_water: "Agua limpia",
                 browse_edu: "Educación",
                 browse_eco: "Ecosistemas",
-                browse_search: "Buscar por nombre, causa o país...",
                 browse_raised: "recaudados",
                 browse_goal: "Meta:",
-                browse_overhead: "gastos admin",
                 proj_timeline: "Línea de tiempo",
                 proj_ledger: "Libro contable",
                 proj_auditor: "Bitácora del auditor",
-                proj_back: "Volver a proyectos",
                 proj_support: "Respaldar este proyecto",
-                proj_current_progress: "Progreso actual",
-                proj_location: "Ubicación de despliegue",
-                proj_admin_fee: "Gastos de administración verificados",
-                proj_kpi_label: "KPI de Impacto del Proyecto",
-                proj_verify_btn: "Verificar en Libro Contable",
-                modal_receipt_title: "Resumen de Auditoría Digital",
-                modal_receipt_sub: "Cada gasto se coteja automáticamente con la cuenta bancaria de la ONG mediante la API de Stripe Connect.",
-                modal_report: "Reportar inconsistencia",
-                modal_done: "Confirmar verificación",
                 donate_title: "Apoya una campaña transparente",
                 donate_sub: "El 100% de tu donación se asigna directamente a la compra de materiales en el libro contable.",
-                donate_custom: "Personalizado",
                 donate_cover_fee: "Cubrir comisiones de procesamiento (+ $3.50)",
-                donate_cover_fee_sub: "Asegura que el 100% de tu aporte vaya directamente a insumos de trabajo en campo.",
-                donate_summary: "Resumen de Pago Seguro",
-                donate_total: "Total a procesar",
                 donate_btn: "Completar contribución de",
-                success_title: "¡Gracias por generar un impacto real!",
-                success_sub: "Tu contribución ha sido procesada correctamente. Así se audita tu fondo:",
-                success_step1: "Transferencia bancaria procesada vía Stripe Wire a la bóveda de cumplimiento.",
-                success_step2: "El operador en campo recibe la aprobación logística para ejecutar la compra.",
-                success_step3: "Recibirás actualizaciones automáticas con fotos EXIF y facturas adjuntas.",
-                success_alerts: "Alertas SMS en tiempo real",
-                success_alerts_sub: "Recibe una notificación en cuanto se cargue una nueva factura.",
-                success_btn_feed: "Ir a mi panel de impacto",
-                success_btn_more: "Explorar más proyectos",
-                donor_welcome: "Bienvenida de nuevo",
-                donor_metrics_invoices: "Facturas Verificadas",
-                donor_metrics_impact: "Puntaje de Impacto",
-                donor_feed_title: "Mi Muro de Transparencia",
-                donor_achievements: "Insignias de Impacto",
-                ngo_welcome: "Centro de Comando de Campo",
-                ngo_registered: "Certificado de Cumplimiento 501(c)(3) Verificado",
-                ngo_new_proj: "Nueva Campaña",
-                ngo_active_title: "Proyectos en Ejecución",
-                ngo_post_update: "Publicar Actualización",
-                ngo_integrity: "Métricas de Integridad Operativa",
-                sim_controller: "Controlador de Simulación",
-                sim_desc: "Intercambia roles en tiempo real para ver cómo los datos de transparencia se actualizan al instante.",
-                sim_donor_btn: "Sarah (Donante)",
-                sim_ngo_btn: "Marcus (ONG)",
                 footer_tagline: "Plataforma Tecnológica de Transparencia Financiera e Inteligencia de Impacto."
             },
             en: {
                 nav_howItWorks: "How it works",
                 nav_browse: "Browse Projects",
-                nav_demo: "Watch Demo",
-                nav_ngoRegister: "For NGOs: Join",
+                nav_profile: "My Audited Profile",
+                nav_donor_feed: "My Feed",
+                nav_ngo_dash: "NGO Portal",
                 hero_tag: "Radical Transparency Infrastructure",
                 hero_title: "Know your impact.",
                 hero_subtitle: "See exactly how every donation creates real change through transparent stories, verified updates and measurable impact.",
                 hero_btn_demo: "Watch Demo",
                 hero_btn_projects: "Explore Projects",
-                hero_widget_title: "Kitui Water Well #12",
-                hero_widget_status: "Audited Ledger Verified",
-                hero_widget_update: "Update #4",
-                hero_widget_entry: "SUBMERSIBLE SOLAR PUMP SYSTEM",
-                hero_widget_receipt: "Receipt-EASL-0982.pdf",
-                hero_widget_view: "Live Stream",
+                profile_title: "Verified Impact Profile",
+                profile_subtitle: "Manage your identity, cover media, audit badges and financial transparency proof.",
+                change_photo: "Change Photo",
+                change_cover: "Change Cover",
+                reposition_cover: "Reposition",
+                remove_photo: "Remove Photo",
+                remove_cover: "Reset Cover",
+                empty_photo_label: "No Profile Photo",
+                empty_cover_label: "Default Zuliov Banner",
+                save_changes: "Save Changes",
+                cancel: "Cancel",
+                uploading: "Optimizing & Uploading...",
+                sim_controller: "Simulation Controller",
+                sim_desc: "Switch roles and test empty photo state or custom banners in real-time.",
+                sim_donor_btn: "Sarah (Donor)",
+                sim_ngo_btn: "Marcus (NGO)",
                 pillars_title: "Designed to Bridge the Charity Trust Gap",
                 pillars_sub: "We build Stripe-level proof trails combined with real-world field storytelling.",
                 pillar1_title: "1. Digital Receipt Vault",
@@ -223,92 +224,100 @@
                 browse_water: "Clean Water",
                 browse_edu: "Education",
                 browse_eco: "Ecosystems",
-                browse_search: "Search by name, cause or country...",
                 browse_raised: "raised",
                 browse_goal: "Goal:",
-                browse_overhead: "overhead",
                 proj_timeline: "Timeline (Updates)",
                 proj_ledger: "Budget Ledger",
                 proj_auditor: "Auditor Log",
-                proj_back: "Back to campaigns",
                 proj_support: "Back this Project",
-                proj_current_progress: "Current Progress",
-                proj_location: "Deployment Location",
-                proj_admin_fee: "Verified Platform Administration",
-                proj_kpi_label: "Project Impact KPI",
-                proj_verify_btn: "Verify Ledger",
-                modal_receipt_title: "Digital Audit Trail Summary",
-                modal_receipt_sub: "Every expense line is automatically cross-referenced with the linked NGO bank balance via Stripe Connect API integrations.",
-                modal_report: "Report Inconsistency",
-                modal_done: "Done Verification",
                 donate_title: "Support Transparent Campaign",
                 donate_sub: "100% of your primary allocation goes straight to verified materials purchases on the timeline.",
-                donate_custom: "Custom",
                 donate_cover_fee: "Cover payment processing fees (+ $3.50)",
-                donate_cover_fee_sub: "Ensures 100% of your donation allocation goes directly to construction supplies on the ground.",
-                donate_summary: "Secure Payment Summary",
-                donate_total: "Total Checkout Charged",
                 donate_btn: "Complete Payment of",
-                success_title: "Thank you for your impact!",
-                success_sub: "Your payment has successfully cleared. Here is how your funding is tracked:",
-                success_step1: "Bank transfer cleared via Stripe Wire to compliance holding vault.",
-                success_step2: "On-site operator receives logistics approval to dispatch funds for physical supplies.",
-                success_step3: "You receive automated alerts with physical supplier receipts and photo EXIF metadata.",
-                success_alerts: "Real-Time SMS Alerts",
-                success_alerts_sub: "Get notified the exact minute an invoice is uploaded.",
-                success_btn_feed: "Go to My Impact Feed",
-                success_btn_more: "Browse More Campaigns",
-                donor_welcome: "Welcome back",
-                donor_metrics_invoices: "Verified Invoices",
-                donor_metrics_impact: "Impact Score",
-                donor_feed_title: "My Transparency Feed",
-                donor_achievements: "Impact Achievements",
-                ngo_welcome: "Field Command Center",
-                ngo_registered: "Registered 501(c)(3) Compliance Checked",
-                ngo_new_proj: "New Project Campaign",
-                ngo_active_title: "Active Campaign Pipelines",
-                ngo_post_update: "Post Update",
-                ngo_integrity: "Operational Integrity Metrics",
-                sim_controller: "Simulation Controller",
-                sim_desc: "Toggle between roles instantly to see transparency data update in real-time.",
-                sim_donor_btn: "Sarah (Donor)",
-                sim_ngo_btn: "Marcus (NGO)",
                 footer_tagline: "Transparent Non-Profit Financial Infrastructure & Impact Intelligence Platform."
             }
         };
 
-        // Detect default browser language
         const userLang = navigator.language || navigator.userLanguage;
         let currentLang = userLang.startsWith('es') ? 'es' : 'en';
 
-        // Translation helper
         function t(key) {
             return (locales[currentLang] && locales[currentLang][key]) ? locales[currentLang][key] : (locales['en'][key] || key);
         }
 
-        // Language Switcher Function
         function setLanguage(lang) {
             currentLang = lang;
             document.documentElement.lang = lang;
             renderApp();
-            showGlobalNotification(lang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English', 'info');
+            showToast(lang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English', 'info');
         }
     </script>
 
     <script>
-        // Global Reactive State Store for ZULIOV MVP
+        class SupabaseStorageAdapter {
+            constructor() {
+                this.bucketName = 'user-media';
+            }
+
+            async uploadAvatar(userId, base64OrBlob, onProgress) {
+                return new Promise((resolve) => {
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 20;
+                        if (onProgress) onProgress(Math.min(progress, 95), "Compressing & Encrypting Avatar...");
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                            if (onProgress) onProgress(100, "Stored in Zuliov Vault!");
+                            resolve(base64OrBlob);
+                        }
+                    }, 100);
+                });
+            }
+
+            async uploadCover(userId, base64OrBlob, positionY, onProgress) {
+                return new Promise((resolve) => {
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 15;
+                        if (onProgress) onProgress(Math.min(progress, 95), "Optimizing Banner Dimensions...");
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                            if (onProgress) onProgress(100, "Cover Updated Successfully!");
+                            resolve({ url: base64OrBlob, positionY: positionY });
+                        }
+                    }, 100);
+                });
+            }
+
+            async removeMedia(userId, type) {
+                return new Promise((resolve) => setTimeout(() => resolve(true), 200));
+            }
+        }
+
+        const storageService = new SupabaseStorageAdapter();
+
         const state = {
             currentUser: {
-                id: 'sarah_donor',
+                id: 'sarah_donor_102',
                 name: 'Sarah Miller',
                 role: 'donor',
-                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
-                email: 'sarah.miller@zuliov-demo.com',
-                badges: ['Transparency Pioneer', 'Clean Water Advocate'],
+                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                coverImage: 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=1600',
+                coverPositionY: 50,
+                email: 'sarah.miller@zuliov-impact.org',
+                location: 'San Francisco, CA',
+                joinedDate: 'Member since Jan 2024',
+                bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.',
+                badges: ['Transparency Pioneer', 'Clean Water Advocate', 'Audited Donor 2026'],
                 impactScore: 1240,
-                verifiedInvoices: 8,
-                projectsSupported: 3
+                verifiedInvoicesCount: 14,
+                totalContributed: 18500,
+                projectsSupported: 5
             },
+
+            selectedCategory: 'all',
+            searchQuery: '',
+            activeProjectId: 'proj_water_well',
             
             projects: [
                 {
@@ -369,18 +378,6 @@
                                 camera: 'iPhone 15 Pro Max',
                                 verifiedBadge: true
                             }
-                        },
-                        {
-                            id: 'up_story_1',
-                            type: 'story',
-                            title: 'Community Welcomes the Drill Team',
-                            summary: 'Today the heavy equipment rolled in. Local elders conducted a small welcoming celebration.',
-                            timestamp: 'July 08, 2026, 9:00 AM',
-                            author: 'Marcus Vance (Field Coordinator)',
-                            authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
-                            likes: 31,
-                            comments: [],
-                            storyContent: 'We started drilling at coordinates 1.3412° S, 37.9944° E. The first core samples show strong humidity at 18 meters. We will hit the primary freshwater pocket in roughly 48 hours of continuous operation.'
                         }
                     ]
                 },
@@ -390,7 +387,7 @@
                     ngoName: 'Future Scholars Trust',
                     ngoLogo: '🎓',
                     title: 'Desks & Digital Tablets for Malindi Elementary',
-                    description: 'Equipping rural children with modern educational workbenches and loaded digital literacy tablets to connect to remote study databases.',
+                    description: 'Equipping rural children with modern educational workbenches and loaded digital literacy tablets.',
                     category: 'Education',
                     targetGoal: 8500,
                     amountRaised: 4100,
@@ -400,28 +397,7 @@
                     coverImage: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800',
                     kpi: 'Provides workspace and digital devices to 80 children',
                     impactMetric: '80 scholars equipped',
-                    updates: [
-                        {
-                            id: 'up_invoice_2',
-                            type: 'invoice',
-                            title: 'Supplier Audit: Tablet Logistics Depot',
-                            summary: 'Acquired 15 digital study tablets loaded with Kenyan offline curriculum packages.',
-                            timestamp: 'July 18, 2026, 4:00 PM',
-                            author: 'Elena Kipruto (Education Director)',
-                            authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
-                            likes: 12,
-                            comments: [],
-                            invoiceData: {
-                                supplier: 'Pan-African Device Wholesalers',
-                                invoiceNo: 'PADW-8871',
-                                totalAmount: 1800,
-                                transactionId: 'txn_33409128849',
-                                items: [
-                                    { desc: '10-Inch Android Study Tablet (Offline Loaded)', qty: 15, unit: 120, total: 1800 }
-                                ]
-                            }
-                        }
-                    ]
+                    updates: []
                 }
             ],
             
@@ -429,7 +405,7 @@
                 {
                     id: 'not_1',
                     type: 'invoice',
-                    text: "CleanWater International updated their budget ledger for 'Kitui Well #12' with a $4,250 verified equipment invoice.",
+                    text: "CleanWater International updated their budget ledger with a $4,250 verified equipment invoice.",
                     time: '5m ago',
                     unread: true
                 },
@@ -444,13 +420,13 @@
         };
     </script>
 
-    <header id="app-header" class="bg-white/80 backdrop-blur-glass border-b border-slate-200/80 sticky top-0 z-40 transition-all">
+    <header id="app-header" class="bg-white/90 backdrop-blur-glass border-b border-slate-200/80 sticky top-0 z-40 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 
-                <!-- ZULIOV Modern SaaS Brand Logo -->
+                <!-- Brand Logo -->
                 <div class="flex items-center space-x-3 cursor-pointer group" onclick="navigateTo('landing')">
-                    <div class="h-9 w-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-white font-mono font-black text-lg shadow-sm group-hover:bg-primary-600 transition-colors">
+                    <div class="h-9 w-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white font-mono font-black text-lg shadow-sm group-hover:bg-primary-600 transition-colors">
                         Z
                     </div>
                     <div>
@@ -465,26 +441,27 @@
                 <nav class="hidden md:flex items-center space-x-8">
                     <button onclick="navigateTo('landing')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-howItWorks">Cómo funciona</button>
                     <button onclick="navigateTo('browse')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
+                    <button onclick="navigateTo('profile')" class="nav-link text-primary-600 font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5" id="nav-profile">
+                        <i class="fa-solid fa-user-shield text-xs"></i> <span id="nav-profile-text">Mi Perfil Auditado</span>
+                    </button>
                 </nav>
 
-                <!-- Language Switcher & User Profile Header Actions -->
+                <!-- Actions & Language -->
                 <div class="flex items-center space-x-4">
                     
-                    <!-- Language Selector: ES | EN Toggle -->
                     <div class="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200/80 text-[11px] font-mono font-bold">
                         <button onclick="setLanguage('es')" id="btn-lang-es" class="px-2.5 py-1 rounded-md transition-all">ES</button>
                         <button onclick="setLanguage('en')" id="btn-lang-en" class="px-2.5 py-1 rounded-md transition-all">EN</button>
                     </div>
 
-                    <!-- Notification Drawer Button -->
                     <button onclick="openNotificationDrawer()" class="relative p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 rounded-lg transition-all" title="Notifications">
                         <i class="fa-regular fa-bell text-base"></i>
                         <span id="notif-badge" class="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary-600 ring-2 ring-white"></span>
                     </button>
 
-                    <!-- Profile Avatar & Role Badge Switch -->
-                    <div id="header-profile" class="flex items-center space-x-2.5 border-l border-slate-200 pl-4 cursor-pointer" onclick="navigateToDashboard()">
-                        <img id="header-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" alt="User Avatar" class="h-8 w-8 rounded-full ring-2 ring-slate-200 object-cover">
+                    <div id="header-profile" class="flex items-center space-x-2.5 border-l border-slate-200 pl-4 cursor-pointer" onclick="navigateTo('profile')">
+                        <div id="header-avatar-container" class="h-8 w-8 rounded-full ring-2 ring-slate-200 overflow-hidden bg-primary-100 flex items-center justify-center font-bold text-xs text-primary-700">
+                        </div>
                         <div class="hidden sm:block text-left">
                             <span id="header-name" class="block text-xs font-semibold text-slate-900 leading-none">Sarah Miller</span>
                             <span id="header-role" class="block text-[10px] text-slate-500 font-mono mt-0.5 capitalize">Donor</span>
@@ -515,7 +492,6 @@
                             </div>
                         </div>
                         <div class="relative flex-1 py-4 px-6" id="notifications-list-container">
-                            <!-- Populated Dynamically -->
                         </div>
                     </div>
                 </div>
@@ -523,36 +499,49 @@
         </div>
     </div>
 
+    <div id="toast-container" class="fixed top-20 right-6 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm"></div>
+
+    <!-- Main Viewport Target -->
     <main id="app-canvas" class="flex-grow">
-        <!-- Rendered Views inject here -->
     </main>
 
     <div class="fixed bottom-6 left-6 z-40 max-w-xs sm:max-w-sm">
-        <div class="bg-slate-900 text-white rounded-2xl shadow-glass border border-slate-800 p-4 backdrop-blur-glass">
-            <div class="flex items-center justify-between mb-2.5 border-b border-slate-800 pb-2">
+        <div class="bg-slate-900 text-white rounded-2xl shadow-floating border border-slate-800 p-4 backdrop-blur-glass">
+            <div class="flex items-center justify-between mb-2 border-b border-slate-800 pb-2">
                 <div class="flex items-center space-x-2">
                     <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <h4 class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300" id="sim-title">Controlador de Simulación</h4>
                 </div>
                 <span class="text-[9px] font-mono bg-slate-800 px-2 py-0.5 rounded text-slate-400 border border-slate-700">ZULIOV Sandbox</span>
             </div>
+            
             <p class="text-[11px] text-slate-400 mb-3 leading-relaxed" id="sim-desc">
-                Intercambia roles en tiempo real para ver cómo los datos de transparencia se actualizan al instante.
+                Intercambia roles y prueba los estados de imagen vacía o personalizaciones en tiempo real.
             </p>
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="simulateRoleChange('donor')" id="sim-btn-donor" class="flex flex-col items-center justify-center p-2.5 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center">
-                    <span class="text-sm mb-0.5">👩‍💻</span>
-                    <span class="text-xs font-bold block" id="sim-donor-label">Sarah (Donante)</span>
+
+            <div class="grid grid-cols-2 gap-2 mb-2">
+                <button onclick="simulateRoleChange('donor')" id="sim-btn-donor" class="flex flex-col items-center justify-center p-2 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center">
+                    <span class="text-xs mb-0.5">👩‍💻</span>
+                    <span class="text-[11px] font-bold block" id="sim-donor-label">Sarah (Donante)</span>
                 </button>
-                <button onclick="simulateRoleChange('ngo')" id="sim-btn-ngo" class="flex flex-col items-center justify-center p-2.5 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center">
-                    <span class="text-sm mb-0.5">👷‍♂️</span>
-                    <span class="text-xs font-bold block" id="sim-ngo-label">Marcus (ONG)</span>
+                <button onclick="simulateRoleChange('ngo')" id="sim-btn-ngo" class="flex flex-col items-center justify-center p-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center">
+                    <span class="text-xs mb-0.5">👷‍♂️</span>
+                    <span class="text-[11px] font-bold block" id="sim-ngo-label">Marcus (ONG)</span>
+                </button>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400">
+                <span>Probar Estados Vacíos:</span>
+                <button onclick="toggleEmptyStateTest()" class="text-primary-400 hover:underline font-mono font-semibold">
+                    <i class="fa-solid fa-arrows-rotate mr-1"></i> Alternar Vacío
                 </button>
             </div>
         </div>
     </div>
 
-    <footer class="bg-white border-t border-slate-200/80 py-10 mt-20">
+    <div id="modal-container"></div>
+
+    <footer class="bg-white border-t border-slate-200/80 py-10 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:flex md:items-center md:justify-between">
             <div class="flex items-center justify-center md:justify-start space-x-3">
                 <div class="h-7 w-7 rounded-md bg-slate-900 flex items-center justify-center text-white font-mono font-bold text-xs">Z</div>
@@ -563,71 +552,109 @@
     </footer>
 
     <script>
-        let currentScreen = 'landing';
-        let activeProjectId = 'proj_water_well';
+        let currentScreen = 'profile';
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
         }
 
-        function navigateTo(screenId, params = null) {
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-slate-900 text-white border-emerald-500/40' : 'bg-slate-900 text-white border-primary-500/40';
+            const iconClass = type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-info text-primary-400';
+            
+            toast.className = `pointer-events-auto flex items-center space-x-3 px-4 py-3 rounded-xl border shadow-floating text-xs font-medium animate-modal-in ${bgClass}`;
+            toast.innerHTML = `
+                <i class="fa-solid ${iconClass} text-sm"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        function navigateTo(screenId, projId = null) {
             currentScreen = screenId;
-            if (params && params.projectId) {
-                activeProjectId = params.projectId;
-            }
+            if (projId) state.activeProjectId = projId;
             closeNotificationDrawer();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             renderApp();
         }
 
-        function navigateToDashboard() {
-            if (state.currentUser.role === 'donor') {
-                navigateTo('donor-dashboard');
+        function toggleEmptyStateTest() {
+            if (state.currentUser.avatar || state.currentUser.coverImage) {
+                state.currentUser.avatar = null;
+                state.currentUser.coverImage = null;
+                showToast("Simulando Perfil con Estados Vacíos", "info");
             } else {
-                navigateTo('ngo-dashboard');
+                state.currentUser.avatar = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400';
+                state.currentUser.coverImage = 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=1600';
+                state.currentUser.coverPositionY = 50;
+                showToast("Restauradas Imágenes de Perfil", "success");
             }
+            renderApp();
         }
 
         function simulateRoleChange(role) {
             if (role === 'donor') {
                 state.currentUser = {
-                    id: 'sarah_donor',
+                    id: 'sarah_donor_102',
                     name: 'Sarah Miller',
                     role: 'donor',
-                    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
-                    email: 'sarah.miller@zuliov-demo.com',
-                    badges: ['Transparency Pioneer', 'Clean Water Champion'],
+                    avatar: state.currentUser.avatar !== null ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400' : null,
+                    coverImage: state.currentUser.coverImage !== null ? 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=1600' : null,
+                    coverPositionY: state.currentUser.coverPositionY || 50,
+                    email: 'sarah.miller@zuliov-impact.org',
+                    location: 'San Francisco, CA',
+                    joinedDate: 'Member since Jan 2024',
+                    bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.',
+                    badges: ['Transparency Pioneer', 'Clean Water Advocate', 'Audited Donor 2026'],
                     impactScore: 1240,
-                    verifiedInvoices: 8,
-                    projectsSupported: 3
+                    verifiedInvoicesCount: 14,
+                    totalContributed: 18500,
+                    projectsSupported: 5
                 };
-                document.getElementById('sim-btn-donor').className = "flex flex-col items-center justify-center p-2.5 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center";
-                document.getElementById('sim-btn-ngo').className = "flex flex-col items-center justify-center p-2.5 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center";
-                navigateTo('donor-dashboard');
+                document.getElementById('sim-btn-donor').className = "flex flex-col items-center justify-center p-2 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center";
+                document.getElementById('sim-btn-ngo').className = "flex flex-col items-center justify-center p-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center";
             } else {
                 state.currentUser = {
-                    id: 'marcus_ngo',
+                    id: 'marcus_ngo_301',
                     name: 'Marcus Vance',
                     role: 'ngo',
-                    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+                    avatar: state.currentUser.avatar !== null ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400' : null,
+                    coverImage: state.currentUser.coverImage !== null ? 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1600' : null,
+                    coverPositionY: 30,
                     email: 'm.vance@cleanwaterintl.org',
-                    organizationName: 'CleanWater International',
-                    verifiedNgo: true,
-                    projectsManaged: 1
+                    location: 'Nairobi, Kenya',
+                    joinedDate: 'Verified NGO Partner 2023',
+                    bio: 'Field Operations Lead at CleanWater International. Overseeing solar water pump infrastructure across 12 rural districts.',
+                    badges: ['Verified NGO Lead', '100% Invoice Compliance', 'Field Auditor'],
+                    impactScore: 3890,
+                    verifiedInvoicesCount: 48,
+                    totalContributed: 142000,
+                    projectsSupported: 12
                 };
-                document.getElementById('sim-btn-donor').className = "flex flex-col items-center justify-center p-2.5 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center";
-                document.getElementById('sim-btn-ngo').className = "flex flex-col items-center justify-center p-2.5 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center";
-                navigateTo('ngo-dashboard');
+                document.getElementById('sim-btn-donor').className = "flex flex-col items-center justify-center p-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center";
+                document.getElementById('sim-btn-ngo').className = "flex flex-col items-center justify-center p-2 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center";
             }
-            updateHeaderUI();
+            renderApp();
         }
 
         function updateHeaderUI() {
-            document.getElementById('header-avatar').src = state.currentUser.avatar;
+            const container = document.getElementById('header-avatar-container');
+            if (state.currentUser.avatar) {
+                container.innerHTML = `<img src="${state.currentUser.avatar}" class="h-full w-full object-cover">`;
+            } else {
+                const initials = state.currentUser.name.split(' ').map(n => n[0]).join('');
+                container.innerHTML = `<span>${initials}</span>`;
+            }
+
             document.getElementById('header-name').textContent = state.currentUser.name;
             document.getElementById('header-role').textContent = state.currentUser.role;
             
-            // Language selector button state
             const btnEs = document.getElementById('btn-lang-es');
             const btnEn = document.getElementById('btn-lang-en');
             if (currentLang === 'es') {
@@ -638,9 +665,9 @@
                 btnEs.className = "px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-900";
             }
 
-            // Translate static elements in global chrome
             document.getElementById('nav-howItWorks').textContent = t('nav_howItWorks');
             document.getElementById('nav-browse').textContent = t('nav_browse');
+            document.getElementById('nav-profile-text').textContent = t('nav_profile');
             document.getElementById('sim-title').textContent = t('sim_controller');
             document.getElementById('sim-desc').textContent = t('sim_desc');
             document.getElementById('sim-donor-label').textContent = t('sim_donor_btn');
@@ -693,99 +720,681 @@
             html += '</div>';
             listContainer.innerHTML = html;
         }
-    </script>
 
-    <script>
         function renderApp() {
             const canvas = document.getElementById('app-canvas');
             updateHeaderUI();
             canvas.innerHTML = '';
 
             switch(currentScreen) {
+                case 'profile':
+                    renderProfilePage(canvas);
+                    break;
                 case 'landing':
                     renderLandingPage(canvas);
                     break;
                 case 'browse':
                     renderBrowsePage(canvas);
                     break;
-                case 'project-detail':
-                    renderProjectDetailPage(canvas);
-                    break;
-                case 'ngo-dashboard':
-                    renderNgoDashboard(canvas);
-                    break;
-                case 'donor-dashboard':
-                    renderDonorDashboard(canvas);
-                    break;
-                case 'donate':
-                    renderDonationPage(canvas);
-                    break;
-                case 'success':
-                    renderSuccessPage(canvas);
+                case 'detail':
+                    renderProjectDetailPage(canvas, state.activeProjectId);
                     break;
             }
+        }
+    </script>
+
+    <script>
+        function renderProfilePage(canvas) {
+            const user = state.currentUser;
+            const initials = user.name.split(' ').map(n => n[0]).join('');
+
+            let coverContentHtml = '';
+            if (user.coverImage) {
+                coverContentHtml = `
+                    <img id="profile-cover-img" src="${user.coverImage}" class="w-full h-full object-cover transition-all duration-200" style="object-position: center ${user.coverPositionY}%;">
+                `;
+            } else {
+                coverContentHtml = `
+                    <div class="w-full h-full bg-zuliov-mesh bg-grid-pattern flex flex-col items-center justify-center text-white text-center p-6 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                        <div class="relative z-10 flex flex-col items-center space-y-2">
+                            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[10px] font-mono font-bold tracking-widest text-primary-300 border border-white/10 uppercase">
+                                <i class="fa-solid fa-shield-halved mr-1 text-emerald-400"></i> ${t('empty_cover_label')}
+                            </span>
+                            <p class="text-xs text-slate-300 font-mono">Zuliov Audited Infrastructure Mesh • 2026</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            let avatarContentHtml = '';
+            if (user.avatar) {
+                avatarContentHtml = `
+                    <img id="profile-avatar-img" src="${user.avatar}" class="h-full w-full object-cover rounded-full">
+                `;
+            } else {
+                avatarContentHtml = `
+                    <div class="h-full w-full rounded-full bg-gradient-to-br from-primary-600 to-primary-800 text-white flex items-center justify-center font-black text-3xl sm:text-4xl shadow-inner font-mono tracking-tight">
+                        ${initials}
+                    </div>
+                `;
+            }
+
+            canvas.innerHTML = `
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+                    
+                    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-card overflow-hidden">
+                        
+                        <div class="relative h-64 sm:h-80 w-full bg-slate-900 group overflow-hidden cursor-pointer" onclick="openCoverModal()">
+                            ${coverContentHtml}
+                            <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-3 backdrop-blur-[2px]">
+                                <div class="bg-white/90 text-slate-900 px-4 py-2 rounded-xl text-xs font-bold font-mono shadow-floating flex items-center gap-2 hover:bg-white transition-transform transform scale-95 group-hover:scale-100">
+                                    <i class="fa-solid fa-camera text-primary-600 text-sm"></i>
+                                    <span>${t('change_cover')}</span>
+                                </div>
+                                ${user.coverImage ? `
+                                    <button onclick="event.stopPropagation(); openCoverRepositionModal();" class="bg-slate-900/80 hover:bg-slate-900 text-white px-3.5 py-2 rounded-xl text-xs font-bold font-mono shadow-floating flex items-center gap-2 transition-all">
+                                        <i class="fa-solid fa-arrows-up-down text-xs"></i>
+                                        <span>${t('reposition_cover')}</span>
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <div class="absolute top-4 right-4 z-10 flex items-center space-x-2">
+                                <span class="bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-mono px-3 py-1 rounded-full border border-white/10 flex items-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-image text-xs text-slate-400"></i> Cover Banner
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="px-6 sm:px-10 pb-8 relative">
+                            <div class="flex flex-col sm:flex-row sm:items-end justify-between -mt-16 sm:-mt-20 mb-6 gap-4">
+                                <div class="relative h-36 w-36 sm:h-40 sm:w-40 rounded-full ring-4 ring-white shadow-floating bg-white overflow-hidden group cursor-pointer flex-shrink-0" onclick="openAvatarModal()">
+                                    ${avatarContentHtml}
+                                    <div class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center text-white text-center p-2 rounded-full backdrop-blur-[2px]">
+                                        <i class="fa-solid fa-camera text-xl mb-1 text-primary-400"></i>
+                                        <span class="text-[11px] font-bold font-mono uppercase tracking-wider">${t('change_photo')}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap items-center gap-2 pt-2 sm:pt-0">
+                                    <button onclick="openAvatarModal()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 shadow-xs transition-all flex items-center gap-2">
+                                        <i class="fa-solid fa-user-pen text-slate-400"></i>
+                                        <span>Edit Avatar</span>
+                                    </button>
+                                    <button onclick="openCoverModal()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 shadow-xs transition-all flex items-center gap-2">
+                                        <i class="fa-solid fa-panorama text-slate-400"></i>
+                                        <span>Edit Cover</span>
+                                    </button>
+                                    <button onclick="showToast('Impact Certificate Downloaded (PDF)', 'success')" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition-all flex items-center gap-2">
+                                        <i class="fa-solid fa-file-pdf text-emerald-400"></i>
+                                        <span>Audit Ledger</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4 text-left">
+                                <div class="space-y-1">
+                                    <div class="flex items-center space-x-2">
+                                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">${user.name}</h1>
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <i class="fa-solid fa-circle-check text-emerald-500 text-[9px]"></i> AUDITED
+                                        </span>
+                                    </div>
+                                    <p class="text-xs font-mono text-slate-500 flex items-center gap-3">
+                                        <span><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i> ${user.location}</span>
+                                        <span>•</span>
+                                        <span><i class="fa-solid fa-calendar-check text-slate-400 mr-1"></i> ${user.joinedDate}</span>
+                                        <span>•</span>
+                                        <span class="text-primary-600 font-semibold capitalize"><i class="fa-solid fa-id-badge text-xs mr-1"></i> ${user.role}</span>
+                                    </p>
+                                </div>
+
+                                <p class="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
+                                    ${user.bio}
+                                </p>
+
+                                <div class="flex flex-wrap items-center gap-2 pt-1">
+                                    ${user.badges.map(b => `
+                                        <span class="px-3 py-1 rounded-lg text-[11px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200/80 flex items-center gap-1.5">
+                                            <i class="fa-solid fa-award text-amber-500"></i> ${b}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-subtle text-left space-y-1">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 font-bold">Total Contributed</span>
+                            <div class="text-xl font-black font-mono text-slate-900">${formatCurrency(user.totalContributed)}</div>
+                            <span class="text-[10px] text-emerald-600 font-mono font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-arrow-trend-up"></i> 100% Verified
+                            </span>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-subtle text-left space-y-1">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 font-bold">Audited Invoices</span>
+                            <div class="text-xl font-black font-mono text-primary-600">${user.verifiedInvoicesCount} Invoices</div>
+                            <span class="text-[10px] text-slate-500 font-mono">Matched to Stripe Wire</span>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-subtle text-left space-y-1">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 font-bold">Impact Score</span>
+                            <div class="text-xl font-black font-mono text-slate-900">${user.impactScore} pts</div>
+                            <span class="text-[10px] text-amber-600 font-mono font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-bolt"></i> Top 5% Donor
+                            </span>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-subtle text-left space-y-1">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 font-bold">Active Campaigns</span>
+                            <div class="text-xl font-black font-mono text-slate-900">${user.projectsSupported} Projects</div>
+                            <span class="text-[10px] text-slate-500 font-mono">Real-time GPS monitored</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-subtle text-left space-y-6">
+                        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                            <div class="flex space-x-6 text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+                                <button class="border-b-2 border-primary-600 pb-3 text-primary-600">Audit Trail & Proof</button>
+                                <button class="pb-3 hover:text-slate-600">Connected Storage API</button>
+                            </div>
+                            <span class="text-[10px] font-mono text-slate-400">Supabase Storage Ready</span>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="h-8 w-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
+                                    <i class="fa-solid fa-database"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-900 font-mono">Modular Storage Infrastructure Status</h4>
+                                    <p class="text-[11px] text-slate-500">Image upload handles are encapsulated inside <code class="bg-slate-200 px-1 py-0.5 rounded text-slate-800">SupabaseStorageAdapter</code> with client-side canvas cropping and compression.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            `;
+        }
+    </script>
+
+    <script>
+        let currentAvatarFile = null;
+        let avatarZoom = 1;
+        let avatarPanX = 0;
+        let avatarPanY = 0;
+        let isDraggingAvatar = false;
+        let startX, startY;
+
+        function openAvatarModal() {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+                    <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity" onclick="closeModal()"></div>
+                    
+                    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-floating border border-slate-200 relative z-10 animate-modal-in text-left space-y-5">
+                        
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <div class="h-8 w-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center text-sm font-bold">
+                                    <i class="fa-solid fa-camera"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-900">${t('change_photo')}</h3>
+                                    <p class="text-[10px] font-mono text-slate-400">Circular crop & compression preview</p>
+                                </div>
+                            </div>
+                            <button onclick="closeModal()" class="rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 p-1">
+                                <i class="fa-solid fa-xmark text-base"></i>
+                            </button>
+                        </div>
+
+                        <div id="avatar-cropper-step">
+                            <div id="avatar-dropzone" 
+                                 class="border-2 border-dashed border-slate-200 hover:border-primary-500 rounded-2xl p-6 text-center cursor-pointer transition-colors bg-slate-50 hover:bg-primary-50/30"
+                                 onclick="document.getElementById('avatar-file-input').click()"
+                                 ondragover="event.preventDefault(); this.classList.add('border-primary-500')"
+                                 ondragleave="this.classList.remove('border-primary-500')"
+                                 ondrop="handleAvatarDrop(event)">
+                                
+                                <input type="file" id="avatar-file-input" accept="image/*" class="hidden" onchange="handleAvatarFileSelect(event)">
+                                <div class="h-12 w-12 rounded-full bg-white shadow-xs mx-auto mb-2 flex items-center justify-center text-primary-600 text-lg">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                </div>
+                                <p class="text-xs font-bold text-slate-800">Click to upload or drag & drop</p>
+                                <p class="text-[10px] text-slate-400 font-mono mt-1">PNG, JPG, WebP up to 10MB</p>
+                            </div>
+
+                            <div id="avatar-editor-box" class="hidden space-y-4">
+                                <div class="relative h-64 bg-slate-900 rounded-2xl overflow-hidden cursor-grab flex items-center justify-center select-none"
+                                     id="avatar-canvas-wrapper"
+                                     onmousedown="startAvatarDrag(event)"
+                                     onmousemove="dragAvatar(event)"
+                                     onmouseup="endAvatarDrag()"
+                                     onmouseleave="endAvatarDrag()"
+                                     ontouchstart="startAvatarDrag(event)"
+                                     ontouchmove="dragAvatar(event)"
+                                     ontouchend="endAvatarDrag()">
+                                    
+                                    <canvas id="avatar-crop-canvas" class="max-w-full max-h-full"></canvas>
+                                    
+                                    <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+                                        <div class="w-44 h-44 rounded-full ring-[999px] ring-slate-950/70 border-2 border-white/80 shadow-2xl"></div>
+                                    </div>
+
+                                    <div class="absolute bottom-2 left-2 bg-slate-950/80 px-2 py-1 rounded text-[9px] font-mono text-slate-300 pointer-events-none">
+                                        <i class="fa-solid fa-hand-pointer mr-1"></i> Drag to Pan
+                                    </div>
+                                </div>
+
+                                <div class="space-y-1">
+                                    <div class="flex items-center justify-between text-xs text-slate-600 font-mono">
+                                        <span><i class="fa-solid fa-magnifying-glass text-slate-400"></i> Zoom</span>
+                                        <span id="avatar-zoom-val">100%</span>
+                                    </div>
+                                    <input type="range" min="0.5" max="2.5" step="0.05" value="1" id="avatar-zoom-slider" class="w-full accent-primary-600" oninput="updateAvatarZoom(this.value)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="avatar-progress-container" class="hidden space-y-2">
+                            <div class="flex items-center justify-between text-xs font-mono">
+                                <span id="avatar-progress-status" class="text-slate-600">Uploading...</span>
+                                <span id="avatar-progress-percent" class="font-bold text-primary-600">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div id="avatar-progress-bar" class="h-full bg-primary-600 transition-all duration-150 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                            <div>
+                                ${state.currentUser.avatar ? `
+                                    <button onclick="removeAvatarImage()" class="text-xs font-semibold text-rose-600 hover:underline">
+                                        ${t('remove_photo')}
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+                                    ${t('cancel')}
+                                </button>
+                                <button id="save-avatar-btn" disabled onclick="saveCroppedAvatar()" class="px-5 py-2 rounded-xl text-xs font-bold bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                                    ${t('save_changes')}
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+            avatarZoom = 1;
+            avatarPanX = 0;
+            avatarPanY = 0;
+        }
+
+        function handleAvatarDrop(e) {
+            e.preventDefault();
+            const files = e.dataTransfer.files;
+            if (files.length > 0) processAvatarImageFile(files[0]);
+        }
+
+        function handleAvatarFileSelect(e) {
+            if (e.target.files.length > 0) processAvatarImageFile(e.target.files[0]);
+        }
+
+        function processAvatarImageFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showToast("Please select a valid image file", "info");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    currentAvatarFile = img;
+                    document.getElementById('avatar-dropzone').classList.add('hidden');
+                    document.getElementById('avatar-editor-box').classList.remove('hidden');
+                    document.getElementById('save-avatar-btn').removeAttribute('disabled');
+                    drawAvatarCanvas();
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function updateAvatarZoom(val) {
+            avatarZoom = parseFloat(val);
+            document.getElementById('avatar-zoom-val').textContent = Math.round(avatarZoom * 100) + '%';
+            drawAvatarCanvas();
+        }
+
+        function startAvatarDrag(e) {
+            isDraggingAvatar = true;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            startX = clientX - avatarPanX;
+            startY = clientY - avatarPanY;
+            document.getElementById('avatar-canvas-wrapper').className = "relative h-64 bg-slate-900 rounded-2xl overflow-hidden cursor-grabbing flex items-center justify-center select-none";
+        }
+
+        function dragAvatar(e) {
+            if (!isDraggingAvatar) return;
+            e.preventDefault();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            avatarPanX = clientX - startX;
+            avatarPanY = clientY - startY;
+            drawAvatarCanvas();
+        }
+
+        function endAvatarDrag() {
+            isDraggingAvatar = false;
+            const wrapper = document.getElementById('avatar-canvas-wrapper');
+            if (wrapper) {
+                wrapper.className = "relative h-64 bg-slate-900 rounded-2xl overflow-hidden cursor-grab flex items-center justify-center select-none";
+            }
+        }
+
+        function drawAvatarCanvas() {
+            if (!currentAvatarFile) return;
+            const canvas = document.getElementById('avatar-crop-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 320;
+            canvas.height = 320;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const scale = Math.min(canvas.width / currentAvatarFile.width, canvas.height / currentAvatarFile.height) * avatarZoom;
+            const w = currentAvatarFile.width * scale;
+            const h = currentAvatarFile.height * scale;
+            const x = (canvas.width - w) / 2 + avatarPanX;
+            const y = (canvas.height - h) / 2 + avatarPanY;
+
+            ctx.drawImage(currentAvatarFile, x, y, w, h);
+        }
+
+        async function saveCroppedAvatar() {
+            if (!currentAvatarFile) return;
+
+            const cropCanvas = document.createElement('canvas');
+            cropCanvas.width = 400;
+            cropCanvas.height = 400;
+            const ctx = cropCanvas.getContext('2d');
+
+            const srcCanvas = document.getElementById('avatar-crop-canvas');
+            ctx.drawImage(srcCanvas, 0, 0, 320, 320, 0, 0, 400, 400);
+
+            const finalBase64 = cropCanvas.toDataURL('image/jpeg', 0.92);
+
+            document.getElementById('avatar-editor-box').classList.add('hidden');
+            document.getElementById('avatar-progress-container').classList.remove('hidden');
+            document.getElementById('save-avatar-btn').disabled = true;
+
+            await storageService.uploadAvatar(
+                state.currentUser.id,
+                finalBase64,
+                (percent, statusMsg) => {
+                    document.getElementById('avatar-progress-bar').style.width = percent + '%';
+                    document.getElementById('avatar-progress-percent').textContent = percent + '%';
+                    document.getElementById('avatar-progress-status').textContent = statusMsg;
+                }
+            );
+
+            state.currentUser.avatar = finalBase64;
+            closeModal();
+            renderApp();
+            showToast("Profile Picture updated successfully!", "success");
+        }
+
+        async function removeAvatarImage() {
+            await storageService.removeMedia(state.currentUser.id, 'avatar');
+            state.currentUser.avatar = null;
+            closeModal();
+            renderApp();
+            showToast("Profile Picture removed", "info");
+        }
+    </script>
+
+    <script>
+        let currentCoverFile = null;
+        let coverPositionY = 50;
+
+        function openCoverModal() {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+                    <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity" onclick="closeModal()"></div>
+                    
+                    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-floating border border-slate-200 relative z-10 animate-modal-in text-left space-y-5">
+                        
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <div class="h-8 w-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center text-sm font-bold">
+                                    <i class="fa-solid fa-panorama"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-900">${t('change_cover')}</h3>
+                                    <p class="text-[10px] font-mono text-slate-400 font-normal">High-resolution banner positioning & optimization</p>
+                                </div>
+                            </div>
+                            <button onclick="closeModal()" class="rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 p-1">
+                                <i class="fa-solid fa-xmark text-base"></i>
+                            </button>
+                        </div>
+
+                        <div id="cover-dropzone-step">
+                            <div id="cover-dropzone" 
+                                 class="border-2 border-dashed border-slate-200 hover:border-primary-500 rounded-2xl p-8 text-center cursor-pointer transition-colors bg-slate-50 hover:bg-primary-50/30"
+                                 onclick="document.getElementById('cover-file-input').click()"
+                                 ondragover="event.preventDefault(); this.classList.add('border-primary-500')"
+                                 ondragleave="this.classList.remove('border-primary-500')"
+                                 ondrop="handleCoverDrop(event)">
+                                
+                                <input type="file" id="cover-file-input" accept="image/*" class="hidden" onchange="handleCoverFileSelect(event)">
+                                <div class="h-12 w-12 rounded-full bg-white shadow-xs mx-auto mb-2 flex items-center justify-center text-primary-600 text-lg">
+                                    <i class="fa-solid fa-image"></i>
+                                </div>
+                                <p class="text-xs font-bold text-slate-800">Select new Cover Image</p>
+                                <p class="text-[10px] text-slate-400 font-mono mt-1">Recommended aspect ratio 16:9 or 3:1 (Up to 15MB)</p>
+                            </div>
+
+                            <div id="cover-preview-box" class="hidden space-y-4">
+                                <div class="relative h-44 bg-slate-900 rounded-2xl overflow-hidden border border-slate-200">
+                                    <img id="cover-preview-img" class="w-full h-full object-cover" style="object-position: center 50%;">
+                                    <div class="absolute bottom-2 right-2 bg-slate-900/80 text-white text-[9px] font-mono px-2 py-1 rounded backdrop-blur-xs">
+                                        Live Reposition Preview
+                                    </div>
+                                </div>
+
+                                <div class="space-y-1">
+                                    <div class="flex items-center justify-between text-xs text-slate-600 font-mono">
+                                        <span><i class="fa-solid fa-arrows-up-down text-slate-400"></i> Vertical Reposition</span>
+                                        <span id="cover-pos-val">50%</span>
+                                    </div>
+                                    <input type="range" min="0" max="100" value="50" class="w-full accent-primary-600" oninput="updateCoverPositionY(this.value)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="cover-progress-container" class="hidden space-y-2">
+                            <div class="flex items-center justify-between text-xs font-mono">
+                                <span id="cover-progress-status" class="text-slate-600">Uploading to Vault...</span>
+                                <span id="cover-progress-percent" class="font-bold text-primary-600">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div id="cover-progress-bar" class="h-full bg-primary-600 transition-all duration-150 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                            <div>
+                                ${state.currentUser.coverImage ? `
+                                    <button onclick="resetCoverImage()" class="text-xs font-semibold text-rose-600 hover:underline">
+                                        ${t('remove_cover')}
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+                                    ${t('cancel')}
+                                </button>
+                                <button id="save-cover-btn" disabled onclick="saveCoverImage()" class="px-5 py-2 rounded-xl text-xs font-bold bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                                    ${t('save_changes')}
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+            coverPositionY = state.currentUser.coverPositionY || 50;
+        }
+
+        function openCoverRepositionModal() {
+            openCoverModal();
+            if (state.currentUser.coverImage) {
+                currentCoverFile = state.currentUser.coverImage;
+                document.getElementById('cover-dropzone').classList.add('hidden');
+                document.getElementById('cover-preview-box').classList.remove('hidden');
+                document.getElementById('save-cover-btn').removeAttribute('disabled');
+                
+                const previewImg = document.getElementById('cover-preview-img');
+                previewImg.src = state.currentUser.coverImage;
+                previewImg.style.objectPosition = `center ${coverPositionY}%`;
+            }
+        }
+
+        function handleCoverDrop(e) {
+            e.preventDefault();
+            const files = e.dataTransfer.files;
+            if (files.length > 0) processCoverFile(files[0]);
+        }
+
+        function handleCoverFileSelect(e) {
+            if (e.target.files.length > 0) processCoverFile(e.target.files[0]);
+        }
+
+        function processCoverFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showToast("Please select a valid image file", "info");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentCoverFile = event.target.result;
+                document.getElementById('cover-dropzone').classList.add('hidden');
+                document.getElementById('cover-preview-box').classList.remove('hidden');
+                document.getElementById('save-cover-btn').removeAttribute('disabled');
+                
+                const previewImg = document.getElementById('cover-preview-img');
+                previewImg.src = currentCoverFile;
+                previewImg.style.objectPosition = `center ${coverPositionY}%`;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function updateCoverPositionY(val) {
+            coverPositionY = val;
+            document.getElementById('cover-pos-val').textContent = val + '%';
+            const previewImg = document.getElementById('cover-preview-img');
+            if (previewImg) {
+                previewImg.style.objectPosition = `center ${val}%`;
+            }
+        }
+
+        async function saveCoverImage() {
+            if (!currentCoverFile) return;
+
+            document.getElementById('cover-preview-box').classList.add('hidden');
+            document.getElementById('cover-progress-container').classList.remove('hidden');
+            document.getElementById('save-cover-btn').disabled = true;
+
+            const res = await storageService.uploadCover(
+                state.currentUser.id,
+                currentCoverFile,
+                coverPositionY,
+                (percent, statusMsg) => {
+                    document.getElementById('cover-progress-bar').style.width = percent + '%';
+                    document.getElementById('cover-progress-percent').textContent = percent + '%';
+                    document.getElementById('cover-progress-status').textContent = statusMsg;
+                }
+            );
+
+            state.currentUser.coverImage = res.url;
+            state.currentUser.coverPositionY = res.positionY;
+            closeModal();
+            renderApp();
+            showToast("Cover Banner saved successfully!", "success");
+        }
+
+        async function resetCoverImage() {
+            await storageService.removeMedia(state.currentUser.id, 'cover');
+            state.currentUser.coverImage = null;
+            state.currentUser.coverPositionY = 50;
+            closeModal();
+            renderApp();
+            showToast("Cover restored to default Zuliov gradient mesh", "info");
+        }
+
+        function closeModal() {
+            document.getElementById('modal-container').innerHTML = '';
         }
     </script>
 
     <script>
         function renderLandingPage(canvas) {
             canvas.innerHTML = `
-                <!-- Hero Section -->
                 <div class="relative overflow-hidden bg-white border-b border-slate-200/80 py-20 sm:py-28">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                             
-                            <!-- Hero Left Text -->
-                            <div class="lg:col-span-7 text-left space-y-6">
-                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-100 text-slate-800 border border-slate-200">
-                                    <span class="h-1.5 w-1.5 rounded-full bg-primary-600"></span>
+                            <div class="text-left space-y-6">
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-primary-50 text-primary-700 border border-primary-100">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-primary-600 animate-pulse"></span>
                                     <span>${t('hero_tag')}</span>
                                 </div>
-                                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight">
+                                <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-slate-900 leading-[1.1]">
                                     ${t('hero_title')}
                                 </h1>
-                                <p class="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
+                                <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
                                     ${t('hero_subtitle')}
                                 </p>
-                                <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                                    <button onclick="navigateTo('browse')" class="px-6 py-3.5 rounded-xl font-semibold bg-primary-600 text-white hover:bg-primary-700 shadow-sm transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-                                        <span>${t('hero_btn_projects')}</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                                <div class="flex flex-wrap gap-3 pt-2">
+                                    <button onclick="navigateTo('profile')" class="px-6 py-3.5 rounded-xl font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition-all text-xs uppercase tracking-wider flex items-center gap-2">
+                                        <i class="fa-solid fa-user-shield text-emerald-400"></i> <span>Ver Mi Perfil</span>
                                     </button>
-                                    <button onclick="navigateTo('project-detail')" class="px-6 py-3.5 rounded-xl font-semibold bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-50 border border-slate-200/80 shadow-xs transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-                                        <span>${t('hero_btn_demo')}</span> <i class="fa-solid fa-play text-xs"></i>
+                                    <button onclick="navigateTo('browse')" class="px-6 py-3.5 rounded-xl font-bold bg-primary-600 text-white hover:bg-primary-700 shadow-sm transition-all text-xs uppercase tracking-wider flex items-center gap-2">
+                                        <i class="fa-solid fa-compass"></i> <span>${t('hero_btn_projects')}</span>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Live Proof Interactive SaaS Widget (Right of Hero) -->
-                            <div class="lg:col-span-5 bg-slate-900 text-white rounded-3xl p-6 border border-slate-800 shadow-glass relative text-left">
-                                <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="h-8 w-8 rounded-lg bg-primary-600/20 text-primary-400 font-extrabold flex items-center justify-center text-xs">💧</div>
-                                        <div>
-                                            <span class="block text-xs font-bold text-white">${t('hero_widget_title')}</span>
-                                            <span class="block text-[10px] font-mono text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-circle-check text-[8px]"></i> ${t('hero_widget_status')}</span>
-                                        </div>
+                            <div class="bg-slate-900 rounded-3xl p-6 shadow-floating border border-slate-800 text-white text-left space-y-4 relative overflow-hidden">
+                                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="h-3 w-3 rounded-full bg-emerald-500"></span>
+                                        <span class="text-xs font-mono text-slate-300">Kitui Water Well #12</span>
                                     </div>
-                                    <span class="text-[10px] font-mono bg-slate-800 px-2 py-0.5 rounded text-slate-300">${t('hero_widget_update')}</span>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Audited Ledger Verified</span>
                                 </div>
-                                <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800/80 space-y-3">
-                                    <div class="flex items-start justify-between">
-                                        <div>
-                                            <span class="text-[9px] font-mono uppercase text-slate-500">Stripe Txn #2203</span>
-                                            <h3 class="text-xs font-mono font-bold text-white mt-0.5">${t('hero_widget_entry')}</h3>
+
+                                <div class="space-y-3">
+                                    <div class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/60 space-y-2">
+                                        <div class="flex justify-between items-center text-xs font-mono">
+                                            <span class="text-slate-400">Transaction ID:</span>
+                                            <span class="text-primary-400">txn_902847291048</span>
                                         </div>
-                                        <span class="text-xs font-mono font-bold text-primary-400">$4,250.00</span>
-                                    </div>
-                                    <p class="text-[11px] text-slate-400 leading-relaxed">Purchased from East African Supply Logistics. Verified via automatic bank ledger sync.</p>
-                                    <div class="bg-slate-900 rounded-xl p-3 border border-slate-800 flex items-center justify-between text-xs">
-                                        <div class="flex items-center space-x-2">
-                                            <i class="fa-solid fa-file-invoice text-slate-500 text-xs"></i>
-                                            <span class="font-mono text-[11px] text-slate-300">${t('hero_widget_receipt')}</span>
+                                        <div class="text-sm font-bold text-white">SUBMERSIBLE SOLAR PUMP SYSTEM</div>
+                                        <div class="flex justify-between items-center text-xs font-mono pt-1">
+                                            <span class="text-emerald-400 font-bold">$4,250.00 USD</span>
+                                            <button onclick="navigateTo('detail', 'proj_water_well')" class="text-xs text-primary-400 hover:underline">View Proof <i class="fa-solid fa-arrow-right text-[10px]"></i></button>
                                         </div>
-                                        <button onclick="navigateTo('project-detail')" class="text-[10px] font-mono text-primary-400 hover:underline flex items-center gap-1">
-                                            ${t('hero_widget_view')} <i class="fa-solid fa-chevron-right text-[8px]"></i>
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -794,71 +1403,72 @@
                     </div>
                 </div>
 
-                <!-- Three Pillars Section -->
-                <div class="py-20 bg-slate-50">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
-                        <div class="max-w-2xl mx-auto space-y-3">
-                            <h2 class="text-2xl sm:text-3xl font-black text-slate-900">${t('pillars_title')}</h2>
-                            <p class="text-slate-500 text-xs sm:text-sm">${t('pillars_sub')}</p>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-left space-y-12">
+                    <div class="max-w-2xl space-y-2">
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">${t('pillars_title')}</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">${t('pillars_sub')}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-subtle space-y-3">
+                            <div class="h-10 w-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900">${t('pillar1_title')}</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">${t('pillar1_desc')}</p>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-subtle text-left space-y-3">
-                                <div class="h-10 w-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center text-lg"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-                                <h3 class="text-sm font-bold text-slate-900">${t('pillar1_title')}</h3>
-                                <p class="text-slate-500 text-xs leading-relaxed">${t('pillar1_desc')}</p>
+                        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-subtle space-y-3">
+                            <div class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-location-dot"></i>
                             </div>
-                            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-subtle text-left space-y-3">
-                                <div class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-map-pin"></i></div>
-                                <h3 class="text-sm font-bold text-slate-900">${t('pillar2_title')}</h3>
-                                <p class="text-slate-500 text-xs leading-relaxed">${t('pillar2_desc')}</p>
+                            <h3 class="text-base font-bold text-slate-900">${t('pillar2_title')}</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">${t('pillar2_desc')}</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-subtle space-y-3">
+                            <div class="h-10 w-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-users"></i>
                             </div>
-                            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-subtle text-left space-y-3">
-                                <div class="h-10 w-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center text-lg"><i class="fa-solid fa-chart-line"></i></div>
-                                <h3 class="text-sm font-bold text-slate-900">${t('pillar3_title')}</h3>
-                                <p class="text-slate-500 text-xs leading-relaxed">${t('pillar3_desc')}</p>
-                            </div>
+                            <h3 class="text-base font-bold text-slate-900">${t('pillar3_title')}</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">${t('pillar3_desc')}</p>
                         </div>
                     </div>
                 </div>
             `;
         }
-    </script>
 
-    <script>
         function renderBrowsePage(canvas) {
-            let projectCardsHtml = '';
-            
+            let cardsHtml = '';
             state.projects.forEach(proj => {
-                const percent = Math.min(100, Math.round((proj.amountRaised / proj.targetGoal) * 100));
-                projectCardsHtml += `
-                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-subtle overflow-hidden hover:shadow-card hover:border-slate-300 transition-all flex flex-col cursor-pointer group" onclick="navigateTo('project-detail', {projectId: '${proj.id}'})">
-                        <div class="h-44 relative">
-                            <img src="${proj.coverImage}" alt="${proj.title}" class="h-full w-full object-cover">
-                            <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-slate-900 text-[10px] font-mono font-bold uppercase px-2.5 py-0.5 rounded-full shadow-xs">${proj.category}</span>
-                            <span class="absolute top-3 right-3 bg-slate-900/90 text-white text-[10px] font-mono px-2 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-shield-halved text-emerald-400 text-[8px]"></i> Audited</span>
+                const percent = Math.round((proj.amountRaised / proj.targetGoal) * 100);
+                cardsHtml += `
+                    <div onclick="navigateTo('detail', '${proj.id}')" class="bg-white rounded-3xl border border-slate-200/80 shadow-subtle overflow-hidden hover:shadow-card transition-all cursor-pointer flex flex-col text-left group">
+                        <div class="h-48 relative overflow-hidden">
+                            <img src="${proj.coverImage}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-slate-900 text-[10px] font-mono font-bold uppercase px-3 py-1 rounded-full border border-slate-200/50">${proj.category}</span>
+                            <span class="absolute top-3 right-3 bg-slate-900/90 backdrop-blur-md text-emerald-400 text-[10px] font-mono font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                                <i class="fa-solid fa-shield-halved text-[9px]"></i> ${proj.verifiedStatus}
+                            </span>
                         </div>
-                        
-                        <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-left">
+                        <div class="p-6 space-y-4 flex-grow flex flex-col justify-between">
                             <div class="space-y-2">
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-sm">${proj.ngoLogo}</span>
-                                    <span class="text-xs font-semibold text-slate-500">${proj.ngoName}</span>
+                                <div class="text-[11px] font-mono font-bold text-primary-600 uppercase flex items-center gap-1">
+                                    <span>${proj.ngoLogo}</span> <span>${proj.ngoName}</span>
                                 </div>
-                                <h3 class="text-sm font-bold text-slate-900 leading-snug group-hover:text-primary-600 transition-colors">${proj.title}</h3>
+                                <h3 class="text-base font-bold text-slate-900 leading-snug group-hover:text-primary-600 transition-colors">${proj.title}</h3>
                                 <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">${proj.description}</p>
                             </div>
-
-                            <div class="space-y-2 pt-2 border-t border-slate-100">
-                                <div class="flex items-center justify-between text-xs font-bold font-mono text-slate-800">
-                                    <span>${formatCurrency(proj.amountRaised)} ${t('browse_raised')}</span>
-                                    <span class="text-slate-400 text-[11px]">${percent}%</span>
+                            
+                            <div class="space-y-2 pt-3 border-t border-slate-100">
+                                <div class="flex justify-between text-xs font-mono font-bold">
+                                    <span class="text-slate-900">${formatCurrency(proj.amountRaised)} <span class="text-slate-400 font-normal">raised</span></span>
+                                    <span class="text-primary-600">${percent}%</span>
                                 </div>
-                                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                                     <div class="h-full bg-primary-600 rounded-full" style="width: ${percent}%"></div>
                                 </div>
-                                <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-0.5">
-                                    <span>${t('browse_goal')} ${formatCurrency(proj.targetGoal)}</span>
-                                    <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-receipt mr-1"></i>${proj.averageOverhead}% ${t('browse_overhead')}</span>
+                                <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 pt-1">
+                                    <span><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i> ${proj.location}</span>
+                                    <span>Goal: ${formatCurrency(proj.targetGoal)}</span>
                                 </div>
                             </div>
                         </div>
@@ -867,30 +1477,14 @@
             });
 
             canvas.innerHTML = `
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-left">
-                    <div class="space-y-6">
-                        <div class="space-y-1">
-                            <h1 class="text-2xl sm:text-3xl font-black text-slate-900">${t('browse_title')}</h1>
-                            <p class="text-slate-500 text-xs sm:text-sm">${t('browse_sub')}</p>
-                        </div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 text-left">
+                    <div class="space-y-2">
+                        <h1 class="text-3xl font-black text-slate-900 tracking-tight">${t('browse_title')}</h1>
+                        <p class="text-xs sm:text-sm text-slate-500 max-w-2xl">${t('browse_sub')}</p>
+                    </div>
 
-                        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
-                            <div class="flex flex-wrap gap-2">
-                                <button class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white shadow-xs">${t('browse_all')}</button>
-                                <button class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">💧 ${t('browse_water')}</button>
-                                <button class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">🎓 ${t('browse_edu')}</button>
-                                <button class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">🌱 ${t('browse_eco')}</button>
-                            </div>
-                            
-                            <div class="relative w-full max-w-xs">
-                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                                <input type="text" placeholder="${t('browse_search')}" class="w-full text-xs bg-white pl-9 pr-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-primary-500">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            ${projectCardsHtml}
-                        </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${cardsHtml}
                     </div>
                 </div>
             `;
@@ -898,560 +1492,149 @@
     </script>
 
     <script>
-        function renderProjectDetailPage(canvas) {
-            const proj = state.projects.find(p => p.id === activeProjectId);
-            if (!proj) return;
+        function renderProjectDetailPage(canvas, projId) {
+            const proj = state.projects.find(p => p.id === projId) || state.projects[0];
+            const percent = Math.round((proj.amountRaised / proj.targetGoal) * 100);
 
-            const percent = Math.min(100, Math.round((proj.amountRaised / proj.targetGoal) * 100));
-
-            let timelineHtml = '';
+            let updatesHtml = '';
             if (proj.updates.length === 0) {
-                timelineHtml = `
-                    <div class="text-center py-8 bg-white rounded-xl border border-slate-200/80 p-4">
-                        <p class="text-xs text-slate-500">Project launched! Updates and verified invoices will appear here.</p>
+                updatesHtml = `
+                    <div class="text-center py-12 bg-white rounded-3xl border border-slate-200/80 p-8">
+                        <i class="fa-solid fa-clipboard-list text-3xl text-slate-300 mb-2"></i>
+                        <p class="text-xs font-semibold text-slate-600">No field updates posted yet</p>
                     </div>
                 `;
             } else {
-                proj.updates.forEach((up) => {
-                    let typeTag = '';
-                    let updateContent = '';
-
+                proj.updates.forEach(up => {
                     if (up.type === 'invoice') {
-                        typeTag = '<span class="bg-primary-50 text-primary-700 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md inline-flex items-center gap-1 border border-primary-100"><i class="fa-solid fa-receipt text-[8px]"></i> Invoice Verified</span>';
-                        updateContent = `
-                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/80 mt-3 space-y-3">
-                                <div class="flex items-start justify-between border-b border-slate-200 pb-2">
-                                    <div>
-                                        <p class="text-[9px] font-mono uppercase text-slate-400">Supplier: ${up.invoiceData.supplier}</p>
-                                        <h4 class="text-xs font-mono font-bold text-slate-800">Invoice: ${up.invoiceData.invoiceNo}</h4>
-                                    </div>
-                                    <span class="text-xs font-mono font-bold text-slate-900">${formatCurrency(up.invoiceData.totalAmount)}</span>
-                                </div>
-                                
-                                <div class="space-y-1">
-                                    ${up.invoiceData.items.map(item => `
-                                        <div class="flex items-center justify-between text-xs text-slate-600">
-                                            <span>${item.desc} (x${item.qty})</span>
-                                            <span class="font-mono text-[11px]">${formatCurrency(item.total)}</span>
+                        updatesHtml += `
+                            <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-subtle text-left space-y-4">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="${up.authorAvatar}" class="h-9 w-9 rounded-full object-cover">
+                                        <div>
+                                            <h4 class="text-xs font-bold text-slate-900">${up.author}</h4>
+                                            <span class="text-[10px] text-slate-400 font-mono">${up.timestamp}</span>
                                         </div>
-                                    `).join('')}
+                                    </div>
+                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                                        <i class="fa-solid fa-receipt text-xs"></i> Invoice Matched
+                                    </span>
                                 </div>
 
-                                <div class="bg-white rounded-lg p-2.5 border border-slate-200 flex items-center justify-between text-xs">
-                                    <div class="flex items-center space-x-2">
-                                        <i class="fa-solid fa-shield-halved text-emerald-500 text-xs"></i>
-                                        <span class="text-[11px] font-mono text-slate-600">Stripe Wire matched: ${up.invoiceData.transactionId}</span>
+                                <div class="space-y-2">
+                                    <h3 class="text-sm font-bold text-slate-900">${up.title}</h3>
+                                    <p class="text-xs text-slate-600 leading-relaxed">${up.summary}</p>
+                                </div>
+
+                                <div class="bg-slate-900 text-white rounded-2xl p-4 font-mono space-y-3">
+                                    <div class="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                                        <span class="text-slate-400">${up.invoiceData.supplier}</span>
+                                        <span class="text-emerald-400 font-bold">${formatCurrency(up.invoiceData.totalAmount)}</span>
                                     </div>
-                                    <button onclick="openInvoiceDrawer('${up.id}')" class="px-2.5 py-1 rounded bg-slate-900 text-white font-mono text-[10px] font-semibold hover:bg-slate-800 transition-colors">${t('proj_verify_btn')}</button>
+                                    <div class="space-y-1.5 text-[11px]">
+                                        ${up.invoiceData.items.map(item => `
+                                            <div class="flex justify-between text-slate-300">
+                                                <span>${item.qty}x ${item.desc}</span>
+                                                <span>${formatCurrency(item.total)}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
                                 </div>
                             </div>
                         `;
                     } else if (up.type === 'photo') {
-                        typeTag = '<span class="bg-emerald-50 text-emerald-700 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md inline-flex items-center gap-1 border border-emerald-100"><i class="fa-solid fa-camera text-[8px]"></i> Visual Proof</span>';
-                        updateContent = `
-                            <div class="mt-3 space-y-1.5">
-                                <img src="${up.mediaUrl}" alt="Photo update" class="rounded-xl w-full max-h-64 object-cover border border-slate-200/80">
-                                <div class="flex items-center justify-between text-[10px] font-mono text-slate-400">
-                                    <span><i class="fa-solid fa-map-pin"></i> GPS: ${up.metadata.location}</span>
-                                    <span><i class="fa-solid fa-circle-check text-emerald-500"></i> EXIF Certified</span>
+                        updatesHtml += `
+                            <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-subtle text-left space-y-4">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="${up.authorAvatar}" class="h-9 w-9 rounded-full object-cover">
+                                        <div>
+                                            <h4 class="text-xs font-bold text-slate-900">${up.author}</h4>
+                                            <span class="text-[10px] text-slate-400 font-mono">${up.timestamp}</span>
+                                        </div>
+                                    </div>
+                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-primary-50 text-primary-700 border border-primary-200 flex items-center gap-1">
+                                        <i class="fa-solid fa-camera text-xs"></i> EXIF Geo-Tagged
+                                    </span>
                                 </div>
-                            </div>
-                        `;
-                    } else if (up.type === 'story') {
-                        typeTag = '<span class="bg-slate-100 text-slate-700 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md inline-flex items-center gap-1 border border-slate-200"><i class="fa-solid fa-book-open text-[8px]"></i> Story Log</span>';
-                        updateContent = `
-                            <div class="mt-3 bg-slate-50 p-3 rounded-xl border border-slate-200/60">
-                                <p class="text-xs text-slate-600 leading-relaxed italic">"${up.storyContent}"</p>
+
+                                <div class="space-y-2">
+                                    <h3 class="text-sm font-bold text-slate-900">${up.title}</h3>
+                                    <p class="text-xs text-slate-600 leading-relaxed">${up.summary}</p>
+                                </div>
+
+                                <div class="rounded-2xl overflow-hidden border border-slate-200 h-64 relative">
+                                    <img src="${up.mediaUrl}" class="w-full h-full object-cover">
+                                    <div class="absolute bottom-3 left-3 bg-slate-900/90 text-white px-3 py-1.5 rounded-xl text-[10px] font-mono flex items-center gap-2 backdrop-blur-md">
+                                        <i class="fa-solid fa-location-dot text-primary-400"></i>
+                                        <span>${up.metadata.location}</span>
+                                    </div>
+                                </div>
                             </div>
                         `;
                     }
-
-                    timelineHtml += `
-                        <div class="relative pl-6 pb-8 text-left">
-                            <div class="absolute left-0 top-1 bottom-0 w-0.5 bg-slate-200"></div>
-                            <div class="absolute left-[-4px] top-1.5 h-2.5 w-2.5 rounded-full bg-primary-600 ring-4 ring-slate-100"></div>
-
-                            <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-subtle space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center space-x-2">
-                                        <img src="${up.authorAvatar}" class="h-5 w-5 rounded-full object-cover">
-                                        <span class="text-xs font-bold text-slate-800">${up.author}</span>
-                                        <span class="text-[10px] text-slate-400 font-mono">${up.timestamp}</span>
-                                    </div>
-                                    ${typeTag}
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-900">${up.title}</h3>
-                                <p class="text-xs text-slate-500 leading-relaxed">${up.summary}</p>
-                                ${updateContent}
-                            </div>
-                        </div>
-                    `;
                 });
             }
 
             canvas.innerHTML = `
-                <div class="bg-white border-b border-slate-200/60 py-3">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <button onclick="navigateTo('browse')" class="text-xs text-slate-500 hover:text-slate-900 font-semibold flex items-center gap-1.5">
-                            <i class="fa-solid fa-arrow-left text-[10px]"></i> <span>${t('proj_back')}</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        
-                        <div class="lg:col-span-8 space-y-8 text-left">
-                            <div class="space-y-3">
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-2xl">${proj.ngoLogo}</span>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-slate-900">${proj.ngoName}</h4>
-                                        <span class="text-[10px] text-emerald-600 font-mono font-semibold"><i class="fa-solid fa-circle-check"></i> 501(c)(3) Verified</span>
-                                    </div>
-                                </div>
-                                <h1 class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">${proj.title}</h1>
-                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${proj.description}</p>
-                            </div>
-
-                            <div class="border-b border-slate-200">
-                                <nav class="flex space-x-6 text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
-                                    <button class="border-b-2 border-primary-600 pb-3 text-primary-600">${t('proj_timeline')}</button>
-                                    <button class="pb-3 hover:text-slate-600">${t('proj_ledger')}</button>
-                                    <button class="pb-3 hover:text-slate-600">${t('proj_auditor')}</button>
-                                </nav>
-                            </div>
-
-                            <div class="space-y-4">
-                                ${timelineHtml}
-                            </div>
-                        </div>
-
-                        <div class="lg:col-span-4 space-y-4 text-left">
-                            <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-subtle space-y-5">
-                                <div class="space-y-2">
-                                    <span class="text-[10px] font-mono uppercase text-slate-400">${t('proj_current_progress')}</span>
-                                    <div class="flex items-baseline space-x-2">
-                                        <span class="text-2xl font-black font-mono text-slate-900">${formatCurrency(proj.amountRaised)}</span>
-                                        <span class="text-slate-400 text-xs">/ ${formatCurrency(proj.targetGoal)}</span>
-                                    </div>
-                                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                                        <div class="h-full bg-primary-600 rounded-full" style="width: ${percent}%"></div>
-                                    </div>
-                                    <div class="flex items-center justify-between text-xs font-mono text-slate-500">
-                                        <span>${percent}%</span>
-                                        <span>${formatCurrency(proj.targetGoal - proj.amountRaised)} remaining</span>
-                                    </div>
-                                </div>
-
-                                <div class="border-t border-slate-100 pt-3 space-y-2 text-xs">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-slate-500">${t('proj_location')}:</span>
-                                        <span class="font-semibold text-slate-800">${proj.location}</span>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-slate-500">${t('proj_admin_fee')}:</span>
-                                        <span class="font-mono text-slate-800">${proj.averageOverhead}%</span>
-                                    </div>
-                                </div>
-
-                                <button onclick="navigateTo('donate', {projectId: '${proj.id}'})" class="w-full py-3.5 rounded-xl font-semibold bg-primary-600 hover:bg-primary-700 text-white shadow-xs transition-all text-xs uppercase tracking-wider block text-center">
-                                    ${t('proj_support')}
-                                </button>
-                            </div>
-
-                            <div class="bg-slate-900 text-white rounded-2xl p-5 text-left space-y-2">
-                                <span class="text-[9px] font-mono uppercase text-slate-400 tracking-wider">${t('proj_kpi_label')}</span>
-                                <div class="text-sm font-bold">${proj.kpi}</div>
-                                <p class="text-[11px] text-slate-400">ZULIOV verifies this directly through third-party supply chain matching and remote satellite imaging partners.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Digitized Split-Screen Invoice Modal/Drawer -->
-                <div id="invoice-modal" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
-                    <div class="absolute inset-0 bg-slate-950/40 backdrop-blur-xs transition-opacity" onclick="closeInvoiceDrawer()"></div>
-                    <div class="fixed inset-6 sm:inset-12 bg-white rounded-3xl shadow-glass overflow-hidden flex flex-col md:flex-row border border-slate-200">
-                        
-                        <!-- Left Side: Invoice PDF visual container -->
-                        <div class="md:w-1/2 bg-slate-100 p-6 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-slate-200 relative">
-                            <button onclick="closeInvoiceDrawer()" class="absolute top-4 left-4 h-8 w-8 rounded-lg bg-white text-slate-600 flex items-center justify-center border border-slate-200 font-bold">
-                                <i class="fa-solid fa-arrow-left text-xs"></i>
-                            </button>
-                            <span class="text-[10px] font-mono uppercase text-slate-400 mb-3">Verified Digital Receipt Scan</span>
-                            <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 w-full max-w-xs space-y-3 font-mono text-[10px] text-slate-700">
-                                <div class="text-center font-bold text-xs border-b border-slate-200 pb-2">
-                                    EAST AFRICAN SUPPLY LOGISTICS<br>
-                                    Nairobi, Kenya
-                                </div>
-                                <div class="space-y-0.5">
-                                    <div>DATE: JULY 15, 2026</div>
-                                    <div>INVOICE #: EASL-2026-0982</div>
-                                    <div>CLIENT: CleanWater Int.</div>
-                                </div>
-                                <div class="border-t border-b border-slate-200 py-2 space-y-1">
-                                    <div class="flex justify-between">
-                                        <span>PS2-150 PUMP x1</span>
-                                        <span>$2,850.00</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span>320W SOLAR PANELS x4</span>
-                                        <span>$1,000.00</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span>MOUNT RACK x1</span>
-                                        <span>$400.00</span>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between font-bold text-xs">
-                                    <span>TOTAL PAID (USD)</span>
-                                    <span>$4,250.00</span>
-                                </div>
-                                <div class="text-center text-[8px] text-slate-400 border-t border-slate-200 pt-2">
-                                    Stripe Wire Matched. Compliance checked by ZULIOV Engine.
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Side: Mapped Audit Ledger board -->
-                        <div class="md:w-1/2 p-6 flex flex-col justify-between text-left">
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <span class="bg-emerald-50 text-emerald-700 text-[10px] font-mono font-bold px-2.5 py-1 rounded-full border border-emerald-100"><i class="fa-solid fa-shield-halved mr-1"></i> Stripe-Verified Match</span>
-                                    <button onclick="closeInvoiceDrawer()" class="h-8 w-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button>
-                                </div>
-                                
-                                <div class="space-y-1">
-                                    <h2 class="text-lg font-bold text-slate-900">${t('modal_receipt_title')}</h2>
-                                    <p class="text-xs text-slate-500 leading-relaxed">${t('modal_receipt_sub')}</p>
-                                </div>
-
-                                <div class="space-y-2 bg-slate-50 p-4 rounded-xl border border-slate-200/80 font-mono text-xs">
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-500">Transaction ID</span>
-                                        <span class="text-slate-900 font-bold">txn_902847291048</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-500">Payment Channel</span>
-                                        <span class="text-slate-800">Stripe Wire (Express)</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-500">Status</span>
-                                        <span class="text-emerald-600 font-bold">Cleared & Confirmed</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-500">Node Compliance</span>
-                                        <span class="text-slate-800">ZULIOV Ledger Node #48</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex space-x-3 pt-4">
-                                <button onclick="simulateReportDiscrepancy()" class="flex-1 py-2.5 rounded-xl border border-red-200 hover:bg-red-50 text-red-600 font-bold text-xs transition-colors text-center">
-                                    ${t('modal_report')}
-                                </button>
-                                <button onclick="closeInvoiceDrawer()" class="flex-1 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors text-center">
-                                    ${t('modal_done')}
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            `;
-        }
-
-        function openInvoiceDrawer(updateId) {
-            document.getElementById('invoice-modal').classList.remove('hidden');
-        }
-
-        function closeInvoiceDrawer() {
-            document.getElementById('invoice-modal').classList.add('hidden');
-        }
-
-        function simulateReportDiscrepancy() {
-            closeInvoiceDrawer();
-            showGlobalNotification('Report filed. Our compliance team will audit this receipt within 24 hours.', 'info');
-        }
-    </script>
-
-    <script>
-        function renderDonationPage(canvas) {
-            const proj = state.projects.find(p => p.id === activeProjectId);
-            if (!proj) return;
-
-            canvas.innerHTML = `
-                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-left">
-                    <button onclick="navigateTo('project-detail', {projectId: '${proj.id}'})" class="inline-flex items-center space-x-2 text-xs text-slate-500 hover:text-slate-900 font-bold mb-6">
-                        <i class="fa-solid fa-arrow-left"></i> <span>${t('proj_back')}</span>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+                    
+                    <button onclick="navigateTo('browse')" class="text-xs font-mono font-bold text-slate-500 hover:text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> <span>Back to campaigns</span>
                     </button>
 
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                        <div class="md:col-span-7 bg-white rounded-2xl border border-slate-200/80 p-6 space-y-5 shadow-subtle">
-                            <div class="space-y-1">
-                                <h2 class="text-lg font-extrabold text-slate-900">${t('donate_title')}</h2>
-                                <p class="text-xs text-slate-500 leading-relaxed">${t('donate_sub')}</p>
-                            </div>
-
-                            <div class="grid grid-cols-4 gap-2">
-                                <button onclick="setDonationAmt(25)" class="py-2.5 rounded-lg border border-slate-200 hover:border-primary-600 text-slate-700 font-mono text-xs font-bold text-center">$25</button>
-                                <button onclick="setDonationAmt(50)" class="py-2.5 rounded-lg border border-slate-200 hover:border-primary-600 text-slate-700 font-mono text-xs font-bold text-center">$50</button>
-                                <button onclick="setDonationAmt(100)" class="py-2.5 rounded-lg border border-slate-200 hover:border-primary-600 text-slate-700 font-mono text-xs font-bold text-center">$100</button>
-                                <button onclick="setCustomAmtInput()" class="py-2.5 rounded-lg border border-slate-200 hover:border-primary-600 text-slate-700 font-mono text-xs font-bold text-center">${t('donate_custom')}</button>
-                            </div>
-
-                            <div class="space-y-2">
-                                <label class="block text-xs font-bold text-slate-600">Amount (USD)</label>
-                                <div class="relative">
-                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-mono font-bold">$</span>
-                                    <input type="number" id="donation-amount-field" value="150" oninput="recalculateProcessingFee()" class="w-full text-sm font-mono font-bold bg-slate-50 pl-7 pr-3 py-2.5 rounded-lg border border-slate-200 focus:outline-none">
-                                </div>
-                            </div>
-
-                            <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200/80">
-                                <label class="flex items-start space-x-3 cursor-pointer">
-                                    <input type="checkbox" id="cover-fee-checkbox" checked onchange="recalculateProcessingFee()" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded mt-0.5">
-                                    <div>
-                                        <span class="block text-xs font-bold text-slate-800">${t('donate_cover_fee')}</span>
-                                        <span class="block text-[11px] text-slate-500 leading-snug">${t('donate_cover_fee_sub')}</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="md:col-span-5 space-y-4">
-                            <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-subtle space-y-5">
-                                <h3 class="text-xs font-mono font-bold text-slate-900 border-b border-slate-100 pb-2 uppercase tracking-wider">${t('donate_summary')}</h3>
-                                
-                                <div class="space-y-2 font-mono text-xs">
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-500">Donation</span>
-                                        <span class="font-bold text-slate-800" id="summary-donation-amt">$150.00</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-500">Processing Fee</span>
-                                        <span class="font-bold text-slate-800" id="summary-fee-amt">$3.50</span>
-                                    </div>
-                                    <div class="border-t border-slate-100 pt-2 flex justify-between font-black text-slate-900 text-sm">
-                                        <span>${t('donate_total')}</span>
-                                        <span id="summary-total-amt">$153.50</span>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-3 pt-1">
-                                    <div class="space-y-1">
-                                        <label class="block text-[10px] font-mono uppercase text-slate-400">Cardholder</label>
-                                        <input type="text" value="${state.currentUser.name}" class="w-full text-xs bg-slate-50 px-3 py-2 rounded-lg border border-slate-200 focus:outline-none">
-                                    </div>
-                                    <div class="space-y-1">
-                                        <label class="block text-[10px] font-mono uppercase text-slate-400">Card Number</label>
-                                        <input type="text" value="4242 4242 4242 4242" class="w-full text-xs font-mono bg-slate-50 px-3 py-2 rounded-lg border border-slate-200 focus:outline-none">
-                                    </div>
-                                </div>
-
-                                <button onclick="executeMockDonation()" class="w-full py-3.5 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-all text-xs uppercase tracking-wider block text-center">
-                                    ${t('donate_btn')} <span id="checkout-btn-label">$153.50</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            recalculateProcessingFee();
-        }
-
-        function setDonationAmt(amount) {
-            document.getElementById('donation-amount-field').value = amount;
-            recalculateProcessingFee();
-        }
-
-        function setCustomAmtInput() {
-            document.getElementById('donation-amount-field').value = '';
-            document.getElementById('donation-amount-field').focus();
-        }
-
-        function recalculateProcessingFee() {
-            const amtInput = document.getElementById('donation-amount-field');
-            const donationVal = parseFloat(amtInput.value) || 0;
-            const coverFeesChecked = document.getElementById('cover-fee-checkbox').checked;
-            
-            const feeVal = coverFeesChecked ? 3.50 : 0;
-            const totalVal = donationVal + feeVal;
-
-            document.getElementById('summary-donation-amt').textContent = formatCurrency(donationVal);
-            document.getElementById('summary-fee-amt').textContent = formatCurrency(feeVal);
-            document.getElementById('summary-total-amt').textContent = formatCurrency(totalVal);
-            document.getElementById('checkout-btn-label').textContent = formatCurrency(totalVal);
-        }
-
-        function executeMockDonation() {
-            const amtField = document.getElementById('donation-amount-field');
-            const donationVal = parseFloat(amtField.value) || 0;
-            
-            if (donationVal <= 0) {
-                showGlobalNotification('Please enter a valid donation amount.', 'error');
-                return;
-            }
-
-            const proj = state.projects.find(p => p.id === activeProjectId);
-            if (proj) {
-                proj.amountRaised += donationVal;
-                state.notifications.unshift({
-                    id: 'not_' + Date.now(),
-                    type: 'success',
-                    text: `Contribution of ${formatCurrency(donationVal)} to '${proj.title}' confirmed via ZULIOV Wire.`,
-                    time: 'Just now',
-                    unread: true
-                });
-
-                if (state.currentUser.role === 'donor') {
-                    state.currentUser.impactScore += donationVal;
-                    state.currentUser.projectsSupported += 1;
-                }
-            }
-
-            navigateTo('success');
-        }
-    </script>
-
-    <script>
-        function renderSuccessPage(canvas) {
-            canvas.innerHTML = `
-                <div class="max-w-lg mx-auto px-4 py-16 text-center space-y-6">
-                    <div class="h-16 w-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-3xl mx-auto border border-emerald-200">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </div>
-
-                    <div class="space-y-1">
-                        <h1 class="text-2xl font-black text-slate-900">${t('success_title')}</h1>
-                        <p class="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">${t('success_sub')}</p>
-                    </div>
-
-                    <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-subtle text-left space-y-3 font-mono text-xs">
-                        <div class="flex items-start space-x-3">
-                            <span class="h-4 w-4 rounded bg-emerald-100 text-emerald-700 flex items-center justify-center text-[10px] font-bold">1</span>
-                            <span class="text-slate-600">${t('success_step1')}</span>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <span class="h-4 w-4 rounded bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] font-bold">2</span>
-                            <span class="text-slate-600">${t('success_step2')}</span>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <span class="h-4 w-4 rounded bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] font-bold">3</span>
-                            <span class="text-slate-600">${t('success_step3')}</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 flex items-center justify-between text-left">
-                        <div>
-                            <span class="block text-xs font-bold text-slate-800">${t('success_alerts')}</span>
-                            <span class="block text-[10px] text-slate-500">${t('success_alerts_sub')}</span>
-                        </div>
-                        <button onclick="toggleSmsAlertsSuccess(this)" class="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-semibold">Enable</button>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                        <button onclick="navigateTo('donor-dashboard')" class="flex-1 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-semibold text-xs transition-all uppercase tracking-wider">${t('success_btn_feed')}</button>
-                        <button onclick="navigateTo('browse')" class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition-all uppercase tracking-wider">${t('success_btn_more')}</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function toggleSmsAlertsSuccess(btn) {
-            btn.className = "px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-bold cursor-default";
-            btn.innerHTML = `<i class="fa-solid fa-check"></i> Enabled`;
-            btn.disabled = true;
-            showGlobalNotification('SMS verification alerts configured.', 'success');
-        }
-    </script>
-
-    <script>
-        function renderDonorDashboard(canvas) {
-            let timelineCardsHtml = '';
-            
-            let allUpdates = [];
-            state.projects.forEach(p => {
-                p.updates.forEach(up => {
-                    allUpdates.push({
-                        ...up,
-                        projectId: p.id,
-                        projectTitle: p.title,
-                        ngoName: p.ngoName,
-                        ngoLogo: p.ngoLogo
-                    });
-                });
-            });
-
-            allUpdates.forEach(up => {
-                timelineCardsHtml += `
-                    <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-subtle space-y-3 text-left">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                            <div class="flex items-center space-x-2">
-                                <span class="text-base">${up.ngoLogo}</span>
-                                <div>
-                                    <span class="block text-xs font-bold text-slate-800">${up.ngoName}</span>
-                                    <span class="block text-[10px] text-slate-400 font-mono">${up.timestamp}</span>
-                                </div>
-                            </div>
-                            <span class="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${up.type}</span>
-                        </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
                         
-                        <div class="space-y-1">
-                            <span class="text-[9px] font-mono uppercase text-slate-400">${up.projectTitle}</span>
-                            <h3 class="text-sm font-bold text-slate-900">${up.title}</h3>
-                            <p class="text-xs text-slate-500 leading-relaxed">${up.summary}</p>
-                        </div>
-                    </div>
-                `;
-            });
-
-            canvas.innerHTML = `
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                    <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
-                        <div class="space-y-2">
-                            <span class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Donor Intelligence Workspace</span>
-                            <h1 class="text-2xl sm:text-3xl font-black text-white">${t('donor_welcome')}, ${state.currentUser.name}!</h1>
-                            <p class="text-xs text-slate-400">Tracking ${state.currentUser.verifiedInvoices} verified invoice logs deployed across ${state.currentUser.projectsSupported} projects.</p>
-                        </div>
-                        <div class="flex gap-3 font-mono">
-                            <div class="bg-slate-800/80 px-5 py-3 rounded-2xl border border-slate-700/80 text-center">
-                                <span class="block text-xl font-bold text-white">${formatCurrency(state.currentUser.impactScore)}</span>
-                                <span class="block text-[9px] text-slate-400 uppercase tracking-wider">${t('donor_metrics_impact')}</span>
-                            </div>
-                            <div class="bg-slate-800/80 px-5 py-3 rounded-2xl border border-slate-700/80 text-center">
-                                <span class="block text-xl font-bold text-white">${state.currentUser.verifiedInvoices}</span>
-                                <span class="block text-[9px] text-slate-400 uppercase tracking-wider">${t('donor_metrics_invoices')}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                        <div class="lg:col-span-8 space-y-4">
-                            <h2 class="text-sm font-bold text-slate-900 text-left uppercase tracking-wider font-mono">${t('donor_feed_title')}</h2>
-                            <div class="space-y-4">
-                                ${timelineCardsHtml}
-                            </div>
-                        </div>
-
-                        <div class="lg:col-span-4 space-y-4 text-left">
-                            <div class="bg-white rounded-2xl border border-slate-200/80 p-5 space-y-3 shadow-subtle">
-                                <h3 class="text-xs font-mono font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">${t('donor_achievements')}</h3>
+                        <div class="lg:col-span-2 space-y-6">
+                            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-subtle p-6 space-y-4">
+                                <div class="h-64 sm:h-80 rounded-2xl overflow-hidden relative">
+                                    <img src="${proj.coverImage}" class="w-full h-full object-cover">
+                                </div>
                                 <div class="space-y-2">
-                                    ${state.currentUser.badges.map(badge => `
-                                        <div class="flex items-center space-x-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-200/50">
-                                            <span class="text-base">🏅</span>
-                                            <div>
-                                                <span class="block text-xs font-bold text-slate-800">${badge}</span>
-                                                <span class="block text-[10px] text-slate-400 font-mono">Verified receipt node</span>
-                                            </div>
-                                        </div>
-                                    `).join('')}
+                                    <span class="text-xs font-mono font-bold text-primary-600 uppercase">${proj.ngoName}</span>
+                                    <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">${proj.title}</h1>
+                                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${proj.description}</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <h3 class="text-base font-bold text-slate-900 font-mono uppercase tracking-wider">Live Audit Timeline</h3>
+                                ${updatesHtml}
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-card space-y-6 sticky top-24">
+                                <div class="space-y-2">
+                                    <div class="flex justify-between items-baseline font-mono">
+                                        <span class="text-2xl font-black text-slate-900">${formatCurrency(proj.amountRaised)}</span>
+                                        <span class="text-xs text-slate-400">of ${formatCurrency(proj.targetGoal)}</span>
+                                    </div>
+                                    <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary-600 rounded-full" style="width: ${percent}%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3 pt-2">
+                                    <button onclick="openDonateModal('${proj.id}')" class="w-full py-3.5 rounded-xl font-bold bg-primary-600 text-white hover:bg-primary-700 shadow-sm transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-heart text-white"></i> <span>Back this Project</span>
+                                    </button>
+                                </div>
+
+                                <div class="border-t border-slate-100 pt-4 space-y-3 text-xs font-mono">
+                                    <div class="flex justify-between text-slate-600">
+                                        <span>Deployment Area:</span>
+                                        <span class="font-bold text-slate-900">${proj.location}</span>
+                                    </div>
+                                    <div class="flex justify-between text-slate-600">
+                                        <span>Audited Overhead:</span>
+                                        <span class="font-bold text-emerald-600">${proj.averageOverhead}% Fee</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             `;
@@ -1459,240 +1642,56 @@
     </script>
 
     <script>
-        function renderNgoDashboard(canvas) {
-            const myProjects = state.projects.filter(p => p.ngoId === 'ngo_clean_water');
-            let projRowsHtml = '';
-
-            myProjects.forEach(p => {
-                projRowsHtml += `
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200/80">
-                        <div class="text-left space-y-0.5">
-                            <h4 class="text-xs font-bold text-slate-800">${p.title}</h4>
-                            <span class="block text-[10px] font-mono text-slate-400">${formatCurrency(p.amountRaised)} / ${formatCurrency(p.targetGoal)}</span>
-                        </div>
-                        <button onclick="openPostUpdateModal('${p.id}')" class="px-3 py-1.5 rounded-lg bg-slate-900 text-white font-mono text-xs font-semibold hover:bg-slate-800">
-                            + ${t('ngo_post_update')}
-                        </button>
-                    </div>
-                `;
-            });
-
-            canvas.innerHTML = `
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                    <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
-                        <div class="space-y-2">
-                            <span class="text-[10px] font-mono uppercase text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-shield-halved text-[8px]"></i> ${t('ngo_registered')}</span>
-                            <h1 class="text-2xl sm:text-3xl font-black text-white">${state.currentUser.organizationName}</h1>
-                            <p class="text-xs text-slate-400">${t('ngo_welcome')} — Marcus Vance.</p>
-                        </div>
-                        <button onclick="openCreateProjectModal()" class="px-4 py-2.5 rounded-xl bg-white text-slate-900 font-semibold text-xs uppercase tracking-wider hover:bg-slate-100 transition-colors">
-                            + ${t('ngo_new_proj')}
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200/80 p-5 space-y-4 shadow-subtle text-left">
-                            <h3 class="text-xs font-mono font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">${t('ngo_active_title')}</h3>
-                            <div class="space-y-3">
-                                ${projRowsHtml}
+        function openDonateModal(projId) {
+            const proj = state.projects.find(p => p.id === projId) || state.projects[0];
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+                    <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity" onclick="closeModal()"></div>
+                    
+                    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-floating border border-slate-200 relative z-10 animate-modal-in text-left space-y-5">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-900">Support Campaign</h3>
+                                <p class="text-[10px] font-mono text-slate-400">${proj.title}</p>
                             </div>
+                            <button onclick="closeModal()" class="rounded-lg text-slate-400 hover:text-slate-600 p-1">
+                                <i class="fa-solid fa-xmark text-base"></i>
+                            </button>
                         </div>
 
-                        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 p-5 space-y-4 shadow-subtle text-left">
-                            <h3 class="text-xs font-mono font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">${t('ngo_integrity')}</h3>
-                            <div class="space-y-3 font-mono text-xs">
-                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center justify-between">
-                                    <span>Stripe Connect</span>
-                                    <span class="text-emerald-600 font-bold"><i class="fa-solid fa-link"></i> Linked</span>
-                                </div>
-                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center justify-between">
-                                    <span>Overhead Ratio</span>
-                                    <span class="text-slate-800 font-bold">6.0%</span>
-                                </div>
+                        <div class="space-y-4">
+                            <label class="block text-xs font-mono font-bold text-slate-700">Select Donation Amount (USD)</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="setDonateAmount(50)" class="donate-amt-btn p-3 rounded-xl border border-slate-200 font-mono font-bold text-xs hover:border-primary-600 text-slate-800">$50</button>
+                                <button onclick="setDonateAmount(150)" class="donate-amt-btn p-3 rounded-xl border-2 border-primary-600 bg-primary-50 font-mono font-bold text-xs text-primary-700">$150</button>
+                                <button onclick="setDonateAmount(300)" class="donate-amt-btn p-3 rounded-xl border border-slate-200 font-mono font-bold text-xs hover:border-primary-600 text-slate-800">$300</button>
                             </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Create Project Modal -->
-                <div id="create-project-modal" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
-                    <div class="absolute inset-0 bg-slate-950/40 backdrop-blur-xs transition-opacity" onclick="closeCreateProjectModal()"></div>
-                    <div class="fixed inset-x-4 top-16 max-w-md mx-auto bg-white rounded-2xl shadow-glass border border-slate-200 p-5 text-left space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                            <h3 class="text-sm font-bold text-slate-900">Create New Campaign</h3>
-                            <button onclick="closeCreateProjectModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                        <div class="space-y-3 text-xs">
-                            <input type="text" id="new-proj-title" placeholder="Campaign title..." class="w-full bg-slate-50 px-3 py-2 rounded-lg border border-slate-200">
-                            <select id="new-proj-cat" class="w-full bg-slate-50 px-3 py-2 rounded-lg border border-slate-200">
-                                <option value="Water">Water</option>
-                                <option value="Education">Education</option>
-                            </select>
-                            <input type="number" id="new-proj-goal" placeholder="Target goal (USD)..." class="w-full bg-slate-50 px-3 py-2 rounded-lg border border-slate-200">
-                            <textarea id="new-proj-desc" rows="3" placeholder="Description..." class="w-full bg-slate-50 px-3 py-2 rounded-lg border border-slate-200"></textarea>
-                        </div>
-                        <div class="flex space-x-2 pt-2">
-                            <button onclick="closeCreateProjectModal()" class="flex-1 py-2 rounded-lg border border-slate-200 text-xs text-slate-600">Cancel</button>
-                            <button onclick="saveNewProject()" class="flex-1 py-2 rounded-lg bg-primary-600 text-white text-xs font-semibold">Publish</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Post Update Modal -->
-                <div id="post-update-modal" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
-                    <div class="absolute inset-0 bg-slate-950/40 backdrop-blur-xs transition-opacity" onclick="closePostUpdateModal()"></div>
-                    <div class="fixed inset-x-4 top-16 max-w-md mx-auto bg-white rounded-2xl shadow-glass border border-slate-200 p-5 text-left space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                            <h3 class="text-sm font-bold text-slate-900">Post Transparent Update Log</h3>
-                            <button onclick="closePostUpdateModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                        <input type="hidden" id="update-project-id-holder">
-                        <div class="space-y-3 text-xs">
-                            <input type="text" id="up-title" placeholder="Update title..." class="w-full bg-slate-50 px-3 py-2 rounded-lg border border-slate-200">
-                            <select id="up-type" onchange="toggleUpdateTypeFormFields(this.value)" class="w-full bg-slate-50 px-3 py-2 rounded-lg border border-slate-200">
-                                <option value="story">Story Log</option>
-                                <option value="photo">Visual Proof (Photo)</option>
-                                <option value="invoice">Supplier Invoice Ledger</option>
-                            </select>
-                            <input type="text" id="up-summary" placeholder="Summary teaser..." class="w-full bg-slate-50 px-3 py-2 rounded-lg border border-slate-200">
-                            <textarea id="up-story-content" rows="3" placeholder="Narrative..." class="w-full bg-slate-50 px-3 py-2 rounded-lg border border-slate-200"></textarea>
-                        </div>
-                        <div class="flex space-x-2 pt-2">
-                            <button onclick="closePostUpdateModal()" class="flex-1 py-2 rounded-lg border border-slate-200 text-xs text-slate-600">Cancel</button>
-                            <button onclick="saveNewUpdate()" class="flex-1 py-2 rounded-lg bg-primary-600 text-white text-xs font-semibold">Publish Ledger Node</button>
+                            <button onclick="executeDonation('${proj.id}')" class="w-full py-3.5 rounded-xl font-bold bg-primary-600 text-white hover:bg-primary-700 shadow-sm transition-all text-xs uppercase tracking-wider">
+                                Complete Contribution of $150
+                            </button>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        function openCreateProjectModal() {
-            document.getElementById('create-project-modal').classList.remove('hidden');
+        function setDonateAmount(amt) {
+            showToast(`Amount set to $${amt}`, 'info');
         }
 
-        function closeCreateProjectModal() {
-            document.getElementById('create-project-modal').classList.add('hidden');
-        }
-
-        function openPostUpdateModal(projectId) {
-            document.getElementById('update-project-id-holder').value = projectId;
-            document.getElementById('post-update-modal').classList.remove('hidden');
-        }
-
-        function closePostUpdateModal() {
-            document.getElementById('post-update-modal').classList.add('hidden');
-        }
-
-        function saveNewProject() {
-            const title = document.getElementById('new-proj-title').value.trim();
-            const goal = parseInt(document.getElementById('new-proj-goal').value) || 0;
-            const desc = document.getElementById('new-proj-desc').value.trim();
-            const category = document.getElementById('new-proj-cat').value;
-
-            if (!title || goal <= 0) {
-                showGlobalNotification('Please fill in required project fields.', 'error');
-                return;
-            }
-
-            state.projects.push({
-                id: 'proj_' + Date.now(),
-                ngoId: 'ngo_clean_water',
-                ngoName: 'CleanWater International',
-                ngoLogo: '💧',
-                title: title,
-                description: desc,
-                category: category,
-                targetGoal: goal,
-                amountRaised: 0,
-                location: 'Kitui, Kenya',
-                averageOverhead: 6,
-                verifiedStatus: 'Verified Sandbox Node',
-                coverImage: 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=800',
-                kpi: 'Calculated post deployment',
-                updates: []
-            });
-
-            closeCreateProjectModal();
-            renderApp();
-            showGlobalNotification('Campaign published to sandbox.', 'success');
-        }
-
-        function toggleUpdateTypeFormFields(type) {
-            // Placeholder hook for modular options
-        }
-
-        function saveNewUpdate() {
-            const projId = document.getElementById('update-project-id-holder').value;
-            const p = state.projects.find(x => x.id === projId);
-            if (!p) return;
-
-            const title = document.getElementById('up-title').value.trim();
-            const summary = document.getElementById('up-summary').value.trim();
-            const type = document.getElementById('up-type').value;
-
-            if (!title) {
-                showGlobalNotification('Please enter update title.', 'error');
-                return;
-            }
-
-            p.updates.unshift({
-                id: 'up_' + Date.now(),
-                type: type,
-                title: title,
-                summary: summary || 'Log update published.',
-                timestamp: 'Just now',
-                author: 'Marcus Vance',
-                authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
-                likes: 0,
-                comments: [],
-                storyContent: document.getElementById('up-story-content').value.trim() || 'Log update saved.'
-            });
-
-            closePostUpdateModal();
-            renderApp();
-            showGlobalNotification('Verified update uploaded to ZULIOV stream.', 'success');
+        function executeDonation(projId) {
+            closeModal();
+            showToast("Thank you! Your donation of $150 has cleared via Stripe Wire.", "success");
         }
     </script>
 
     <script>
-        function showGlobalNotification(msg, type = 'success') {
-            const oldNotif = document.getElementById('global-toast-notif');
-            if (oldNotif) oldNotif.remove();
-
-            const toast = document.createElement('div');
-            toast.id = 'global-toast-notif';
-            
-            let bgClass = 'bg-slate-900 text-white border-slate-800';
-            let icon = 'fa-circle-check text-emerald-400';
-            
-            if (type === 'error') {
-                bgClass = 'bg-red-950 text-white border-red-800';
-                icon = 'fa-circle-exclamation text-red-400';
-            } else if (type === 'info') {
-                bgClass = 'bg-slate-900 text-white border-slate-800';
-                icon = 'fa-circle-info text-primary-400';
-            }
-
-            toast.className = `fixed top-20 right-6 z-50 flex items-center space-x-3 px-4 py-3 rounded-xl border shadow-glass font-mono text-xs ${bgClass} transition-all duration-300 transform translate-y-0`;
-            toast.innerHTML = `
-                <i class="fa-solid ${icon}"></i>
-                <span>${msg}</span>
-            `;
-
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                if (toast && toast.parentNode) {
-                    toast.style.opacity = '0';
-                    setTimeout(() => toast.remove(), 300);
-                }
-            }, 3500);
-        }
-
-        // Initial App Bootstrap Initialization
-        document.addEventListener('DOMContentLoaded', () => {
+        window.onload = function() {
             renderApp();
-        });
+        };
     </script>
+
 </body>
 </html>
