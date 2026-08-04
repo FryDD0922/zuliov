@@ -174,7 +174,6 @@
                 ngo_finance_title: "Transparencia Financiera Auditada",
                 ngo_impact_title: "Resultados Reales en la Comunidad",
                 ngo_reviews_title: "Evaluaciones de la Comunidad",
-                ngo_community_title: "Foro Comunitario y Conversaciones",
                 ngo_contact_title: "Contacto y Ubicación Verificada",
                 empty_state_title: "Sin Registros en esta Categoría",
                 empty_state_desc: "Esta sección no cuenta con publicaciones recientes en este momento."
@@ -225,7 +224,6 @@
                 ngo_finance_title: "Financial Transparency Ledger",
                 ngo_impact_title: "Real-World Tangible Impact",
                 ngo_reviews_title: "Community Reviews & Ratings",
-                ngo_community_title: "Community Hub & Discussion",
                 ngo_contact_title: "Verified Contact & Headquarters",
                 empty_state_title: "No Records Found",
                 empty_state_desc: "There are currently no items published in this category."
@@ -1418,42 +1416,6 @@
                                 `).join('')}
                             </div>
                         `}
-                    </div>
-
-                    <!-- COMMUNITY -->
-                    <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-6">
-                        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                            <div>
-                                <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_community_title')}</h2>
-                                <p class="text-xs text-slate-500">Direct channel between donors, local beneficiaries, and NGO field leads</p>
-                            </div>
-                            <span class="text-xs font-mono text-slate-400 font-semibold">${ngo.followersCount.toLocaleString()} Members</span>
-                        </div>
-
-                        <div class="flex space-x-2">
-                            <input type="text" id="community-input" placeholder="Ask a question or leave a message for the CleanWater team..." class="flex-grow px-4 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600">
-                            <button onclick="addCommunityComment()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-primary-600 text-white hover:bg-primary-700 transition-colors">
-                                Post
-                            </button>
-                        </div>
-
-                        <div class="space-y-4" id="community-comments-list">
-                            ${ngo.communityComments.map(c => `
-                                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center space-x-2.5">
-                                            <img src="${c.avatar}" class="h-7 w-7 rounded-full object-cover">
-                                            <span class="text-xs font-bold text-slate-900">${c.author}</span>
-                                            <span class="text-[10px] font-mono text-slate-400">• ${c.time}</span>
-                                        </div>
-                                        <button onclick="likeComment(this)" class="text-xs font-mono text-slate-500 hover:text-primary-600 flex items-center gap-1">
-                                            <i class="fa-regular fa-thumbs-up"></i> <span>${c.likes}</span>
-                                        </button>
-                                    </div>
-                                    <p class="text-xs text-slate-600 pl-9">${c.text}</p>
-                                </div>
-                            `).join('')}
-                        </div>
                     </div>
 
                     <!-- CONTACT & LOCATION -->
