@@ -535,7 +535,7 @@
                 name: 'Sarah Miller',
                 role: 'donor',
                 avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-                coverImage: 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=1600',
+                coverImage: 'assets/baner',
                 coverPositionY: 50,
                 email: 'sarah.miller@zuliov-impact.org',
                 location: 'San Francisco, CA',
@@ -782,7 +782,7 @@
                 showToast("Simulando Perfil con Estados Vacíos", "info");
             } else {
                 state.currentUser.avatar = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400';
-                state.currentUser.coverImage = 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=1600';
+                state.currentUser.coverImage = 'assets/baner';
                 state.currentUser.coverPositionY = 50;
                 showToast("Restauradas Imágenes de Perfil", "success");
             }
@@ -810,7 +810,7 @@
                     name: 'Sarah Miller',
                     role: 'donor',
                     avatar: state.currentUser.avatar !== null ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400' : null,
-                    coverImage: state.currentUser.coverImage !== null ? 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=1600' : null,
+                    coverImage: state.currentUser.coverImage !== null ? 'assets/baner' : null,
                     coverPositionY: state.currentUser.coverPositionY || 50,
                     email: 'sarah.miller@zuliov-impact.org',
                     location: 'San Francisco, CA',
@@ -2048,7 +2048,7 @@
                             <div class="border-t border-slate-100 pt-3">
                                 <span class="block text-xs font-mono font-bold text-slate-700 mb-2">Preset High-Res Banners:</span>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <div onclick="selectPresetCover('https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=1600')" class="h-16 rounded-xl overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary-600 border border-slate-200">
+                                    <div onclick="selectPresetCover('assets/baner')" class="h-16 rounded-xl overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary-600 border border-slate-200">
                                         <img src="https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=400" class="h-full w-full object-cover">
                                     </div>
                                     <div onclick="selectPresetCover('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1600')" class="h-16 rounded-xl overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary-600 border border-slate-200">
