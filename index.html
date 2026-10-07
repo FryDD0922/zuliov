@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-50">
+<html lang="es" class="h-full bg-slate-50 dark:bg-slate-950">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,6 +48,11 @@
             }
         }
     </script>
+    <script>
+        if (localStorage.getItem('zuliov-theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 
     <style>
         body {
@@ -55,6 +60,111 @@
             background-color: #F8FAFC;
             color: #0F172A;
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        html.dark {
+            color-scheme: dark;
+            background-color: #020617;
+            scrollbar-color: #475569 #020617;
+        }
+
+        html.dark body {
+            background-color: #020617;
+            color: #e2e8f0;
+        }
+
+        html.dark [class~="bg-white"],
+        html.dark [class~="bg-white/90"],
+        html.dark [class~="bg-white/95"] {
+            background-color: #0f172a;
+            transition: background-color 0.25s ease;
+        }
+
+        html.dark [class~="bg-slate-50"],
+        html.dark [class~="bg-slate-50/80"] {
+            background-color: #0f172a;
+        }
+
+        html.dark [class~="bg-slate-50"],
+        html.dark [class~="bg-slate-100"],
+        html.dark [class~="bg-slate-200"] {
+            transition: background-color 0.25s ease;
+        }
+
+        html.dark [class~="bg-slate-100"] {
+            background-color: #1e293b;
+        }
+
+        html.dark [class~="bg-slate-200"] {
+            background-color: #334155;
+        }
+
+        html.dark [class~="text-slate-900"],
+        html.dark [class~="text-slate-800"] {
+            color: #f1f5f9;
+        }
+
+        html.dark [class~="text-slate-700"],
+        html.dark [class~="text-slate-600"] {
+            color: #cbd5e1;
+        }
+
+        html.dark [class~="text-slate-500"],
+        html.dark [class~="text-slate-400"] {
+            color: #94a3b8;
+        }
+
+        html.dark [class*="text-slate-"] {
+            transition: color 0.25s ease;
+        }
+
+        html.dark [class~="border-slate-100"],
+        html.dark [class~="border-slate-200"],
+        html.dark [class~="border-slate-200/80"],
+        html.dark [class~="border-slate-300"] {
+            border-color: #1e293b;
+        }
+
+        html.dark [class*="border-slate-"] {
+            transition: border-color 0.25s ease;
+        }
+
+        html.dark [class~="bg-primary-50"] {
+            background-color: #1e3a8a;
+        }
+
+        html.dark [class~="bg-primary-100"] {
+            background-color: #1e40af;
+        }
+
+        html.dark [class~="text-primary-600"],
+        html.dark [class~="text-primary-700"] {
+            color: #93c5fd;
+        }
+
+        html.dark [class~="border-primary-100"],
+        html.dark [class~="border-primary-200"] {
+            border-color: #1d4ed8;
+        }
+
+        html.dark #app-header {
+            background-color: rgb(2 6 23 / 0.9);
+            border-color: #1e293b;
+        }
+
+        html.dark .shadow-subtle,
+        html.dark .shadow-card {
+            box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+        }
+
+        html.dark::-webkit-scrollbar-track {
+            background: #020617;
+            border-color: #0f172a;
+        }
+
+        html.dark::-webkit-scrollbar-thumb {
+            border-color: #020617;
         }
 
         /* Firefox support */
@@ -123,7 +233,7 @@
         .cursor-grabbing { cursor: grabbing; }
     </style>
 </head>
-<body class="h-full flex flex-col antialiased selection:bg-primary-100 selection:text-primary-700">
+<body class="h-full flex flex-col antialiased selection:bg-primary-100 selection:text-primary-700 dark:bg-slate-950 dark:text-slate-200">
 
     <script>
         // Internationalization Dictionaries (ES / EN)
@@ -131,7 +241,6 @@
             es: {
                 nav_howItWorks: "Cómo funciona",
                 nav_browse: "Explorar proyectos",
-                nav_profile: "Mi Perfil Auditado",
                 nav_ngoProfile: "Perfil ONG Verificada",
                 hero_tag: "Infraestructura de Transparencia Real",
                 hero_title: "Conoce tu impacto.",
@@ -167,10 +276,15 @@
                 ngo_founded: "Fundación",
                 ngo_leadership_title: "Liderazgo y Equipo",
                 ngo_leadership_sub: "Conoce a las personas reales que gestionan con transparencia cada donación.",
+                ngo_leadership_toggle: "Ver más detalles",
+                ngo_leadership_toggle_close: "Ver menos detalles",
                 ngo_mission_title: "Nuestra Misión y Visión",
+                ngo_mission_toggle: "Ver más detalles",
+                ngo_mission_toggle_close: "Ver menos detalles",
                 ngo_stats_title: "Métricas de Impacto Auditadas",
                 ngo_projects_title: "Proyectos en Desarrollo",
                 ngo_updates_title: "Bitácora de Campo y Actualizaciones",
+                ngo_updates_view_all: "Ver todo",
                 ngo_finance_title: "Transparencia Financiera Auditada",
                 ngo_impact_title: "Resultados Reales en la Comunidad",
                 ngo_reviews_title: "Evaluaciones de la Comunidad",
@@ -181,7 +295,6 @@
             en: {
                 nav_howItWorks: "How it works",
                 nav_browse: "Browse Projects",
-                nav_profile: "My Audited Profile",
                 nav_ngoProfile: "Verified NGO Profile",
                 hero_tag: "Radical Transparency Infrastructure",
                 hero_title: "Know your impact.",
@@ -217,10 +330,15 @@
                 ngo_founded: "Founded",
                 ngo_leadership_title: "Leadership & Key Personnel",
                 ngo_leadership_sub: "Meet the real people accountable for direct field management and transparent operations.",
+                ngo_leadership_toggle: "View more details",
+                ngo_leadership_toggle_close: "View fewer details",
                 ngo_mission_title: "Mission & Vision",
+                ngo_mission_toggle: "View more details",
+                ngo_mission_toggle_close: "View fewer details",
                 ngo_stats_title: "Audited Performance Metrics",
                 ngo_projects_title: "Active & Completed Projects",
                 ngo_updates_title: "Field Updates & Milestones",
+                ngo_updates_view_all: "View all",
                 ngo_finance_title: "Financial Transparency Ledger",
                 ngo_impact_title: "Real-World Tangible Impact",
                 ngo_reviews_title: "Community Reviews & Ratings",
@@ -243,6 +361,69 @@
             renderApp();
             showToast(lang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English', 'info');
         }
+
+        function updateThemeToggle() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const button = document.getElementById('theme-toggle');
+            const icon = document.getElementById('theme-toggle-icon');
+            const label = isDark
+                ? (currentLang === 'es' ? 'Activar modo claro' : 'Enable light mode')
+                : (currentLang === 'es' ? 'Activar modo oscuro' : 'Enable dark mode');
+
+            button.setAttribute('aria-pressed', String(isDark));
+            button.setAttribute('aria-label', label);
+            button.title = label;
+            icon.classList.toggle('fa-sun', isDark);
+            icon.classList.toggle('fa-moon', !isDark);
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('zuliov-theme', isDark ? 'dark' : 'light');
+            updateThemeToggle();
+        }
+
+        function toggleSimulationController(expanded) {
+            const panel = document.getElementById('sim-controller-panel');
+            const launcher = document.getElementById('sim-controller-launcher');
+
+            panel.classList.toggle('hidden', !expanded);
+            launcher.classList.toggle('hidden', expanded);
+            launcher.classList.toggle('flex', !expanded);
+            launcher.setAttribute('aria-expanded', String(expanded));
+            document.getElementById(expanded ? 'sim-controller-close' : 'sim-controller-launcher').focus();
+        }
+
+        function toggleNGOMissionDetails() {
+            const button = document.getElementById('ngo-mission-toggle');
+            const content = document.getElementById('ngo-mission-content');
+            const expanded = button.getAttribute('aria-expanded') !== 'true';
+
+            button.setAttribute('aria-expanded', String(expanded));
+            content.setAttribute('aria-hidden', String(!expanded));
+            content.style.maxHeight = expanded ? `${content.scrollHeight}px` : '0px';
+            content.classList.toggle('opacity-0', !expanded);
+            content.classList.toggle('opacity-100', expanded);
+            document.getElementById('ngo-mission-toggle-label').textContent =
+                t(expanded ? 'ngo_mission_toggle_close' : 'ngo_mission_toggle');
+            document.getElementById('ngo-mission-chevron').classList.toggle('rotate-180', expanded);
+        }
+
+        function toggleNGOLeadershipDetails() {
+            const button = document.getElementById('ngo-leadership-toggle');
+            const content = document.getElementById('ngo-leadership-content');
+            const expanded = button.getAttribute('aria-expanded') !== 'true';
+
+            button.setAttribute('aria-expanded', String(expanded));
+            content.setAttribute('aria-hidden', String(!expanded));
+            content.style.maxHeight = expanded ? `${content.scrollHeight}px` : '0px';
+            content.classList.toggle('opacity-0', !expanded);
+            content.classList.toggle('opacity-100', expanded);
+            document.getElementById('ngo-leadership-toggle-label').textContent =
+                t(expanded ? 'ngo_leadership_toggle_close' : 'ngo_leadership_toggle');
+            document.getElementById('ngo-leadership-chevron').classList.toggle('rotate-180', expanded);
+        }
+
     </script>
 
     <script>
@@ -626,9 +807,6 @@
                     <button onclick="navigateTo('ngo-profile')" class="nav-link font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 text-slate-600 hover:text-primary-600" id="nav-ngoProfile">
                         <i class="fa-solid fa-building-ngo text-xs"></i> <span id="nav-ngoProfile-text">Perfil ONG Verificada</span>
                     </button>
-                    <button onclick="navigateTo('profile')" class="nav-link text-primary-600 font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5" id="nav-profile">
-                        <i class="fa-solid fa-user-shield text-xs"></i> <span id="nav-profile-text">Mi Perfil</span>
-                    </button>
                 </nav>
 
                 <!-- Language Switcher & User Profile Menu -->
@@ -639,6 +817,9 @@
                         <button onclick="setLanguage('es')" id="btn-lang-es" class="px-2.5 py-1 rounded-md transition-all">ES</button>
                         <button onclick="setLanguage('en')" id="btn-lang-en" class="px-2.5 py-1 rounded-md transition-all">EN</button>
                     </div>
+                    <button onclick="toggleDarkMode()" id="theme-toggle" type="button" aria-pressed="false" aria-label="Activar modo oscuro" title="Activar modo oscuro" class="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 transition-all">
+                        <i id="theme-toggle-icon" class="fa-solid fa-moon"></i>
+                    </button>
 
                     <!-- Notification Drawer Button -->
                     <button onclick="openNotificationDrawer()" class="relative p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 rounded-lg transition-all" title="Notifications">
@@ -694,14 +875,19 @@
     <main id="app-canvas" class="flex-grow">
     </main>
 
-    <div class="fixed bottom-6 left-6 z-40 max-w-xs sm:max-w-sm">
-        <div class="bg-slate-900 text-white rounded-2xl shadow-floating border border-slate-800 p-4 backdrop-blur-glass">
+    <div class="fixed bottom-6 left-6 z-40 max-w-xs sm:max-w-sm" id="sim-controller">
+        <div class="hidden bg-slate-900 text-white rounded-2xl shadow-floating border border-slate-800 p-4 backdrop-blur-glass" id="sim-controller-panel">
             <div class="flex items-center justify-between mb-2 border-b border-slate-800 pb-2">
                 <div class="flex items-center space-x-2">
                     <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <h4 class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300" id="sim-title">Controlador de Simulación</h4>
                 </div>
-                <span class="text-[9px] font-mono bg-slate-800 px-2 py-0.5 rounded text-slate-400 border border-slate-700">ZULIOV Sandbox</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-[9px] font-mono bg-slate-800 px-2 py-0.5 rounded text-slate-400 border border-slate-700">ZULIOV Sandbox</span>
+                    <button onclick="toggleSimulationController(false)" id="sim-controller-close" aria-label="Minimizar / Minimize simulation controller" title="Minimizar / Minimize" aria-controls="sim-controller-panel" aria-expanded="false" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                    </button>
+                </div>
             </div>
             
             <p class="text-[11px] text-slate-400 mb-3 leading-relaxed" id="sim-desc">
@@ -726,6 +912,9 @@
                 </button>
             </div>
         </div>
+        <button onclick="toggleSimulationController(true)" id="sim-controller-launcher" aria-label="Mostrar / Show simulation controller" title="Mostrar / Show simulation controller" aria-controls="sim-controller-panel" aria-expanded="false" class="flex h-12 w-12 rounded-full bg-slate-900 text-white shadow-floating border border-slate-700 hover:bg-slate-800 transition-colors items-center justify-center">
+            <i class="fa-solid fa-sliders text-base"></i>
+        </button>
     </div>
 
     <!-- Modals Container Injection Target -->
@@ -857,6 +1046,7 @@
 
             document.getElementById('header-name').textContent = state.currentUser.name;
             document.getElementById('header-role').textContent = state.currentUser.role;
+            updateThemeToggle();
             
             const btnEs = document.getElementById('btn-lang-es');
             const btnEn = document.getElementById('btn-lang-en');
@@ -871,7 +1061,6 @@
             document.getElementById('nav-howItWorks').textContent = t('nav_howItWorks');
             document.getElementById('nav-browse').textContent = t('nav_browse');
             document.getElementById('nav-ngoProfile-text').textContent = t('nav_ngoProfile');
-            document.getElementById('nav-profile-text').textContent = t('nav_profile');
             document.getElementById('sim-title').textContent = t('sim_controller');
             document.getElementById('sim-desc').textContent = t('sim_desc');
             document.getElementById('sim-donor-label').textContent = t('sim_donor_btn');
@@ -884,8 +1073,6 @@
             
             if (currentScreen === 'ngo-profile') {
                 document.getElementById('nav-ngoProfile').classList.add('text-primary-600');
-            } else if (currentScreen === 'profile') {
-                document.getElementById('nav-profile').classList.add('text-primary-600');
             } else if (currentScreen === 'browse') {
                 document.getElementById('nav-browse').classList.add('text-primary-600');
             } else if (currentScreen === 'landing') {
@@ -1038,145 +1225,162 @@
                                     ${ngo.tagline}
                                 </p>
 
-                                <!-- Transparency Score & Ratings Bar -->
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                                    <div class="bg-slate-50 border border-slate-200/80 p-3.5 rounded-2xl flex items-center space-x-3">
-                                        <div class="h-9 w-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                            <i class="fa-solid fa-shield-halved"></i>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] font-mono text-slate-400 uppercase font-bold">${t('ngo_transparency_score')}</span>
-                                            <span class="text-base font-black font-mono text-slate-900">${ngo.transparencyScore}/100</span>
-                                        </div>
+                                <!-- CONTACT & LOCATION -->
+                                <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-6">
+                                    <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                                        <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_contact_title')}</h2>
+                                        <span class="text-xs font-mono text-emerald-600 font-bold"><i class="fa-solid fa-location-dot"></i> Verified Headquarters</span>
                                     </div>
-                                    <div class="bg-slate-50 border border-slate-200/80 p-3.5 rounded-2xl flex items-center space-x-3">
-                                        <div class="h-9 w-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                            <i class="fa-solid fa-star"></i>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                        <div class="space-y-1">
+                                            <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Headquarters</span>
+                                            <p class="text-xs font-bold text-slate-800">CleanWater Tower, Kilimani</p>
+                                            <p class="text-xs text-slate-500">Nairobi, Kenya</p>
                                         </div>
-                                        <div>
-                                            <span class="block text-[10px] font-mono text-slate-400 uppercase font-bold">${t('ngo_avg_rating')}</span>
-                                            <span class="text-base font-black font-mono text-slate-900">${ngo.averageRating} ★ <span class="text-[10px] text-slate-400 font-normal">(${ngo.reviewsCount})</span></span>
+                                        <div class="space-y-1">
+                                            <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Email Contact</span>
+                                            <p class="text-xs font-bold text-slate-800">info@cleanwaterintl.org</p>
+                                            <p class="text-xs text-slate-500">Encrypted Zuliov Relay</p>
                                         </div>
-                                    </div>
-                                    <div class="bg-slate-50 border border-slate-200/80 p-3.5 rounded-2xl flex items-center space-x-3">
-                                        <div class="h-9 w-9 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                            <i class="fa-solid fa-list-check"></i>
+                                        <div class="space-y-1">
+                                            <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Phone Hotline</span>
+                                            <p class="text-xs font-bold text-slate-800">+254 (0) 20 800 9000</p>
+                                            <p class="text-xs text-slate-500">Mon - Fri, 08:00 - 18:00 EAT</p>
                                         </div>
-                                        <div>
-                                            <span class="block text-[10px] font-mono text-slate-400 uppercase font-bold">Active Projects</span>
-                                            <span class="text-base font-black font-mono text-slate-900">${ngo.statistics.activeProjects} Active</span>
-                                        </div>
-                                    </div>
-                                    <div class="bg-slate-50 border border-slate-200/80 p-3.5 rounded-2xl flex items-center space-x-3">
-                                        <div class="h-9 w-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                            <i class="fa-solid fa-heart-circle-check"></i>
-                                        </div>
-                                        <div>
-                                            <span class="block text-[10px] font-mono text-slate-400 uppercase font-bold">Total Donors</span>
-                                            <span class="text-base font-black font-mono text-slate-900">${ngo.statistics.totalDonors.toLocaleString()}</span>
+                                        <div class="space-y-1">
+                                            <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Social Channels</span>
+                                            <div class="flex items-center space-x-3 text-slate-500 text-base pt-1">
+                                                <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-x-twitter"></i></a>
+                                                <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-linkedin"></i></a>
+                                                <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-facebook"></i></a>
+                                                <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-instagram"></i></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
+                                <!-- MISSION, VISION, HISTORY, AREAS OF WORK -->
+                                <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left">
+                                    <h2 class="w-full">
+                                        <button type="button" id="ngo-mission-toggle" onclick="toggleNGOMissionDetails()" aria-expanded="false" aria-controls="ngo-mission-content" class="w-full border-b border-slate-200 pb-3 flex items-center justify-between gap-4 text-left">
+                                            <span class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_mission_title')}</span>
+                                            <span class="flex shrink-0 items-center gap-2 text-xs font-mono text-slate-500">
+                                                <span id="ngo-mission-toggle-label">${t('ngo_mission_toggle')}</span>
+                                                <i id="ngo-mission-chevron" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                                            </span>
+                                        </button>
+                                    </h2>
 
-                    </div>
-
-                    <!-- LEADERSHIP SECTION -->
-                    <div class="space-y-4 text-left">
-                        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                            <div>
-                                <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_leadership_title')}</h2>
-                                <p class="text-xs text-slate-500">${t('ngo_leadership_sub')}</p>
-                            </div>
-                            <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-600 bg-primary-50 px-2.5 py-1 rounded-md border border-primary-100">
-                                <i class="fa-solid fa-id-card mr-1"></i> Verified Identities
-                            </span>
-                        </div>
-
-                        ${isEmp ? renderEmptyState("No Leadership Profiles Published") : `
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                ${ngo.leadership.map(leader => `
-                                    <div onclick="openLeaderModal('${leader.id}')" class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-subtle hover:shadow-card hover:border-primary-300 transition-all cursor-pointer group flex flex-col justify-between">
-                                        <div class="space-y-4">
-                                            <div class="flex items-center space-x-4">
-                                                <div class="relative h-16 w-16 rounded-full overflow-hidden ring-2 ring-slate-100 flex-shrink-0">
-                                                    <img src="${leader.photo}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                                </div>
-                                                <div class="space-y-0.5">
-                                                    <div class="flex items-center space-x-1.5">
-                                                        <h3 class="text-sm font-bold text-slate-900 group-hover:text-primary-600 transition-colors">${leader.name}</h3>
-                                                        <i class="fa-solid fa-circle-check text-emerald-500 text-xs" title="Verified Identity"></i>
+                                    <div id="ngo-mission-content" aria-hidden="true" class="max-h-0 overflow-hidden opacity-0 transition-[max-height,opacity] duration-300 ease-in-out">
+                                        <div class="space-y-6 pt-6">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-2">
+                                                    <div class="flex items-center space-x-2 text-primary-600 font-bold text-xs font-mono uppercase tracking-wider">
+                                                        <i class="fa-solid fa-bullseye text-sm"></i> <span>Mission</span>
                                                     </div>
-                                                    <p class="text-xs text-slate-500 font-mono">${leader.position}</p>
-                                                    <span class="inline-block text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded">${leader.yearsInOrg} in organization</span>
+                                                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                                                        ${ngo.mission}
+                                                    </p>
+                                                </div>
+
+                                                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-2">
+                                                    <div class="flex items-center space-x-2 text-indigo-600 font-bold text-xs font-mono uppercase tracking-wider">
+                                                        <i class="fa-solid fa-eye text-sm"></i> <span>Vision</span>
+                                                    </div>
+                                                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                                                        ${ngo.vision}
+                                                    </p>
                                                 </div>
                                             </div>
 
-                                            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                                                ${leader.bio}
-                                            </p>
-                                        </div>
+                                            <div class="space-y-2">
+                                                <h4 class="text-xs font-bold text-slate-900 font-mono uppercase tracking-wider">History & Foundation</h4>
+                                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                                    ${ngo.history}
+                                                </p>
+                                            </div>
 
-                                        <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                                            <span class="text-primary-600 font-semibold text-[11px] group-hover:underline flex items-center gap-1">
-                                                View Leadership Profile <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                                            </span>
-                                            <a href="${leader.linkedinUrl}" onclick="event.stopPropagation()" target="_blank" class="text-slate-400 hover:text-primary-600">
-                                                <i class="fa-brands fa-linkedin text-base"></i>
-                                            </a>
+                                            <div class="space-y-3 pt-2">
+                                                <h4 class="text-xs font-bold text-slate-900 font-mono uppercase tracking-wider">Key Operational Focus Areas</h4>
+                                                <div class="flex flex-wrap gap-2">
+                                                    ${ngo.areasOfWork.map(area => `
+                                                        <span class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-primary-50 text-primary-700 border border-primary-100 flex items-center gap-1.5">
+                                                            <i class="fa-solid fa-check text-primary-500 text-xs"></i> ${area}
+                                                        </span>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                `).join('')}
-                            </div>
-                        `}
-                    </div>
-
-                    <!-- MISSION, VISION, HISTORY, AREAS OF WORK -->
-                    <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-6">
-                        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                            <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_mission_title')}</h2>
-                            <span class="text-xs font-mono text-slate-400">Core Organizational Pillars</span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-2">
-                                <div class="flex items-center space-x-2 text-primary-600 font-bold text-xs font-mono uppercase tracking-wider">
-                                    <i class="fa-solid fa-bullseye text-sm"></i> <span>Mission</span>
                                 </div>
-                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                    ${ngo.mission}
-                                </p>
-                            </div>
 
-                            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-2">
-                                <div class="flex items-center space-x-2 text-indigo-600 font-bold text-xs font-mono uppercase tracking-wider">
-                                    <i class="fa-solid fa-eye text-sm"></i> <span>Vision</span>
+                                <!-- LEADERSHIP SECTION -->
+                                <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-4">
+                                    <h2>
+                                        <button type="button" id="ngo-leadership-toggle" onclick="toggleNGOLeadershipDetails()" aria-expanded="false" aria-controls="ngo-leadership-content" class="w-full flex items-center justify-between gap-4 border-b border-slate-200 pb-3 text-left">
+                                            <span>
+                                                <span class="block text-xl font-black text-slate-900 tracking-tight">${t('ngo_leadership_title')}</span>
+                                                <span class="block text-xs text-slate-500">${t('ngo_leadership_sub')}</span>
+                                            </span>
+                                            <span class="flex shrink-0 flex-col items-end gap-2">
+                                                <span class="flex items-center gap-2 text-xs font-mono text-slate-500">
+                                                    <span id="ngo-leadership-toggle-label">${t('ngo_leadership_toggle')}</span>
+                                                    <i id="ngo-leadership-chevron" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                                                </span>
+                                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-600 bg-primary-50 px-2.5 py-1 rounded-md border border-primary-100">
+                                                    <i class="fa-solid fa-id-card mr-1"></i> Verified Identities
+                                                </span>
+                                            </span>
+                                        </button>
+                                    </h2>
+
+                                    <div id="ngo-leadership-content" aria-hidden="true" class="max-h-0 overflow-hidden opacity-0 transition-[max-height,opacity] duration-300 ease-in-out">
+                                        <div class="pt-1">
+                                            ${isEmp ? renderEmptyState("No Leadership Profiles Published") : `
+                                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                                    ${ngo.leadership.map(leader => `
+                                                        <div onclick="openLeaderModal('${leader.id}')" class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-subtle hover:shadow-card hover:border-primary-300 transition-all cursor-pointer group flex flex-col justify-between">
+                                                            <div class="space-y-4">
+                                                                <div class="flex items-center space-x-4">
+                                                                    <div class="relative h-16 w-16 rounded-full overflow-hidden ring-2 ring-slate-100 flex-shrink-0">
+                                                                        <img src="${leader.photo}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                                                    </div>
+                                                                    <div class="space-y-0.5">
+                                                                        <div class="flex items-center space-x-1.5">
+                                                                            <h3 class="text-sm font-bold text-slate-900 group-hover:text-primary-600 transition-colors">${leader.name}</h3>
+                                                                            <i class="fa-solid fa-circle-check text-emerald-500 text-xs" title="Verified Identity"></i>
+                                                                        </div>
+                                                                        <p class="text-xs text-slate-500 font-mono">${leader.position}</p>
+                                                                        <span class="inline-block text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded">${leader.yearsInOrg} in organization</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                                                                    ${leader.bio}
+                                                                </p>
+                                                            </div>
+
+                                                            <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                                                                <span class="text-primary-600 font-semibold text-[11px] group-hover:underline flex items-center gap-1">
+                                                                    View Leadership Profile <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                                                </span>
+                                                                <a href="${leader.linkedinUrl}" onclick="event.stopPropagation()" target="_blank" class="text-slate-400 hover:text-primary-600">
+                                                                    <i class="fa-brands fa-linkedin text-base"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    `).join('')}
+                                                </div>
+                                            `}
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                    ${ngo.vision}
-                                </p>
+
                             </div>
+
                         </div>
 
-                        <div class="space-y-2">
-                            <h4 class="text-xs font-bold text-slate-900 font-mono uppercase tracking-wider">History & Foundation</h4>
-                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                                ${ngo.history}
-                            </p>
-                        </div>
-
-                        <div class="space-y-3 pt-2">
-                            <h4 class="text-xs font-bold text-slate-900 font-mono uppercase tracking-wider">Key Operational Focus Areas</h4>
-                            <div class="flex flex-wrap gap-2">
-                                ${ngo.areasOfWork.map(area => `
-                                    <span class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-primary-50 text-primary-700 border border-primary-100 flex items-center gap-1.5">
-                                        <i class="fa-solid fa-check text-primary-500 text-xs"></i> ${area}
-                                    </span>
-                                `).join('')}
-                            </div>
-                        </div>
                     </div>
 
                     <!-- STATISTICS -->
@@ -1268,48 +1472,57 @@
                         `}
                     </div>
 
-                    <!-- PROJECT UPDATES TIMELINE -->
+                    <!-- FIELD UPDATES FEED -->
                     <div class="space-y-4 text-left">
                         <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
                             <div>
                                 <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_updates_title')}</h2>
                                 <p class="text-xs text-slate-500">Live verified field logs and milestones</p>
                             </div>
+                            ${isEmp ? '' : `
+                                <button onclick="openFieldUpdatesModal()" class="text-xs font-semibold text-primary-600 hover:underline">
+                                    ${t('ngo_updates_view_all')}
+                                </button>
+                            `}
                         </div>
 
                         ${isEmp ? renderEmptyState("No Field Updates Logged Yet") : `
-                            <div class="space-y-6 relative before:absolute before:inset-0 before:left-6 before:w-0.5 before:bg-slate-200/80">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 ${ngo.updates.map(upd => `
-                                    <div class="relative pl-12 space-y-3">
-                                        <!-- Timeline Bullet -->
-                                        <div class="absolute left-4 top-1.5 -translate-x-1/2 h-5 w-5 rounded-full ring-4 ring-slate-50 bg-primary-600 border-2 border-white flex items-center justify-center text-[9px] text-white">
-                                            <i class="fa-solid fa-check"></i>
-                                        </div>
-
-                                        <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-subtle space-y-3">
-                                            <div class="flex items-center justify-between flex-wrap gap-2">
-                                                <div class="flex items-center space-x-2.5">
-                                                    <img src="${upd.authorPhoto}" class="h-7 w-7 rounded-full object-cover">
-                                                    <div>
-                                                        <span class="block text-xs font-bold text-slate-900 leading-none">${upd.author}</span>
-                                                        <span class="block text-[10px] text-slate-400 font-mono mt-0.5">${upd.date}</span>
-                                                    </div>
-                                                </div>
-                                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                                    ${upd.category}
-                                                </span>
+                                    <article class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-subtle dark:border-slate-800 dark:bg-slate-900">
+                                        <div class="flex min-w-0 items-center gap-3 p-4">
+                                            <img src="${upd.authorPhoto}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700">
+                                            <div class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
+                                                <span class="truncate text-xs font-bold text-slate-900 dark:text-slate-100">${upd.author}</span>
+                                                <span class="hidden text-slate-300 sm:inline">·</span>
+                                                <span class="text-[10px] font-mono text-slate-400">${upd.date}</span>
                                             </div>
-
-                                            <h3 class="text-sm font-bold text-slate-900">${upd.title}</h3>
-                                            <p class="text-xs text-slate-600 leading-relaxed">${upd.content}</p>
+                                            <span class="shrink-0 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-1 text-[10px] font-mono font-bold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-300">
+                                                    ${upd.category}
+                                            </span>
+                                        </div>
 
                                             ${upd.mediaUrl ? `
-                                                <div class="rounded-xl overflow-hidden max-h-64 border border-slate-100">
-                                                    <img src="${upd.mediaUrl}" class="w-full h-full object-cover">
+                                                <div class="mx-auto aspect-[4/5] max-h-60 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                                    <img src="${upd.mediaUrl}" alt="${upd.title}" class="h-full w-full object-cover">
                                                 </div>
                                             ` : ''}
+
+                                        <div class="space-y-2 p-4">
+                                            <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">${upd.title}</h3>
+                                            <p class="line-clamp-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">${upd.content}</p>
+                                            <div class="flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-400 dark:border-slate-800">
+                                                <div class="flex items-center gap-4" aria-hidden="true">
+                                                    <i class="fa-regular fa-heart"></i>
+                                                    <i class="fa-regular fa-comment"></i>
+                                                    <i class="fa-solid fa-share-nodes"></i>
+                                                </div>
+                                                <span class="flex items-center gap-1.5 font-mono text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                                    <i class="fa-solid fa-shield-check"></i> Audited update
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </article>
                                 `).join('')}
                             </div>
                         `}
@@ -1389,41 +1602,6 @@
                                 `).join('')}
                             </div>
                         `}
-                    </div>
-
-                    <!-- CONTACT & LOCATION -->
-                    <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-6">
-                        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                            <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_contact_title')}</h2>
-                            <span class="text-xs font-mono text-emerald-600 font-bold"><i class="fa-solid fa-location-dot"></i> Verified Headquarters</span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Headquarters</span>
-                                <p class="text-xs font-bold text-slate-800">CleanWater Tower, Kilimani</p>
-                                <p class="text-xs text-slate-500">Nairobi, Kenya</p>
-                            </div>
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Email Contact</span>
-                                <p class="text-xs font-bold text-slate-800">info@cleanwaterintl.org</p>
-                                <p class="text-xs text-slate-500">Encrypted Zuliov Relay</p>
-                            </div>
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Phone Hotline</span>
-                                <p class="text-xs font-bold text-slate-800">+254 (0) 20 800 9000</p>
-                                <p class="text-xs text-slate-500">Mon - Fri, 08:00 - 18:00 EAT</p>
-                            </div>
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Social Channels</span>
-                                <div class="flex items-center space-x-3 text-slate-500 text-base pt-1">
-                                    <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-x-twitter"></i></a>
-                                    <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-linkedin"></i></a>
-                                    <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-facebook"></i></a>
-                                    <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-instagram"></i></a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
@@ -1654,6 +1832,47 @@
                             </button>
                         </div>
 
+                    </div>
+                </div>
+            `;
+        }
+
+        function openFieldUpdatesModal() {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="field-updates-modal-title">
+                    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-5xl w-full max-h-[90vh] p-6 shadow-floating border border-slate-200 dark:border-slate-800 relative z-10 animate-modal-in text-left flex flex-col">
+                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+                            <div>
+                                <h3 id="field-updates-modal-title" class="text-sm font-bold text-slate-900">${t('ngo_updates_title')}</h3>
+                                <p class="text-[10px] font-mono text-slate-400">${ngoData.updates.length} ${currentLang === 'es' ? 'publicaciones' : 'updates'}</p>
+                            </div>
+                            <button onclick="closeModal()" aria-label="${currentLang === 'es' ? 'Cerrar' : 'Close'}" class="rounded-lg text-slate-400 hover:text-slate-600 p-1">
+                                <i class="fa-solid fa-xmark text-base"></i>
+                            </button>
+                        </div>
+                        <div class="overflow-y-auto pr-1">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                                ${ngoData.updates.map(upd => `
+                                    <article class="overflow-hidden rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900">
+                                        <div class="aspect-square overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                            ${upd.mediaUrl ? `
+                                                <img src="${upd.mediaUrl}" alt="${upd.title}" loading="lazy" class="h-full w-full object-cover">
+                                            ` : `
+                                                <div class="flex h-full items-center justify-center text-slate-400">
+                                                    <i class="fa-regular fa-image text-2xl"></i>
+                                                </div>
+                                            `}
+                                        </div>
+                                        <div class="p-2.5">
+                                            <p class="text-[10px] font-mono text-slate-400">${upd.date}</p>
+                                            <h4 class="mt-1 text-xs font-bold text-slate-900 dark:text-slate-100 line-clamp-2">${upd.title}</h4>
+                                        </div>
+                                    </article>
+                                `).join('')}
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
