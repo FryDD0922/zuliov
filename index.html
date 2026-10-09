@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es" class="h-full bg-slate-50 dark:bg-slate-950">
 <head>
     <meta charset="UTF-8">
@@ -263,6 +263,7 @@
                 sim_desc: "Intercambia roles y prueba los estados de imagen vacía o personalizaciones en tiempo real.",
                 sim_donor_btn: "Sarah (Donante)",
                 sim_ngo_btn: "CleanWater (ONG)",
+                sim_corporate_btn: "Tesla (Sponsor Corporativo)",
                 footer_tagline: "Plataforma Tecnológica de Transparencia Financiera e Inteligencia de Impacto.",
                 ngo_verified_badge: "ONG Verificada Zuliov",
                 ngo_follow: "Seguir",
@@ -317,6 +318,7 @@
                 sim_desc: "Switch roles and test empty photo state or custom banners in real-time.",
                 sim_donor_btn: "Sarah (Donor)",
                 sim_ngo_btn: "CleanWater (NGO)",
+                sim_corporate_btn: "Tesla (Corporate Sponsor)",
                 footer_tagline: "Transparent Non-Profit Financial Infrastructure & Impact Intelligence Platform.",
                 ngo_verified_badge: "Zuliov Verified NGO",
                 ngo_follow: "Follow",
@@ -501,6 +503,7 @@
             statistics: {
                 activeProjects: 8,
                 completedProjects: 42,
+                auditedFunds: 142000,
                 totalDonors: 14250,
                 countriesHelped: 6,
                 communitiesReached: 185000,
@@ -798,6 +801,27 @@
                 totalContributed: 18500,
                 projectsSupported: 5
             },
+
+            commentHistory: [
+                {
+                    id: 'history_comment_1',
+                    updateId: 'upd_1',
+                    project: 'Agua limpia · Kitui #12',
+                    title: 'La bomba solar sumergible llega al emplazamiento de Kitui',
+                    dateTime: '18 ene 2026 · 11:42',
+                    text: 'Me alegra ver que el equipo ya está en Kitui. Gracias por compartir tanto los avances como los comprobantes del proyecto.',
+                    likes: 4
+                },
+                {
+                    id: 'history_comment_2',
+                    updateId: 'upd_2',
+                    project: 'Agua limpia · Kitui #12',
+                    title: 'La perforación alcanza el acuífero a 120 metros',
+                    dateTime: '16 ene 2026 · 16:08',
+                    text: 'Este avance puede hacer una gran diferencia para las familias. Espero con interés los resultados finales del análisis de agua.',
+                    likes: 2
+                }
+            ],
             
             projects: [
                 {
@@ -964,14 +988,18 @@
                 Intercambia roles y prueba los estados de imagen vacía o personalizaciones en tiempo real.
             </p>
 
-            <div class="grid grid-cols-2 gap-2 mb-2">
-                <button onclick="simulateRoleChange('donor')" id="sim-btn-donor" class="flex flex-col items-center justify-center p-2 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center">
+            <div class="grid grid-cols-3 gap-2 mb-2">
+                <button onclick="simulateRoleChange('donor')" id="sim-btn-donor" aria-pressed="true" class="flex flex-col items-center justify-center p-2 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center">
                     <span class="text-xs mb-0.5">👩‍💻</span>
                     <span class="text-[11px] font-bold block" id="sim-donor-label">Sarah (Donante)</span>
                 </button>
-                <button onclick="simulateRoleChange('ngo')" id="sim-btn-ngo" class="flex flex-col items-center justify-center p-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center">
+                <button onclick="simulateRoleChange('ngo')" id="sim-btn-ngo" aria-pressed="false" class="flex flex-col items-center justify-center p-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center">
                     <span class="text-xs mb-0.5">👷‍♂️</span>
                     <span class="text-[11px] font-bold block" id="sim-ngo-label">CleanWater (ONG)</span>
+                </button>
+                <button onclick="simulateRoleChange('corporate')" id="sim-btn-corporate" aria-pressed="false" class="flex flex-col items-center justify-center p-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center">
+                    <span class="text-xs mb-0.5">⚡</span>
+                    <span class="text-[11px] font-bold block" id="sim-corporate-label">Tesla (Sponsor Corporativo)</span>
                 </button>
             </div>
 
@@ -1036,11 +1064,13 @@
             if (state.currentUser.avatar || state.currentUser.coverImage) {
                 state.currentUser.avatar = null;
                 state.currentUser.coverImage = null;
+                if (state.currentUser.role === 'corporate') state.currentUser.sourceAvatarAvailable = false;
                 showToast("Simulando Perfil con Estados Vacíos", "info");
             } else {
-                state.currentUser.avatar = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400';
+                state.currentUser.avatar = state.currentUser.role === 'corporate' ? null : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400';
                 state.currentUser.coverImage = 'assets/baner';
                 state.currentUser.coverPositionY = 50;
+                if (state.currentUser.role === 'corporate') state.currentUser.sourceAvatarAvailable = true;
                 showToast("Restauradas Imágenes de Perfil", "success");
             }
             renderApp();
@@ -1061,14 +1091,14 @@
         }
 
         function simulateRoleChange(role) {
-            if (role === 'donor') {
-                state.currentUser = {
+            const profiles = {
+                donor: {
                     id: 'sarah_donor_102',
                     name: 'Sarah Miller',
                     role: 'donor',
-                    avatar: state.currentUser.avatar !== null ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400' : null,
-                    coverImage: state.currentUser.coverImage !== null ? 'assets/baner' : null,
-                    coverPositionY: state.currentUser.coverPositionY || 50,
+                    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                    coverImage: 'assets/baner',
+                    coverPositionY: 50,
                     email: 'sarah.miller@zuliov-impact.org',
                     location: 'San Francisco, CA',
                     joinedDate: 'Member since Jan 2024',
@@ -1078,16 +1108,13 @@
                     verifiedInvoicesCount: 14,
                     totalContributed: 18500,
                     projectsSupported: 5
-                };
-                document.getElementById('sim-btn-donor').className = "flex flex-col items-center justify-center p-2 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center";
-                document.getElementById('sim-btn-ngo').className = "flex flex-col items-center justify-center p-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center";
-            } else {
-                state.currentUser = {
+                },
+                ngo: {
                     id: 'marcus_ngo_301',
                     name: 'Marcus Vance',
                     role: 'ngo',
-                    avatar: state.currentUser.avatar !== null ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400' : null,
-                    coverImage: state.currentUser.coverImage !== null ? 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1600' : null,
+                    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                    coverImage: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1600',
                     coverPositionY: 30,
                     email: 'm.vance@cleanwaterintl.org',
                     location: 'Nairobi, Kenya',
@@ -1098,16 +1125,61 @@
                     verifiedInvoicesCount: 48,
                     totalContributed: 142000,
                     projectsSupported: 12
-                };
-                document.getElementById('sim-btn-donor').className = "flex flex-col items-center justify-center p-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white transition-all text-center";
-                document.getElementById('sim-btn-ngo').className = "flex flex-col items-center justify-center p-2 rounded-xl border border-primary-500 bg-primary-600 text-white transition-all text-center";
-            }
+                },
+                corporate: {
+                    id: 'tesla_csr_2026',
+                    name: 'Tesla, Inc.',
+                    role: 'corporate',
+                    avatar: null,
+                    logoUrl: 'https://cdn.simpleicons.org/tesla/E82127',
+                    coverImage: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=2000&q=90',
+                    coverPositionY: 50,
+                    email: 'sustainability@tesla.com',
+                    location: 'Austin, Texas, USA',
+                    joinedDate: 'Corporate Sponsor since 2021',
+                    bio: "Accelerating the world's transition to sustainable energy. Financiando microredes solares comunitarias e infraestructura de agua limpia con energía 100% renovable.",
+                    badges: ['Sponsor ESG Verificado 2026', 'Corporate Impact Partner', '100% Open Ledger Compliant'],
+                    corporateMetrics: [
+                        { label: 'Impact Score Corporativo', value: '8,450', detail: 'Sponsor ESG verificado 2026', color: 'text-primary-600' },
+                        { label: 'Facturas Verificadas', value: '32', detail: '100% conciliadas en Zuliov', color: 'text-emerald-600' },
+                        { label: 'Total Contribuido', value: '$500,000', detail: 'Tesla Impact Fund & Global Clean Water Microgrids', color: 'text-slate-900' },
+                        { label: 'Proyectos Apoyados', value: '8', detail: 'Proyectos solares e hídricos', color: 'text-indigo-600' }
+                    ],
+                    corporateTransactions: [
+                        { title: 'Garissa Solar Aqueduct', detail: 'Transferencia institucional · Factura tesorería Tesla TIF-2026-0048', amount: '$225,000 USD', date: 'Feb 18, 2026', icon: 'fa-solar-panel', iconClasses: 'bg-primary-100 text-primary-700' },
+                        { title: 'Kitui Solar Pump', detail: 'Transferencia institucional · Factura tesorería Tesla TIF-2026-0032', amount: '$175,000 USD', date: 'Jan 30, 2026', icon: 'fa-droplet', iconClasses: 'bg-emerald-100 text-emerald-700' },
+                        { title: 'Tesla Impact Fund · Microredes de agua limpia', detail: 'Desembolso ESG · Factura tesorería Tesla TIF-2025-0196', amount: '$100,000 USD', date: 'Dec 16, 2025', icon: 'fa-bolt', iconClasses: 'bg-rose-100 text-rose-700' }
+                    ]
+                }
+            };
+
+            if (!profiles[role]) return;
+            const previousUser = state.currentUser;
+            const selectedProfile = profiles[role];
+            const avatarAvailable = previousUser.role === 'corporate'
+                ? previousUser.sourceAvatarAvailable
+                : previousUser.avatar !== null;
+            state.currentUser = {
+                ...selectedProfile,
+                avatar: role === 'corporate' ? null : (avatarAvailable ? selectedProfile.avatar : null),
+                ...(role === 'corporate' ? { sourceAvatarAvailable: avatarAvailable } : {}),
+                coverImage: role === 'corporate' || previousUser.coverImage !== null ? selectedProfile.coverImage : null
+            };
+            currentScreen = 'profile';
+            ['donor', 'ngo', 'corporate'].forEach(profileRole => {
+                const button = document.getElementById(`sim-btn-${profileRole}`);
+                const isSelected = profileRole === role;
+                button.className = `flex flex-col items-center justify-center p-2 rounded-xl border ${isSelected ? 'border-primary-500 bg-primary-600 text-white' : 'border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-750 hover:text-white'} transition-all text-center`;
+                button.setAttribute('aria-pressed', String(isSelected));
+            });
             renderApp();
         }
 
         function updateHeaderUI() {
             const container = document.getElementById('header-avatar-container');
-            if (state.currentUser.avatar) {
+            if (state.currentUser.role === 'corporate') {
+                container.innerHTML = `<span class="flex h-full w-full items-center justify-center rounded-full bg-slate-950 p-1.5 ring-2 ring-white"><img src="${state.currentUser.logoUrl}" alt="Tesla logo" class="h-full w-full object-contain"></span>`;
+            } else if (state.currentUser.avatar) {
                 container.innerHTML = `<img src="${state.currentUser.avatar}" class="h-full w-full object-cover">`;
             } else {
                 const initials = state.currentUser.name.split(' ').map(n => n[0]).join('');
@@ -1115,7 +1187,9 @@
             }
 
             document.getElementById('header-name').textContent = state.currentUser.name;
-            document.getElementById('header-role').textContent = state.currentUser.role;
+            document.getElementById('header-role').textContent = state.currentUser.role === 'corporate'
+                ? (currentLang === 'es' ? 'Sponsor Corporativo' : 'Corporate Sponsor')
+                : state.currentUser.role;
             updateThemeToggle();
             
             const btnEs = document.getElementById('btn-lang-es');
@@ -1135,6 +1209,7 @@
             document.getElementById('sim-desc').textContent = t('sim_desc');
             document.getElementById('sim-donor-label').textContent = t('sim_donor_btn');
             document.getElementById('sim-ngo-label').textContent = t('sim_ngo_btn');
+            document.getElementById('sim-corporate-label').textContent = t('sim_corporate_btn');
             document.getElementById('footer-tagline').textContent = t('footer_tagline');
 
             // Update Active Nav Link Style
@@ -1493,7 +1568,7 @@
                     </div>
 
                     <!-- PROJECTS -->
-                    <div class="space-y-4 text-left">
+                    <div id="ngo-active-projects" class="space-y-4 text-left scroll-mt-24">
                         <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
                             <div>
                                 <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_projects_title')}</h2>
@@ -1767,9 +1842,26 @@
                                 </span>
                             </div>
 
-                            <div class="space-y-1">
-                                <h3 class="text-xl font-black text-slate-900">${leader.name}</h3>
-                                <p class="text-xs font-mono text-primary-600 font-semibold">${leader.position}</p>
+                            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                <div class="space-y-1">
+                                    <h3 class="text-xl font-black text-slate-900">${leader.name}</h3>
+                                    <p class="text-xs font-mono text-primary-600 font-semibold">${leader.position}</p>
+                                </div>
+                                ${leader.id === 'lead_1' ? `
+                                    <button type="button" onclick="openNGOInfoModal()" aria-haspopup="dialog" aria-label="Ver información de CleanWater International" class="group flex w-full max-w-sm items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:w-auto">
+                                        <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-100 bg-white">
+                                            <img src="${ngoData.logoUrl}" alt="Logo de CleanWater International" class="h-full w-full object-cover">
+                                        </span>
+                                        <span class="min-w-0 flex-1">
+                                            <span class="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">ONG vinculada</span>
+                                            <span class="block truncate text-sm font-bold text-slate-900">${ngoData.name}</span>
+                                            <span class="mt-0.5 flex items-center gap-1 text-[10px] font-semibold text-emerald-600">
+                                                <i class="fa-solid fa-circle-check"></i> Verificada en Zuliov
+                                            </span>
+                                        </span>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 transition-colors group-hover:text-primary-600"></i>
+                                    </button>
+                                ` : ''}
                             </div>
 
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 text-xs font-mono">
@@ -2113,6 +2205,11 @@
 
             comment.likedByCurrentUser = !comment.likedByCurrentUser;
             comment.likes += comment.likedByCurrentUser ? 1 : -1;
+            const historyEntry = state.commentHistory.find(entry => entry.updateId === updateId && entry.commentId === commentId);
+            if (historyEntry) {
+                historyEntry.likes = comment.likes;
+                renderProfileCommentHistory();
+            }
             renderFieldArticleComments(update);
         }
 
@@ -2128,7 +2225,7 @@
                 return;
             }
 
-            update.comments.unshift({
+            const newComment = {
                 author: state.currentUser.name,
                 time: 'Ahora',
                 avatar: state.currentUser.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
@@ -2136,9 +2233,21 @@
                 id: `comment_${Date.now()}`,
                 likes: 0,
                 likedByCurrentUser: false
+            };
+            update.comments.unshift(newComment);
+            state.commentHistory.unshift({
+                id: newComment.id,
+                updateId: update.id,
+                commentId: newComment.id,
+                project: update.projectLabel,
+                title: update.title,
+                dateTime: new Date().toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' }),
+                text: newComment.text,
+                likes: newComment.likes
             });
             input.value = '';
             renderFieldArticleComments(update);
+            renderProfileCommentHistory();
             status.textContent = 'Comentario publicado.';
         }
 
@@ -2172,6 +2281,17 @@
         function renderProfilePage(canvas) {
             const user = state.currentUser;
             const initials = user.name.split(' ').map(n => n[0]).join('');
+            const isCorporate = user.role === 'corporate';
+            const profileStats = isCorporate ? user.corporateMetrics : [
+                { label: 'Impact Score', value: user.impactScore, detail: 'Top 5% Conscious Donor', color: 'text-primary-600' },
+                { label: 'Verified Invoices', value: user.verifiedInvoicesCount, detail: '100% Cryptographically Matched', color: 'text-emerald-600' },
+                { label: 'Total Contributed', value: formatCurrency(user.totalContributed), detail: 'Direct Field Capital', color: 'text-slate-900' },
+                { label: 'Projects Supported', value: user.projectsSupported, detail: 'Active & Completed', color: 'text-indigo-600' }
+            ];
+            const activityEntries = isCorporate ? user.corporateTransactions : [
+                { title: 'Kitui Clean Water Well #12', detail: 'Matched to Grundfos Pump Invoice #INV-8821', amount: '$150.00 USD', date: 'Jan 14, 2026', icon: 'fa-droplet', iconClasses: 'bg-emerald-100 text-emerald-700' },
+                { title: 'Solar Aqueduct Extension Garissa', detail: 'Matched to SolarTech Array Receipt #902', amount: '$500.00 USD', date: 'Dec 22, 2025', icon: 'fa-solar-panel', iconClasses: 'bg-primary-100 text-primary-700' }
+            ];
 
             let coverContentHtml = '';
             if (user.coverImage) {
@@ -2193,7 +2313,13 @@
             }
 
             let avatarContentHtml = '';
-            if (user.avatar) {
+            if (isCorporate) {
+                avatarContentHtml = `
+                    <div class="flex h-full w-full items-center justify-center rounded-full bg-slate-950 p-6 shadow-inner">
+                        <img src="${user.logoUrl}" alt="Logo de Tesla, Inc." class="h-full w-full object-contain">
+                    </div>
+                `;
+            } else if (user.avatar) {
                 avatarContentHtml = `
                     <img id="profile-avatar-img" src="${user.avatar}" class="h-full w-full object-cover rounded-full">
                 `;
@@ -2263,8 +2389,8 @@
                                 <div class="space-y-1">
                                     <div class="flex items-center space-x-2">
                                         <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">${user.name}</h1>
-                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                            <i class="fa-solid fa-circle-check text-emerald-500"></i> AUDITED
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${isCorporate ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
+                                            <i class="fa-solid ${isCorporate ? 'fa-shield-halved text-indigo-500' : 'fa-circle-check text-emerald-500'}"></i> ${isCorporate ? 'SPONSOR ESG VERIFICADO 2026' : 'AUDITED'}
                                         </span>
                                     </div>
                                     <p class="text-xs sm:text-sm text-slate-500 font-mono flex items-center gap-3">
@@ -2285,6 +2411,20 @@
                                         </span>
                                     `).join('')}
                                 </div>
+
+                                ${isCorporate ? `
+                                    <button type="button" onclick="navigateTo('ngo-profile')" class="group mt-2 flex w-full max-w-sm items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                        <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-100 bg-white">
+                                            <img src="${ngoData.logoUrl}" alt="Logo de CleanWater International" class="h-full w-full object-cover">
+                                        </span>
+                                        <span class="min-w-0 flex-1">
+                                            <span class="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Alianza corporativa verificada</span>
+                                            <span class="block truncate text-sm font-bold text-slate-900">CleanWater International</span>
+                                            <span class="mt-0.5 block text-[10px] font-semibold text-primary-600">Ver proyectos de impacto compartido</span>
+                                        </span>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 transition-colors group-hover:text-primary-600"></i>
+                                    </button>
+                                ` : ''}
                             </div>
 
                         </div>
@@ -2292,75 +2432,108 @@
 
                     <!-- USER IMPACT STATS GRID -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
-                        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-subtle space-y-2">
-                            <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">Impact Score</span>
-                            <div class="text-2xl font-black font-mono text-primary-600">${user.impactScore}</div>
-                            <span class="text-[10px] text-slate-500 block">Top 5% Conscious Donor</span>
-                        </div>
-                        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-subtle space-y-2">
-                            <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">Verified Invoices</span>
-                            <div class="text-2xl font-black font-mono text-emerald-600">${user.verifiedInvoicesCount}</div>
-                            <span class="text-[10px] text-slate-500 block">100% Cryptographically Matched</span>
-                        </div>
-                        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-subtle space-y-2">
-                            <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">Total Contributed</span>
-                            <div class="text-2xl font-black font-mono text-slate-900">${formatCurrency(user.totalContributed)}</div>
-                            <span class="text-[10px] text-slate-500 block">Direct Field Capital</span>
-                        </div>
-                        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-subtle space-y-2">
-                            <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">Projects Supported</span>
-                            <div class="text-2xl font-black font-mono text-indigo-600">${user.projectsSupported}</div>
-                            <span class="text-[10px] text-slate-500 block">Active & Completed</span>
-                        </div>
+                        ${profileStats.map(metric => `
+                            <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-subtle space-y-2">
+                                <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">${metric.label}</span>
+                                <div class="break-words text-xl sm:text-2xl font-black font-mono ${metric.color}">${metric.value}</div>
+                                <span class="text-[10px] text-slate-500 block">${metric.detail}</span>
+                            </div>
+                        `).join('')}
                     </div>
 
                     <!-- AUDITED LEDGER RECENT ACTIVITY -->
                     <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-6">
                         <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
                             <div>
-                                <h3 class="text-lg font-black text-slate-900 tracking-tight">Recent Audited Activity</h3>
-                                <p class="text-xs text-slate-500">Your direct contribution history verified by Zuliov Automated Treasury</p>
+                                <h3 class="text-lg font-black text-slate-900 tracking-tight">${isCorporate ? 'Historial de Transacciones Institucionales' : 'Recent Audited Activity'}</h3>
+                                <p class="text-xs text-slate-500">${isCorporate ? 'Aportes corporativos y desembolsos ESG verificados en el libro de Zuliov' : 'Your direct contribution history verified by Zuliov Automated Treasury'}</p>
                             </div>
                             <span class="text-xs font-mono font-semibold text-emerald-600"><i class="fa-solid fa-lock mr-1"></i> Immutable Ledger</span>
                         </div>
 
                         <div class="space-y-3">
-                            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                <div class="flex items-center space-x-3">
-                                    <div class="h-10 w-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                        <i class="fa-solid fa-droplet"></i>
+                            ${activityEntries.map(entry => `
+                                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="h-10 w-10 rounded-xl ${entry.iconClasses || (entry.icon === 'fa-droplet' ? 'bg-emerald-100 text-emerald-700' : entry.icon === 'fa-solar-panel' ? 'bg-primary-100 text-primary-700' : 'bg-indigo-100 text-indigo-700')} flex items-center justify-center font-bold text-sm flex-shrink-0">
+                                            <i class="fa-solid ${entry.icon}"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-slate-900">${entry.title}</h4>
+                                            <p class="text-[11px] text-slate-500 font-mono">${entry.detail}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-slate-900">Kitui Clean Water Well #12</h4>
-                                        <p class="text-[11px] text-slate-500 font-mono">Matched to Grundfos Pump Invoice #INV-8821</p>
-                                    </div>
-                                </div>
-                                <div class="text-left sm:text-right font-mono">
-                                    <span class="text-xs font-bold text-slate-900 block">$150.00 USD</span>
-                                    <span class="text-[10px] text-slate-400">Jan 14, 2026</span>
-                                </div>
-                            </div>
-
-                            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                <div class="flex items-center space-x-3">
-                                    <div class="h-10 w-10 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                        <i class="fa-solid fa-solar-panel"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-slate-900">Solar Aqueduct Extension Garissa</h4>
-                                        <p class="text-[11px] text-slate-500 font-mono">Matched to SolarTech Array Receipt #902</p>
+                                    <div class="text-left sm:text-right font-mono">
+                                        <span class="text-xs font-bold text-slate-900 block">${entry.amount}</span>
+                                        <span class="text-[10px] text-slate-400">${entry.date}</span>
                                     </div>
                                 </div>
-                                <div class="text-left sm:text-right font-mono">
-                                    <span class="text-xs font-bold text-slate-900 block">$500.00 USD</span>
-                                    <span class="text-[10px] text-slate-400">Dec 22, 2025</span>
-                                </div>
-                            </div>
+                            `).join('')}
                         </div>
                     </div>
 
+                    ${isCorporate ? '' : `<section aria-labelledby="profile-comment-history-title" class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-5">
+                        <div class="border-b border-slate-200 pb-3">
+                            <h3 id="profile-comment-history-title" class="text-lg font-black text-slate-900 tracking-tight">Historial de Comentarios</h3>
+                            <p class="text-xs text-slate-500">Interacciones y aportes realizados en la bitácora de campo</p>
+                        </div>
+                        <div id="profile-comment-history-list" class="space-y-3"></div>
+                    </section>`}
+
                 </div>
             `;
+            renderProfileCommentHistory();
+        }
+
+        function renderProfileCommentHistory() {
+            const list = document.getElementById('profile-comment-history-list');
+            if (!list) return;
+
+            list.replaceChildren(...state.commentHistory.map(entry => {
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.setAttribute('aria-label', `Abrir artículo comentado: ${entry.title}`);
+                card.className = 'w-full cursor-pointer rounded-xl border border-slate-200/80 bg-slate-50 p-4 text-left transition hover:border-primary-300 hover:bg-white hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-slate-800 dark:bg-slate-800/60 dark:hover:bg-slate-800';
+                card.addEventListener('click', () => openFieldUpdateArticle(entry.updateId));
+
+                const header = document.createElement('div');
+                header.className = 'flex flex-wrap items-start justify-between gap-3';
+
+                const context = document.createElement('div');
+                context.className = 'min-w-0';
+
+                const project = document.createElement('p');
+                project.className = 'text-[10px] font-mono font-bold uppercase text-primary-600 dark:text-primary-300';
+                project.textContent = entry.project;
+
+                const title = document.createElement('h4');
+                title.className = 'mt-1 text-sm font-bold text-slate-900 dark:text-slate-100';
+                title.textContent = entry.title;
+
+                const date = document.createElement('time');
+                date.className = 'shrink-0 text-[10px] font-mono text-slate-400';
+                date.textContent = entry.dateTime;
+
+                const text = document.createElement('p');
+                text.className = 'mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300';
+                text.textContent = entry.text;
+
+                const supports = document.createElement('span');
+                supports.className = 'mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary-700 dark:text-primary-300';
+
+                const thumb = document.createElement('i');
+                thumb.className = 'fa-solid fa-thumbs-up';
+                thumb.setAttribute('aria-hidden', 'true');
+
+                const supportCount = document.createElement('span');
+                supportCount.textContent = `${entry.likes} apoyos`;
+                supports.append(thumb, supportCount);
+
+                context.append(project, title);
+                header.append(context, date);
+                card.append(header, text, supports);
+                return card;
+            }));
         }
     </script>
 
@@ -2465,6 +2638,96 @@
     </script>
 
     <script>
+        function openNGOInfoModal() {
+            const container = document.getElementById('modal-container');
+            const auditedFunds = ngoData.statistics.auditedFunds.toLocaleString('en-US');
+
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4" onclick="closeModal()">
+                    <div role="dialog" aria-modal="true" aria-labelledby="ngo-info-title" class="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-floating animate-modal-in sm:p-8" onclick="event.stopPropagation()">
+                        <div class="mb-6 flex items-start justify-between gap-4 border-b border-slate-100 pb-5">
+                            <div class="flex items-center gap-4">
+                                <img src="${ngoData.logoUrl}" alt="Logo oficial de ${ngoData.name}" class="h-16 w-16 rounded-2xl border border-slate-200 object-cover shadow-subtle">
+                                <div>
+                                    <div class="mb-1 flex flex-wrap items-center gap-2">
+                                        <h2 id="ngo-info-title" class="text-xl font-black tracking-tight text-slate-900 sm:text-2xl">${ngoData.name}</h2>
+                                        <span class="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-mono font-bold text-emerald-700">
+                                            <i class="fa-solid fa-circle-check"></i> VERIFICADA
+                                        </span>
+                                    </div>
+                                    <p class="text-xs font-mono text-slate-500">${ngoData.city}, ${ngoData.country} · Fundada en ${ngoData.foundedYear}</p>
+                                </div>
+                            </div>
+                            <button id="ngo-info-close" type="button" onclick="closeModal()" aria-label="Cerrar información de la ONG" class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                <i class="fa-solid fa-xmark text-lg"></i>
+                            </button>
+                        </div>
+
+                        <div class="space-y-6 text-left">
+                            <section>
+                                <h3 class="mb-2 text-xs font-mono font-bold uppercase tracking-wider text-slate-400">Misión</h3>
+                                <p class="text-sm font-semibold leading-relaxed text-slate-800">Acabar con la pobreza de agua en comunidades rurales del África subsahariana mediante infraestructura de agua potable sostenible, comunitaria y alimentada por energía solar.</p>
+                                <p class="mt-2 text-xs leading-relaxed text-slate-600">CleanWater International desarrolla redes de pozos y acueductos solares con seguimiento financiero abierto en Zuliov. Su trabajo combina acceso al agua, energía limpia y formación de comités comunitarios.</p>
+                            </section>
+
+                            <section aria-label="Estadísticas de impacto" class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                                <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                    <span class="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Proyectos ejecutados</span>
+                                    <span class="mt-1 block text-2xl font-black font-mono text-primary-600">${ngoData.statistics.completedProjects}</span>
+                                    <span class="text-[10px] text-slate-500">Proyectos completados</span>
+                                </div>
+                                <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                    <span class="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Fondos auditados</span>
+                                    <span class="mt-1 block text-2xl font-black font-mono text-emerald-600">$${auditedFunds}</span>
+                                    <span class="text-[10px] text-slate-500">Vouchers reconciliados</span>
+                                </div>
+                                <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                    <span class="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Regiones de impacto</span>
+                                    <span class="mt-1 block text-2xl font-black font-mono text-indigo-600">${ngoData.statistics.countriesHelped} países</span>
+                                    <span class="text-[10px] text-slate-500">África Oriental y subsahariana</span>
+                                </div>
+                            </section>
+
+                            <section class="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4">
+                                <h3 class="mb-3 text-xs font-mono font-bold uppercase tracking-wider text-emerald-800">Transparencia y certificaciones en Zuliov</h3>
+                                <ul class="space-y-2 text-xs text-slate-700">
+                                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-600"></i> ONG e identidad verificadas por Zuliov</li>
+                                    <li class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-emerald-600"></i> Puntuación de transparencia: <strong>${ngoData.transparencyScore}/100</strong></li>
+                                    <li class="flex items-center gap-2"><i class="fa-solid fa-file-circle-check text-emerald-600"></i> Auditoría financiera independiente 2025 · PwC</li>
+                                    <li class="flex items-center gap-2"><i class="fa-solid fa-link text-emerald-600"></i> Libro financiero abierto y registros verificables</li>
+                                </ul>
+                            </section>
+
+                            <div class="flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row">
+                                <button type="button" onclick="openNGOActiveProjects()" class="flex-1 rounded-xl bg-primary-600 px-5 py-3 text-xs font-bold text-white transition-colors hover:bg-primary-700">
+                                    Ver proyectos activos (${ngoData.statistics.activeProjects})
+                                    <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </button>
+                                <a href="${ngoData.websiteUrl}" target="_blank" rel="noopener noreferrer" class="rounded-xl border border-slate-200 px-5 py-3 text-center text-xs font-bold text-slate-700 transition-colors hover:border-primary-200 hover:text-primary-700">
+                                    Sitio oficial <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('ngo-info-close').focus();
+            document.addEventListener('keydown', handleNGOInfoModalKeydown);
+        }
+
+        function handleNGOInfoModalKeydown(event) {
+            if (event.key === 'Escape') closeModal();
+        }
+
+        function openNGOActiveProjects() {
+            closeModal();
+            navigateTo('ngo-profile');
+            window.setTimeout(() => {
+                const projectsSection = document.getElementById('ngo-active-projects');
+                if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 0);
+        }
+
         function openAvatarModal() {
             const container = document.getElementById('modal-container');
             container.innerHTML = `
@@ -2682,6 +2945,7 @@
 
         function closeModal() {
             document.getElementById('modal-container').innerHTML = '';
+            document.removeEventListener('keydown', handleNGOInfoModalKeydown);
             selectedAvatarUrl = null;
             selectedCoverUrl = null;
         }
