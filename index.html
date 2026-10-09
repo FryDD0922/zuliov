@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es" class="h-full bg-slate-50 dark:bg-slate-950">
 <head>
     <meta charset="UTF-8">
@@ -604,23 +604,93 @@
             updates: [
                 {
                     id: 'upd_1',
-                    title: 'Solar Submersible Pump Arrived at Kitui Site',
+                    shortTitle: 'La bomba solar llega a Kitui',
+                    title: 'La bomba solar sumergible llega al emplazamiento de Kitui',
+                    projectLabel: 'Agua limpia · Kitui #12',
                     date: 'Yesterday at 14:30 EAT',
+                    publishedAt: '18 de enero de 2026 · 14:30 EAT',
                     author: 'Marcus Vance',
                     authorPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
+                    authorRole: 'Coordinador de operaciones de campo',
                     category: 'Milestone',
+                    likes: 12,
+                    likedByCurrentUser: false,
                     content: 'The high-capacity Grundfos SQFlex solar pump has officially been delivered to the Kitui site. Field technicians are installing the mounting chassis today. Supplier invoice #INV-8821 verified on Zuliov.',
+                    article: [
+                        'Después de varias semanas coordinando el transporte por caminos afectados por las lluvias, la bomba solar sumergible Grundfos SQFlex llegó al emplazamiento del pozo comunitario número 12, en el condado de Kitui. El equipo local recibió el sistema, verificó el número de serie y contrastó cada componente con la orden de compra antes de trasladarlo al área de instalación.',
+                        'El principal desafío fue completar el último tramo sin maquinaria pesada: el acceso estrecho obligó a dividir la carga y organizar una descarga manual con apoyo de trabajadores de la comunidad. La bomba y sus accesorios llegaron en buen estado. Los técnicos ya montan el chasis y preparan las conexiones para el arreglo fotovoltaico, manteniendo el calendario de puesta en marcha.',
+                        'Una vez instalada, la bomba permitirá extraer agua sin depender de combustible y reducirá el costo de operación para las familias. El comité de agua participará en las pruebas de caudal y recibirá capacitación básica de mantenimiento. La factura del proveedor y el gasto asociado quedaron vinculados al registro verificable para que donantes y residentes puedan seguir el destino de los fondos.'
+                    ],
+                    audit: {
+                        hashes: ['Factura INV-8821 · 0x8f3c...b912', 'Registro de entrega · 0x7c21...a640'],
+                        costs: [{ label: 'Bomba solar y sistema de instalación', amount: '$4,250 USD' }]
+                    },
+                    comments: [
+                        {
+                            id: 'upd_1_comment_1',
+                            author: 'David Chen',
+                            time: 'Hace 2 horas',
+                            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100',
+                            text: 'Gracias por compartir cada paso. Es alentador ver que el equipo llegó al sitio y que la comunidad participa en el montaje.',
+                            likes: 2,
+                            likedByCurrentUser: false
+                        },
+                        {
+                            id: 'upd_1_comment_2',
+                            author: 'Miriam Njoroge',
+                            time: 'Hace 35 minutos',
+                            avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
+                            text: '¿Publicarán también los resultados de las pruebas de caudal cuando termine la instalación? Nos ayudaría mucho seguir el avance.',
+                            likes: 1,
+                            likedByCurrentUser: false
+                        }
+                    ],
                     mediaUrl: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800',
                     mediaType: 'image'
                 },
                 {
                     id: 'upd_2',
-                    title: 'Borehole Drilling Reaches 120M Aquifer Depth',
+                    shortTitle: 'El sondeo alcanza el acuífero',
+                    title: 'La perforación alcanza el acuífero a 120 metros',
+                    projectLabel: 'Agua limpia · Kitui #12',
                     date: '3 days ago',
+                    publishedAt: '16 de enero de 2026 · 09:10 EAT',
                     author: 'Dr. Amara Okezie',
                     authorPhoto: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100',
+                    authorRole: 'Hidrogeóloga principal',
                     category: 'Progress Report',
+                    likes: 8,
+                    likedByCurrentUser: false,
                     content: 'Drilling team confirmed hydro-geological water strike at 120 meters depth. Initial water quality test shows neutral pH and zero heavy metal contaminants.',
+                    article: [
+                        'El equipo de perforación confirmó una intersección con el acuífero a 120 metros de profundidad, un hito decisivo para el pozo comunitario de Kitui. La geología de esta zona alterna capas de roca compacta y fracturas, por lo que el avance fue más lento de lo previsto y requirió ajustar la presión de perforación para proteger la integridad del sondeo.',
+                        'Tras alcanzar el nivel de agua, el equipo tomó una muestra inicial y realizó las pruebas de campo disponibles. Los resultados preliminares indican un pH neutro y ausencia de metales pesados detectables en el análisis inicial. Antes de habilitar el suministro, se completarán el desarrollo del pozo, las pruebas de caudal y un análisis de laboratorio para confirmar la calidad del agua.',
+                        'El hallazgo acerca a la comunidad a una fuente más segura y estable, y evita depender de recorridos largos hacia puntos de abastecimiento estacionales. Representantes locales acompañaron la inspección y recibirán los resultados finales junto con el plan de mantenimiento. El gasto de perforación y logística está asociado a comprobantes verificables en el registro de Zuliov.'
+                    ],
+                    audit: {
+                        hashes: ['Logística de perforación · 0x3a1e...44c8', 'Registro de muestra · 0xb520...19df'],
+                        costs: [{ label: 'Perforación y logística de campo', amount: '$2,800 USD' }]
+                    },
+                    comments: [
+                        {
+                            id: 'upd_2_comment_1',
+                            author: 'Beatrice Wanjiku',
+                            time: 'Hace 5 horas',
+                            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
+                            text: 'Qué alivio saber que ya encontraron agua. Esperamos con interés el informe del laboratorio antes de que empiece el suministro.',
+                            likes: 3,
+                            likedByCurrentUser: false
+                        },
+                        {
+                            id: 'upd_2_comment_2',
+                            author: 'Peter Mwangi',
+                            time: 'Ayer',
+                            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
+                            text: 'Agradezco que expliquen también los retos de la perforación. La transparencia hace que este progreso se sienta cercano.',
+                            likes: 0,
+                            likedByCurrentUser: false
+                        }
+                    ],
                     mediaUrl: 'assets/ong3',
                     mediaType: 'image'
                 }
@@ -1480,7 +1550,7 @@
                                 <p class="text-xs text-slate-500">Live verified field logs and milestones</p>
                             </div>
                             ${isEmp ? '' : `
-                                <button onclick="openFieldUpdatesModal()" class="text-xs font-semibold text-primary-600 hover:underline">
+                                <button onclick="openFieldUpdatesModal()" class="px-4 py-2 rounded-lg font-medium text-xs bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 shadow-sm hover:opacity-90 transition-all">
                                     ${t('ngo_updates_view_all')}
                                 </button>
                             `}
@@ -1489,40 +1559,15 @@
                         ${isEmp ? renderEmptyState("No Field Updates Logged Yet") : `
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 ${ngo.updates.map(upd => `
-                                    <article class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-subtle dark:border-slate-800 dark:bg-slate-900">
-                                        <div class="flex min-w-0 items-center gap-3 p-4">
-                                            <img src="${upd.authorPhoto}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700">
-                                            <div class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
-                                                <span class="truncate text-xs font-bold text-slate-900 dark:text-slate-100">${upd.author}</span>
-                                                <span class="hidden text-slate-300 sm:inline">·</span>
-                                                <span class="text-[10px] font-mono text-slate-400">${upd.date}</span>
-                                            </div>
-                                            <span class="shrink-0 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-1 text-[10px] font-mono font-bold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-300">
-                                                    ${upd.category}
-                                            </span>
-                                        </div>
-
-                                            ${upd.mediaUrl ? `
-                                                <div class="mx-auto aspect-[4/5] max-h-60 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
-                                                    <img src="${upd.mediaUrl}" alt="${upd.title}" class="h-full w-full object-cover">
-                                                </div>
-                                            ` : ''}
-
-                                        <div class="space-y-2 p-4">
-                                            <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">${upd.title}</h3>
-                                            <p class="line-clamp-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">${upd.content}</p>
-                                            <div class="flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-400 dark:border-slate-800">
-                                                <div class="flex items-center gap-4" aria-hidden="true">
-                                                    <i class="fa-regular fa-heart"></i>
-                                                    <i class="fa-regular fa-comment"></i>
-                                                    <i class="fa-solid fa-share-nodes"></i>
-                                                </div>
-                                                <span class="flex items-center gap-1.5 font-mono text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                                                    <i class="fa-solid fa-shield-check"></i> Audited update
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </article>
+                                    <button type="button" onclick="openFieldUpdateArticle('${upd.id}')" aria-label="Leer artículo: ${upd.shortTitle}" class="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-slate-800 dark:bg-slate-900">
+                                        <span class="block aspect-[4/3] w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                            <img src="${upd.mediaUrl}" alt="${upd.shortTitle}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                        </span>
+                                        <span class="flex items-start justify-between gap-3 p-4">
+                                            <span class="text-sm font-bold leading-snug text-slate-900 dark:text-slate-100">${upd.shortTitle}</span>
+                                            <span class="shrink-0 rounded-full bg-primary-50 px-2.5 py-1 text-[10px] font-mono font-bold text-primary-700 dark:bg-primary-900 dark:text-primary-100">${upd.projectLabel}</span>
+                                        </span>
+                                    </button>
                                 `).join('')}
                             </div>
                         `}
@@ -1855,8 +1900,8 @@
                         <div class="overflow-y-auto pr-1">
                             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                                 ${ngoData.updates.map(upd => `
-                                    <article class="overflow-hidden rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900">
-                                        <div class="aspect-square overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                    <button type="button" onclick="openFieldUpdateArticle('${upd.id}')" aria-label="Leer artículo: ${upd.shortTitle}" class="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white text-left transition-all hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-slate-800 dark:bg-slate-900">
+                                        <span class="block aspect-square overflow-hidden bg-slate-100 dark:bg-slate-800">
                                             ${upd.mediaUrl ? `
                                                 <img src="${upd.mediaUrl}" alt="${upd.title}" loading="lazy" class="h-full w-full object-cover">
                                             ` : `
@@ -1864,18 +1909,237 @@
                                                     <i class="fa-regular fa-image text-2xl"></i>
                                                 </div>
                                             `}
-                                        </div>
-                                        <div class="p-2.5">
-                                            <p class="text-[10px] font-mono text-slate-400">${upd.date}</p>
-                                            <h4 class="mt-1 text-xs font-bold text-slate-900 dark:text-slate-100 line-clamp-2">${upd.title}</h4>
-                                        </div>
-                                    </article>
+                                        </span>
+                                        <span class="block space-y-2 p-3">
+                                            <span class="block text-xs font-bold leading-snug text-slate-900 dark:text-slate-100">${upd.shortTitle}</span>
+                                            <span class="inline-flex rounded-full bg-primary-50 px-2 py-1 text-[9px] font-mono font-bold text-primary-700 dark:bg-primary-900 dark:text-primary-100">${upd.projectLabel}</span>
+                                        </span>
+                                    </button>
                                 `).join('')}
                             </div>
                         </div>
                     </div>
                 </div>
             `;
+        }
+
+        function openFieldUpdateArticle(updateId) {
+            const update = ngoData.updates.find(item => item.id === updateId);
+            if (!update) return;
+
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-3 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="field-article-title">
+                    <button type="button" aria-label="Cerrar artículo" onclick="closeModal()" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"></button>
+                    <article class="relative z-10 my-auto flex max-h-[94vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-floating dark:border-slate-700 dark:bg-slate-900">
+                        <button type="button" onclick="closeModal()" aria-label="Cerrar artículo" class="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/75 text-white transition hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                        </button>
+                        <div class="overflow-y-auto">
+                            <header class="px-6 pb-6 pt-8 sm:px-10 sm:pt-10">
+                                <span class="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-mono font-bold uppercase text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-300">${update.category}</span>
+                                <h2 id="field-article-title" class="mt-4 max-w-3xl text-2xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl dark:text-white">${update.title}</h2>
+                                <div class="mt-6 flex items-center justify-between gap-4">
+                                    <div class="flex min-w-0 flex-wrap items-center gap-3">
+                                        <img src="${update.authorPhoto}" alt="" class="h-11 w-11 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-700">
+                                        <div class="min-w-0">
+                                            <p class="text-sm font-bold text-slate-900 dark:text-slate-100">${update.author}</p>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400">${update.authorRole}</p>
+                                        </div>
+                                        <span class="text-slate-300 dark:text-slate-600" aria-hidden="true">·</span>
+                                        <time class="text-xs text-slate-500 dark:text-slate-400">${update.publishedAt}</time>
+                                    </div>
+                                    <button id="field-article-like" type="button" aria-pressed="${update.likedByCurrentUser}" onclick="toggleFieldArticleLike('${update.id}')" class="inline-flex shrink-0 items-center gap-2 rounded-full border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-primary-900 ${update.likedByCurrentUser ? 'border-primary-200 bg-primary-50 text-primary-700 dark:border-primary-900 dark:bg-primary-900 dark:text-primary-100' : ''}">
+                                        <i class="fa-${update.likedByCurrentUser ? 'solid' : 'regular'} fa-thumbs-up" aria-hidden="true"></i>
+                                        <span id="field-article-like-count">${update.likes} Me gusta</span>
+                                    </button>
+                                </div>
+                            </header>
+                            <figure class="w-full bg-slate-100 dark:bg-slate-800">
+                                <img src="${update.mediaUrl}" alt="${update.shortTitle}" class="max-h-[32rem] w-full object-cover">
+                            </figure>
+                            <div class="mx-auto max-w-3xl px-6 py-8 sm:px-10 sm:py-10">
+                                <div class="space-y-5 text-[15px] leading-8 text-slate-700 dark:text-slate-300">
+                                    ${update.article.map(paragraph => `<p>${paragraph}</p>`).join('')}
+                                </div>
+                                <section aria-labelledby="field-article-audit" class="mt-10 border-t border-slate-200 pt-6 dark:border-slate-700">
+                                    <div class="flex flex-wrap items-start justify-between gap-4">
+                                        <div>
+                                            <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Transparencia y auditoría</p>
+                                            <h3 id="field-article-audit" class="mt-1 text-base font-bold text-slate-900 dark:text-white">Registro verificable del proyecto</h3>
+                                        </div>
+                                        <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i> Audited &amp; Verified on Zuliov
+                                        </span>
+                                    </div>
+                                    <div class="mt-5 grid gap-5 sm:grid-cols-2">
+                                        <div>
+                                            <h4 class="text-[10px] font-mono font-bold uppercase text-slate-400">Costos asociados</h4>
+                                            <ul class="mt-2 space-y-2">
+                                                ${update.audit.costs.map(cost => `
+                                                    <li class="flex justify-between gap-3 border-b border-slate-100 pb-2 text-xs dark:border-slate-800">
+                                                        <span class="text-slate-600 dark:text-slate-400">${cost.label}</span>
+                                                        <span class="shrink-0 font-mono font-bold text-slate-900 dark:text-slate-100">${cost.amount}</span>
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-[10px] font-mono font-bold uppercase text-slate-400">Hashes de verificación</h4>
+                                            <ul class="mt-2 space-y-2">
+                                                ${update.audit.hashes.map(hash => `
+                                                    <li class="rounded-md bg-slate-100 px-3 py-2 font-mono text-[10px] text-slate-700 dark:bg-slate-800 dark:text-slate-300">${hash}</li>
+                                                `).join('')}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section aria-labelledby="field-article-comments-title" class="mt-10 border-t border-slate-200 pt-6 dark:border-slate-700">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <h3 id="field-article-comments-title" class="text-base font-bold text-slate-900 dark:text-white">Comentarios de la Comunidad</h3>
+                                        <span id="field-article-comments-count" class="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-mono font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">Comentarios (${update.comments.length})</span>
+                                    </div>
+                                    <div id="field-article-comments-list" class="mt-5 space-y-5"></div>
+                                    <form class="mt-7 border-t border-slate-200 pt-5 dark:border-slate-700" onsubmit="event.preventDefault(); addFieldArticleComment('${update.id}')">
+                                        <label for="field-article-comment-input" class="mb-3 block text-sm font-semibold text-slate-800 dark:text-slate-200">Deja un comentario</label>
+                                        <div class="flex items-start gap-3">
+                                            <img src="${state.currentUser.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100'}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700">
+                                            <div class="min-w-0 flex-1">
+                                                <textarea id="field-article-comment-input" rows="3" maxlength="1000" placeholder="Comparte una pregunta o reflexión..." class="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-primary-900"></textarea>
+                                                <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
+                                                    <p id="field-article-comment-status" aria-live="polite" class="text-xs text-slate-500 dark:text-slate-400"></p>
+                                                    <button type="submit" class="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                                                        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Publicar comentario
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </section>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            `;
+
+            renderFieldArticleComments(update);
+            const dialog = container.querySelector('[role="dialog"]');
+            dialog.addEventListener('keydown', event => {
+                if (event.key === 'Escape') closeModal();
+            });
+            container.querySelector('article > button').focus({ preventScroll: true });
+        }
+
+        function renderFieldArticleComments(update) {
+            const list = document.getElementById('field-article-comments-list');
+            const count = document.getElementById('field-article-comments-count');
+            if (!list || !count) return;
+
+            count.textContent = `Comentarios (${update.comments.length})`;
+            list.replaceChildren(...update.comments.map(comment => {
+                const item = document.createElement('article');
+                item.className = 'flex gap-3';
+
+                const avatar = document.createElement('img');
+                avatar.src = comment.avatar;
+                avatar.alt = '';
+                avatar.className = 'h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700';
+
+                const body = document.createElement('div');
+                body.className = 'min-w-0 flex-1';
+
+                const header = document.createElement('div');
+                header.className = 'flex flex-wrap items-baseline gap-x-2 gap-y-1';
+
+                const author = document.createElement('span');
+                author.className = 'text-xs font-bold text-slate-900 dark:text-slate-100';
+                author.textContent = comment.author;
+
+                const time = document.createElement('time');
+                time.className = 'text-[10px] text-slate-400';
+                time.textContent = comment.time;
+
+                const text = document.createElement('p');
+                text.className = 'mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400';
+                text.textContent = comment.text;
+
+                const like = document.createElement('button');
+                like.type = 'button';
+                like.setAttribute('aria-pressed', String(Boolean(comment.likedByCurrentUser)));
+                like.setAttribute('aria-label', comment.likedByCurrentUser ? 'Quitar Me gusta del comentario' : 'Me gusta este comentario');
+                like.className = `mt-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold transition hover:bg-primary-50 dark:hover:bg-primary-900 ${comment.likedByCurrentUser ? 'text-primary-600 dark:text-primary-200' : 'text-slate-400 hover:text-primary-600 dark:text-slate-500'}`;
+
+                const thumb = document.createElement('i');
+                thumb.className = `fa-${comment.likedByCurrentUser ? 'solid' : 'regular'} fa-thumbs-up`;
+                thumb.setAttribute('aria-hidden', 'true');
+
+                const likesCount = document.createElement('span');
+                likesCount.textContent = comment.likes;
+                like.append(thumb, likesCount);
+                like.addEventListener('click', () => toggleFieldArticleCommentLike(update.id, comment.id));
+
+                header.append(author, time);
+                body.append(header, text, like);
+                item.append(avatar, body);
+                return item;
+            }));
+        }
+
+        function toggleFieldArticleLike(updateId) {
+            const update = ngoData.updates.find(item => item.id === updateId);
+            const button = document.getElementById('field-article-like');
+            const count = document.getElementById('field-article-like-count');
+            if (!update || !button || !count) return;
+
+            update.likedByCurrentUser = !update.likedByCurrentUser;
+            update.likes += update.likedByCurrentUser ? 1 : -1;
+            button.setAttribute('aria-pressed', String(update.likedByCurrentUser));
+            button.classList.toggle('border-primary-200', update.likedByCurrentUser);
+            button.classList.toggle('bg-primary-50', update.likedByCurrentUser);
+            button.classList.toggle('text-primary-700', update.likedByCurrentUser);
+            button.classList.toggle('dark:border-primary-900', update.likedByCurrentUser);
+            button.classList.toggle('dark:bg-primary-900', update.likedByCurrentUser);
+            button.classList.toggle('dark:text-primary-100', update.likedByCurrentUser);
+            const icon = button.querySelector('i');
+            icon.classList.toggle('fa-solid', update.likedByCurrentUser);
+            icon.classList.toggle('fa-regular', !update.likedByCurrentUser);
+            count.textContent = `${update.likes} Me gusta`;
+        }
+
+        function toggleFieldArticleCommentLike(updateId, commentId) {
+            const update = ngoData.updates.find(item => item.id === updateId);
+            const comment = update?.comments.find(item => item.id === commentId);
+            if (!update || !comment) return;
+
+            comment.likedByCurrentUser = !comment.likedByCurrentUser;
+            comment.likes += comment.likedByCurrentUser ? 1 : -1;
+            renderFieldArticleComments(update);
+        }
+
+        function addFieldArticleComment(updateId) {
+            const update = ngoData.updates.find(item => item.id === updateId);
+            const input = document.getElementById('field-article-comment-input');
+            const status = document.getElementById('field-article-comment-status');
+            const text = input?.value.trim();
+            if (!update || !input || !status) return;
+            if (!text) {
+                status.textContent = 'Escribe un comentario antes de publicarlo.';
+                input.focus();
+                return;
+            }
+
+            update.comments.unshift({
+                author: state.currentUser.name,
+                time: 'Ahora',
+                avatar: state.currentUser.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
+                text,
+                id: `comment_${Date.now()}`,
+                likes: 0,
+                likedByCurrentUser: false
+            });
+            input.value = '';
+            renderFieldArticleComments(update);
+            status.textContent = 'Comentario publicado.';
         }
 
         function addCommunityComment() {
