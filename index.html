@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es" class="h-full bg-slate-50 dark:bg-slate-950">
 <head>
     <meta charset="UTF-8">
@@ -841,6 +841,22 @@
                     kpi: 'Provides clean water access to 350+ people daily',
                 },
                 {
+                    id: 'proj_solar_pump',
+                    ngoId: 'ngo_clean_water',
+                    ngoName: 'CleanWater International',
+                    ngoLogo: '💧',
+                    title: 'Solar Aqueduct Pipeline Extension - Garissa',
+                    description: 'Extending solar-powered water access to rural communities in Garissa.',
+                    category: 'Clean Energy',
+                    targetGoal: 28000,
+                    amountRaised: 28000,
+                    location: 'Garissa, Kenya',
+                    averageOverhead: 6,
+                    verifiedStatus: 'Audited & Verified',
+                    coverImage: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800',
+                    kpi: 'Extends access to reliable solar-powered water',
+                },
+                {
                     id: 'proj_schools',
                     ngoId: 'ngo_future_edu',
                     ngoName: 'Future Scholars Trust',
@@ -875,7 +891,11 @@
                 }
             ],
 
-            ngoEmptyStateActive: false
+            ngoEmptyStateActive: false,
+            projectContinent: 'all',
+            projectSearchTerm: '',
+            projectSearchOpen: false,
+            activeDonationProject: null
         };
     </script>
 
@@ -1606,7 +1626,7 @@
                                                 </div>
                                             </div>
                                             <div class="p-5 pt-0">
-                                                <button onclick="openDonateModal()" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+                                                <button onclick="openProjectDetail('${proj.id}')" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-900 text-white hover:bg-slate-800 transition-colors">
                                                     View Project & Donate
                                                 </button>
                                             </div>
@@ -1758,7 +1778,151 @@
             showToast("NGO Profile link copied to clipboard!", "success");
         }
 
+        function openProjectDetail(projectId) {
+            const projectAliases = {
+                proj_schools: 'proj_school_sanitation'
+            };
+            const dataProjectId = projectAliases[projectId] || projectId;
+            const projectDetails = ngoData.projects.find(project => project.id === dataProjectId);
+            const catalogProject = state.projects.find(project => project.id === projectId);
+            const project = { ...catalogProject, ...projectDetails };
+            if (!project.id) return;
+
+            const projectStories = {
+                proj_water_well: 'La comunidad de Kitui enfrenta sequía del acuífero y acceso limitado a agua segura. El pozo comunitario busca ofrecer un suministro sostenible a 350 personas, con bombeo solar y seguimiento público de las compras.',
+                proj_solar_pump: 'Las comunidades rurales de Garissa necesitan una fuente de agua fiable sin depender de combustibles. La ampliación del acueducto solar extiende la infraestructura de bombeo y permite consultar sus costos y comprobantes en el libro contable.',
+                proj_school_sanitation: 'La escuela de Malindi necesita mejores condiciones de aprendizaje e higiene. El proyecto equipa a estudiantes con mobiliario escolar y herramientas digitales para apoyar su educación y bienestar.'
+            };
+            const invoicesByProject = {
+                proj_water_well: ['fin_inv_8821', 'fin_exp_104'],
+                proj_solar_pump: ['fin_rec_902']
+            };
+            const invoiceIds = invoicesByProject[dataProjectId] || [];
+            const invoices = ngoData.financials.filter(invoice => invoiceIds.includes(invoice.id));
+            const projectKeyword = dataProjectId === 'proj_water_well' ? 'Kitui' : '';
+            const updates = projectKeyword
+                ? ngoData.updates.filter(update => update.projectLabel.includes(projectKeyword))
+                : [];
+            const progress = Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100);
+            const location = project.location || catalogProject?.location || 'Kenya';
+
+            state.activeDonationProject = project.title;
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-3 sm:p-6" onclick="closeModal()">
+                    <div role="dialog" aria-modal="true" aria-labelledby="project-detail-title" class="relative z-10 max-h-[96vh] w-full max-w-5xl overflow-y-auto rounded-3xl border border-slate-200 bg-slate-50 shadow-floating animate-modal-in" onclick="event.stopPropagation()">
+                        <div class="relative h-56 bg-slate-900 sm:h-72">
+                            <img src="${project.coverImage}" alt="${project.title}" class="h-full w-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent"></div>
+                            <button type="button" onclick="closeModal()" aria-label="Cerrar detalle del proyecto" class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/70 text-white hover:bg-slate-950">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                            <div class="absolute inset-x-0 bottom-0 p-5 text-white sm:p-8">
+                                <span class="inline-flex rounded-full bg-white/15 px-3 py-1 text-[10px] font-mono font-bold uppercase">${project.category}</span>
+                                <h2 id="project-detail-title" class="mt-3 max-w-3xl text-xl font-black sm:text-3xl">${project.title}</h2>
+                                <p class="mt-2 text-xs font-mono text-white/80"><i class="fa-solid fa-location-dot mr-1"></i>${location}</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6 p-5 sm:p-8">
+                            <section aria-label="Estado de financiación" class="rounded-2xl border border-slate-200 bg-white p-5">
+                                <div class="flex flex-wrap items-end justify-between gap-2">
+                                    <div>
+                                        <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Estado de financiación</span>
+                                        <p class="mt-1 text-lg font-black text-slate-900">${formatCurrency(project.amountRaised)} <span class="text-xs font-medium text-slate-500">recaudados de ${formatCurrency(project.targetGoal)}</span></p>
+                                    </div>
+                                    <span class="text-xs font-bold text-emerald-700">${project.status || 'Activo'} · ${progress}%</span>
+                                </div>
+                                <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-emerald-600" style="width:${progress}%"></div></div>
+                            </section>
+
+                            <section class="grid gap-5 md:grid-cols-2">
+                                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                                    <h3 class="text-sm font-black text-slate-900">Acerca del Proyecto</h3>
+                                    <p class="mt-3 text-xs leading-relaxed text-slate-600">${projectStories[dataProjectId] || project.description || 'Detalles del proyecto en preparación.'}</p>
+                                    <p class="mt-3 border-t border-slate-100 pt-3 text-xs font-semibold text-slate-700"><i class="fa-solid fa-bullseye mr-1.5 text-primary-600"></i>${catalogProject?.kpi || project.description || 'Impacto comunitario en seguimiento.'}</p>
+                                </div>
+                                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <h3 class="text-sm font-black text-slate-900">Libro Contable Abierto</h3>
+                                        <span class="text-[9px] font-mono font-bold uppercase text-emerald-700">Facturas verificadas</span>
+                                    </div>
+                                    <div class="mt-3 space-y-3">
+                                        ${invoices.length ? invoices.map(invoice => `
+                                            <article class="border-t border-slate-100 pt-3 first:border-0 first:pt-0">
+                                                <div class="flex items-start justify-between gap-3">
+                                                    <div class="min-w-0">
+                                                        <h4 class="text-xs font-bold text-slate-800">${invoice.title}</h4>
+                                                        <p class="mt-1 text-[10px] text-slate-500">${invoice.vendor} · ${invoice.date}</p>
+                                                    </div>
+                                                    <span class="shrink-0 text-xs font-mono font-bold text-slate-900">${formatCurrency(invoice.amount)}</span>
+                                                </div>
+                                                <p class="mt-1 break-all text-[9px] font-mono text-slate-400">${invoice.hash} · ${invoice.verifiedBy}</p>
+                                            </article>
+                                        `).join('') : `
+                                            <p class="border-t border-slate-100 pt-3 text-xs leading-relaxed text-slate-500">Los comprobantes verificados de este proyecto todavía no se han publicado. Se mostrarán aquí al incorporarse al libro contable.</p>
+                                        `}
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="rounded-2xl border border-slate-200 bg-white p-5">
+                                <div class="flex items-center justify-between gap-3">
+                                    <div>
+                                        <h3 class="text-sm font-black text-slate-900">Bitácora de Campo</h3>
+                                        <p class="mt-1 text-[10px] text-slate-500">Fotos de avance y actualizaciones recientes</p>
+                                    </div>
+                                    <i class="fa-solid fa-camera text-slate-400"></i>
+                                </div>
+                                ${updates.length ? `
+                                    <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                                        ${updates.map(update => `
+                                            <article class="overflow-hidden rounded-xl border border-slate-200">
+                                                <img src="${update.mediaUrl}" alt="Avance de campo: ${update.shortTitle}" class="h-40 w-full object-cover">
+                                                <div class="p-4">
+                                                    <p class="text-[10px] font-mono text-slate-400">${update.publishedAt}</p>
+                                                    <h4 class="mt-1 text-xs font-bold text-slate-900">${update.title}</h4>
+                                                    <p class="mt-2 text-xs leading-relaxed text-slate-600">${update.article[0]}</p>
+                                                </div>
+                                            </article>
+                                        `).join('')}
+                                    </div>
+                                ` : `
+                                    <div class="mt-4 flex flex-col gap-4 rounded-xl bg-slate-50 p-4 sm:flex-row sm:items-center">
+                                        <img src="${project.coverImage}" alt="Imagen del proyecto ${project.title}" class="h-36 w-full rounded-lg object-cover sm:w-52">
+                                        <p class="text-xs leading-relaxed text-slate-600">Las actualizaciones fotográficas de campo para este proyecto aún no se han publicado.</p>
+                                    </div>
+                                `}
+                            </section>
+
+                            <section class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 sm:p-6">
+                                <div class="flex items-start gap-3">
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700"><i class="fa-solid fa-hand-holding-heart"></i></span>
+                                    <div>
+                                        <h3 class="text-sm font-black text-slate-900">Direct Audited Donation</h3>
+                                        <p class="mt-1 text-xs leading-relaxed text-slate-600">Tu aporte queda asociado a este proyecto y se refleja junto a sus comprobantes verificados.</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4 grid grid-cols-4 gap-2">
+                                    <button type="button" onclick="setDonateAmt(50)" class="rounded-xl border border-slate-200 bg-white py-2.5 text-xs font-bold text-slate-800 hover:border-emerald-500">$50</button>
+                                    <button type="button" onclick="setDonateAmt(150)" class="rounded-xl border border-emerald-500 bg-white py-2.5 text-xs font-bold text-emerald-800">$150</button>
+                                    <button type="button" onclick="setDonateAmt(500)" class="rounded-xl border border-slate-200 bg-white py-2.5 text-xs font-bold text-slate-800 hover:border-emerald-500">$500</button>
+                                    <button type="button" onclick="selectOtherDonateAmount()" class="rounded-xl border border-slate-200 bg-white py-2.5 text-xs font-bold text-slate-800 hover:border-emerald-500">Otro</button>
+                                </div>
+                                <label for="custom-donate-amt" class="mt-3 block text-[10px] font-mono font-bold uppercase text-slate-500">Monto de donación (USD)</label>
+                                <input type="number" id="custom-donate-amt" min="1" step="1" value="150" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <button type="button" onclick="processDonation()" class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
+                                    <i class="fa-solid fa-lock text-[10px]"></i><span>Complete Direct Donation</span>
+                                </button>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         function openDonateModal() {
+            state.activeDonationProject = null;
             const container = document.getElementById('modal-container');
             container.innerHTML = `
                 <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
@@ -1807,10 +1971,24 @@
             document.getElementById('custom-donate-amt').value = val;
         }
 
+        function selectOtherDonateAmount() {
+            const input = document.getElementById('custom-donate-amt');
+            input.value = '';
+            input.focus();
+        }
+
         function processDonation() {
-            const amt = document.getElementById('custom-donate-amt').value;
+            const amount = Number(document.getElementById('custom-donate-amt').value);
+            if (!Number.isFinite(amount) || amount <= 0) {
+                showToast('Introduce un monto de donación válido.', 'info');
+                return;
+            }
+            const projectName = state.activeDonationProject;
             closeModal();
-            showToast(`Thank you! Direct donation of $${amt} processed and added to ledger.`, "success");
+            showToast(projectName
+                ? `Donación directa de $${amount} para ${projectName} confirmada y asociada a su libro contable abierto.`
+                : `Donación directa de $${amount} confirmada y añadida al libro contable abierto.`, 'success');
+            state.activeDonationProject = null;
         }
 
         function openLeaderModal(leaderId) {
@@ -2412,6 +2590,22 @@
                                     `).join('')}
                                 </div>
 
+                                ${user.id === 'marcus_ngo_301' ? `
+                                    <button type="button" onclick="openNGOInfoModal()" aria-haspopup="dialog" aria-label="Ver información de CleanWater International" class="group mt-2 flex w-full max-w-sm items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                        <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-100 bg-white">
+                                            <img src="${ngoData.logoUrl}" alt="Logo de CleanWater International" class="h-full w-full object-cover">
+                                        </span>
+                                        <span class="min-w-0 flex-1">
+                                            <span class="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">ONG vinculada</span>
+                                            <span class="block truncate text-sm font-bold text-slate-900">CleanWater International</span>
+                                            <span class="mt-0.5 flex items-center gap-1 text-[10px] font-semibold text-emerald-600">
+                                                <i class="fa-solid fa-circle-check"></i> Verificada en Zuliov
+                                            </span>
+                                        </span>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 transition-colors group-hover:text-primary-600"></i>
+                                    </button>
+                                ` : ''}
+
                                 ${isCorporate ? `
                                     <button type="button" onclick="navigateTo('ngo-profile')" class="group mt-2 flex w-full max-w-sm items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                                         <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-100 bg-white">
@@ -2587,6 +2781,18 @@
         }
 
         function renderBrowsePage(canvas) {
+            const continentFilters = [
+                { id: 'all', label: 'Todos' },
+                { id: 'africa', label: 'África' },
+                { id: 'latin-america', label: 'América Latina' },
+                { id: 'asia', label: 'Asia' }
+            ];
+            const visibleProjects = state.projectContinent === 'all'
+                ? state.projects
+                : state.projectContinent === 'africa'
+                    ? state.projects.filter(proj => ['proj_water_well', 'proj_solar_pump'].includes(proj.id))
+                    : [];
+
             canvas.innerHTML = `
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
                     <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -2594,14 +2800,44 @@
                             <h1 class="text-2xl font-black text-slate-900">Explore Verified Projects</h1>
                             <p class="text-xs text-slate-500">All non-profits listed here are 100% Zuliov Open-Ledger compliant</p>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <input type="text" placeholder="Search by region or category..." class="px-4 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 w-64">
+                        <div id="browse-search-container" class="relative flex items-center space-x-2">
+                            <input id="browse-project-search" type="search" value="${state.projectSearchTerm}" placeholder="Search by region or category..." aria-label="Search by region or category" aria-controls="browse-project-search-menu" aria-expanded="${state.projectSearchOpen}" onfocus="setBrowseSearchOpen(true)" oninput="filterBrowseProjects(this.value)" class="px-4 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 w-64">
+                            <div id="browse-project-search-menu" role="dialog" aria-label="Filtros de proyectos" aria-hidden="${!state.projectSearchOpen}" ${state.projectSearchOpen ? '' : 'inert'} class="absolute right-0 top-full z-30 mt-2 w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-slate-200 bg-white p-4 shadow-floating transition-all duration-150 ease-out ${state.projectSearchOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-1 opacity-0'}">
+                                <div class="space-y-4">
+                                    <section>
+                                        <h2 class="mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">Causas / Categorías</h2>
+                                        <div class="flex flex-wrap gap-2">
+                                            <button type="button" onclick="selectBrowseSearchTag('Water & Sanitation')" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50">🚰 Water &amp; Sanitation</button>
+                                            <button type="button" onclick="selectBrowseSearchTag('Clean Energy')" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50">⚡ Clean Energy</button>
+                                            <button type="button" onclick="selectBrowseSearchTag('Education')" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50">🎓 Education</button>
+                                            <button type="button" onclick="selectBrowseSearchTag('Animal Welfare')" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50">🐾 Animal Welfare</button>
+                                            <button type="button" onclick="selectBrowseSearchTag('Health & Medical')" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50">🏥 Health &amp; Medical</button>
+                                        </div>
+                                    </section>
+                                    <section>
+                                        <h2 class="mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">Países / Ubicaciones</h2>
+                                        <div class="flex flex-wrap gap-2">
+                                            <button type="button" onclick="selectBrowseSearchTag('Kenya')" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50">🇰🇪 Kenya</button>
+                                            <button type="button" onclick="selectBrowseSearchTag('Venezuela')" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50">🇻🇪 Venezuela</button>
+                                            <button type="button" onclick="selectBrowseSearchTag('Colombia')" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50">🇨🇴 Colombia</button>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+                    <nav aria-label="Filtrar proyectos por continente" class="flex flex-wrap gap-2">
+                        ${continentFilters.map(filter => `
+                            <button type="button" onclick="setProjectContinent('${filter.id}')" aria-pressed="${state.projectContinent === filter.id}" class="rounded-full px-4 py-2 text-xs font-semibold transition-colors ${state.projectContinent === filter.id ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900'}">
+                                ${filter.label}
+                            </button>
+                        `).join('')}
+                    </nav>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        ${state.projects.map(proj => `
-                            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-subtle overflow-hidden hover:shadow-card transition-all flex flex-col justify-between">
+                        ${visibleProjects.length ? visibleProjects.map(proj => `
+                            <div data-browse-project-id="${proj.id}" class="bg-white rounded-3xl border border-slate-200/80 shadow-subtle overflow-hidden hover:shadow-card transition-all flex flex-col justify-between">
                                 <div>
                                     <div class="h-48 relative">
                                         <img src="${proj.coverImage}" class="h-full w-full object-cover">
@@ -2625,16 +2861,97 @@
                                             <div class="h-full bg-primary-600 rounded-full" style="width: ${Math.round((proj.amountRaised/proj.targetGoal)*100)}%"></div>
                                         </div>
                                     </div>
-                                    <button onclick="navigateTo('ngo-profile')" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-900 text-white hover:bg-slate-800 transition-colors">
-                                        Inspect Ledger & Support
+                                    <button onclick="openProjectDetail('${proj.id}')" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+                                        View Project &amp; Donate
                                     </button>
                                 </div>
                             </div>
-                        `).join('')}
+                        `).join('') : `
+                            <div role="status" class="col-span-full rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center">
+                                <i class="fa-solid fa-clipboard-check text-2xl text-slate-400"></i>
+                                <h2 class="mt-3 text-sm font-bold text-slate-900">Proyectos en fase de auditoría</h2>
+                                <p class="mt-1 text-xs text-slate-500">Estamos verificando nuevas iniciativas para esta región.</p>
+                            </div>
+                        `}
+                        ${visibleProjects.length ? `
+                            <div id="browse-project-search-empty" role="status" hidden class="col-span-full rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center">
+                                <h2 class="text-sm font-bold text-slate-900">No se encontraron proyectos</h2>
+                                <p class="mt-1 text-xs text-slate-500">Prueba otra causa, categoría o ubicación.</p>
+                            </div>
+                        ` : ''}
                     </div>
                 </div>
             `;
+            filterBrowseProjects(state.projectSearchTerm);
         }
+
+        function setProjectContinent(continent) {
+            state.projectContinent = continent;
+            renderApp();
+        }
+
+        function normalizeProjectSearch(value) {
+            return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLocaleLowerCase();
+        }
+
+        function filterBrowseProjects(searchTerm) {
+            state.projectSearchTerm = searchTerm;
+            const query = normalizeProjectSearch(searchTerm);
+            const aliases = {
+                'water & sanitation': ['water', 'sanitation'],
+                'health & medical': ['health', 'medical']
+            };
+            const cards = document.querySelectorAll('[data-browse-project-id]');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const project = state.projects.find(item => item.id === card.dataset.browseProjectId);
+                if (!project) return;
+                const searchableText = normalizeProjectSearch(`${project.title} ${project.description} ${project.category} ${project.location}`);
+                const matches = !query || (aliases[query]
+                    ? aliases[query].some(alias => searchableText.includes(alias))
+                    : searchableText.includes(query));
+                card.hidden = !matches;
+                if (matches) visibleCount += 1;
+            });
+
+            const emptyState = document.getElementById('browse-project-search-empty');
+            if (emptyState) emptyState.hidden = cards.length === 0 || visibleCount > 0;
+        }
+
+        function setBrowseSearchOpen(isOpen) {
+            state.projectSearchOpen = isOpen;
+            const menu = document.getElementById('browse-project-search-menu');
+            const input = document.getElementById('browse-project-search');
+            if (!menu || !input) return;
+
+            menu.classList.toggle('translate-y-0', isOpen);
+            menu.classList.toggle('opacity-100', isOpen);
+            menu.classList.toggle('pointer-events-none', !isOpen);
+            menu.classList.toggle('-translate-y-1', !isOpen);
+            menu.setAttribute('aria-hidden', String(!isOpen));
+            menu.toggleAttribute('inert', !isOpen);
+            input.setAttribute('aria-expanded', String(isOpen));
+        }
+
+        function selectBrowseSearchTag(tag) {
+            const input = document.getElementById('browse-project-search');
+            if (!input) return;
+            input.value = tag;
+            filterBrowseProjects(tag);
+            setBrowseSearchOpen(false);
+        }
+
+        document.addEventListener('click', event => {
+            const searchContainer = document.getElementById('browse-search-container');
+            if (state.projectSearchOpen && searchContainer && !searchContainer.contains(event.target)) {
+                setBrowseSearchOpen(false);
+            }
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && state.projectSearchOpen) setBrowseSearchOpen(false);
+        });
     </script>
 
     <script>
