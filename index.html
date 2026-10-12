@@ -873,7 +873,80 @@
                     kpi: 'Provides workspace and digital devices to 80 children',
                 }
             ],
-            
+
+            groups: [
+                {
+                    id: 'group_education',
+                    name: 'Educación para todos',
+                    description: 'Ideas, avances y apoyo para que más niñas y niños accedan a una educación de calidad.',
+                    category: 'Educación',
+                    type: 'cause',
+                    visibility: 'Abierto',
+                    banner: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1200',
+                    members: 248,
+                    joined: false,
+                    posts: [
+                        {
+                            id: 'post_education_1',
+                            author: 'Future Scholars Trust',
+                            role: 'ONG verificada',
+                            avatar: '🎓',
+                            text: 'Estamos preparando nuevos recursos digitales para las aulas rurales de Malindi. Compartimos el proyecto para que puedan seguir cada avance.',
+                            projectId: 'proj_schools',
+                            comments: []
+                        }
+                    ]
+                },
+                {
+                    id: 'group_childhood',
+                    name: 'Ayuda a la infancia',
+                    description: 'Una comunidad para compartir iniciativas que cuidan la salud, la educación y el futuro de la infancia.',
+                    category: 'Infancia',
+                    type: 'cause',
+                    visibility: 'Abierto',
+                    banner: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200',
+                    members: 186,
+                    joined: false,
+                    posts: []
+                },
+                {
+                    id: 'group_volunteers_latam',
+                    name: 'Voluntarios Cristianos Latam',
+                    description: 'Personas voluntarias de Latinoamérica colaborando en iniciativas solidarias y de impacto.',
+                    category: 'Voluntariado',
+                    type: 'community',
+                    visibility: 'Comunidad',
+                    banner: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
+                    members: 512,
+                    joined: false,
+                    posts: []
+                },
+                {
+                    id: 'group_kitui_well',
+                    name: 'Amigos del Pozo Kitui #12',
+                    description: 'Sigue los avances del pozo comunitario de Kitui y conversa con quienes apoyan el proyecto.',
+                    category: 'Agua limpia',
+                    type: 'project',
+                    visibility: 'Abierto',
+                    banner: 'assets/ong3',
+                    members: 94,
+                    joined: false,
+                    posts: [
+                        {
+                            id: 'post_kitui_1',
+                            author: 'Marcus Vance',
+                            role: 'Coordinador de operaciones de campo',
+                            avatar: '👷',
+                            text: 'La bomba solar ya llegó al emplazamiento. El equipo está preparando la instalación y compartiremos los resultados de las pruebas de agua.',
+                            projectId: 'proj_water_well',
+                            comments: [
+                                { author: 'Sarah Miller', text: '¡Qué gran avance para la comunidad de Kitui!' }
+                            ]
+                        }
+                    ]
+                }
+            ],
+
             notifications: [
                 {
                     id: 'not_1',
@@ -895,7 +968,9 @@
             projectContinent: 'all',
             projectSearchTerm: '',
             projectSearchOpen: false,
-            activeDonationProject: null
+            activeDonationProject: null,
+            activeGroupId: null,
+            groupFilter: 'all'
         };
     </script>
 
@@ -918,6 +993,7 @@
                 <nav class="hidden md:flex items-center space-x-8">
                     <button onclick="navigateTo('landing')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-howItWorks">Cómo funciona</button>
                     <button onclick="navigateTo('browse')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
+                    <button onclick="navigateTo('groups')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">Grupos</button>
                     <button onclick="navigateTo('ngo-profile')" class="nav-link font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 text-slate-600 hover:text-primary-600" id="nav-ngoProfile">
                         <i class="fa-solid fa-building-ngo text-xs"></i> <span id="nav-ngoProfile-text">Perfil ONG Verificada</span>
                     </button>
@@ -1075,6 +1151,7 @@
 
         function navigateTo(screenId) {
             currentScreen = screenId;
+            if (screenId === 'groups') state.activeGroupId = null;
             closeNotificationDrawer();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             renderApp();
@@ -1309,6 +1386,379 @@
                 case 'browse':
                     renderBrowsePage(canvas);
                     break;
+                case 'groups':
+                    renderGroupsPage(canvas);
+                    break;
+            }
+        }
+
+        function escapeHTML(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+        }
+
+        function renderGroupsPage(canvas) {
+            const group = state.groups.find(item => item.id === state.activeGroupId);
+            if (group) {
+                renderGroupDetail(canvas, group);
+                return;
+            }
+
+            const filters = [
+                { id: 'all', label: 'Todos' },
+                { id: 'cause', label: 'Por Causa' },
+                { id: 'community', label: 'Por Comunidad' },
+                { id: 'project', label: 'Por Proyecto' }
+            ];
+            const visibleGroups = state.groups.filter(item => state.groupFilter === 'all' || item.type === state.groupFilter);
+
+            canvas.innerHTML = `
+                <section class="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+                    <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+                        <div>
+                            <p class="text-xs font-mono font-bold uppercase tracking-widest text-primary-600">Comunidades Zuliov</p>
+                            <h1 class="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">Grupos que generan impacto</h1>
+                            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">Conecta con personas y organizaciones que comparten tus causas, comunidades y proyectos.</p>
+                        </div>
+                        <button type="button" onclick="openCreateGroupModal()" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-bold text-white shadow-card transition-colors hover:bg-primary-700">
+                            <i class="fa-solid fa-plus"></i> Crear Grupo
+                        </button>
+                    </div>
+
+                    <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar grupos">
+                        ${filters.map(filter => `
+                            <button type="button" onclick="setGroupFilter('${filter.id}')" aria-pressed="${state.groupFilter === filter.id}" class="rounded-full border px-4 py-2 text-xs font-bold transition-colors ${state.groupFilter === filter.id ? 'border-primary-600 bg-primary-600 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-primary-200 hover:text-primary-700'}">${filter.label}</button>
+                        `).join('')}
+                    </div>
+
+                    ${visibleGroups.length ? `
+                        <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                            ${visibleGroups.map(item => `
+                                <article role="button" tabindex="0" aria-label="Abrir grupo ${escapeHTML(item.name)}" onclick="openGroup('${item.id}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){event.preventDefault();openGroup('${item.id}');}" class="group overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-card transition-all hover:-translate-y-1 hover:shadow-glass">
+                                    <div class="relative h-40 bg-slate-200">
+                                        <img src="${escapeHTML(item.banner)}" alt="" class="h-full w-full object-cover">
+                                        <span class="absolute right-3 top-3 rounded-full border border-white/30 bg-slate-950/70 px-3 py-1 text-[10px] font-bold text-white backdrop-blur">${escapeHTML(item.visibility)} · ${item.type === 'cause' ? 'Causa' : item.type === 'community' ? 'Comunidad' : 'Proyecto'}</span>
+                                    </div>
+                                    <div class="p-5">
+                                        <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-600">${escapeHTML(item.category)}</p>
+                                        <h2 class="mt-1 text-lg font-black text-slate-900">${escapeHTML(item.name)}</h2>
+                                        <p class="mt-2 min-h-10 text-xs leading-relaxed text-slate-500">${escapeHTML(item.description)}</p>
+                                        <div class="mt-5 flex items-center justify-between gap-3">
+                                            <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-users mr-1.5 text-slate-400"></i>${item.members.toLocaleString('es-ES')} miembros</span>
+                                            <button type="button" onclick="event.stopPropagation();toggleGroupMembership('${item.id}')" class="rounded-lg px-3 py-2 text-[11px] font-bold transition-colors ${item.joined ? 'border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100' : 'bg-primary-50 text-primary-700 hover:bg-primary-100'}">${item.joined ? 'Unido' : 'Unirse al Grupo'}</button>
+                                        </div>
+                                    </div>
+                                </article>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <div class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+                            <p class="text-sm font-semibold text-slate-700">Todavía no hay grupos en esta categoría.</p>
+                            <p class="mt-1 text-xs text-slate-500">Crea el primero y empieza a reunir a la comunidad.</p>
+                        </div>
+                    `}
+                </section>
+            `;
+        }
+
+        function renderGroupDetail(canvas, group) {
+            const projects = state.projects;
+            canvas.innerHTML = `
+                <section id="group-detail-view" class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+                    <button type="button" onclick="showGroupDirectory()" class="mb-5 inline-flex items-center gap-2 text-xs font-bold text-slate-500 transition-colors hover:text-primary-600"><i class="fa-solid fa-arrow-left"></i> Volver a Grupos</button>
+                    <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card">
+                        <div class="relative h-48 bg-slate-900 sm:h-64">
+                            <img src="${escapeHTML(group.banner)}" alt="" class="h-full w-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+                            <div class="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-4 p-5 sm:p-8">
+                                <div class="text-white">
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-white/75">${escapeHTML(group.visibility)} · ${escapeHTML(group.category)}</span>
+                                    <h1 class="mt-1 text-2xl font-black sm:text-3xl">${escapeHTML(group.name)}</h1>
+                                    <p class="mt-2 text-xs text-white/80"><i class="fa-solid fa-users mr-1.5"></i>${group.members.toLocaleString('es-ES')} miembros</p>
+                                </div>
+                                <button type="button" onclick="toggleGroupMembership('${group.id}')" class="rounded-xl px-4 py-2.5 text-xs font-bold ${group.joined ? 'bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25' : 'bg-white text-primary-700 hover:bg-primary-50'}">${group.joined ? 'Unido' : 'Unirse al Grupo'}</button>
+                            </div>
+                        </div>
+                        <div class="p-5 sm:p-8">
+                            <p class="text-sm leading-relaxed text-slate-600">${escapeHTML(group.description)}</p>
+                            <nav aria-label="Canales externos de la comunidad" class="mt-5 grid gap-3 sm:grid-cols-3">
+                                <a href="https://discord.com/app" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-indigo-700">
+                                    <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-current"><path d="M19.7 5.4A18.3 18.3 0 0 0 15.2 4l-.6 1.2a16.8 16.8 0 0 0-5.1 0L8.9 4a18.3 18.3 0 0 0-4.6 1.4C1.4 9.7.6 13.9 1 18.1a18.5 18.5 0 0 0 5.6 2.8l1.2-2a11.8 11.8 0 0 1-1.9-.9l.5-.4c3.7 1.7 7.7 1.7 11.4 0l.5.4a12 12 0 0 1-1.9.9l1.2 2a18.4 18.4 0 0 0 5.6-2.8c.5-4.9-.8-9.1-3.5-12.7ZM8.8 14.9c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.4 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z"/></svg>
+                                    Unirse a Discord
+                                </a>
+                                <a href="https://slack.com/signin" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-xs font-bold text-slate-700 ring-1 ring-slate-200 transition-colors hover:bg-slate-50">
+                                    <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5"><path fill="#36C5F0" d="M5.1 14.2a2 2 0 1 1-2-2h2v2Zm1 0a2 2 0 0 1 4 0v5a2 2 0 1 1-4 0v-5Z"/><path fill="#2EB67D" d="M9.8 5.1a2 2 0 1 1 2-2v2h-2Zm0 1a2 2 0 0 1 0 4h-5a2 2 0 1 1 0-4h5Z"/><path fill="#E01E5A" d="M18.9 9.8a2 2 0 1 1 2 2h-2v-2Zm-1 0a2 2 0 0 1-4 0v-5a2 2 0 1 1 4 0v5Z"/><path fill="#ECB22E" d="M14.2 18.9a2 2 0 1 1-2 2v-2h2Zm0-1a2 2 0 0 1 0-4h5a2 2 0 1 1 0 4h-5Z"/></svg>
+                                    Canal de Slack
+                                </a>
+                                <a href="https://www.whatsapp.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
+                                    <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-current"><path d="M12 2a9.8 9.8 0 0 0-8.4 14.8L2.3 22l5.3-1.4A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1l-.7.8c-.2.2-.3.2-.6.1a6.5 6.5 0 0 1-1.9-1.2 7 7 0 0 1-1.3-1.6c-.1-.2 0-.4.1-.5l.4-.5.3-.4c.1-.2 0-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.1s.9 2.4 1 2.6a9 9 0 0 0 3.5 3.1c.5.2.9.4 1.2.5.5.2 1 .2 1.4.1.4-.1 1.4-.6 1.6-1.1.2-.5.2-.9.1-1-.1-.1-.3-.2-.5-.3Z"/></svg>
+                                    Comunidad WhatsApp
+                                </a>
+                            </nav>
+                            <form onsubmit="publishGroupPost(event, '${group.id}')" class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                                <label for="group-post-text" class="mb-2 block text-xs font-bold text-slate-700">Comparte una actualización con el grupo</label>
+                                <textarea id="group-post-text" name="text" required maxlength="1200" rows="3" placeholder="Comparte una historia de campo, una idea o un avance..." class="w-full resize-y rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-800 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100"></textarea>
+                                <div class="mt-3 flex flex-col gap-3 sm:flex-row">
+                                    <label class="sr-only" for="group-post-project">Proyecto relacionado</label>
+                                    <select id="group-post-project" name="projectId" class="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600">
+                                        <option value="">Adjuntar proyecto (opcional)</option>
+                                        ${projects.map(project => `<option value="${escapeHTML(project.id)}">${escapeHTML(project.title)}</option>`).join('')}
+                                    </select>
+                                    <button type="submit" class="rounded-lg bg-primary-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-primary-700"><i class="fa-solid fa-paper-plane mr-1.5"></i>Publicar</button>
+                                </div>
+                            </form>
+
+                            <div class="mt-8 space-y-5">
+                                <h2 class="text-sm font-black uppercase tracking-wider text-slate-800">Publicaciones</h2>
+                                ${group.posts.length ? group.posts.map(post => renderGroupPost(group, post)).join('') : `
+                                    <div class="rounded-2xl border border-dashed border-slate-200 p-8 text-center">
+                                        <i class="fa-regular fa-comments text-2xl text-slate-300"></i>
+                                        <p class="mt-2 text-sm font-semibold text-slate-700">Aún no hay publicaciones.</p>
+                                        <p class="mt-1 text-xs text-slate-500">Inicia la conversación con el grupo.</p>
+                                    </div>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderGroupPost(group, post) {
+            const project = state.projects.find(item => item.id === post.projectId);
+            const commentsVisible = state.expandedGroupPostId === post.id;
+            return `
+                <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle sm:p-5">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex min-w-0 items-center gap-3">
+                            <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary-50 text-lg">${escapeHTML(post.avatar || '👤')}</div>
+                            <div class="min-w-0">
+                                <p class="truncate text-xs font-bold text-slate-900">${escapeHTML(post.author)}</p>
+                                <p class="text-[10px] text-slate-500">${escapeHTML(post.role)} · ${escapeHTML(post.date || 'Ahora')}</p>
+                            </div>
+                        </div>
+                        <details class="relative flex-shrink-0">
+                            <summary aria-label="Opciones de publicación" class="cursor-pointer list-none rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"><i class="fa-solid fa-ellipsis"></i></summary>
+                            <div class="absolute right-0 z-10 mt-1 w-56 rounded-xl border border-slate-200 bg-white p-1 shadow-floating">
+                                <button type="button" onclick="reportGroupPost('${group.id}', '${post.id}')" class="w-full rounded-lg px-3 py-2 text-left text-xs font-semibold text-red-600 hover:bg-red-50"><i class="fa-regular fa-flag mr-2"></i>Denunciar publicación inapropiada</button>
+                            </div>
+                        </details>
+                    </div>
+                    <p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(post.text)}</p>
+                    ${project ? `
+                        <button type="button" onclick="openProjectDetail('${project.id}')" class="mt-4 flex w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-left transition-colors hover:border-primary-300 hover:bg-primary-50/50">
+                            <img src="${escapeHTML(project.coverImage)}" alt="" class="h-24 w-28 flex-shrink-0 object-cover sm:w-36">
+                            <span class="flex min-w-0 flex-1 flex-col justify-center p-3">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-primary-600">${escapeHTML(project.category)} · Proyecto Zuliov</span>
+                                <span class="mt-1 text-xs font-bold leading-snug text-slate-900">${escapeHTML(project.title)}</span>
+                                <span class="mt-1 text-[10px] font-semibold text-slate-500">Ver impacto y donar <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></span>
+                            </span>
+                        </button>
+                    ` : ''}
+                    <div class="mt-4 flex gap-4 border-t border-slate-100 pt-3">
+                        <button type="button" onclick="toggleGroupPostComments('${post.id}')" class="text-xs font-semibold text-slate-500 hover:text-primary-600"><i class="fa-regular fa-comment mr-1.5"></i>Comentar${post.comments.length ? ` (${post.comments.length})` : ''}</button>
+                        <button type="button" onclick="shareGroupPost('${group.id}', '${post.id}')" class="text-xs font-semibold text-slate-500 hover:text-primary-600"><i class="fa-solid fa-share-nodes mr-1.5"></i>Compartir</button>
+                    </div>
+                    ${commentsVisible ? `
+                        <div class="mt-4 space-y-3 border-t border-slate-100 pt-4">
+                            ${post.comments.map(comment => `
+                                <div class="rounded-xl bg-slate-50 px-3 py-2">
+                                    <span class="text-[11px] font-bold text-slate-800">${escapeHTML(comment.author)}</span>
+                                    <p class="mt-1 whitespace-pre-wrap text-xs text-slate-600">${escapeHTML(comment.text)}</p>
+                                </div>
+                            `).join('')}
+                            <form onsubmit="addGroupComment(event, '${group.id}', '${post.id}')" class="flex gap-2">
+                                <label class="sr-only" for="group-comment-${post.id}">Escribe un comentario</label>
+                                <input id="group-comment-${post.id}" name="comment" required maxlength="500" placeholder="Escribe un comentario..." class="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-primary-400">
+                                <button type="submit" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-bold text-white hover:bg-primary-700">Enviar</button>
+                            </form>
+                        </div>
+                    ` : ''}
+                </article>
+            `;
+        }
+
+        function setGroupFilter(filter) {
+            state.groupFilter = filter;
+            renderApp();
+        }
+
+        function openGroup(groupId) {
+            const group = state.groups.find(item => item.id === groupId);
+            if (!group) {
+                showToast('No se pudo encontrar este grupo.', 'info');
+                return;
+            }
+            currentScreen = 'groups';
+            state.activeGroupId = group.id;
+            renderApp();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showGroupDirectory() {
+            state.activeGroupId = null;
+            currentScreen = 'groups';
+            renderApp();
+        }
+
+        function toggleGroupMembership(groupId) {
+            const group = state.groups.find(item => item.id === groupId);
+            if (!group) return;
+            group.joined = !group.joined;
+            group.members += group.joined ? 1 : -1;
+            renderApp();
+            showToast(group.joined ? `Te uniste a ${group.name}` : `Saliste de ${group.name}`, group.joined ? 'success' : 'info');
+        }
+
+        function openCreateGroupModal() {
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/50 p-4" onclick="closeModal()">
+                    <div role="dialog" aria-modal="true" aria-labelledby="create-group-title" class="relative z-10 w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-floating animate-modal-in sm:p-8" onclick="event.stopPropagation()">
+                        <div class="mb-5 flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-primary-600">Comunidades Zuliov</p>
+                                <h2 id="create-group-title" class="mt-1 text-xl font-black text-slate-900">Crear un grupo</h2>
+                            </div>
+                            <button type="button" onclick="closeModal()" aria-label="Cerrar" class="rounded-lg p-2 text-slate-400 hover:bg-slate-100"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <form onsubmit="createGroup(event)" class="space-y-4">
+                            <div>
+                                <label for="new-group-name" class="mb-1 block text-xs font-bold text-slate-700">Nombre del grupo</label>
+                                <input id="new-group-name" name="name" required maxlength="80" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                            </div>
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label for="new-group-category" class="mb-1 block text-xs font-bold text-slate-700">Categoría o causa</label>
+                                    <input id="new-group-category" name="category" required maxlength="50" placeholder="Ej. Educación" class="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                                </div>
+                                <div>
+                                    <label for="new-group-kind" class="mb-1 block text-xs font-bold text-slate-700">Tipo de grupo</label>
+                                    <select id="new-group-kind" name="kind" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
+                                        <option value="cause">Por causa</option>
+                                        <option value="community">Por comunidad</option>
+                                        <option value="project">Por proyecto</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="new-group-visibility" class="mb-1 block text-xs font-bold text-slate-700">Visibilidad</label>
+                                <select id="new-group-visibility" name="visibility" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
+                                    <option value="Abierto">Público / Abierto</option>
+                                    <option value="Comunidad">Comunidad</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="new-group-description" class="mb-1 block text-xs font-bold text-slate-700">Descripción</label>
+                                <textarea id="new-group-description" name="description" required maxlength="300" rows="3" class="w-full resize-y rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"></textarea>
+                            </div>
+                            <div class="flex justify-end gap-2 pt-2">
+                                <button type="button" onclick="closeModal()" class="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Cancelar</button>
+                                <button type="submit" class="rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-primary-700">Crear grupo</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.getElementById('new-group-name').focus();
+        }
+
+        function createGroup(event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const formData = new FormData(form);
+            const name = String(formData.get('name')).trim();
+            const category = String(formData.get('category')).trim();
+            const description = String(formData.get('description')).trim();
+            if (!name || !category || !description) {
+                showToast('Completa todos los campos para crear el grupo.', 'info');
+                return;
+            }
+            const kind = String(formData.get('kind'));
+            const visibility = String(formData.get('visibility'));
+            state.groups.unshift({
+                id: `group_${Date.now()}`,
+                name,
+                category,
+                description,
+                type: ['cause', 'community', 'project'].includes(kind) ? kind : 'cause',
+                visibility: ['Abierto', 'Comunidad'].includes(visibility) ? visibility : 'Abierto',
+                banner: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
+                members: 1,
+                joined: true,
+                posts: []
+            });
+            state.activeGroupId = null;
+            closeModal();
+            renderApp();
+            showToast('Grupo creado. ¡Invita a la comunidad a participar!', 'success');
+        }
+
+        function publishGroupPost(event, groupId) {
+            event.preventDefault();
+            const group = state.groups.find(item => item.id === groupId);
+            if (!group) return;
+            const formData = new FormData(event.currentTarget);
+            const text = String(formData.get('text')).trim();
+            const projectId = String(formData.get('projectId') || '');
+            if (!text) {
+                showToast('Escribe un mensaje antes de publicar.', 'info');
+                return;
+            }
+            group.posts.unshift({
+                id: `post_${Date.now()}`,
+                author: state.currentUser.name,
+                role: state.currentUser.role === 'ngo' ? 'ONG verificada' : 'Miembro',
+                avatar: state.currentUser.role === 'ngo' ? '🏢' : '👤',
+                text,
+                projectId: state.projects.some(project => project.id === projectId) ? projectId : null,
+                comments: [],
+                date: 'Ahora'
+            });
+            renderApp();
+            showToast('Tu publicación ya está en el grupo.', 'success');
+        }
+
+        function toggleGroupPostComments(postId) {
+            state.expandedGroupPostId = state.expandedGroupPostId === postId ? null : postId;
+            renderApp();
+        }
+
+        function addGroupComment(event, groupId, postId) {
+            event.preventDefault();
+            const group = state.groups.find(item => item.id === groupId);
+            const post = group?.posts.find(item => item.id === postId);
+            if (!post) return;
+            const text = String(new FormData(event.currentTarget).get('comment')).trim();
+            if (!text) return;
+            post.comments.push({ author: state.currentUser.name, text });
+            state.expandedGroupPostId = postId;
+            renderApp();
+        }
+
+        async function shareGroupPost(groupId, postId) {
+            const shareUrl = `${window.location.origin}${window.location.pathname}#group-${encodeURIComponent(groupId)}-post-${encodeURIComponent(postId)}`;
+            try {
+                await navigator.clipboard.writeText(shareUrl);
+                showToast('Enlace de la publicación copiado.', 'success');
+            } catch (error) {
+                console.error('No se pudo copiar el enlace de la publicación.', error);
+                showToast('No se pudo copiar el enlace. Revisa los permisos del navegador.', 'info');
+            }
+        }
+
+        function reportGroupPost(groupId, postId) {
+            const group = state.groups.find(item => item.id === groupId);
+            const post = group?.posts.find(item => item.id === postId);
+            if (!post) return;
+            if (window.confirm('¿Quieres denunciar esta publicación para que el equipo la revise?')) {
+                post.reported = true;
+                showToast('Gracias. La publicación fue enviada para revisión.', 'success');
+                renderApp();
             }
         }
     </script>
