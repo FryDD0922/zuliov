@@ -239,8 +239,8 @@
         // Internationalization Dictionaries (ES / EN)
         const locales = {
             es: {
-                nav_howItWorks: "Cómo funciona",
                 nav_browse: "Explorar proyectos",
+                nav_groups: "GRUPOS",
                 nav_ngoProfile: "Perfil ONG Verificada",
                 hero_tag: "Infraestructura de Transparencia Real",
                 hero_title: "Conoce tu impacto.",
@@ -286,15 +286,33 @@
                 ngo_projects_title: "Proyectos en Desarrollo",
                 ngo_updates_title: "Bitácora de Campo y Actualizaciones",
                 ngo_updates_view_all: "Ver todo",
-                ngo_finance_title: "Transparencia Financiera Auditada",
                 ngo_impact_title: "Resultados Reales en la Comunidad",
                 ngo_reviews_title: "Evaluaciones de la Comunidad",
                 ngo_contact_title: "Contacto y Ubicación Verificada",
+                group_page_eyebrow: "Comunidades Zuliov",
+                group_page_title: "Grupos que generan impacto",
+                group_page_description: "Conecta con personas y organizaciones que comparten tus causas, comunidades y proyectos.",
+                group_create: "Crear Grupo",
+                group_filter_all: "Todos",
+                group_filter_cause: "Por Causa",
+                group_filter_community: "Por Comunidad",
+                group_filter_project: "Por Proyecto",
+                group_visibility_open: "Abierto",
+                group_visibility_community: "Comunidad",
+                group_type_cause: "Causa",
+                group_type_community: "Comunidad",
+                group_type_project: "Proyecto",
+                group_members: "miembros",
+                group_join: "Unirse al Grupo",
+                group_joined: "Unido",
+                group_official: "ORGANIZACIÓN OFICIAL",
+                group_verified_ngo: "ONG Verificada",
+                group_empty_title: "Todavía no hay grupos en esta categoría.",
+                group_empty_description: "Crea el primero y empieza a reunir a la comunidad.",
                 empty_state_title: "Sin Registros en esta Categoría",
                 empty_state_desc: "Esta sección no cuenta con publicaciones recientes en este momento."
             },
             en: {
-                nav_howItWorks: "How it works",
                 nav_browse: "Browse Projects",
                 nav_ngoProfile: "Verified NGO Profile",
                 hero_tag: "Radical Transparency Infrastructure",
@@ -341,10 +359,70 @@
                 ngo_projects_title: "Active & Completed Projects",
                 ngo_updates_title: "Field Updates & Milestones",
                 ngo_updates_view_all: "View all",
-                ngo_finance_title: "Financial Transparency Ledger",
                 ngo_impact_title: "Real-World Tangible Impact",
                 ngo_reviews_title: "Community Reviews & Ratings",
                 ngo_contact_title: "Verified Contact & Headquarters",
+                group_page_eyebrow: "Zuliov Communities",
+                group_page_title: "Groups making an impact",
+                group_page_description: "Connect with people and organizations that share your causes, communities, and projects.",
+                group_create: "Create Group",
+                group_filter_all: "All",
+                group_filter_cause: "By Cause",
+                group_filter_community: "By Community",
+                group_filter_project: "By Project",
+                group_visibility_open: "Open",
+                group_visibility_community: "Community",
+                group_type_cause: "Cause",
+                group_type_community: "Community",
+                group_type_project: "Project",
+                group_members: "members",
+                group_join: "Join Group",
+                group_joined: "Joined",
+                group_official: "OFFICIAL ORGANIZATION",
+                group_verified_ngo: "Verified NGO",
+                group_empty_title: "There are no groups in this category yet.",
+                group_empty_description: "Create the first one and start bringing the community together.",
+                group_data: {
+                    group_education: {
+                        name: "Education for All",
+                        description: "Ideas, progress, and support so more children can access quality education.",
+                        category: "Education"
+                    },
+                    group_childhood: {
+                        name: "Childhood Support",
+                        description: "A community to share initiatives that care for children's health, education, and future.",
+                        category: "Childhood"
+                    },
+                    group_volunteers_latam: {
+                        name: "Latam Christian Volunteers",
+                        description: "Latina American volunteers collaborating on solidarity and high-impact initiatives.",
+                        category: "Volunteering"
+                    },
+                    group_cleanwater_official: {
+                        description: "Join the NGO community to follow real-time progress and connect with other donors.",
+                        category: "CleanWater International"
+                    },
+                    group_jehovah_volunteer_relief: {
+                        name: "Jehovah's Witnesses - Volunteering",
+                        description: "A community to coordinate educational projects, community assistance, and local volunteering.",
+                        category: "Volunteering"
+                    },
+                    group_university_volunteers: {
+                        name: "University Volunteers",
+                        description: "Students and young university members collaborating on social impact initiatives, tutoring, and community projects.",
+                        category: "Education"
+                    },
+                    group_animal_rescue: {
+                        name: "Animal Rescue and Protection",
+                        description: "A community dedicated to animal welfare, pet rescue, spay and neuter campaigns, and support for local shelters.",
+                        category: "Animals"
+                    },
+                    group_senior_care: {
+                        name: "Care and Companionship for Seniors",
+                        description: "Volunteers organized to provide companionship, recreational activities, and assistance in care homes and to vulnerable older adults.",
+                        category: "Health & Wellness"
+                    }
+                },
                 empty_state_title: "No Records Found",
                 empty_state_desc: "There are currently no items published in this category."
             }
@@ -922,28 +1000,93 @@
                     posts: []
                 },
                 {
-                    id: 'group_kitui_well',
-                    name: 'Amigos del Pozo Kitui #12',
-                    description: 'Sigue los avances del pozo comunitario de Kitui y conversa con quienes apoyan el proyecto.',
-                    category: 'Agua limpia',
-                    type: 'project',
+                    id: 'group_cleanwater_official',
+                    name: 'CleanWater Community',
+                    description: 'Únete a la comunidad de la ONG para seguir avances en tiempo real y conectar con otros donantes.',
+                    category: 'CleanWater International',
+                    type: 'community',
                     visibility: 'Abierto',
-                    banner: 'assets/ong3',
-                    members: 94,
+                    official: true,
+                    banner: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800',
+                    members: 326,
                     joined: false,
                     posts: [
                         {
-                            id: 'post_kitui_1',
+                            id: 'post_cleanwater_1',
                             author: 'Marcus Vance',
-                            role: 'Coordinador de operaciones de campo',
+                            role: 'ONG verificada',
                             avatar: '👷',
-                            text: 'La bomba solar ya llegó al emplazamiento. El equipo está preparando la instalación y compartiremos los resultados de las pruebas de agua.',
+                            text: '¡Bienvenidos a la comunidad oficial de CleanWater! Aquí compartiremos avances de campo y novedades de nuestros proyectos de agua limpia.',
                             projectId: 'proj_water_well',
-                            comments: [
-                                { author: 'Sarah Miller', text: '¡Qué gran avance para la comunidad de Kitui!' }
-                            ]
+                            comments: []
                         }
                     ]
+                },
+                {
+                    id: 'group_jehovah_volunteer_relief',
+                    name: 'Testigos de Jehová - Voluntariado',
+                    description: 'Comunidad para coordinar proyectos educativos, ayuda comunitaria y labores de voluntariado local.',
+                    category: 'Voluntariado',
+                    type: 'community',
+                    visibility: 'Abierto',
+                    banner: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80',
+                    members: 310,
+                    joined: false,
+                    posts: [
+                        {
+                            id: 'post_jehovah_volunteer_1',
+                            author: 'Coordinación de voluntariado',
+                            role: 'Comunidad',
+                            avatar: '🤝',
+                            text: 'Bienvenidos al grupo de voluntariado y socorro. Aquí compartiremos proyectos de ayuda humanitaria, educación bíblica y asistencia a comunidades en emergencia.',
+                            comments: []
+                        }
+                    ]
+                },
+                {
+                    id: 'group_university_volunteers',
+                    name: 'Voluntariado Universitario',
+                    description: 'Estudiantes y jóvenes universitarios colaborando en iniciativas de impacto social, tutorías y proyectos comunitarios.',
+                    category: 'Educación',
+                    type: 'community',
+                    visibility: 'Abierto',
+                    banner: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
+                    members: 195,
+                    joined: false,
+                    posts: [
+                        {
+                            id: 'post_university_volunteers_1',
+                            author: 'Comunidad universitaria',
+                            role: 'Voluntariado',
+                            avatar: '🎓',
+                            text: 'Bienvenidos al grupo de Voluntariado Universitario. Comparte tutorías, iniciativas de impacto social y proyectos comunitarios.',
+                            comments: []
+                        }
+                    ]
+                },
+                {
+                    id: 'group_animal_rescue',
+                    name: 'Rescate y Protección Animal',
+                    description: 'Comunidad dedicada al bienestar animal, rescate de mascotas, campañas de esterilización y apoyo a refugios locales.',
+                    category: 'Animales',
+                    type: 'community',
+                    visibility: 'Abierto',
+                    banner: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=800&q=80',
+                    members: 240,
+                    joined: false,
+                    posts: []
+                },
+                {
+                    id: 'group_senior_care',
+                    name: 'Cuidado y Compañía para Abuelitos',
+                    description: 'Voluntarios organizados para acompañamiento, actividades recreativas y asistencia en hogares de ancianos y abuelitos en situación de vulnerabilidad.',
+                    category: 'Salud & Bienestar',
+                    type: 'community',
+                    visibility: 'Abierto',
+                    banner: 'https://static.vecteezy.com/system/resources/thumbnails/075/505/185/small/happy-elderly-couple-portrait-seniors-smiling-togetherness-love-seniors-lifestyle-photo.jpg',
+                    members: 180,
+                    joined: false,
+                    posts: []
                 }
             ],
 
@@ -991,7 +1134,6 @@
 
                 <!-- Navigation Links -->
                 <nav class="hidden md:flex items-center space-x-8">
-                    <button onclick="navigateTo('landing')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-howItWorks">Cómo funciona</button>
                     <button onclick="navigateTo('browse')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
                     <button onclick="navigateTo('groups')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">Grupos</button>
                     <button onclick="navigateTo('ngo-profile')" class="nav-link font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 text-slate-600 hover:text-primary-600" id="nav-ngoProfile">
@@ -1299,8 +1441,8 @@
                 btnEs.className = "px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-900";
             }
 
-            document.getElementById('nav-howItWorks').textContent = t('nav_howItWorks');
             document.getElementById('nav-browse').textContent = t('nav_browse');
+            document.getElementById('nav-groups').textContent = t('nav_groups');
             document.getElementById('nav-ngoProfile-text').textContent = t('nav_ngoProfile');
             document.getElementById('sim-title').textContent = t('sim_controller');
             document.getElementById('sim-desc').textContent = t('sim_desc');
@@ -1317,8 +1459,8 @@
                 document.getElementById('nav-ngoProfile').classList.add('text-primary-600');
             } else if (currentScreen === 'browse') {
                 document.getElementById('nav-browse').classList.add('text-primary-600');
-            } else if (currentScreen === 'landing') {
-                document.getElementById('nav-howItWorks').classList.add('text-primary-600');
+            } else if (currentScreen === 'groups') {
+                document.getElementById('nav-groups').classList.add('text-primary-600');
             }
         }
 
@@ -1402,6 +1544,11 @@
             })[character]);
         }
 
+        function groupText(group, field) {
+            const groupTranslations = locales[currentLang].group_data;
+            return groupTranslations?.[group.id]?.[field] || group[field];
+        }
+
         function renderGroupsPage(canvas) {
             const group = state.groups.find(item => item.id === state.activeGroupId);
             if (group) {
@@ -1410,10 +1557,10 @@
             }
 
             const filters = [
-                { id: 'all', label: 'Todos' },
-                { id: 'cause', label: 'Por Causa' },
-                { id: 'community', label: 'Por Comunidad' },
-                { id: 'project', label: 'Por Proyecto' }
+                { id: 'all', label: t('group_filter_all') },
+                { id: 'cause', label: t('group_filter_cause') },
+                { id: 'community', label: t('group_filter_community') },
+                { id: 'project', label: t('group_filter_project') }
             ];
             const visibleGroups = state.groups.filter(item => state.groupFilter === 'all' || item.type === state.groupFilter);
 
@@ -1421,16 +1568,16 @@
                 <section class="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
                     <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
                         <div>
-                            <p class="text-xs font-mono font-bold uppercase tracking-widest text-primary-600">Comunidades Zuliov</p>
-                            <h1 class="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">Grupos que generan impacto</h1>
-                            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">Conecta con personas y organizaciones que comparten tus causas, comunidades y proyectos.</p>
+                            <p class="text-xs font-mono font-bold uppercase tracking-widest text-primary-600">${t('group_page_eyebrow')}</p>
+                            <h1 class="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">${t('group_page_title')}</h1>
+                            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">${t('group_page_description')}</p>
                         </div>
                         <button type="button" onclick="openCreateGroupModal()" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-bold text-white shadow-card transition-colors hover:bg-primary-700">
-                            <i class="fa-solid fa-plus"></i> Crear Grupo
+                            <i class="fa-solid fa-plus"></i> ${t('group_create')}
                         </button>
                     </div>
 
-                    <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar grupos">
+                    <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="${currentLang === 'es' ? 'Filtrar grupos' : 'Filter groups'}">
                         ${filters.map(filter => `
                             <button type="button" onclick="setGroupFilter('${filter.id}')" aria-pressed="${state.groupFilter === filter.id}" class="rounded-full border px-4 py-2 text-xs font-bold transition-colors ${state.groupFilter === filter.id ? 'border-primary-600 bg-primary-600 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-primary-200 hover:text-primary-700'}">${filter.label}</button>
                         `).join('')}
@@ -1439,18 +1586,24 @@
                     ${visibleGroups.length ? `
                         <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                             ${visibleGroups.map(item => `
-                                <article role="button" tabindex="0" aria-label="Abrir grupo ${escapeHTML(item.name)}" onclick="openGroup('${item.id}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){event.preventDefault();openGroup('${item.id}');}" class="group overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-card transition-all hover:-translate-y-1 hover:shadow-glass">
-                                    <div class="relative h-40 bg-slate-200">
-                                        <img src="${escapeHTML(item.banner)}" alt="" class="h-full w-full object-cover">
-                                        <span class="absolute right-3 top-3 rounded-full border border-white/30 bg-slate-950/70 px-3 py-1 text-[10px] font-bold text-white backdrop-blur">${escapeHTML(item.visibility)} · ${item.type === 'cause' ? 'Causa' : item.type === 'community' ? 'Comunidad' : 'Proyecto'}</span>
+                                <article role="button" tabindex="0" aria-label="${currentLang === 'es' ? 'Abrir grupo' : 'Open group'} ${escapeHTML(groupText(item, 'name'))}" onclick="openGroup('${item.id}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){event.preventDefault();openGroup('${item.id}');}" class="group overflow-hidden rounded-2xl ${item.official ? 'border-2 border-emerald-500 bg-emerald-50/20 shadow-md' : 'border border-slate-200 bg-white shadow-card'} text-left transition-all hover:-translate-y-1 hover:shadow-glass">
+                                    <div class="relative ${['group_cleanwater_official', 'group_senior_care'].includes(item.id) ? 'h-48' : 'h-40'} bg-slate-200">
+                                        <img src="${escapeHTML(item.banner)}" alt="${item.id === 'group_cleanwater_official' ? 'Solar Panels CleanWater' : item.id === 'group_senior_care' ? (currentLang === 'es' ? 'Cuidado de Abuelitos' : 'Senior Care') : ''}" ${item.id === 'group_senior_care' ? `onerror="this.onerror=null; this.src='https://picsum.photos/id/1025/800/500';"` : ''} class="${['group_cleanwater_official', 'group_senior_care'].includes(item.id) ? 'w-full h-48 object-cover rounded-t-xl' : 'h-full w-full object-cover'}">
+                                        <div class="absolute right-3 top-3 flex flex-col items-end gap-2">
+                                            ${item.official ? `<span class="rounded-full border border-emerald-300 bg-emerald-600 px-3 py-1 text-[10px] font-bold tracking-wide text-white shadow-md">✓ ${t('group_official')}</span>` : ''}
+                                            <span class="rounded-full border border-white/30 bg-slate-950/70 px-3 py-1 text-[10px] font-bold text-white backdrop-blur">${t(item.visibility === 'Comunidad' ? 'group_visibility_community' : 'group_visibility_open')} · ${t(`group_type_${item.type}`)}</span>
+                                        </div>
                                     </div>
                                     <div class="p-5">
-                                        <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-600">${escapeHTML(item.category)}</p>
-                                        <h2 class="mt-1 text-lg font-black text-slate-900">${escapeHTML(item.name)}</h2>
-                                        <p class="mt-2 min-h-10 text-xs leading-relaxed text-slate-500">${escapeHTML(item.description)}</p>
+                                        <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-600">${escapeHTML(groupText(item, 'category'))}</p>
+                                        <div class="mt-1 flex flex-wrap items-center gap-2">
+                                            <h2 class="text-lg font-black text-slate-900">${escapeHTML(groupText(item, 'name'))}</h2>
+                                            ${item.official ? `<span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-emerald-700 ring-1 ring-emerald-200"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> ${t('group_verified_ngo')}</span>` : ''}
+                                        </div>
+                                        <p class="mt-2 min-h-10 text-xs leading-relaxed text-slate-500">${escapeHTML(groupText(item, 'description'))}</p>
                                         <div class="mt-5 flex items-center justify-between gap-3">
-                                            <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-users mr-1.5 text-slate-400"></i>${item.members.toLocaleString('es-ES')} miembros</span>
-                                            <button type="button" onclick="event.stopPropagation();toggleGroupMembership('${item.id}')" class="rounded-lg px-3 py-2 text-[11px] font-bold transition-colors ${item.joined ? 'border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100' : 'bg-primary-50 text-primary-700 hover:bg-primary-100'}">${item.joined ? 'Unido' : 'Unirse al Grupo'}</button>
+                                            <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-users mr-1.5 text-slate-400"></i>${item.members.toLocaleString('es-ES')} ${t('group_members')}</span>
+                                            <button type="button" onclick="event.stopPropagation();${item.id === 'group_jehovah_volunteer_relief' ? `joinGroupAndOpen('${item.id}')` : `toggleGroupMembership('${item.id}')`}" class="rounded-lg px-3 py-2 text-[11px] font-bold transition-colors ${item.joined ? 'border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100' : 'bg-primary-50 text-primary-700 hover:bg-primary-100'}">${item.joined ? t('group_joined') : t('group_join')}</button>
                                         </div>
                                     </div>
                                 </article>
@@ -1458,8 +1611,8 @@
                         </div>
                     ` : `
                         <div class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-                            <p class="text-sm font-semibold text-slate-700">Todavía no hay grupos en esta categoría.</p>
-                            <p class="mt-1 text-xs text-slate-500">Crea el primero y empieza a reunir a la comunidad.</p>
+                            <p class="text-sm font-semibold text-slate-700">${t('group_empty_title')}</p>
+                            <p class="mt-1 text-xs text-slate-500">${t('group_empty_description')}</p>
                         </div>
                     `}
                 </section>
@@ -1613,6 +1766,34 @@
             group.members += group.joined ? 1 : -1;
             renderApp();
             showToast(group.joined ? `Te uniste a ${group.name}` : `Saliste de ${group.name}`, group.joined ? 'success' : 'info');
+        }
+
+        function joinOfficialNGOGroup() {
+            const group = state.groups.find(item => item.id === 'group_cleanwater_official');
+            if (!group) {
+                showToast('No se pudo encontrar el grupo oficial de la ONG.', 'info');
+                return;
+            }
+            if (!group.joined) {
+                group.joined = true;
+                group.members += 1;
+                showToast(`Te uniste a ${group.name}`, 'success');
+            }
+            openGroup(group.id);
+        }
+
+        function joinGroupAndOpen(groupId) {
+            const group = state.groups.find(item => item.id === groupId);
+            if (!group) {
+                showToast('No se pudo encontrar este grupo.', 'info');
+                return;
+            }
+            if (!group.joined) {
+                group.joined = true;
+                group.members += 1;
+                showToast(`Te uniste a ${group.name}`, 'success');
+            }
+            openGroup(group.id);
         }
 
         function openCreateGroupModal() {
@@ -2118,80 +2299,65 @@
                         `}
                     </div>
 
-                    <!-- FINANCIAL TRANSPARENCY -->
-                    <div class="space-y-4 text-left">
-                        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                            <div>
-                                <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_finance_title')}</h2>
-                                <p class="text-xs text-slate-500">Click any financial artifact to inspect itemized receipts and cryptographic proof</p>
+                    <!-- REVIEWS & OFFICIAL NGO GROUP -->
+                    <div class="grid items-start gap-6 md:grid-cols-3">
+                        <div class="space-y-4 text-left md:col-span-2">
+                            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                                <div>
+                                    <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_reviews_title')}</h2>
+                                    <p class="text-xs text-slate-500">Audited evaluations from donors and independent compliance advisors</p>
+                                </div>
+                                <button onclick="showToast('Review Modal ready', 'info')" class="text-xs font-semibold bg-white text-slate-700 border border-slate-200 px-3 py-1.5 rounded-xl hover:bg-slate-50">
+                                    Write Review
+                                </button>
                             </div>
-                            <span class="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                                <i class="fa-solid fa-lock"></i> Cryptographically Signed
-                            </span>
-                        </div>
 
-                        ${isEmp ? renderEmptyState("No Financial Artifacts Available") : `
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                ${ngo.financials.map(doc => `
-                                    <div onclick="openFinancialDocModal('${doc.id}')" class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-subtle hover:shadow-card hover:border-emerald-400 transition-all cursor-pointer group space-y-3">
-                                        <div class="flex items-center justify-between">
-                                            <div class="h-9 w-9 rounded-xl bg-slate-100 text-slate-700 group-hover:bg-emerald-500 group-hover:text-white transition-colors flex items-center justify-center font-bold text-sm">
-                                                <i class="fa-solid fa-file-invoice"></i>
-                                            </div>
-                                            <span class="text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded font-semibold">${doc.type}</span>
-                                        </div>
-
-                                        <div class="space-y-1">
-                                            <h3 class="text-xs font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-primary-600 transition-colors">${doc.title}</h3>
-                                            <p class="text-[11px] font-mono font-bold text-emerald-600">${formatCurrency(doc.amount)}</p>
-                                        </div>
-
-                                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] font-mono text-slate-400">
-                                            <span>${doc.date}</span>
-                                            <span class="text-emerald-600 font-bold flex items-center gap-1">
-                                                <i class="fa-solid fa-circle-check"></i> Verified
-                                            </span>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `}
-                    </div>
-
-                    <!-- REVIEWS -->
-                    <div class="space-y-4 text-left">
-                        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                            <div>
-                                <h2 class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_reviews_title')}</h2>
-                                <p class="text-xs text-slate-500">Audited evaluations from donors and independent compliance advisors</p>
-                            </div>
-                            <button onclick="showToast('Review Modal ready', 'info')" class="text-xs font-semibold bg-white text-slate-700 border border-slate-200 px-3 py-1.5 rounded-xl hover:bg-slate-50">
-                                Write Review
-                            </button>
-                        </div>
-
-                        ${isEmp ? renderEmptyState("No Reviews Submitted Yet") : `
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                ${ngo.reviews.map(r => `
-                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-subtle space-y-3">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center space-x-3">
-                                                <img src="${r.avatar}" class="h-9 w-9 rounded-full object-cover">
-                                                <div>
-                                                    <span class="block text-xs font-bold text-slate-900 leading-none">${r.author}</span>
-                                                    <span class="block text-[10px] text-slate-400 font-mono mt-0.5">${r.role}</span>
+                            ${isEmp ? renderEmptyState("No Reviews Submitted Yet") : `
+                                <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                                    ${ngo.reviews.map(r => `
+                                        <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-subtle space-y-3">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center space-x-3">
+                                                    <img src="${r.avatar}" class="h-9 w-9 rounded-full object-cover">
+                                                    <div>
+                                                        <span class="block text-xs font-bold text-slate-900 leading-none">${r.author}</span>
+                                                        <span class="block text-[10px] text-slate-400 font-mono mt-0.5">${r.role}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="text-amber-400 text-xs font-mono">
+                                                    ${'★'.repeat(r.rating)}
                                                 </div>
                                             </div>
-                                            <div class="text-amber-400 text-xs font-mono">
-                                                ${'★'.repeat(r.rating)}
-                                            </div>
+                                            <p class="text-xs text-slate-600 leading-relaxed">${r.comment}</p>
+                                            <span class="text-[10px] text-slate-400 font-mono block">${r.date}</span>
                                         </div>
-                                        <p class="text-xs text-slate-600 leading-relaxed">${r.comment}</p>
-                                        <span class="text-[10px] text-slate-400 font-mono block">${r.date}</span>
-                                    </div>
-                                `).join('')}
+                                    `).join('')}
+                                </div>
+                            `}
+                        </div>
+
+                        <aside class="overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 via-white to-emerald-50 p-5 text-left shadow-card">
+                            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm">
+                                <i class="fa-solid fa-people-group text-lg" aria-hidden="true"></i>
                             </div>
-                        `}
+                            <p class="mt-4 text-[10px] font-mono font-bold uppercase tracking-widest text-primary-700">CleanWater Community / Zuliov Group</p>
+                            <h3 class="mt-1 text-lg font-black leading-tight text-slate-900">Grupo Oficial de la ONG</h3>
+                            <p class="mt-3 text-xs leading-relaxed text-slate-600">Únete a la comunidad de la ONG para seguir avances en tiempo real y conectar con otros donantes.</p>
+                            <button type="button" onclick="joinOfficialNGOGroup()" class="mt-5 w-full rounded-xl bg-primary-600 px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-primary-700">
+                                <i class="fa-solid fa-arrow-right-to-bracket mr-1.5" aria-hidden="true"></i> Unirse al Grupo
+                            </button>
+                            <nav aria-label="Canales de la comunidad CleanWater" class="mt-4 grid grid-cols-3 gap-2">
+                                <a href="https://discord.com/app" target="_blank" rel="noopener noreferrer" aria-label="Abrir Discord" class="inline-flex items-center justify-center gap-1 rounded-lg bg-indigo-600 px-2 py-2.5 text-[10px] font-bold text-white transition-colors hover:bg-indigo-700">
+                                    <i class="fa-brands fa-discord" aria-hidden="true"></i> Discord
+                                </a>
+                                <a href="https://slack.com/signin" target="_blank" rel="noopener noreferrer" aria-label="Abrir Slack" class="inline-flex items-center justify-center gap-1 rounded-lg bg-white px-2 py-2.5 text-[10px] font-bold text-slate-700 ring-1 ring-slate-200 transition-colors hover:bg-slate-50">
+                                    <i class="fa-brands fa-slack" aria-hidden="true"></i> Slack
+                                </a>
+                                <a href="https://www.whatsapp.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp" class="inline-flex items-center justify-center gap-1 rounded-lg bg-emerald-600 px-2 py-2.5 text-[10px] font-bold text-white transition-colors hover:bg-emerald-700">
+                                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp
+                                </a>
+                            </nav>
+                        </aside>
                     </div>
 
                 </div>
@@ -2532,69 +2698,6 @@
                                     `).join('')}
                                 </ul>
                             </div>
-                        </div>
-
-                    </div>
-                </div>
-            `;
-        }
-
-        function openFinancialDocModal(docId) {
-            const doc = ngoData.financials.find(f => f.id === docId);
-            if (!doc) return;
-
-            const container = document.getElementById('modal-container');
-            container.innerHTML = `
-                <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
-                    <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity" onclick="closeModal()"></div>
-                    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-floating border border-slate-200 relative z-10 animate-modal-in text-left space-y-5">
-                        
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <div class="flex items-center space-x-2">
-                                <div class="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
-                                    <i class="fa-solid fa-file-check"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-sm font-bold text-slate-900">Verified Audit Artifact</h3>
-                                    <p class="text-[10px] font-mono text-slate-400">Cryptographic Proof & Line Items</p>
-                                </div>
-                            </div>
-                            <button onclick="closeModal()" class="rounded-lg text-slate-400 hover:text-slate-600 p-1">
-                                <i class="fa-solid fa-xmark text-base"></i>
-                            </button>
-                        </div>
-
-                        <div class="space-y-3">
-                            <h4 class="text-sm font-bold text-slate-900">${doc.title}</h4>
-                            
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2 text-xs font-mono">
-                                <div class="flex justify-between">
-                                    <span class="text-slate-400">TOTAL AMOUNT:</span>
-                                    <span class="font-bold text-emerald-600">${formatCurrency(doc.amount)}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-slate-400">VENDOR:</span>
-                                    <span class="font-bold text-slate-800">${doc.vendor}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-slate-400">DATE RECORDED:</span>
-                                    <span class="font-bold text-slate-800">${doc.date}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-slate-400">AUDITED BY:</span>
-                                    <span class="font-bold text-slate-800">${doc.verifiedBy}</span>
-                                </div>
-                                <div class="pt-2 border-t border-slate-200 flex justify-between items-center text-[10px]">
-                                    <span class="text-slate-400">LEDGER HASH:</span>
-                                    <span class="bg-slate-200 px-2 py-0.5 rounded text-slate-800">${doc.hash}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-end space-x-2 pt-2">
-                            <button onclick="showToast('Audit Certificate (PDF) Downloaded', 'success')" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-900 text-white hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-download"></i> Download Signed Audit PDF
-                            </button>
                         </div>
 
                     </div>
