@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-50 dark:bg-slate-950">
+<html lang="en" class="h-full bg-slate-50 dark:bg-slate-950">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -307,13 +307,85 @@
                 group_joined: "Unido",
                 group_official: "ORGANIZACIÓN OFICIAL",
                 group_verified_ngo: "ONG Verificada",
+                group_back: "Volver a Grupos",
+                group_channels_aria: "Canales externos de la comunidad",
+                group_discord: "Unirse a Discord",
+                group_slack: "Canal de Slack",
+                group_whatsapp: "Comunidad WhatsApp",
+                group_post_label: "Comparte una actualización con el grupo",
+                group_post_placeholder: "Comparte una historia de campo, una idea o un avance...",
+                group_attach_project: "Adjuntar proyecto (opcional)",
+                group_post_submit: "Publicar",
+                group_posts: "Publicaciones",
+                group_no_posts: "Aún no hay publicaciones.",
+                group_start_conversation: "Inicia la conversación con el grupo.",
+                group_post_comment: "Comentar",
+                group_post_share: "Compartir",
+                group_post_report: "Denunciar publicación inapropiada",
+                group_post_options: "Opciones de publicación",
+                group_comment_label: "Escribe un comentario",
+                group_comment_placeholder: "Escribe un comentario...",
+                group_comment_submit: "Enviar",
+                group_now: "Ahora",
+                group_leaders_title: "Líderes del Grupo",
+                group_leader_coordinator_name: "Coordinación de voluntariado",
+                group_leader_coordinator: "Coordinador de Campo",
+                group_leader_facilitator_name: "Equipo de voluntariado regional",
+                group_leader_facilitator: "Facilitador Regional",
+                group_alliances_title: "Alianzas",
+                group_alliances_subtitle: "Grupos y ONGs asociadas",
+                group_alliance_group: "Grupo",
+                group_alliance_ngo: "ONG Verificada",
+                group_alliance_follow: "Seguir",
+                group_alliance_following: "Siguiendo",
+                group_alliance_followed_toast: "Ahora sigues a {name}.",
+                group_alliance_unfollowed_toast: "Dejaste de seguir a {name}.",
+                group_leaders: [
+                    { nameKey: "group_leader_coordinator_name", roleKey: "group_leader_coordinator", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120" },
+                    { nameKey: "group_leader_facilitator_name", roleKey: "group_leader_facilitator", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120" }
+                ],
+                group_alliances: [
+                    { id: "jw-volunteers-venezuela", name: "JW Volunteers - Venezuela", type: "group", icon: "🇻🇪" },
+                    { id: "jw-volunteers-usa", name: "JW Volunteers - USA", type: "group", icon: "🇺🇸" },
+                    { id: "jw-volunteers-china", name: "JW Volunteers - China", type: "group", icon: "🇨🇳" },
+                    { id: "cleanwater-international", name: "CleanWater International", type: "ngo", icon: "💧" }
+                ],
+                group_role_ngo: "ONG verificada",
+                group_role_member: "Miembro",
+                group_joined_toast: "Te uniste a {group}.",
+                group_left_toast: "Saliste de {group}.",
+                group_post_empty_error: "Escribe un mensaje antes de publicar.",
+                group_post_success: "Tu publicación ya está en el grupo.",
+                group_share_success: "Enlace de la publicación copiado.",
+                group_share_error: "No se pudo copiar el enlace de la publicación.",
+                group_share_permission_error: "No se pudo copiar el enlace. Revisa los permisos del navegador.",
+                group_report_prompt: "¿Quieres denunciar esta publicación para que el equipo la revise?",
+                group_report_success: "Gracias. La publicación fue enviada para revisión.",
+                ngo_group_eyebrow: "CLEANWATER COMMUNITY / ZULIOV GROUP",
+                ngo_group_title: "Grupo Oficial de la ONG",
+                ngo_group_description: "Únete a la comunidad de la ONG para seguir avances en tiempo real y conectar con otros donantes.",
+                ngo_group_join: "Unirse al Grupo",
                 group_empty_title: "Todavía no hay grupos en esta categoría.",
                 group_empty_description: "Crea el primero y empieza a reunir a la comunidad.",
+                expanded_project_log: "Registro ampliado del proyecto",
+                transparency_audit: "Transparencia y auditoría",
+                community_comments: "Comentarios de la comunidad",
+                associated_costs: "Costos asociados",
+                verification_hashes: "Hashes de verificación",
+                no_field_updates: "Todavía no hay avances de campo publicados para este proyecto.",
+                no_audit_data: "Todavía no hay datos de auditoría publicados.",
+                no_comments: "Todavía no hay comentarios. Sé la primera persona en compartir tu opinión.",
+                add_comment: "Añadir un comentario",
+                post_comment: "Publicar comentario",
+                comment_required: "Escribe un comentario antes de publicarlo.",
+                funding_status: "Estado de financiación",
+                close: "Cerrar",
                 empty_state_title: "Sin Registros en esta Categoría",
                 empty_state_desc: "Esta sección no cuenta con publicaciones recientes en este momento."
             },
             en: {
                 nav_browse: "Browse Projects",
+                nav_groups: "GROUPS",
                 nav_ngoProfile: "Verified NGO Profile",
                 hero_tag: "Radical Transparency Infrastructure",
                 hero_title: "Know your impact.",
@@ -380,8 +452,89 @@
                 group_joined: "Joined",
                 group_official: "OFFICIAL ORGANIZATION",
                 group_verified_ngo: "Verified NGO",
+                group_back: "Back to Groups",
+                group_channels_aria: "Community external channels",
+                group_discord: "Join Discord",
+                group_slack: "Slack Channel",
+                group_whatsapp: "WhatsApp Community",
+                group_post_label: "Share an update with the group",
+                group_post_placeholder: "Share a field story, an idea, or progress...",
+                group_attach_project: "Attach project (optional)",
+                group_post_submit: "Post",
+                group_posts: "Posts",
+                group_no_posts: "There are no posts yet.",
+                group_start_conversation: "Start the conversation with the group.",
+                group_post_comment: "Comment",
+                group_post_share: "Share",
+                group_post_report: "Report inappropriate post",
+                group_post_options: "Post options",
+                group_comment_label: "Write a comment",
+                group_comment_placeholder: "Write a comment...",
+                group_comment_submit: "Send",
+                group_now: "Just now",
+                group_leaders_title: "GROUP LEADERS",
+                group_leader_coordinator_name: "Volunteer Coordination",
+                group_leader_coordinator: "Field Coordinator",
+                group_leader_facilitator_name: "Regional Volunteer Team",
+                group_leader_facilitator: "Regional Facilitator",
+                group_alliances_title: "ALLIANCES",
+                group_alliances_subtitle: "Groups and NGOs following each other",
+                group_alliance_group: "Group",
+                group_alliance_ngo: "Verified NGO",
+                group_alliance_follow: "Follow",
+                group_alliance_following: "Following",
+                group_alliance_followed_toast: "You are now following {name}.",
+                group_alliance_unfollowed_toast: "You unfollowed {name}.",
+                group_leaders: [
+                    { nameKey: "group_leader_coordinator_name", roleKey: "group_leader_coordinator", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120" },
+                    { nameKey: "group_leader_facilitator_name", roleKey: "group_leader_facilitator", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120" }
+                ],
+                group_alliances: [
+                    { id: "jw-volunteers-venezuela", name: "JW Volunteers - Venezuela", type: "group", icon: "🇻🇪" },
+                    { id: "jw-volunteers-usa", name: "JW Volunteers - USA", type: "group", icon: "🇺🇸" },
+                    { id: "jw-volunteers-china", name: "JW Volunteers - China", type: "group", icon: "🇨🇳" },
+                    { id: "cleanwater-international", name: "CleanWater International", type: "ngo", icon: "💧" }
+                ],
+                group_role_ngo: "Verified NGO",
+                group_role_member: "Member",
+                group_joined_toast: "You joined {group}.",
+                group_left_toast: "You left {group}.",
+                group_post_empty_error: "Write a message before posting.",
+                group_post_success: "Your post has been added to the group.",
+                group_share_success: "Post link copied.",
+                group_share_error: "Could not copy the post link.",
+                group_share_permission_error: "Could not copy the link. Check your browser permissions.",
+                group_report_prompt: "Would you like to report this post for the team to review?",
+                group_report_success: "Thanks. The post has been submitted for review.",
+                ngo_group_eyebrow: "CLEANWATER COMMUNITY / ZULIOV GROUP",
+                ngo_group_title: "Official NGO Group",
+                ngo_group_description: "Join the NGO community to track real-time progress and connect with other donors.",
+                ngo_group_join: "Join Group",
                 group_empty_title: "There are no groups in this category yet.",
                 group_empty_description: "Create the first one and start bringing the community together.",
+                expanded_project_log: "Expanded Project Log",
+                transparency_audit: "Transparency & Audit",
+                community_comments: "Community Comments",
+                associated_costs: "Associated Costs",
+                verification_hashes: "Verification Hashes",
+                no_field_updates: "No field updates have been published for this project yet.",
+                no_audit_data: "No audit details have been published yet.",
+                no_comments: "No comments yet. Be the first to share your thoughts.",
+                add_comment: "Add a comment",
+                post_comment: "Post Comment",
+                comment_required: "Write a comment before posting.",
+                funding_status: "Funding status",
+                close: "Close",
+                field_updates: {
+                    upd_1: {
+                        shortTitle: "Solar pump arrives in Kitui",
+                        projectLabel: "Clean Water · Kitui #12"
+                    },
+                    upd_2: {
+                        shortTitle: "Drilling reaches the aquifer",
+                        projectLabel: "Clean Water · Kitui #12"
+                    }
+                },
                 group_data: {
                     group_education: {
                         name: "Education for All",
@@ -404,7 +557,7 @@
                     },
                     group_jehovah_volunteer_relief: {
                         name: "Jehovah's Witnesses - Volunteering",
-                        description: "A community to coordinate educational projects, community assistance, and local volunteering.",
+                        description: "Community to coordinate educational projects, community aid, and local volunteer work.",
                         category: "Volunteering"
                     },
                     group_university_volunteers: {
@@ -423,13 +576,20 @@
                         category: "Health & Wellness"
                     }
                 },
+                group_posts_data: {
+                    post_jehovah_volunteer_1: {
+                        author: "Volunteering Coordination",
+                        role: "Community",
+                        date: "Just now",
+                        text: "Welcome to the volunteering and relief group. Here we will share humanitarian aid projects, educational initiatives, and emergency community assistance."
+                    }
+                },
                 empty_state_title: "No Records Found",
                 empty_state_desc: "There are currently no items published in this category."
             }
         };
 
-        const userLang = navigator.language || navigator.userLanguage;
-        let currentLang = userLang.startsWith('es') ? 'es' : 'en';
+        let currentLang = 'en';
 
         function t(key) {
             return (locales[currentLang] && locales[currentLang][key]) ? locales[currentLang][key] : (locales['en'][key] || key);
@@ -1111,6 +1271,9 @@
             projectContinent: 'all',
             projectSearchTerm: '',
             projectSearchOpen: false,
+            selectedBrowseProjectId: null,
+            expandedProjectComments: {},
+            followedGroupAlliances: {},
             activeDonationProject: null,
             activeGroupId: null,
             groupFilter: 'all'
@@ -1135,7 +1298,7 @@
                 <!-- Navigation Links -->
                 <nav class="hidden md:flex items-center space-x-8">
                     <button onclick="navigateTo('browse')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
-                    <button onclick="navigateTo('groups')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">Grupos</button>
+                    <button onclick="navigateTo('groups')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">GRUPOS</button>
                     <button onclick="navigateTo('ngo-profile')" class="nav-link font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 text-slate-600 hover:text-primary-600" id="nav-ngoProfile">
                         <i class="fa-solid fa-building-ngo text-xs"></i> <span id="nav-ngoProfile-text">Perfil ONG Verificada</span>
                     </button>
@@ -1549,6 +1712,16 @@
             return groupTranslations?.[group.id]?.[field] || group[field];
         }
 
+        function groupPostText(post, field) {
+            const translations = locales[currentLang].group_posts_data;
+            return translations?.[post.id]?.[field] || post[field];
+        }
+
+        function fieldUpdateText(update, field) {
+            const updateTranslations = locales[currentLang].field_updates;
+            return updateTranslations?.[update.id]?.[field] || update[field];
+        }
+
         function renderGroupsPage(canvas) {
             const group = state.groups.find(item => item.id === state.activeGroupId);
             if (group) {
@@ -1623,56 +1796,95 @@
             const projects = state.projects;
             canvas.innerHTML = `
                 <section id="group-detail-view" class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-                    <button type="button" onclick="showGroupDirectory()" class="mb-5 inline-flex items-center gap-2 text-xs font-bold text-slate-500 transition-colors hover:text-primary-600"><i class="fa-solid fa-arrow-left"></i> Volver a Grupos</button>
+                    <button type="button" onclick="showGroupDirectory()" class="mb-5 inline-flex items-center gap-2 text-xs font-bold text-slate-500 transition-colors hover:text-primary-600"><i class="fa-solid fa-arrow-left"></i> ${t('group_back')}</button>
                     <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card">
                         <div class="relative h-48 bg-slate-900 sm:h-64">
                             <img src="${escapeHTML(group.banner)}" alt="" class="h-full w-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
                             <div class="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-4 p-5 sm:p-8">
                                 <div class="text-white">
-                                    <span class="text-[10px] font-bold uppercase tracking-widest text-white/75">${escapeHTML(group.visibility)} · ${escapeHTML(group.category)}</span>
-                                    <h1 class="mt-1 text-2xl font-black sm:text-3xl">${escapeHTML(group.name)}</h1>
-                                    <p class="mt-2 text-xs text-white/80"><i class="fa-solid fa-users mr-1.5"></i>${group.members.toLocaleString('es-ES')} miembros</p>
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-white/75">${t(group.visibility === 'Abierto' ? 'group_visibility_open' : 'group_visibility_community')} · ${escapeHTML(groupText(group, 'category'))}</span>
+                                    <h1 class="mt-1 text-2xl font-black sm:text-3xl">${escapeHTML(groupText(group, 'name'))}</h1>
+                                    <p class="mt-2 text-xs text-white/80"><i class="fa-solid fa-users mr-1.5"></i>${group.members.toLocaleString(currentLang === 'es' ? 'es-ES' : 'en-US')} ${t('group_members')}</p>
                                 </div>
-                                <button type="button" onclick="toggleGroupMembership('${group.id}')" class="rounded-xl px-4 py-2.5 text-xs font-bold ${group.joined ? 'bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25' : 'bg-white text-primary-700 hover:bg-primary-50'}">${group.joined ? 'Unido' : 'Unirse al Grupo'}</button>
+                                <button type="button" onclick="toggleGroupMembership('${group.id}')" class="rounded-xl px-4 py-2.5 text-xs font-bold ${group.joined ? 'bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25' : 'bg-white text-primary-700 hover:bg-primary-50'}">${group.joined ? t('group_joined') : t('group_join')}</button>
                             </div>
                         </div>
                         <div class="p-5 sm:p-8">
-                            <p class="text-sm leading-relaxed text-slate-600">${escapeHTML(group.description)}</p>
-                            <nav aria-label="Canales externos de la comunidad" class="mt-5 grid gap-3 sm:grid-cols-3">
+                            <p class="text-sm leading-relaxed text-slate-600">${escapeHTML(groupText(group, 'description'))}</p>
+                            <div class="mt-6 grid gap-5 lg:grid-cols-2">
+                                <section aria-labelledby="group-leaders-title" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                                    <h2 id="group-leaders-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_leaders_title')}</h2>
+                                    <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                                        ${locales[currentLang].group_leaders.map(leader => `
+                                            <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
+                                                <img src="${escapeHTML(leader.photo)}" alt="${t(leader.nameKey)}" class="h-12 w-12 shrink-0 rounded-full object-cover">
+                                                <div class="min-w-0">
+                                                    <h3 class="truncate text-xs font-bold text-slate-900">${t(leader.nameKey)}</h3>
+                                                    <p class="mt-1 text-[10px] leading-snug text-slate-500">${t(leader.roleKey)}</p>
+                                                </div>
+                                            </article>
+                                        `).join('')}
+                                    </div>
+                                </section>
+                                <section aria-labelledby="group-alliances-title" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                                    <div>
+                                        <h2 id="group-alliances-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_alliances_title')}</h2>
+                                        <p class="mt-1 text-[10px] text-slate-500">${t('group_alliances_subtitle')}</p>
+                                    </div>
+                                    <div class="mt-4 space-y-2">
+                                        ${locales[currentLang].group_alliances.map(alliance => {
+                                            const isFollowing = Boolean(state.followedGroupAlliances[alliance.id]);
+                                            return `
+                                                <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-2.5">
+                                                    ${alliance.id === 'cleanwater-international'
+                                                        ? `<img src="${escapeHTML(ngoData.logoUrl)}" alt="" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-100 object-cover">`
+                                                        : `<span aria-hidden="true" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-lg">${alliance.icon}</span>`}
+                                                    <div class="min-w-0 flex-1">
+                                                        <h3 class="truncate text-[11px] font-bold text-slate-900">${escapeHTML(alliance.name)}</h3>
+                                                        <p class="mt-0.5 text-[9px] font-semibold uppercase tracking-wide ${alliance.type === 'ngo' ? 'text-emerald-700' : 'text-slate-500'}">${t(alliance.type === 'ngo' ? 'group_alliance_ngo' : 'group_alliance_group')}</p>
+                                                    </div>
+                                                    <button type="button" aria-pressed="${isFollowing}" onclick="toggleGroupAllianceFollow('${alliance.id}')" class="shrink-0 rounded-lg px-2.5 py-1.5 text-[10px] font-bold transition-colors ${isFollowing ? 'border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100' : 'bg-primary-50 text-primary-700 hover:bg-primary-100'}">${isFollowing ? t('group_alliance_following') : t('group_alliance_follow')}</button>
+                                                </article>
+                                            `;
+                                        }).join('')}
+                                    </div>
+                                </section>
+                            </div>
+                            <nav aria-label="${t('group_channels_aria')}" class="mt-5 grid gap-3 sm:grid-cols-3">
                                 <a href="https://discord.com/app" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-indigo-700">
                                     <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-current"><path d="M19.7 5.4A18.3 18.3 0 0 0 15.2 4l-.6 1.2a16.8 16.8 0 0 0-5.1 0L8.9 4a18.3 18.3 0 0 0-4.6 1.4C1.4 9.7.6 13.9 1 18.1a18.5 18.5 0 0 0 5.6 2.8l1.2-2a11.8 11.8 0 0 1-1.9-.9l.5-.4c3.7 1.7 7.7 1.7 11.4 0l.5.4a12 12 0 0 1-1.9.9l1.2 2a18.4 18.4 0 0 0 5.6-2.8c.5-4.9-.8-9.1-3.5-12.7ZM8.8 14.9c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.4 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z"/></svg>
-                                    Unirse a Discord
+                                    ${t('group_discord')}
                                 </a>
                                 <a href="https://slack.com/signin" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-xs font-bold text-slate-700 ring-1 ring-slate-200 transition-colors hover:bg-slate-50">
                                     <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5"><path fill="#36C5F0" d="M5.1 14.2a2 2 0 1 1-2-2h2v2Zm1 0a2 2 0 0 1 4 0v5a2 2 0 1 1-4 0v-5Z"/><path fill="#2EB67D" d="M9.8 5.1a2 2 0 1 1 2-2v2h-2Zm0 1a2 2 0 0 1 0 4h-5a2 2 0 1 1 0-4h5Z"/><path fill="#E01E5A" d="M18.9 9.8a2 2 0 1 1 2 2h-2v-2Zm-1 0a2 2 0 0 1-4 0v-5a2 2 0 1 1 4 0v5Z"/><path fill="#ECB22E" d="M14.2 18.9a2 2 0 1 1-2 2v-2h2Zm0-1a2 2 0 0 1 0-4h5a2 2 0 1 1 0 4h-5Z"/></svg>
-                                    Canal de Slack
+                                    ${t('group_slack')}
                                 </a>
                                 <a href="https://www.whatsapp.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
                                     <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-current"><path d="M12 2a9.8 9.8 0 0 0-8.4 14.8L2.3 22l5.3-1.4A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1l-.7.8c-.2.2-.3.2-.6.1a6.5 6.5 0 0 1-1.9-1.2 7 7 0 0 1-1.3-1.6c-.1-.2 0-.4.1-.5l.4-.5.3-.4c.1-.2 0-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.1s.9 2.4 1 2.6a9 9 0 0 0 3.5 3.1c.5.2.9.4 1.2.5.5.2 1 .2 1.4.1.4-.1 1.4-.6 1.6-1.1.2-.5.2-.9.1-1-.1-.1-.3-.2-.5-.3Z"/></svg>
-                                    Comunidad WhatsApp
+                                    ${t('group_whatsapp')}
                                 </a>
                             </nav>
                             <form onsubmit="publishGroupPost(event, '${group.id}')" class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
-                                <label for="group-post-text" class="mb-2 block text-xs font-bold text-slate-700">Comparte una actualización con el grupo</label>
-                                <textarea id="group-post-text" name="text" required maxlength="1200" rows="3" placeholder="Comparte una historia de campo, una idea o un avance..." class="w-full resize-y rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-800 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100"></textarea>
+                                <label for="group-post-text" class="mb-2 block text-xs font-bold text-slate-700">${t('group_post_label')}</label>
+                                <textarea id="group-post-text" name="text" required maxlength="1200" rows="3" placeholder="${t('group_post_placeholder')}" class="w-full resize-y rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-800 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100"></textarea>
                                 <div class="mt-3 flex flex-col gap-3 sm:flex-row">
-                                    <label class="sr-only" for="group-post-project">Proyecto relacionado</label>
+                                    <label class="sr-only" for="group-post-project">${t('group_attach_project')}</label>
                                     <select id="group-post-project" name="projectId" class="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600">
-                                        <option value="">Adjuntar proyecto (opcional)</option>
+                                        <option value="">${t('group_attach_project')}</option>
                                         ${projects.map(project => `<option value="${escapeHTML(project.id)}">${escapeHTML(project.title)}</option>`).join('')}
                                     </select>
-                                    <button type="submit" class="rounded-lg bg-primary-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-primary-700"><i class="fa-solid fa-paper-plane mr-1.5"></i>Publicar</button>
+                                    <button type="submit" class="rounded-lg bg-primary-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-primary-700"><i class="fa-solid fa-paper-plane mr-1.5"></i>${t('group_post_submit')}</button>
                                 </div>
                             </form>
 
                             <div class="mt-8 space-y-5">
-                                <h2 class="text-sm font-black uppercase tracking-wider text-slate-800">Publicaciones</h2>
+                                <h2 class="text-sm font-black uppercase tracking-wider text-slate-800">${t('group_posts')}</h2>
                                 ${group.posts.length ? group.posts.map(post => renderGroupPost(group, post)).join('') : `
                                     <div class="rounded-2xl border border-dashed border-slate-200 p-8 text-center">
                                         <i class="fa-regular fa-comments text-2xl text-slate-300"></i>
-                                        <p class="mt-2 text-sm font-semibold text-slate-700">Aún no hay publicaciones.</p>
-                                        <p class="mt-1 text-xs text-slate-500">Inicia la conversación con el grupo.</p>
+                                        <p class="mt-2 text-sm font-semibold text-slate-700">${t('group_no_posts')}</p>
+                                        <p class="mt-1 text-xs text-slate-500">${t('group_start_conversation')}</p>
                                     </div>
                                 `}
                             </div>
@@ -1691,18 +1903,18 @@
                         <div class="flex min-w-0 items-center gap-3">
                             <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary-50 text-lg">${escapeHTML(post.avatar || '👤')}</div>
                             <div class="min-w-0">
-                                <p class="truncate text-xs font-bold text-slate-900">${escapeHTML(post.author)}</p>
-                                <p class="text-[10px] text-slate-500">${escapeHTML(post.role)} · ${escapeHTML(post.date || 'Ahora')}</p>
+                                <p class="truncate text-xs font-bold text-slate-900">${escapeHTML(groupPostText(post, 'author'))}</p>
+                                <p class="text-[10px] text-slate-500">${escapeHTML(groupPostText(post, 'role'))} · ${escapeHTML(groupPostText(post, 'date') || t('group_now'))}</p>
                             </div>
                         </div>
                         <details class="relative flex-shrink-0">
-                            <summary aria-label="Opciones de publicación" class="cursor-pointer list-none rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"><i class="fa-solid fa-ellipsis"></i></summary>
+                            <summary aria-label="${t('group_post_options')}" class="cursor-pointer list-none rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"><i class="fa-solid fa-ellipsis"></i></summary>
                             <div class="absolute right-0 z-10 mt-1 w-56 rounded-xl border border-slate-200 bg-white p-1 shadow-floating">
-                                <button type="button" onclick="reportGroupPost('${group.id}', '${post.id}')" class="w-full rounded-lg px-3 py-2 text-left text-xs font-semibold text-red-600 hover:bg-red-50"><i class="fa-regular fa-flag mr-2"></i>Denunciar publicación inapropiada</button>
+                                <button type="button" onclick="reportGroupPost('${group.id}', '${post.id}')" class="w-full rounded-lg px-3 py-2 text-left text-xs font-semibold text-red-600 hover:bg-red-50"><i class="fa-regular fa-flag mr-2"></i>${t('group_post_report')}</button>
                             </div>
                         </details>
                     </div>
-                    <p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(post.text)}</p>
+                    <p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>
                     ${project ? `
                         <button type="button" onclick="openProjectDetail('${project.id}')" class="mt-4 flex w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-left transition-colors hover:border-primary-300 hover:bg-primary-50/50">
                             <img src="${escapeHTML(project.coverImage)}" alt="" class="h-24 w-28 flex-shrink-0 object-cover sm:w-36">
@@ -1714,8 +1926,8 @@
                         </button>
                     ` : ''}
                     <div class="mt-4 flex gap-4 border-t border-slate-100 pt-3">
-                        <button type="button" onclick="toggleGroupPostComments('${post.id}')" class="text-xs font-semibold text-slate-500 hover:text-primary-600"><i class="fa-regular fa-comment mr-1.5"></i>Comentar${post.comments.length ? ` (${post.comments.length})` : ''}</button>
-                        <button type="button" onclick="shareGroupPost('${group.id}', '${post.id}')" class="text-xs font-semibold text-slate-500 hover:text-primary-600"><i class="fa-solid fa-share-nodes mr-1.5"></i>Compartir</button>
+                        <button type="button" onclick="toggleGroupPostComments('${post.id}')" class="text-xs font-semibold text-slate-500 hover:text-primary-600"><i class="fa-regular fa-comment mr-1.5"></i>${t('group_post_comment')}${post.comments.length ? ` (${post.comments.length})` : ''}</button>
+                        <button type="button" onclick="shareGroupPost('${group.id}', '${post.id}')" class="text-xs font-semibold text-slate-500 hover:text-primary-600"><i class="fa-solid fa-share-nodes mr-1.5"></i>${t('group_post_share')}</button>
                     </div>
                     ${commentsVisible ? `
                         <div class="mt-4 space-y-3 border-t border-slate-100 pt-4">
@@ -1726,9 +1938,9 @@
                                 </div>
                             `).join('')}
                             <form onsubmit="addGroupComment(event, '${group.id}', '${post.id}')" class="flex gap-2">
-                                <label class="sr-only" for="group-comment-${post.id}">Escribe un comentario</label>
-                                <input id="group-comment-${post.id}" name="comment" required maxlength="500" placeholder="Escribe un comentario..." class="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-primary-400">
-                                <button type="submit" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-bold text-white hover:bg-primary-700">Enviar</button>
+                                <label class="sr-only" for="group-comment-${post.id}">${t('group_comment_label')}</label>
+                                <input id="group-comment-${post.id}" name="comment" required maxlength="500" placeholder="${t('group_comment_placeholder')}" class="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-primary-400">
+                                <button type="submit" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-bold text-white hover:bg-primary-700">${t('group_comment_submit')}</button>
                             </form>
                         </div>
                     ` : ''}
@@ -1759,13 +1971,30 @@
             renderApp();
         }
 
+        function toggleGroupAllianceFollow(allianceId) {
+            const alliance = locales[currentLang].group_alliances.find(item => item.id === allianceId);
+            if (!alliance) return;
+            const isFollowing = !state.followedGroupAlliances[allianceId];
+            state.followedGroupAlliances[allianceId] = isFollowing;
+            renderApp();
+            showToast(
+                (isFollowing ? t('group_alliance_followed_toast') : t('group_alliance_unfollowed_toast'))
+                    .replace('{name}', alliance.name),
+                isFollowing ? 'success' : 'info'
+            );
+        }
+
         function toggleGroupMembership(groupId) {
             const group = state.groups.find(item => item.id === groupId);
             if (!group) return;
             group.joined = !group.joined;
             group.members += group.joined ? 1 : -1;
             renderApp();
-            showToast(group.joined ? `Te uniste a ${group.name}` : `Saliste de ${group.name}`, group.joined ? 'success' : 'info');
+            showToast(
+                (group.joined ? t('group_joined_toast') : t('group_left_toast'))
+                    .replace('{group}', groupText(group, 'name')),
+                group.joined ? 'success' : 'info'
+            );
         }
 
         function joinOfficialNGOGroup() {
@@ -1777,7 +2006,7 @@
             if (!group.joined) {
                 group.joined = true;
                 group.members += 1;
-                showToast(`Te uniste a ${group.name}`, 'success');
+                showToast(t('group_joined_toast').replace('{group}', groupText(group, 'name')), 'success');
             }
             openGroup(group.id);
         }
@@ -1791,7 +2020,7 @@
             if (!group.joined) {
                 group.joined = true;
                 group.members += 1;
-                showToast(`Te uniste a ${group.name}`, 'success');
+                showToast(t('group_joined_toast').replace('{group}', groupText(group, 'name')), 'success');
             }
             openGroup(group.id);
         }
@@ -1887,21 +2116,21 @@
             const text = String(formData.get('text')).trim();
             const projectId = String(formData.get('projectId') || '');
             if (!text) {
-                showToast('Escribe un mensaje antes de publicar.', 'info');
+                showToast(t('group_post_empty_error'), 'info');
                 return;
             }
             group.posts.unshift({
                 id: `post_${Date.now()}`,
                 author: state.currentUser.name,
-                role: state.currentUser.role === 'ngo' ? 'ONG verificada' : 'Miembro',
+                role: state.currentUser.role === 'ngo' ? t('group_role_ngo') : t('group_role_member'),
                 avatar: state.currentUser.role === 'ngo' ? '🏢' : '👤',
                 text,
                 projectId: state.projects.some(project => project.id === projectId) ? projectId : null,
                 comments: [],
-                date: 'Ahora'
+                date: t('group_now')
             });
             renderApp();
-            showToast('Tu publicación ya está en el grupo.', 'success');
+            showToast(t('group_post_success'), 'success');
         }
 
         function toggleGroupPostComments(postId) {
@@ -1925,10 +2154,10 @@
             const shareUrl = `${window.location.origin}${window.location.pathname}#group-${encodeURIComponent(groupId)}-post-${encodeURIComponent(postId)}`;
             try {
                 await navigator.clipboard.writeText(shareUrl);
-                showToast('Enlace de la publicación copiado.', 'success');
+                showToast(t('group_share_success'), 'success');
             } catch (error) {
-                console.error('No se pudo copiar el enlace de la publicación.', error);
-                showToast('No se pudo copiar el enlace. Revisa los permisos del navegador.', 'info');
+                console.error(t('group_share_error'), error);
+                showToast(t('group_share_permission_error'), 'info');
             }
         }
 
@@ -1936,9 +2165,9 @@
             const group = state.groups.find(item => item.id === groupId);
             const post = group?.posts.find(item => item.id === postId);
             if (!post) return;
-            if (window.confirm('¿Quieres denunciar esta publicación para que el equipo la revise?')) {
+            if (window.confirm(t('group_report_prompt'))) {
                 post.reported = true;
-                showToast('Gracias. La publicación fue enviada para revisión.', 'success');
+                showToast(t('group_report_success'), 'success');
                 renderApp();
             }
         }
@@ -2285,13 +2514,13 @@
                         ${isEmp ? renderEmptyState("No Field Updates Logged Yet") : `
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 ${ngo.updates.map(upd => `
-                                    <button type="button" onclick="openFieldUpdateArticle('${upd.id}')" aria-label="Leer artículo: ${upd.shortTitle}" class="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-slate-800 dark:bg-slate-900">
+                                    <button type="button" onclick="openFieldUpdateArticle('${upd.id}')" aria-label="${currentLang === 'es' ? 'Leer artículo: ' : 'Read article: '}${fieldUpdateText(upd, 'shortTitle')}" class="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-slate-800 dark:bg-slate-900">
                                         <span class="block aspect-[4/3] w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
-                                            <img src="${upd.mediaUrl}" alt="${upd.shortTitle}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                            <img src="${upd.mediaUrl}" alt="${fieldUpdateText(upd, 'shortTitle')}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                                         </span>
                                         <span class="flex items-start justify-between gap-3 p-4">
-                                            <span class="text-sm font-bold leading-snug text-slate-900 dark:text-slate-100">${upd.shortTitle}</span>
-                                            <span class="shrink-0 rounded-full bg-primary-50 px-2.5 py-1 text-[10px] font-mono font-bold text-primary-700 dark:bg-primary-900 dark:text-primary-100">${upd.projectLabel}</span>
+                                            <span class="text-sm font-bold leading-snug text-slate-900 dark:text-slate-100">${fieldUpdateText(upd, 'shortTitle')}</span>
+                                            <span class="shrink-0 rounded-full bg-primary-50 px-2.5 py-1 text-[10px] font-mono font-bold text-primary-700 dark:bg-primary-900 dark:text-primary-100">${fieldUpdateText(upd, 'projectLabel')}</span>
                                         </span>
                                     </button>
                                 `).join('')}
@@ -2340,11 +2569,11 @@
                             <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm">
                                 <i class="fa-solid fa-people-group text-lg" aria-hidden="true"></i>
                             </div>
-                            <p class="mt-4 text-[10px] font-mono font-bold uppercase tracking-widest text-primary-700">CleanWater Community / Zuliov Group</p>
-                            <h3 class="mt-1 text-lg font-black leading-tight text-slate-900">Grupo Oficial de la ONG</h3>
-                            <p class="mt-3 text-xs leading-relaxed text-slate-600">Únete a la comunidad de la ONG para seguir avances en tiempo real y conectar con otros donantes.</p>
+                            <p class="mt-4 text-[10px] font-mono font-bold uppercase tracking-widest text-primary-700">${t('ngo_group_eyebrow')}</p>
+                            <h3 class="mt-1 text-lg font-black leading-tight text-slate-900">${t('ngo_group_title')}</h3>
+                            <p class="mt-3 text-xs leading-relaxed text-slate-600">${t('ngo_group_description')}</p>
                             <button type="button" onclick="joinOfficialNGOGroup()" class="mt-5 w-full rounded-xl bg-primary-600 px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-primary-700">
-                                <i class="fa-solid fa-arrow-right-to-bracket mr-1.5" aria-hidden="true"></i> Unirse al Grupo
+                                → ${t('ngo_group_join')}
                             </button>
                             <nav aria-label="Canales de la comunidad CleanWater" class="mt-4 grid grid-cols-3 gap-2">
                                 <a href="https://discord.com/app" target="_blank" rel="noopener noreferrer" aria-label="Abrir Discord" class="inline-flex items-center justify-center gap-1 rounded-lg bg-indigo-600 px-2 py-2.5 text-[10px] font-bold text-white transition-colors hover:bg-indigo-700">
@@ -2723,7 +2952,7 @@
                         <div class="overflow-y-auto pr-1">
                             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                                 ${ngoData.updates.map(upd => `
-                                    <button type="button" onclick="openFieldUpdateArticle('${upd.id}')" aria-label="Leer artículo: ${upd.shortTitle}" class="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white text-left transition-all hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-slate-800 dark:bg-slate-900">
+                                    <button type="button" onclick="openFieldUpdateArticle('${upd.id}')" aria-label="${currentLang === 'es' ? 'Leer artículo: ' : 'Read article: '}${fieldUpdateText(upd, 'shortTitle')}" class="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white text-left transition-all hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-slate-800 dark:bg-slate-900">
                                         <span class="block aspect-square overflow-hidden bg-slate-100 dark:bg-slate-800">
                                             ${upd.mediaUrl ? `
                                                 <img src="${upd.mediaUrl}" alt="${upd.title}" loading="lazy" class="h-full w-full object-cover">
@@ -2734,8 +2963,8 @@
                                             `}
                                         </span>
                                         <span class="block space-y-2 p-3">
-                                            <span class="block text-xs font-bold leading-snug text-slate-900 dark:text-slate-100">${upd.shortTitle}</span>
-                                            <span class="inline-flex rounded-full bg-primary-50 px-2 py-1 text-[9px] font-mono font-bold text-primary-700 dark:bg-primary-900 dark:text-primary-100">${upd.projectLabel}</span>
+                                            <span class="block text-xs font-bold leading-snug text-slate-900 dark:text-slate-100">${fieldUpdateText(upd, 'shortTitle')}</span>
+                                            <span class="inline-flex rounded-full bg-primary-50 px-2 py-1 text-[9px] font-mono font-bold text-primary-700 dark:bg-primary-900 dark:text-primary-100">${fieldUpdateText(upd, 'projectLabel')}</span>
                                         </span>
                                     </button>
                                 `).join('')}
@@ -3333,6 +3562,215 @@
             `;
         }
 
+        function selectBrowseProject(projectId) {
+            const project = state.projects.find(item => item.id === projectId);
+            if (!project) return;
+            state.selectedBrowseProjectId = project.id;
+            renderApp();
+        }
+
+        function clearBrowseProjectSelection() {
+            state.selectedBrowseProjectId = null;
+            renderApp();
+        }
+
+        function donateToBrowseProject(projectId) {
+            const project = state.projects.find(item => item.id === projectId);
+            if (!project) {
+                showToast('No se pudo encontrar el proyecto seleccionado.', 'info');
+                return;
+            }
+            state.activeDonationProject = project.title;
+            processDonation();
+        }
+
+        function openExpandedProjectModal(projectId) {
+            const catalogProject = state.projects.find(item => item.id === projectId);
+            if (!catalogProject) {
+                showToast('No se pudo encontrar el proyecto seleccionado.', 'info');
+                return;
+            }
+
+            const dataProjectId = projectId === 'proj_schools' ? 'proj_school_sanitation' : projectId;
+            const projectDetails = ngoData.projects.find(item => item.id === dataProjectId);
+            const project = { ...catalogProject, ...projectDetails };
+            const projectUpdates = dataProjectId === 'proj_water_well'
+                ? ngoData.updates.filter(update => update.projectLabel.includes('Kitui'))
+                : [];
+            const invoiceIdsByProject = {
+                proj_water_well: ['fin_inv_8821', 'fin_exp_104'],
+                proj_solar_pump: ['fin_rec_902']
+            };
+            const invoices = ngoData.financials.filter(invoice =>
+                (invoiceIdsByProject[dataProjectId] || []).includes(invoice.id)
+            );
+            const auditCosts = projectUpdates.flatMap(update => update.audit.costs);
+            const auditHashes = projectUpdates.flatMap(update => update.audit.hashes);
+            if (!auditCosts.length) {
+                auditCosts.push(...invoices.map(invoice => ({
+                    label: invoice.title,
+                    amount: formatCurrency(invoice.amount)
+                })));
+            }
+            if (!auditHashes.length) {
+                auditHashes.push(...invoices.map(invoice => `${invoice.hash} · ${invoice.verifiedBy}`));
+            }
+            const comments = [
+                ...projectUpdates.flatMap(update => update.comments.map(comment => ({
+                    ...comment,
+                    fieldUpdateTitle: fieldUpdateText(update, 'shortTitle')
+                }))),
+                ...(state.expandedProjectComments[project.id] || [])
+            ];
+            const container = document.getElementById('modal-container');
+
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-3 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="expanded-project-title">
+                    <button type="button" onclick="closeModal()" aria-label="${t('close')}" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"></button>
+                    <article class="relative z-10 my-auto max-h-[94vh] w-full max-w-6xl overflow-y-auto rounded-3xl border border-slate-200 bg-white text-left shadow-floating">
+                        <header class="relative">
+                            <img src="${project.coverImage}" alt="${escapeHTML(project.title)}" class="h-64 w-full object-cover sm:h-96">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/15 to-transparent"></div>
+                            <button type="button" onclick="closeModal()" aria-label="${t('close')}" title="${t('close')}" class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/75 text-xl text-white transition hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                &times;
+                            </button>
+                            <div class="absolute inset-x-0 bottom-0 p-6 text-white sm:p-10">
+                                <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-white/75">${escapeHTML(project.ngoName)}</p>
+                                <h2 id="expanded-project-title" class="mt-2 max-w-4xl text-2xl font-black sm:text-4xl">${t('expanded_project_log')}</h2>
+                                <p class="mt-2 text-sm font-semibold sm:text-lg">${escapeHTML(project.title)}</p>
+                            </div>
+                        </header>
+
+                        <div class="space-y-10 p-6 sm:p-10">
+                            <section aria-labelledby="expanded-project-progress-title" class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+                                <div>
+                                    <h3 id="expanded-project-progress-title" class="text-lg font-black text-slate-900">${escapeHTML(project.title)}</h3>
+                                    <p class="mt-3 text-sm leading-7 text-slate-600">${escapeHTML(project.description || '')}</p>
+                                    ${projectUpdates.length ? `
+                                        <div class="mt-6 space-y-6">
+                                            ${projectUpdates.map(update => `
+                                                <article class="border-l-2 border-primary-200 pl-4">
+                                                    <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-700">${fieldUpdateText(update, 'shortTitle')} · ${escapeHTML(update.publishedAt)}</p>
+                                                    <div class="mt-3 space-y-3 text-sm leading-7 text-slate-600">
+                                                        ${update.article.map(paragraph => `<p>${escapeHTML(paragraph)}</p>`).join('')}
+                                                    </div>
+                                                </article>
+                                            `).join('')}
+                                        </div>
+                                    ` : `<p class="mt-5 rounded-xl bg-slate-50 p-4 text-xs text-slate-500">${t('no_field_updates')}</p>`}
+                                </div>
+                                <aside class="h-fit rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                                    <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500">${t('funding_status')}</p>
+                                    <p class="mt-2 text-xl font-black text-slate-900">${formatCurrency(project.amountRaised)} <span class="text-xs font-medium text-slate-500">of ${formatCurrency(project.targetGoal)}</span></p>
+                                    <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
+                                        <div class="h-full rounded-full bg-primary-600" style="width:${Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100)}%"></div>
+                                    </div>
+                                    <p class="mt-2 text-right text-xs font-bold text-primary-700">${Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100)}%</p>
+                                    <p class="mt-4 text-xs font-semibold text-slate-700">${escapeHTML(project.location || 'Kenya')}</p>
+                                </aside>
+                            </section>
+
+                            <section aria-labelledby="expanded-project-audit-title" class="border-t border-slate-200 pt-8">
+                                <h3 id="expanded-project-audit-title" class="text-xl font-black text-slate-900">${t('transparency_audit')}</h3>
+                                <div class="mt-5 grid gap-6 md:grid-cols-2">
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">${t('associated_costs')}</h4>
+                                        ${auditCosts.length ? `
+                                            <ul class="mt-3 space-y-2">
+                                                ${auditCosts.map(cost => `
+                                                    <li class="flex justify-between gap-4 border-b border-slate-100 pb-2 text-sm">
+                                                        <span class="text-slate-600">${escapeHTML(cost.label)}</span>
+                                                        <span class="shrink-0 font-mono font-bold text-slate-900">${escapeHTML(cost.amount)}</span>
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        ` : `<p class="mt-3 text-xs text-slate-500">${t('no_audit_data')}</p>`}
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">${t('verification_hashes')}</h4>
+                                        ${auditHashes.length ? `
+                                            <ul class="mt-3 space-y-2">
+                                                ${auditHashes.map(hash => `<li class="break-all rounded-lg bg-slate-100 px-3 py-2 font-mono text-xs text-slate-700">${escapeHTML(hash)}</li>`).join('')}
+                                            </ul>
+                                        ` : `<p class="mt-3 text-xs text-slate-500">${t('no_audit_data')}</p>`}
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section aria-labelledby="expanded-project-comments-title" class="border-t border-slate-200 pt-8">
+                                <h3 id="expanded-project-comments-title" class="text-xl font-black text-slate-900">${t('community_comments')}</h3>
+                                <div class="mt-5 space-y-4">
+                                    ${comments.length ? comments.map(comment => `
+                                        <article class="flex gap-3 rounded-xl bg-slate-50 p-4">
+                                            <img src="${escapeHTML(comment.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100')}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover">
+                                            <div class="min-w-0">
+                                                <div class="flex flex-wrap items-baseline gap-x-2">
+                                                    <h4 class="text-xs font-bold text-slate-900">${escapeHTML(comment.author)}</h4>
+                                                    <time class="text-[10px] text-slate-400">${escapeHTML(comment.time || '')}</time>
+                                                </div>
+                                                ${comment.fieldUpdateTitle ? `<p class="mt-1 text-[10px] font-semibold text-primary-700">${escapeHTML(comment.fieldUpdateTitle)}</p>` : ''}
+                                                <p class="mt-2 text-sm leading-relaxed text-slate-600">${escapeHTML(comment.text)}</p>
+                                            </div>
+                                        </article>
+                                    `).join('') : `<p class="rounded-xl bg-slate-50 p-4 text-xs text-slate-500">${t('no_comments')}</p>`}
+                                </div>
+                                <form class="mt-6 border-t border-slate-200 pt-5" onsubmit="event.preventDefault(); addExpandedProjectComment('${project.id}')">
+                                    <label for="expanded-project-comment-input" class="mb-2 block text-sm font-semibold text-slate-800">${t('add_comment')}</label>
+                                    <textarea id="expanded-project-comment-input" rows="3" required class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"></textarea>
+                                    <p id="expanded-project-comment-status" role="status" aria-live="polite" class="mt-2 text-xs text-slate-500"></p>
+                                    <button type="submit" class="mt-3 rounded-xl bg-primary-600 px-5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-primary-700">${t('post_comment')}</button>
+                                </form>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+            `;
+        }
+
+        function addExpandedProjectComment(projectId) {
+            const input = document.getElementById('expanded-project-comment-input');
+            const text = input?.value.trim();
+            const project = state.projects.find(item => item.id === projectId);
+            if (!project || !input) return;
+            if (!text) {
+                const status = document.getElementById('expanded-project-comment-status');
+                status.textContent = t('comment_required');
+                input.focus();
+                return;
+            }
+
+            const comment = {
+                id: `project_comment_${Date.now()}`,
+                author: state.currentUser.name,
+                time: currentLang === 'es' ? 'Ahora' : 'Just now',
+                avatar: state.currentUser.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
+                text
+            };
+            const fieldUpdate = projectId === 'proj_water_well'
+                ? ngoData.updates.find(update => update.id === 'upd_1')
+                : null;
+            if (fieldUpdate) {
+                fieldUpdate.comments.unshift(comment);
+                state.commentHistory.unshift({
+                    id: comment.id,
+                    updateId: fieldUpdate.id,
+                    commentId: comment.id,
+                    project: fieldUpdate.projectLabel,
+                    title: fieldUpdate.title,
+                    dateTime: new Date().toLocaleString(currentLang === 'es' ? 'es-ES' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' }),
+                    text: comment.text,
+                    likes: 0
+                });
+            } else {
+                if (!state.expandedProjectComments[projectId]) {
+                    state.expandedProjectComments[projectId] = [];
+                }
+                state.expandedProjectComments[projectId].unshift(comment);
+            }
+            openExpandedProjectModal(projectId);
+            renderProfileCommentHistory();
+        }
+
         function renderBrowsePage(canvas) {
             const continentFilters = [
                 { id: 'all', label: 'Todos' },
@@ -3345,6 +3783,7 @@
                 : state.projectContinent === 'africa'
                     ? state.projects.filter(proj => ['proj_water_well', 'proj_solar_pump'].includes(proj.id))
                     : [];
+            const selectedProject = state.projects.find(proj => proj.id === state.selectedBrowseProjectId);
 
             canvas.innerHTML = `
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
@@ -3388,49 +3827,76 @@
                         `).join('')}
                     </nav>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        ${visibleProjects.length ? visibleProjects.map(proj => `
-                            <div data-browse-project-id="${proj.id}" class="bg-white rounded-3xl border border-slate-200/80 shadow-subtle overflow-hidden hover:shadow-card transition-all flex flex-col justify-between">
-                                <div>
-                                    <div class="h-48 relative">
-                                        <img src="${proj.coverImage}" class="h-full w-full object-cover">
-                                        <span class="absolute top-3 left-3 bg-slate-900/90 text-white text-[10px] font-mono font-bold uppercase px-2.5 py-0.5 rounded-full">${proj.category}</span>
-                                    </div>
-                                    <div class="p-6 space-y-3">
-                                        <div class="flex items-center space-x-2 text-xs font-mono text-slate-500">
-                                            <span>${proj.ngoLogo} ${proj.ngoName}</span>
-                                        </div>
-                                        <h3 class="text-base font-bold text-slate-900 leading-snug">${proj.title}</h3>
-                                        <p class="text-xs text-slate-600 leading-relaxed">${proj.description}</p>
-                                    </div>
+                    <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 ${selectedProject ? 'lg:col-span-7' : 'lg:col-span-12'}">
+                            ${visibleProjects.length ? visibleProjects.map(proj => `
+                                <button type="button" data-browse-project-id="${proj.id}" aria-pressed="${state.selectedBrowseProjectId === proj.id}" onclick="event.stopPropagation(); selectBrowseProject('${proj.id}')" class="group cursor-pointer overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
+                                    <span class="block h-48 overflow-hidden bg-slate-100">
+                                        <img src="${proj.coverImage}" alt="${proj.title}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                    </span>
+                                    <span class="block p-4 text-sm font-bold leading-snug text-slate-900">${proj.title}</span>
+                                </button>
+                            `).join('') : `
+                                <div role="status" class="col-span-full rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center">
+                                    <i class="fa-solid fa-clipboard-check text-2xl text-slate-400"></i>
+                                    <h2 class="mt-3 text-sm font-bold text-slate-900">Proyectos en fase de auditoría</h2>
+                                    <p class="mt-1 text-xs text-slate-500">Estamos verificando nuevas iniciativas para esta región.</p>
                                 </div>
-                                <div class="p-6 pt-0 space-y-4">
-                                    <div class="space-y-1">
-                                        <div class="flex justify-between text-xs font-mono">
-                                            <span class="font-bold text-slate-900">${formatCurrency(proj.amountRaised)}</span>
-                                            <span class="text-slate-400 font-bold">${Math.round((proj.amountRaised/proj.targetGoal)*100)}%</span>
-                                        </div>
-                                        <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                                            <div class="h-full bg-primary-600 rounded-full" style="width: ${Math.round((proj.amountRaised/proj.targetGoal)*100)}%"></div>
-                                        </div>
-                                    </div>
-                                    <button onclick="openProjectDetail('${proj.id}')" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-900 text-white hover:bg-slate-800 transition-colors">
-                                        View Project &amp; Donate
+                            `}
+                            ${visibleProjects.length ? `
+                                <div id="browse-project-search-empty" role="status" hidden class="col-span-full rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center">
+                                    <h2 class="text-sm font-bold text-slate-900">No se encontraron proyectos</h2>
+                                    <p class="mt-1 text-xs text-slate-500">Prueba otra causa, categoría o ubicación.</p>
+                                </div>
+                            ` : ''}
+                        </div>
+                        ${selectedProject ? `
+                            <aside id="browse-project-detail-panel" aria-labelledby="browse-project-detail-title" onclick="event.stopPropagation()" class="self-start overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card lg:sticky lg:top-20 lg:col-span-5">
+                                <div class="relative">
+                                    <img src="${selectedProject.coverImage}" alt="${selectedProject.title}" class="h-48 w-full object-cover">
+                                    <button type="button" onclick="clearBrowseProjectSelection()" aria-label="Close project details" title="Close project details" class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-slate-950/70 text-lg font-bold text-white transition-colors hover:bg-slate-950">
+                                        &times;
                                     </button>
                                 </div>
-                            </div>
-                        `).join('') : `
-                            <div role="status" class="col-span-full rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center">
-                                <i class="fa-solid fa-clipboard-check text-2xl text-slate-400"></i>
-                                <h2 class="mt-3 text-sm font-bold text-slate-900">Proyectos en fase de auditoría</h2>
-                                <p class="mt-1 text-xs text-slate-500">Estamos verificando nuevas iniciativas para esta región.</p>
-                            </div>
-                        `}
-                        ${visibleProjects.length ? `
-                            <div id="browse-project-search-empty" role="status" hidden class="col-span-full rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center">
-                                <h2 class="text-sm font-bold text-slate-900">No se encontraron proyectos</h2>
-                                <p class="mt-1 text-xs text-slate-500">Prueba otra causa, categoría o ubicación.</p>
-                            </div>
+                                <div class="space-y-5 p-5">
+                                    <div>
+                                        <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-700">${selectedProject.category}</span>
+                                        <h2 id="browse-project-detail-title" class="mt-1 text-lg font-black leading-tight text-slate-900">${selectedProject.title}</h2>
+                                        <p class="mt-2 text-xs font-mono text-slate-500">${selectedProject.location || 'Kenya'}</p>
+                                    </div>
+                                    <div class="flex items-center gap-3 rounded-xl bg-slate-50 p-3">
+                                        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl">${selectedProject.ngoLogo}</span>
+                                        <div>
+                                            <p class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Organization</p>
+                                            <p class="text-xs font-bold text-slate-900">${selectedProject.ngoName}</p>
+                                            <p class="text-[10px] font-semibold text-emerald-700">${selectedProject.verifiedStatus || 'Verified organization'}</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs leading-relaxed text-slate-600">${selectedProject.description}</p>
+                                    <section aria-label="Funding progress">
+                                        <div class="flex items-end justify-between gap-2">
+                                            <div>
+                                                <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Funding progress</p>
+                                                <p class="mt-1 text-base font-black text-slate-900">${formatCurrency(selectedProject.amountRaised)} <span class="text-[10px] font-medium text-slate-500">of ${formatCurrency(selectedProject.targetGoal)}</span></p>
+                                            </div>
+                                            <span class="text-xs font-bold text-primary-700">${Math.min(Math.round((selectedProject.amountRaised / selectedProject.targetGoal) * 100), 100)}%</span>
+                                        </div>
+                                        <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
+                                            <div class="h-full rounded-full bg-primary-600" style="width:${Math.min(Math.round((selectedProject.amountRaised / selectedProject.targetGoal) * 100), 100)}%"></div>
+                                        </div>
+                                    </section>
+                                    <button type="button" onclick="openExpandedProjectModal('${selectedProject.id}')" class="flex w-full items-center justify-center gap-2 rounded-xl border border-primary-200 bg-primary-50 px-4 py-2.5 text-xs font-bold text-primary-700 transition-colors hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                        <i class="fa-solid fa-expand" aria-hidden="true"></i> Expand View
+                                    </button>
+                                    <div>
+                                        <label for="custom-donate-amt" class="block text-[10px] font-mono font-bold uppercase text-slate-500">Donation amount (USD)</label>
+                                        <input type="number" id="custom-donate-amt" min="1" step="1" value="150" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                        <button type="button" onclick="donateToBrowseProject('${selectedProject.id}')" class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
+                                            <i class="fa-solid fa-hand-holding-heart"></i> Donate
+                                        </button>
+                                    </div>
+                                </div>
+                            </aside>
                         ` : ''}
                     </div>
                 </div>
@@ -3500,6 +3966,19 @@
             if (state.projectSearchOpen && searchContainer && !searchContainer.contains(event.target)) {
                 setBrowseSearchOpen(false);
             }
+        });
+
+        document.addEventListener('click', event => {
+            if (currentScreen !== 'browse' || !state.selectedBrowseProjectId) return;
+            if (document.querySelector('#modal-container [role="dialog"]')) return;
+
+            const target = event.target;
+            const detailPanel = document.getElementById('browse-project-detail-panel');
+            const selectedCard = document.querySelector(`[data-browse-project-id="${state.selectedBrowseProjectId}"]`);
+            if (!(target instanceof Element)) return;
+            if (detailPanel?.contains(target) || selectedCard?.contains(target)) return;
+
+            clearBrowseProjectSelection();
         });
 
         document.addEventListener('keydown', event => {
@@ -3822,6 +4301,7 @@
 
         // Initialize Application
         window.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.lang = currentLang;
             renderApp();
         });
     </script>
