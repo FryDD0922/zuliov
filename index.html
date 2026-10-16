@@ -239,7 +239,34 @@
         // Internationalization Dictionaries (ES / EN)
         const locales = {
             es: {
+                nav_home: "Inicio",
                 nav_browse: "Explorar proyectos",
+                home_feed_title: "Feed de la comunidad",
+                home_feed_subtitle: "Historias, avances e iniciativas compartidas por tus comunidades.",
+                home_feed_composer_label: "¿Qué quieres compartir?",
+                home_feed_composer_placeholder: "Comparte una actualización con tu comunidad...",
+                home_feed_group_label: "Publicar en el grupo",
+                home_feed_publish: "Publicar",
+                home_feed_posted_in: "Publicado en:",
+                home_feed_like: "Me gusta",
+                home_feed_comment: "Comentar",
+                home_feed_share: "Compartir",
+                home_feed_comment_count: "comentarios",
+                home_feed_post_image: "Foto de la publicación",
+                home_feed_empty: "Todavía no hay publicaciones en el feed.",
+                home_feed_post_success: "Tu publicación se compartió con el grupo.",
+                home_feed_post_error: "Selecciona un grupo y escribe un mensaje antes de publicar.",
+                project_country_kenya: "Kenia",
+                project_country_uganda: "Uganda",
+                project_country_guatemala: "Guatemala",
+                project_country_usa: "USA",
+                project_country_venezuela: "Venezuela",
+                project_country_laos: "Laos",
+                browse_region_all: "Todos",
+                browse_region_africa: "África",
+                browse_region_latin_america: "América Latina",
+                browse_region_north_america: "Norteamérica",
+                browse_region_asia: "Asia",
                 nav_groups: "GRUPOS",
                 nav_ngoProfile: "Perfil ONG Verificada",
                 hero_tag: "Infraestructura de Transparencia Real",
@@ -359,6 +386,32 @@
                 group_share_success: "Enlace de la publicación copiado.",
                 group_share_error: "No se pudo copiar el enlace de la publicación.",
                 group_share_permission_error: "No se pudo copiar el enlace. Revisa los permisos del navegador.",
+                group_posts_data: {
+                    post_education_1: {
+                        author: "Future Scholars Trust",
+                        role: "ONG verificada",
+                        date: "Hace 2 horas",
+                        text: "Estamos preparando nuevos recursos digitales para las aulas rurales de Malindi. Compartimos el proyecto para que puedan seguir cada avance."
+                    },
+                    post_cleanwater_1: {
+                        author: "Marcus Vance",
+                        role: "ONG verificada",
+                        date: "Hace 4 horas",
+                        text: "¡Bienvenidos a la comunidad oficial de CleanWater! Aquí compartiremos avances de campo y novedades de nuestros proyectos de agua limpia."
+                    },
+                    post_jehovah_volunteer_1: {
+                        author: "Coordinación de voluntariado",
+                        role: "Comunidad",
+                        date: "Ahora",
+                        text: "Bienvenidos al grupo de voluntariado y socorro. Aquí compartiremos proyectos de ayuda humanitaria, educación bíblica y asistencia a comunidades en emergencia."
+                    },
+                    post_senior_care_1: {
+                        author: "Elena Martínez",
+                        role: "Voluntaria",
+                        date: "Ayer",
+                        text: "Esta semana acompañamos a personas mayores del vecindario y organizamos una tarde de juegos y conversación. ¡Gracias a todos los voluntarios!"
+                    }
+                },
                 group_report_prompt: "¿Quieres denunciar esta publicación para que el equipo la revise?",
                 group_report_success: "Gracias. La publicación fue enviada para revisión.",
                 ngo_group_eyebrow: "CLEANWATER COMMUNITY / ZULIOV GROUP",
@@ -384,7 +437,34 @@
                 empty_state_desc: "Esta sección no cuenta con publicaciones recientes en este momento."
             },
             en: {
+                nav_home: "Home",
                 nav_browse: "Browse Projects",
+                home_feed_title: "Community Feed",
+                home_feed_subtitle: "Stories, progress, and initiatives shared by your communities.",
+                home_feed_composer_label: "What would you like to share?",
+                home_feed_composer_placeholder: "Share an update with your community...",
+                home_feed_group_label: "Post to group",
+                home_feed_publish: "Post",
+                home_feed_posted_in: "Posted in:",
+                home_feed_like: "Like",
+                home_feed_comment: "Comment",
+                home_feed_share: "Share",
+                home_feed_comment_count: "comments",
+                home_feed_post_image: "Post photo",
+                home_feed_empty: "There are no posts in the feed yet.",
+                home_feed_post_success: "Your post was shared with the group.",
+                home_feed_post_error: "Choose a group and write a message before posting.",
+                project_country_kenya: "Kenya",
+                project_country_uganda: "Uganda",
+                project_country_guatemala: "Guatemala",
+                project_country_usa: "USA",
+                project_country_venezuela: "Venezuela",
+                project_country_laos: "Laos",
+                browse_region_all: "All",
+                browse_region_africa: "Africa",
+                browse_region_latin_america: "Latin America",
+                browse_region_north_america: "North America",
+                browse_region_asia: "Asia",
                 nav_groups: "GROUPS",
                 nav_ngoProfile: "Verified NGO Profile",
                 hero_tag: "Radical Transparency Infrastructure",
@@ -571,17 +651,35 @@
                         category: "Animals"
                     },
                     group_senior_care: {
-                        name: "Care and Companionship for Seniors",
+                        name: "Senior Care Network",
                         description: "Volunteers organized to provide companionship, recreational activities, and assistance in care homes and to vulnerable older adults.",
                         category: "Health & Wellness"
                     }
                 },
                 group_posts_data: {
+                    post_education_1: {
+                        author: "Future Scholars Trust",
+                        role: "Verified NGO",
+                        date: "2 hours ago",
+                        text: "We are preparing new digital resources for rural classrooms in Malindi. We are sharing the project so everyone can follow each step."
+                    },
+                    post_cleanwater_1: {
+                        author: "Marcus Vance",
+                        role: "Verified NGO",
+                        date: "4 hours ago",
+                        text: "Welcome to the official CleanWater community! We will share field progress and news from our clean water projects here."
+                    },
                     post_jehovah_volunteer_1: {
                         author: "Volunteering Coordination",
                         role: "Community",
                         date: "Just now",
                         text: "Welcome to the volunteering and relief group. Here we will share humanitarian aid projects, educational initiatives, and emergency community assistance."
+                    },
+                    post_senior_care_1: {
+                        author: "Elena Martinez",
+                        role: "Volunteer",
+                        date: "Yesterday",
+                        text: "This week we spent time with older neighbors and organized an afternoon of games and conversation. Thank you to all our volunteers!"
                     }
                 },
                 empty_state_title: "No Records Found",
@@ -593,6 +691,29 @@
 
         function t(key) {
             return (locales[currentLang] && locales[currentLang][key]) ? locales[currentLang][key] : (locales['en'][key] || key);
+        }
+
+        function localizedProjectText(project, field) {
+            const translatedField = `${field}Es`;
+            return currentLang === 'es' && project[translatedField]
+                ? project[translatedField]
+                : project[field] || '';
+        }
+
+        function projectRegion(project) {
+            if (project.region) return project.region;
+            const country = (project.location || '').split(',').pop().trim().toLowerCase();
+            const regionsByCountry = {
+                kenya: 'africa',
+                uganda: 'africa',
+                tanzania: 'africa',
+                venezuela: 'latin-america',
+                colombia: 'latin-america',
+                guatemala: 'latin-america',
+                usa: 'north-america',
+                'united states': 'north-america'
+            };
+            return regionsByCountry[country] || '';
         }
 
         function setLanguage(lang) {
@@ -1109,6 +1230,69 @@
                     verifiedStatus: 'Audited & Verified',
                     coverImage: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800',
                     kpi: 'Provides workspace and digital devices to 80 children',
+                },
+                {
+                    id: 'proj_texas_food_bank',
+                    ngoId: 'ngo_hope_relief',
+                    ngoName: 'Hope Relief Foundation',
+                    ngoLogo: '🤝',
+                    title: 'Community Food Bank Distribution Center',
+                    titleEs: 'Centro Comunitario de Distribución del Banco de Alimentos',
+                    description: 'Providing nutritional support and essential food packages to underserved families across regional Texas.',
+                    descriptionEs: 'Brinda apoyo nutricional y paquetes de alimentos esenciales a familias desatendidas en distintas comunidades de Texas.',
+                    category: 'HUMANITARIAN',
+                    categoryEs: 'AYUDA HUMANITARIA',
+                    targetGoal: 25000,
+                    amountRaised: 14200,
+                    location: 'Texas, USA',
+                    region: 'north-america',
+                    averageOverhead: 5,
+                    verifiedStatus: 'Audited & Verified',
+                    coverImage: 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1000',
+                    kpi: 'Provides essential food packages to underserved Texas families',
+                    kpiEs: 'Entrega paquetes de alimentos esenciales a familias de Texas desatendidas'
+                },
+                {
+                    id: 'proj_zulia_solar_clinic',
+                    ngoId: 'ngo_zuliov_health',
+                    ngoName: 'Zuliov Health Initiative',
+                    ngoLogo: '🏥',
+                    title: 'Solar Powered Medical Clinic Unit',
+                    titleEs: 'Unidad Médica Comunitaria con Energía Solar',
+                    description: 'Installing solar backup power systems for pediatric medical equipment and local community health clinics in Zulia state.',
+                    descriptionEs: 'Instala sistemas solares de respaldo para equipos médicos pediátricos y clínicas de salud comunitarias en el estado Zulia.',
+                    category: 'HEALTH & WELLNESS',
+                    categoryEs: 'SALUD Y BIENESTAR',
+                    targetGoal: 24000,
+                    amountRaised: 9800,
+                    location: 'Zulia, Venezuela',
+                    region: 'latin-america',
+                    averageOverhead: 6,
+                    verifiedStatus: 'Audited & Verified',
+                    coverImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1000',
+                    kpi: 'Keeps essential pediatric medical equipment powered',
+                    kpiEs: 'Mantiene en funcionamiento equipos médicos pediátricos esenciales'
+                },
+                {
+                    id: 'proj_laos_clean_water',
+                    ngoId: 'ngo_mekong_community_hope',
+                    ngoName: 'Mekong Community Hope',
+                    ngoLogo: '💧',
+                    title: 'Clean Water Springs & Rural Sanitation',
+                    titleEs: 'Manantiales de Agua Limpia y Saneamiento Rural',
+                    description: 'Building sustainable water filtration systems and clean spring distribution networks for upland villages in Luang Prabang province.',
+                    descriptionEs: 'Construye sistemas sostenibles de filtración de agua y redes de distribución de manantiales limpios para aldeas de las tierras altas de la provincia de Luang Prabang.',
+                    category: 'WATER & HEALTH',
+                    categoryEs: 'AGUA Y SALUD',
+                    targetGoal: 18000,
+                    amountRaised: 7600,
+                    location: 'Luang Prabang, Laos',
+                    region: 'asia',
+                    averageOverhead: 6,
+                    verifiedStatus: 'Audited & Verified',
+                    coverImage: 'https://images.unsplash.com/photo-1437482078695-73f5ca6c96e2?w=1000',
+                    kpi: 'Improves access to clean spring water and rural sanitation',
+                    kpiEs: 'Mejora el acceso a agua limpia de manantial y saneamiento rural'
                 }
             ],
 
@@ -1129,8 +1313,11 @@
                             author: 'Future Scholars Trust',
                             role: 'ONG verificada',
                             avatar: '🎓',
+                            authorPhoto: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120',
                             text: 'Estamos preparando nuevos recursos digitales para las aulas rurales de Malindi. Compartimos el proyecto para que puedan seguir cada avance.',
                             projectId: 'proj_schools',
+                            likes: 12,
+                            likedByCurrentUser: false,
                             comments: []
                         }
                     ]
@@ -1176,8 +1363,11 @@
                             author: 'Marcus Vance',
                             role: 'ONG verificada',
                             avatar: '👷',
+                            authorPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120',
                             text: '¡Bienvenidos a la comunidad oficial de CleanWater! Aquí compartiremos avances de campo y novedades de nuestros proyectos de agua limpia.',
                             projectId: 'proj_water_well',
+                            likes: 28,
+                            likedByCurrentUser: false,
                             comments: []
                         }
                     ]
@@ -1198,7 +1388,11 @@
                             author: 'Coordinación de voluntariado',
                             role: 'Comunidad',
                             avatar: '🤝',
+                            authorPhoto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120',
                             text: 'Bienvenidos al grupo de voluntariado y socorro. Aquí compartiremos proyectos de ayuda humanitaria, educación bíblica y asistencia a comunidades en emergencia.',
+                            image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
+                            likes: 16,
+                            likedByCurrentUser: false,
                             comments: []
                         }
                     ]
@@ -1246,7 +1440,21 @@
                     banner: 'https://static.vecteezy.com/system/resources/thumbnails/075/505/185/small/happy-elderly-couple-portrait-seniors-smiling-togetherness-love-seniors-lifestyle-photo.jpg',
                     members: 180,
                     joined: false,
-                    posts: []
+                    posts: [
+                        {
+                            id: 'post_senior_care_1',
+                            author: 'Elena Martínez',
+                            role: 'Voluntaria',
+                            avatar: '👩',
+                            authorPhoto: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=120',
+                            text: 'Esta semana acompañamos a personas mayores del vecindario y organizamos una tarde de juegos y conversación. ¡Gracias a todos los voluntarios!',
+                            date: 'Ayer',
+                            image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200',
+                            likes: 21,
+                            likedByCurrentUser: false,
+                            comments: []
+                        }
+                    ]
                 }
             ],
 
@@ -1274,6 +1482,7 @@
             selectedBrowseProjectId: null,
             expandedProjectComments: {},
             followedGroupAlliances: {},
+            expandedGroupPostId: null,
             activeDonationProject: null,
             activeGroupId: null,
             groupFilter: 'all'
@@ -1297,6 +1506,7 @@
 
                 <!-- Navigation Links -->
                 <nav class="hidden md:flex items-center space-x-8">
+                    <button onclick="navigateTo('home')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-home">HOME</button>
                     <button onclick="navigateTo('browse')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
                     <button onclick="navigateTo('groups')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">GRUPOS</button>
                     <button onclick="navigateTo('ngo-profile')" class="nav-link font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 text-slate-600 hover:text-primary-600" id="nav-ngoProfile">
@@ -1605,6 +1815,7 @@
             }
 
             document.getElementById('nav-browse').textContent = t('nav_browse');
+            document.getElementById('nav-home').textContent = t('nav_home');
             document.getElementById('nav-groups').textContent = t('nav_groups');
             document.getElementById('nav-ngoProfile-text').textContent = t('nav_ngoProfile');
             document.getElementById('sim-title').textContent = t('sim_controller');
@@ -1618,7 +1829,9 @@
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(link => link.classList.remove('text-primary-600'));
             
-            if (currentScreen === 'ngo-profile') {
+            if (currentScreen === 'home') {
+                document.getElementById('nav-home').classList.add('text-primary-600');
+            } else if (currentScreen === 'ngo-profile') {
                 document.getElementById('nav-ngoProfile').classList.add('text-primary-600');
             } else if (currentScreen === 'browse') {
                 document.getElementById('nav-browse').classList.add('text-primary-600');
@@ -1688,6 +1901,9 @@
                 case 'landing':
                     renderLandingPage(canvas);
                     break;
+                case 'home':
+                    renderHomeFeed(canvas);
+                    break;
                 case 'browse':
                     renderBrowsePage(canvas);
                     break;
@@ -1713,8 +1929,112 @@
         }
 
         function groupPostText(post, field) {
+            if (field === 'role' && post.roleKey) return t(post.roleKey);
+            if (field === 'date' && post.dateKey) return t(post.dateKey);
             const translations = locales[currentLang].group_posts_data;
             return translations?.[post.id]?.[field] || post[field];
+        }
+
+        function renderHomeFeed(canvas) {
+            const feedPosts = state.groups.flatMap(group =>
+                group.posts.map(post => ({ group, post }))
+            ).sort((first, second) => (second.post.createdAt || 0) - (first.post.createdAt || 0));
+            const defaultGroupId = state.groups.find(group => group.id === 'group_cleanwater_official')?.id
+                || state.groups[0]?.id;
+
+            canvas.innerHTML = `
+                <section class="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+                    <header class="mb-6">
+                        <h1 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">${t('home_feed_title')}</h1>
+                        <p class="mt-2 text-sm leading-relaxed text-slate-600">${t('home_feed_subtitle')}</p>
+                    </header>
+                    <form onsubmit="publishFeedPost(event)" class="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle sm:p-5">
+                        <div class="flex gap-3">
+                            <img src="${escapeHTML(state.currentUser.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120')}" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover">
+                            <div class="min-w-0 flex-1">
+                                <label for="home-feed-text" class="sr-only">${t('home_feed_composer_label')}</label>
+                                <textarea id="home-feed-text" name="text" required maxlength="1200" rows="3" placeholder="${t('home_feed_composer_placeholder')}" class="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-800 outline-none transition focus:border-primary-400 focus:bg-white focus:ring-2 focus:ring-primary-100"></textarea>
+                                <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                    <label class="flex min-w-0 flex-1 items-center gap-2 text-[10px] font-semibold text-slate-500">
+                                        <span class="shrink-0">${t('home_feed_group_label')}</span>
+                                        <select name="groupId" required class="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700">
+                                            ${state.groups.map(group => `<option value="${escapeHTML(group.id)}" ${group.id === defaultGroupId ? 'selected' : ''}>${escapeHTML(groupText(group, 'name'))}</option>`).join('')}
+                                        </select>
+                                    </label>
+                                    <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-primary-700">
+                                        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>${t('home_feed_publish')}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="space-y-4" role="feed" aria-label="${t('home_feed_title')}">
+                        ${feedPosts.length
+                            ? feedPosts.map(({ group, post }) => renderHomeFeedPost(group, post)).join('')
+                            : `<p class="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">${t('home_feed_empty')}</p>`}
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderHomeFeedPost(group, post) {
+            const project = state.projects.find(item => item.id === post.projectId);
+            const image = post.image || project?.coverImage || group.banner;
+            const comments = post.comments || [];
+            const commentsVisible = state.expandedGroupPostId === post.id;
+            const isLiked = Boolean(post.likedByCurrentUser);
+            const likes = Number(post.likes) || 0;
+
+            return `
+                <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-subtle">
+                    <div class="px-4 pt-4 sm:px-5">
+                        <p class="mb-3 inline-flex max-w-full items-center gap-1.5 rounded-full bg-primary-50 px-3 py-1.5 text-[10px] font-bold text-primary-700 ring-1 ring-primary-100">
+                            <i class="fa-solid fa-users" aria-hidden="true"></i>
+                            <span>${t('home_feed_posted_in')}</span>
+                            <span class="truncate">${escapeHTML(groupText(group, 'name'))}</span>
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <img src="${escapeHTML(post.authorPhoto || state.currentUser.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120')}" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover">
+                            <div class="min-w-0">
+                                <p class="truncate text-xs font-bold text-slate-900">${escapeHTML(groupPostText(post, 'author') || state.currentUser.name)}</p>
+                                <p class="text-[10px] text-slate-500">${escapeHTML(groupPostText(post, 'role') || t('group_role_member'))} · ${escapeHTML(groupPostText(post, 'date') || t('group_now'))}</p>
+                            </div>
+                        </div>
+                        <p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>
+                    </div>
+                    <img src="${escapeHTML(image)}" alt="${t('home_feed_post_image')}" class="mt-4 max-h-[28rem] w-full bg-slate-100 object-cover">
+                    <div class="mx-4 flex items-center gap-1 border-b border-slate-100 py-2 text-[10px] text-slate-500 sm:mx-5">
+                        <i class="fa-solid fa-heart text-rose-500" aria-hidden="true"></i>${likes}
+                        <span class="ml-2">${comments.length} ${t('home_feed_comment_count')}</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1 px-3 py-2 sm:px-4">
+                        <button type="button" aria-pressed="${isLiked}" onclick="toggleFeedPostLike('${escapeHTML(group.id)}', '${escapeHTML(post.id)}')" class="rounded-lg py-2 text-xs font-semibold ${isLiked ? 'text-primary-700' : 'text-slate-500 hover:bg-slate-50 hover:text-primary-600'}">
+                            <i class="fa-${isLiked ? 'solid' : 'regular'} fa-heart mr-1.5" aria-hidden="true"></i>${t('home_feed_like')}
+                        </button>
+                        <button type="button" aria-expanded="${commentsVisible}" onclick="toggleGroupPostComments('${escapeHTML(post.id)}')" class="rounded-lg py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 hover:text-primary-600">
+                            <i class="fa-regular fa-comment mr-1.5" aria-hidden="true"></i>${t('home_feed_comment')}
+                        </button>
+                        <button type="button" onclick="shareGroupPost('${escapeHTML(group.id)}', '${escapeHTML(post.id)}')" class="rounded-lg py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 hover:text-primary-600">
+                            <i class="fa-solid fa-share-nodes mr-1.5" aria-hidden="true"></i>${t('home_feed_share')}
+                        </button>
+                    </div>
+                    ${commentsVisible ? `
+                        <div class="space-y-3 border-t border-slate-100 px-4 py-4 sm:px-5">
+                            ${comments.map(comment => `
+                                <div class="rounded-xl bg-slate-50 px-3 py-2">
+                                    <span class="text-[11px] font-bold text-slate-800">${escapeHTML(comment.author)}</span>
+                                    <p class="mt-1 whitespace-pre-wrap text-xs text-slate-600">${escapeHTML(comment.text)}</p>
+                                </div>
+                            `).join('')}
+                            <form onsubmit="addGroupComment(event, '${escapeHTML(group.id)}', '${escapeHTML(post.id)}')" class="flex gap-2">
+                                <label class="sr-only" for="home-feed-comment-${escapeHTML(post.id)}">${t('group_comment_label')}</label>
+                                <input id="home-feed-comment-${escapeHTML(post.id)}" name="comment" required maxlength="500" placeholder="${t('group_comment_placeholder')}" class="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-primary-400">
+                                <button type="submit" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-bold text-white hover:bg-primary-700">${t('group_comment_submit')}</button>
+                            </form>
+                        </div>
+                    ` : ''}
+                </article>
+            `;
         }
 
         function fieldUpdateText(update, field) {
@@ -2112,6 +2432,7 @@
             event.preventDefault();
             const group = state.groups.find(item => item.id === groupId);
             if (!group) return;
+            const roleKey = state.currentUser.role === 'ngo' ? 'group_role_ngo' : 'group_role_member';
             const formData = new FormData(event.currentTarget);
             const text = String(formData.get('text')).trim();
             const projectId = String(formData.get('projectId') || '');
@@ -2122,15 +2443,57 @@
             group.posts.unshift({
                 id: `post_${Date.now()}`,
                 author: state.currentUser.name,
-                role: state.currentUser.role === 'ngo' ? t('group_role_ngo') : t('group_role_member'),
+                role: t(roleKey),
+                roleKey,
                 avatar: state.currentUser.role === 'ngo' ? '🏢' : '👤',
                 text,
                 projectId: state.projects.some(project => project.id === projectId) ? projectId : null,
                 comments: [],
-                date: t('group_now')
+                date: t('group_now'),
+                dateKey: 'group_now',
+                createdAt: Date.now()
             });
             renderApp();
             showToast(t('group_post_success'), 'success');
+        }
+
+        function publishFeedPost(event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const formData = new FormData(form);
+            const text = String(formData.get('text') || '').trim();
+            const groupId = String(formData.get('groupId') || '');
+            const group = state.groups.find(item => item.id === groupId);
+            if (!text || !group) {
+                showToast(t('home_feed_post_error'), 'info');
+                return;
+            }
+
+            group.posts.unshift({
+                id: `post_${Date.now()}`,
+                author: state.currentUser.name,
+                role: state.currentUser.role === 'ngo' ? t('group_role_ngo') : t('group_role_member'),
+                roleKey: state.currentUser.role === 'ngo' ? 'group_role_ngo' : 'group_role_member',
+                avatar: '👤',
+                authorPhoto: state.currentUser.avatar,
+                text,
+                date: t('group_now'),
+                dateKey: 'group_now',
+                createdAt: Date.now(),
+                likes: 0,
+                likedByCurrentUser: false,
+                comments: []
+            });
+            renderApp();
+            showToast(t('home_feed_post_success'), 'success');
+        }
+
+        function toggleFeedPostLike(groupId, postId) {
+            const post = state.groups.find(group => group.id === groupId)?.posts.find(item => item.id === postId);
+            if (!post) return;
+            post.likedByCurrentUser = !post.likedByCurrentUser;
+            post.likes = Math.max(0, (Number(post.likes) || 0) + (post.likedByCurrentUser ? 1 : -1));
+            renderApp();
         }
 
         function toggleGroupPostComments(postId) {
@@ -2650,21 +3013,25 @@
                 : [];
             const progress = Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100);
             const location = project.location || catalogProject?.location || 'Kenya';
+            const projectTitle = localizedProjectText(project, 'title');
+            const projectCategory = localizedProjectText(project, 'category');
+            const projectDescription = localizedProjectText(project, 'description');
+            const projectKpi = localizedProjectText(project, 'kpi');
 
-            state.activeDonationProject = project.title;
+            state.activeDonationProject = projectTitle;
             const container = document.getElementById('modal-container');
             container.innerHTML = `
                 <div class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-3 sm:p-6" onclick="closeModal()">
                     <div role="dialog" aria-modal="true" aria-labelledby="project-detail-title" class="relative z-10 max-h-[96vh] w-full max-w-5xl overflow-y-auto rounded-3xl border border-slate-200 bg-slate-50 shadow-floating animate-modal-in" onclick="event.stopPropagation()">
                         <div class="relative h-56 bg-slate-900 sm:h-72">
-                            <img src="${project.coverImage}" alt="${project.title}" class="h-full w-full object-cover">
+                            <img src="${escapeHTML(project.coverImage)}" alt="${escapeHTML(projectTitle)}" class="h-full w-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent"></div>
                             <button type="button" onclick="closeModal()" aria-label="Cerrar detalle del proyecto" class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/70 text-white hover:bg-slate-950">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
                             <div class="absolute inset-x-0 bottom-0 p-5 text-white sm:p-8">
-                                <span class="inline-flex rounded-full bg-white/15 px-3 py-1 text-[10px] font-mono font-bold uppercase">${project.category}</span>
-                                <h2 id="project-detail-title" class="mt-3 max-w-3xl text-xl font-black sm:text-3xl">${project.title}</h2>
+                                <span class="inline-flex rounded-full bg-white/15 px-3 py-1 text-[10px] font-mono font-bold uppercase">${escapeHTML(projectCategory)}</span>
+                                <h2 id="project-detail-title" class="mt-3 max-w-3xl text-xl font-black sm:text-3xl">${escapeHTML(projectTitle)}</h2>
                                 <p class="mt-2 text-xs font-mono text-white/80"><i class="fa-solid fa-location-dot mr-1"></i>${location}</p>
                             </div>
                         </div>
@@ -2684,8 +3051,8 @@
                             <section class="grid gap-5 md:grid-cols-2">
                                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
                                     <h3 class="text-sm font-black text-slate-900">Acerca del Proyecto</h3>
-                                    <p class="mt-3 text-xs leading-relaxed text-slate-600">${projectStories[dataProjectId] || project.description || 'Detalles del proyecto en preparación.'}</p>
-                                    <p class="mt-3 border-t border-slate-100 pt-3 text-xs font-semibold text-slate-700"><i class="fa-solid fa-bullseye mr-1.5 text-primary-600"></i>${catalogProject?.kpi || project.description || 'Impacto comunitario en seguimiento.'}</p>
+                                    <p class="mt-3 text-xs leading-relaxed text-slate-600">${escapeHTML(projectStories[dataProjectId] || projectDescription || 'Detalles del proyecto en preparación.')}</p>
+                                    <p class="mt-3 border-t border-slate-100 pt-3 text-xs font-semibold text-slate-700"><i class="fa-solid fa-bullseye mr-1.5 text-primary-600"></i>${escapeHTML(projectKpi || projectDescription || 'Impacto comunitario en seguimiento.')}</p>
                                 </div>
                                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
                                     <div class="flex items-center justify-between gap-3">
@@ -2734,7 +3101,7 @@
                                     </div>
                                 ` : `
                                     <div class="mt-4 flex flex-col gap-4 rounded-xl bg-slate-50 p-4 sm:flex-row sm:items-center">
-                                        <img src="${project.coverImage}" alt="Imagen del proyecto ${project.title}" class="h-36 w-full rounded-lg object-cover sm:w-52">
+                                        <img src="${escapeHTML(project.coverImage)}" alt="Imagen del proyecto ${escapeHTML(projectTitle)}" class="h-36 w-full rounded-lg object-cover sm:w-52">
                                         <p class="text-xs leading-relaxed text-slate-600">Las actualizaciones fotográficas de campo para este proyecto aún no se han publicado.</p>
                                     </div>
                                 `}
@@ -3580,7 +3947,7 @@
                 showToast('No se pudo encontrar el proyecto seleccionado.', 'info');
                 return;
             }
-            state.activeDonationProject = project.title;
+            state.activeDonationProject = localizedProjectText(project, 'title');
             processDonation();
         }
 
@@ -3594,6 +3961,8 @@
             const dataProjectId = projectId === 'proj_schools' ? 'proj_school_sanitation' : projectId;
             const projectDetails = ngoData.projects.find(item => item.id === dataProjectId);
             const project = { ...catalogProject, ...projectDetails };
+            const projectTitle = localizedProjectText(project, 'title');
+            const projectDescription = localizedProjectText(project, 'description');
             const projectUpdates = dataProjectId === 'proj_water_well'
                 ? ngoData.updates.filter(update => update.projectLabel.includes('Kitui'))
                 : [];
@@ -3629,23 +3998,24 @@
                     <button type="button" onclick="closeModal()" aria-label="${t('close')}" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"></button>
                     <article class="relative z-10 my-auto max-h-[94vh] w-full max-w-6xl overflow-y-auto rounded-3xl border border-slate-200 bg-white text-left shadow-floating">
                         <header class="relative">
-                            <img src="${project.coverImage}" alt="${escapeHTML(project.title)}" class="h-64 w-full object-cover sm:h-96">
+                            <img src="${escapeHTML(project.coverImage)}" alt="${escapeHTML(projectTitle)}" class="h-64 w-full object-cover sm:h-96">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/15 to-transparent"></div>
                             <button type="button" onclick="closeModal()" aria-label="${t('close')}" title="${t('close')}" class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/75 text-xl text-white transition hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                                 &times;
                             </button>
                             <div class="absolute inset-x-0 bottom-0 p-6 text-white sm:p-10">
-                                <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-white/75">${escapeHTML(project.ngoName)}</p>
+                                <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-white/75">${escapeHTML(project.ngoName)} · ${escapeHTML(project.verifiedStatus || 'Verified organization')}</p>
                                 <h2 id="expanded-project-title" class="mt-2 max-w-4xl text-2xl font-black sm:text-4xl">${t('expanded_project_log')}</h2>
-                                <p class="mt-2 text-sm font-semibold sm:text-lg">${escapeHTML(project.title)}</p>
+                                <p class="mt-2 text-[10px] font-mono font-bold uppercase tracking-wider text-white/75">${escapeHTML(localizedProjectText(project, 'category'))}</p>
+                                <p class="mt-2 text-sm font-semibold sm:text-lg">${escapeHTML(projectTitle)}</p>
                             </div>
                         </header>
 
                         <div class="space-y-10 p-6 sm:p-10">
                             <section aria-labelledby="expanded-project-progress-title" class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
                                 <div>
-                                    <h3 id="expanded-project-progress-title" class="text-lg font-black text-slate-900">${escapeHTML(project.title)}</h3>
-                                    <p class="mt-3 text-sm leading-7 text-slate-600">${escapeHTML(project.description || '')}</p>
+                                    <h3 id="expanded-project-progress-title" class="text-lg font-black text-slate-900">${escapeHTML(projectTitle)}</h3>
+                                    <p class="mt-3 text-sm leading-7 text-slate-600">${escapeHTML(projectDescription)}</p>
                                     ${projectUpdates.length ? `
                                         <div class="mt-6 space-y-6">
                                             ${projectUpdates.map(update => `
@@ -3772,17 +4142,35 @@
         }
 
         function renderBrowsePage(canvas) {
+            function formatProjectLocation(project) {
+                const locationParts = (project.location || ngoData.country || 'Kenya')
+                    .split(',')
+                    .map(part => part.trim())
+                    .filter(Boolean);
+                const country = locationParts.pop() || 'Kenya';
+                const countryKeys = {
+                    kenya: 'project_country_kenya',
+                    uganda: 'project_country_uganda',
+                    guatemala: 'project_country_guatemala',
+                    usa: 'project_country_usa',
+                    venezuela: 'project_country_venezuela'
+                };
+                const countryKey = countryKeys[country.toLowerCase()];
+                const translatedCountry = countryKey ? t(countryKey) : country;
+
+                return [translatedCountry, ...locationParts].join(' · ');
+            }
+
             const continentFilters = [
-                { id: 'all', label: 'Todos' },
-                { id: 'africa', label: 'África' },
-                { id: 'latin-america', label: 'América Latina' },
-                { id: 'asia', label: 'Asia' }
+                { id: 'all', label: t('browse_region_all') },
+                { id: 'africa', label: t('browse_region_africa') },
+                { id: 'latin-america', label: t('browse_region_latin_america') },
+                { id: 'north-america', label: t('browse_region_north_america') },
+                { id: 'asia', label: t('browse_region_asia') }
             ];
             const visibleProjects = state.projectContinent === 'all'
                 ? state.projects
-                : state.projectContinent === 'africa'
-                    ? state.projects.filter(proj => ['proj_water_well', 'proj_solar_pump'].includes(proj.id))
-                    : [];
+                : state.projects.filter(proj => projectRegion(proj) === state.projectContinent);
             const selectedProject = state.projects.find(proj => proj.id === state.selectedBrowseProjectId);
 
             canvas.innerHTML = `
@@ -3827,14 +4215,17 @@
                         `).join('')}
                     </nav>
 
-                    <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 ${selectedProject ? 'lg:col-span-7' : 'lg:col-span-12'}">
+                    <div class="grid grid-cols-1 items-start gap-6 ${selectedProject ? 'md:grid-cols-12' : ''}">
+                        <div class="grid gap-4 ${selectedProject ? 'grid-cols-2 md:col-span-7' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}">
                             ${visibleProjects.length ? visibleProjects.map(proj => `
-                                <button type="button" data-browse-project-id="${proj.id}" aria-pressed="${state.selectedBrowseProjectId === proj.id}" onclick="event.stopPropagation(); selectBrowseProject('${proj.id}')" class="group cursor-pointer overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
-                                    <span class="block h-48 overflow-hidden bg-slate-100">
-                                        <img src="${proj.coverImage}" alt="${proj.title}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                <button type="button" data-browse-project-id="${escapeHTML(proj.id)}" aria-pressed="${state.selectedBrowseProjectId === proj.id}" onclick="event.stopPropagation(); selectBrowseProject('${escapeHTML(proj.id)}')" class="group w-full max-w-sm cursor-pointer overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
+                                    <span class="relative block h-40 overflow-hidden bg-slate-100">
+                                        <img src="${escapeHTML(proj.coverImage)}" alt="${escapeHTML(localizedProjectText(proj, 'title'))}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                        <span class="absolute left-3 top-3 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-subtle backdrop-blur-sm">
+                                            ${escapeHTML(formatProjectLocation(proj))}
+                                        </span>
                                     </span>
-                                    <span class="block p-4 text-sm font-bold leading-snug text-slate-900">${proj.title}</span>
+                                    <span class="block p-4 text-sm font-bold leading-snug text-slate-900">${escapeHTML(localizedProjectText(proj, 'title'))}</span>
                                 </button>
                             `).join('') : `
                                 <div role="status" class="col-span-full rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center">
@@ -3851,18 +4242,18 @@
                             ` : ''}
                         </div>
                         ${selectedProject ? `
-                            <aside id="browse-project-detail-panel" aria-labelledby="browse-project-detail-title" onclick="event.stopPropagation()" class="self-start overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card lg:sticky lg:top-20 lg:col-span-5">
+                            <aside id="browse-project-detail-panel" aria-labelledby="browse-project-detail-title" onclick="event.stopPropagation()" class="self-start overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card md:sticky md:top-20 md:col-span-5">
                                 <div class="relative">
-                                    <img src="${selectedProject.coverImage}" alt="${selectedProject.title}" class="h-48 w-full object-cover">
+                                    <img src="${escapeHTML(selectedProject.coverImage)}" alt="${escapeHTML(localizedProjectText(selectedProject, 'title'))}" class="h-48 w-full object-cover">
                                     <button type="button" onclick="clearBrowseProjectSelection()" aria-label="Close project details" title="Close project details" class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-slate-950/70 text-lg font-bold text-white transition-colors hover:bg-slate-950">
                                         &times;
                                     </button>
                                 </div>
                                 <div class="space-y-5 p-5">
                                     <div>
-                                        <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-700">${selectedProject.category}</span>
-                                        <h2 id="browse-project-detail-title" class="mt-1 text-lg font-black leading-tight text-slate-900">${selectedProject.title}</h2>
-                                        <p class="mt-2 text-xs font-mono text-slate-500">${selectedProject.location || 'Kenya'}</p>
+                                        <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-700">${escapeHTML(localizedProjectText(selectedProject, 'category'))}</span>
+                                        <h2 id="browse-project-detail-title" class="mt-1 text-lg font-black leading-tight text-slate-900">${escapeHTML(localizedProjectText(selectedProject, 'title'))}</h2>
+                                        <p class="mt-2 text-xs font-mono text-slate-500">${escapeHTML(formatProjectLocation(selectedProject))}</p>
                                     </div>
                                     <div class="flex items-center gap-3 rounded-xl bg-slate-50 p-3">
                                         <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl">${selectedProject.ngoLogo}</span>
@@ -3872,7 +4263,7 @@
                                             <p class="text-[10px] font-semibold text-emerald-700">${selectedProject.verifiedStatus || 'Verified organization'}</p>
                                         </div>
                                     </div>
-                                    <p class="text-xs leading-relaxed text-slate-600">${selectedProject.description}</p>
+                                    <p class="text-xs leading-relaxed text-slate-600">${escapeHTML(localizedProjectText(selectedProject, 'description'))}</p>
                                     <section aria-label="Funding progress">
                                         <div class="flex items-end justify-between gap-2">
                                             <div>
@@ -3926,7 +4317,15 @@
             cards.forEach(card => {
                 const project = state.projects.find(item => item.id === card.dataset.browseProjectId);
                 if (!project) return;
-                const searchableText = normalizeProjectSearch(`${project.title} ${project.description} ${project.category} ${project.location}`);
+                const searchableText = normalizeProjectSearch([
+                    project.title,
+                    project.titleEs,
+                    project.description,
+                    project.descriptionEs,
+                    project.category,
+                    project.categoryEs,
+                    project.location
+                ].filter(Boolean).join(' '));
                 const matches = !query || (aliases[query]
                     ? aliases[query].some(alias => searchableText.includes(alias))
                     : searchableText.includes(query));
