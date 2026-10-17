@@ -8,10 +8,10 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <!-- Google Fonts: editorial display, Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Pro / Free Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -231,6 +231,26 @@
 
         .cursor-grab { cursor: grab; }
         .cursor-grabbing { cursor: grabbing; }
+
+        .landing-serif {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-weight: 400;
+            letter-spacing: -0.035em;
+        }
+
+        .landing-grid {
+            background-image: linear-gradient(rgba(15, 23, 42, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, .045) 1px, transparent 1px);
+            background-size: 42px 42px;
+        }
+
+        .landing-photo {
+            background-position: center;
+            background-size: cover;
+        }
+
+        .landing-shadow {
+            box-shadow: 0 30px 90px -42px rgba(2, 6, 23, .45);
+        }
     </style>
 </head>
 <body class="h-full flex flex-col antialiased selection:bg-primary-100 selection:text-primary-700 dark:bg-slate-950 dark:text-slate-200">
@@ -274,6 +294,76 @@
                 hero_subtitle: "Descubre exactamente cómo cada donación genera un cambio real a través de historias transparentes, actualizaciones verificadas e impacto medible.",
                 hero_btn_demo: "Ver demo",
                 hero_btn_projects: "Explorar proyectos",
+                landing_eyebrow: "Tecnología para el bien común",
+                landing_hero_title: "El impacto merece ser visto, no solo prometido.",
+                landing_hero_copy: "Zuliov acerca a las personas a las organizaciones que están cambiando vidas: con historias desde el terreno, avances verificables y una comunidad que puede acompañar cada paso.",
+                landing_hero_note: "Una plataforma para seguir el trabajo real, juntos.",
+                landing_scroll: "Conoce una nueva forma de participar",
+                landing_problem_label: "01 — El desafío",
+                landing_problem_title: "La buena voluntad no debería pedir un acto de fe.",
+                landing_problem_copy: "Quienes apoyan causas sociales quieren saber qué ocurre después de contribuir. Las organizaciones necesitan compartir su trabajo sin que sus historias se pierdan entre cifras aisladas y actualizaciones dispersas.",
+                landing_problem_quote: "La confianza crece cuando el progreso se puede ver, entender y seguir.",
+                landing_problem_caption: "Una relación más cercana entre comunidad y organizaciones",
+                landing_vision_label: "02 — La visión de Zuliov",
+                landing_vision_title: "De una contribución a una historia compartida.",
+                landing_vision_copy: "Un espacio donde el trabajo de campo, las personas que lo hacen posible y quienes lo apoyan se encuentran.",
+                landing_discover_title: "Descubre organizaciones",
+                landing_discover_copy: "Encuentra equipos y proyectos por causa, comunidad y lugar. Conoce quiénes están detrás de cada iniciativa.",
+                landing_follow_title: "Sigue historias de campo",
+                landing_follow_copy: "Acompaña avances, decisiones y aprendizajes contados por las personas que están en el terreno.",
+                landing_alliance_title: "Construye alianzas",
+                landing_alliance_copy: "Conecta con personas y organizaciones para compartir conocimiento, colaborar y sostener el cambio.",
+                landing_preview_label: "03 — Así se ve el impacto",
+                landing_preview_title: "Un vistazo al trabajo detrás de cada avance.",
+                landing_preview_copy: "Historias, perfiles y actividad comunitaria conviven en un mismo lugar. No como una promesa abstracta, sino como un registro vivo del camino.",
+                landing_verified: "Organización verificada",
+                landing_followers: "personas acompañan esta causa",
+                landing_fieldnotes: "Bitácora de campo · 2026",
+                landing_active_projects: "proyectos activos",
+                landing_mock_org: "ORGANIZACIÓN",
+                landing_mock_overview: "Resumen",
+                landing_mock_projects: "Proyectos",
+                landing_mock_records: "Registros",
+                landing_mock_journal: "BITÁCORA DE CAMPO",
+                landing_mock_journal_note: "Un registro vivo del progreso.",
+                landing_recent: "hace 2 días",
+                landing_story_tag: "ACTUALIZACIÓN DE CAMPO · KITUI, KENIA",
+                landing_story_title: "La bomba solar ya llegó a la comunidad.",
+                landing_story_copy: "El equipo local recibió el sistema y comenzó la instalación. Cada actualización conecta el avance con las personas que lo hacen posible.",
+                landing_community: "Comunidad en conversación",
+                landing_comment: "Un avance importante. Gracias por compartirlo desde el terreno.",
+                landing_audit_title: "Registro financiero",
+                landing_audit_copy: "Comprobante de proveedor vinculado",
+                landing_audit_status: "Revisado y registrado",
+                landing_how_label: "04 — Cómo funciona",
+                landing_how_title: "Transparencia que se construye entre todos.",
+                landing_org_title: "Para organizaciones",
+                landing_org_step1: "Cuenta el trabajo real",
+                landing_org_step1_copy: "Publica historias, fotografías y avances directamente desde tus proyectos.",
+                landing_org_step2: "Conecta cada avance",
+                landing_org_step2_copy: "Relaciona actualizaciones con proyectos y documentación financiera disponible.",
+                landing_org_step3: "Crece con tu comunidad",
+                landing_org_step3_copy: "Recibe apoyo, preguntas y nuevas alianzas de quienes siguen tu labor.",
+                landing_people_title: "Para la comunidad",
+                landing_people_step1: "Explora con contexto",
+                landing_people_step1_copy: "Descubre organizaciones, sus equipos y la realidad de cada iniciativa.",
+                landing_people_step2: "Sigue el recorrido",
+                landing_people_step2_copy: "Acompaña avances y consulta los registros vinculados a cada proyecto.",
+                landing_people_step3: "Participa y pregunta",
+                landing_people_step3_copy: "Comparte perspectivas, conecta con otras personas y fortalece la rendición de cuentas.",
+                landing_trust_label: "05 — Claridad, no confusión",
+                landing_trust_title: "Cada dato cuenta quién lo publicó y qué representa.",
+                landing_trust_copy: "Las historias y actualizaciones son contenido publicado por las organizaciones o la comunidad. Los registros financieros auditados se identifican por separado y muestran documentación revisada. Así puedes distinguir una experiencia compartida de un dato verificado.",
+                landing_trust_user: "Publicado por personas",
+                landing_trust_user_copy: "Historias, fotografías, comentarios y avances compartidos por organizaciones y comunidad.",
+                landing_trust_audited: "Registro financiero auditado",
+                landing_trust_audited_copy: "Documentos y datos de auditoría vinculados al proyecto, identificados con su estado de revisión.",
+                landing_cta_label: "El cambio también se construye acompañando.",
+                landing_cta_title: "Acércate a las historias que están moviendo el mundo.",
+                landing_cta_copy: "Explora proyectos, conoce a quienes los impulsan y encuentra tu manera de participar.",
+                landing_cta_explore: "Explorar proyectos",
+                landing_cta_community: "Conocer la comunidad",
+                landing_footer_note: "Historias humanas. Progreso visible. Confianza compartida.",
                 profile_title: "Perfil de Impacto Verificado",
                 profile_subtitle: "Gestión de identidad, imágenes de portada, credenciales de auditoría y registros de transparencia.",
                 change_photo: "Cambiar foto",
@@ -494,6 +584,76 @@
                 hero_subtitle: "See exactly how every donation creates real change through transparent stories, verified updates and measurable impact.",
                 hero_btn_demo: "Watch Demo",
                 hero_btn_projects: "Explore Projects",
+                landing_eyebrow: "Technology for the common good",
+                landing_hero_title: "Impact deserves to be seen, not simply promised.",
+                landing_hero_copy: "Zuliov brings people closer to the organizations changing lives—with stories from the field, verifiable progress, and a community that can follow every step.",
+                landing_hero_note: "A platform to follow the work that matters, together.",
+                landing_scroll: "Discover a more human way to take part",
+                landing_problem_label: "01 — The challenge",
+                landing_problem_title: "Goodwill shouldn’t require an act of faith.",
+                landing_problem_copy: "People who support social causes want to know what happens after they give. Organizations need to share their work without their stories getting lost among isolated numbers and scattered updates.",
+                landing_problem_quote: "Trust grows when progress can be seen, understood, and followed.",
+                landing_problem_caption: "A closer relationship between communities and organizations",
+                landing_vision_label: "02 — The Zuliov vision",
+                landing_vision_title: "From a contribution to a shared story.",
+                landing_vision_copy: "A place where fieldwork, the people who make it happen, and those who support it come together.",
+                landing_discover_title: "Discover organizations",
+                landing_discover_copy: "Find teams and projects by cause, community, and place. Meet the people behind each initiative.",
+                landing_follow_title: "Follow field stories",
+                landing_follow_copy: "Stay close to progress, decisions, and lessons shared by the people doing the work.",
+                landing_alliance_title: "Build alliances",
+                landing_alliance_copy: "Connect with people and organizations to share knowledge, collaborate, and sustain change.",
+                landing_preview_label: "03 — Impact, in view",
+                landing_preview_title: "A closer look at the work behind every milestone.",
+                landing_preview_copy: "Stories, organization profiles, and community activity live in one place—not as an abstract promise, but as a living record of the journey.",
+                landing_verified: "Verified organization",
+                landing_followers: "people following this cause",
+                landing_fieldnotes: "Field notes · 2026",
+                landing_active_projects: "active projects",
+                landing_mock_org: "ORGANIZATION",
+                landing_mock_overview: "Overview",
+                landing_mock_projects: "Projects",
+                landing_mock_records: "Records",
+                landing_mock_journal: "FIELD JOURNAL",
+                landing_mock_journal_note: "A living record of progress.",
+                landing_recent: "2 days ago",
+                landing_story_tag: "FIELD UPDATE · KITUI, KENYA",
+                landing_story_title: "The solar pump has reached the community.",
+                landing_story_copy: "The local team received the system and began installation. Each update connects progress to the people making it possible.",
+                landing_community: "Community conversation",
+                landing_comment: "A meaningful milestone. Thank you for sharing it from the field.",
+                landing_audit_title: "Financial record",
+                landing_audit_copy: "Supplier receipt linked",
+                landing_audit_status: "Reviewed and recorded",
+                landing_how_label: "04 — How it works",
+                landing_how_title: "Transparency, built together.",
+                landing_org_title: "For organizations",
+                landing_org_step1: "Tell the real story",
+                landing_org_step1_copy: "Share stories, photographs, and progress straight from your projects.",
+                landing_org_step2: "Connect the dots",
+                landing_org_step2_copy: "Link updates to projects and available financial documentation.",
+                landing_org_step3: "Grow with your community",
+                landing_org_step3_copy: "Welcome support, questions, and new alliances from people who follow your work.",
+                landing_people_title: "For the community",
+                landing_people_step1: "Explore with context",
+                landing_people_step1_copy: "Discover organizations, their teams, and the reality of each initiative.",
+                landing_people_step2: "Follow the journey",
+                landing_people_step2_copy: "Stay with each milestone and explore records connected to a project.",
+                landing_people_step3: "Take part and ask",
+                landing_people_step3_copy: "Share perspectives, connect with others, and strengthen accountability.",
+                landing_trust_label: "05 — Clarity, not confusion",
+                landing_trust_title: "Every update shows who shared it and what it means.",
+                landing_trust_copy: "Stories and updates are content shared by organizations or the community. Audited financial records are identified separately and show reviewed documentation. That way, you can tell a shared experience from a verified record.",
+                landing_trust_user: "Community-published",
+                landing_trust_user_copy: "Stories, photographs, comments, and progress shared by organizations and the community.",
+                landing_trust_audited: "Audited financial record",
+                landing_trust_audited_copy: "Audit documents and data linked to a project, clearly marked with their review status.",
+                landing_cta_label: "Change is built by showing up, too.",
+                landing_cta_title: "Get closer to the stories moving our world forward.",
+                landing_cta_copy: "Explore projects, meet the people behind them, and find your way to take part.",
+                landing_cta_explore: "Explore projects",
+                landing_cta_community: "Meet the community",
+                landing_footer_note: "Human stories. Visible progress. Shared trust.",
                 profile_title: "Verified Impact Profile",
                 profile_subtitle: "Manage your identity, cover media, audit badges and financial transparency proof.",
                 change_photo: "Change Photo",
@@ -4220,48 +4380,235 @@
     <script>
         function renderLandingPage(canvas) {
             canvas.innerHTML = `
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16 text-left">
-                    <div class="bg-slate-900 text-white rounded-3xl p-8 sm:p-16 shadow-floating bg-zuliov-mesh bg-grid-pattern relative overflow-hidden">
-                        <div class="max-w-2xl space-y-6 relative z-10">
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-primary-500/20 text-primary-300 border border-primary-500/30">
-                                <i class="fa-solid fa-sparkles"></i> ${t('hero_tag')}
-                            </span>
-                            <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-none">${t('hero_title')}</h1>
-                            <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">${t('hero_subtitle')}</p>
-                            <div class="flex flex-wrap gap-3 pt-2">
-                                <button onclick="navigateTo('ngo-profile')" class="px-6 py-3 rounded-xl font-bold text-xs bg-primary-600 hover:bg-primary-500 text-white shadow-card transition-all">
-                                    ${t('hero_btn_demo')}
-                                </button>
-                                <button onclick="navigateTo('browse')" class="px-6 py-3 rounded-xl font-bold text-xs bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 transition-all">
-                                    ${t('hero_btn_projects')}
-                                </button>
+                <div class="bg-[#f7f7f2] text-slate-900 text-left">
+                    <section class="landing-grid relative overflow-hidden">
+                        <div class="mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1.05fr_.95fr] lg:gap-16 lg:px-12 lg:py-28">
+                            <div class="relative z-10">
+                                <p class="mb-6 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">
+                                    <span class="h-px w-8 bg-emerald-600"></span>${t('landing_eyebrow')}
+                                </p>
+                                <h1 class="landing-serif max-w-3xl text-5xl leading-[1.02] text-[#10253b] sm:text-6xl lg:text-[5.4rem]">${t('landing_hero_title')}</h1>
+                                <p class="mt-7 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">${t('landing_hero_copy')}</p>
+                                <div class="mt-9 flex flex-wrap items-center gap-4">
+                                    <button onclick="navigateTo('browse')" class="inline-flex items-center gap-3 rounded-full bg-[#102b40] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-emerald-800">
+                                        ${t('landing_cta_explore')} <i class="fa-solid fa-arrow-right text-xs"></i>
+                                    </button>
+                                    <button onclick="navigateTo('ngo-profile')" class="inline-flex items-center gap-2 px-3 py-3 text-sm font-semibold text-[#102b40] transition hover:text-emerald-800">
+                                        ${t('hero_btn_demo')} <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                    </button>
+                                </div>
+                                <p class="mt-10 flex items-center gap-2 text-xs font-medium text-slate-500">
+                                    <span class="h-2 w-2 rounded-full bg-emerald-500"></span>${t('landing_hero_note')}
+                                </p>
+                            </div>
+                            <div class="relative mx-auto w-full max-w-xl pb-8 pl-4 sm:pl-8">
+                                <div class="landing-photo aspect-[4/4.3] overflow-hidden rounded-[2rem] bg-emerald-100" role="img" aria-label="${t('landing_problem_caption')}" style="background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&auto=format&fit=crop&q=85')"></div>
+                                <div class="absolute -bottom-1 left-0 max-w-[19rem] rounded-2xl border border-slate-100 bg-white p-5 shadow-xl sm:-left-5 sm:p-6">
+                                    <div class="mb-4 flex items-center justify-between">
+                                        <span class="text-[10px] font-bold uppercase tracking-[.18em] text-emerald-800">${t('landing_verified')}</span>
+                                        <span class="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-emerald-800"><i class="fa-solid fa-check text-xs"></i></span>
+                                    </div>
+                                    <p class="landing-serif text-2xl text-[#10253b]">CleanWater International</p>
+                                    <p class="mt-2 text-xs leading-5 text-slate-500">Kitui, Kenya <span class="mx-1 text-emerald-700">·</span> 8 ${t('landing_active_projects')}</p>
+                                    <div class="mt-4 flex items-center gap-2 border-t border-slate-100 pt-4 text-[11px] text-slate-500">
+                                        <i class="fa-solid fa-users text-emerald-700"></i> 18,420 ${t('landing_followers')}
+                                    </div>
+                                </div>
+                                <div class="absolute right-0 top-8 rounded-full border border-white/80 bg-[#d7edc4] px-4 py-2 text-[10px] font-bold uppercase tracking-[.13em] text-[#21472c] shadow-lg sm:right-2">
+                                    ${t('landing_fieldnotes')}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <a href="#landing-problem" class="mx-auto mb-8 flex w-fit items-center gap-3 pb-5 text-[10px] font-bold uppercase tracking-[.18em] text-slate-500 hover:text-emerald-800">
+                            ${t('landing_scroll')} <i class="fa-solid fa-arrow-down-long text-emerald-700"></i>
+                        </a>
+                    </section>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-subtle space-y-3">
-                            <div class="h-10 w-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center font-bold">
-                                <i class="fa-solid fa-receipt"></i>
+                    <section id="landing-problem" class="bg-[#10253b] text-white">
+                        <div class="mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[.8fr_1.2fr] lg:gap-24 lg:px-12">
+                            <div>
+                                <p class="mb-6 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-300">${t('landing_problem_label')}</p>
+                                <p class="landing-serif max-w-md text-3xl leading-tight text-emerald-100 sm:text-4xl">${t('landing_problem_quote')}</p>
                             </div>
-                            <h3 class="text-base font-bold text-slate-900">1. Real-Time Receipts</h3>
-                            <p class="text-xs text-slate-600 leading-relaxed">NGOs upload supplier invoices directly through API gateways, linking every purchase order to donor dollars.</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-subtle space-y-3">
-                            <div class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                                <i class="fa-solid fa-shield-halved"></i>
+                            <div class="border-l border-white/15 pl-6 sm:pl-10">
+                                <h2 class="landing-serif max-w-2xl text-4xl leading-tight sm:text-5xl">${t('landing_problem_title')}</h2>
+                                <p class="mt-6 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">${t('landing_problem_copy')}</p>
+                                <div class="mt-9 flex items-center gap-4 text-xs font-semibold text-slate-300">
+                                    <span class="flex h-11 w-11 items-center justify-center rounded-full border border-emerald-300/40 text-emerald-300"><i class="fa-solid fa-eye"></i></span>
+                                    ${t('landing_problem_caption')}
+                                </div>
                             </div>
-                            <h3 class="text-base font-bold text-slate-900">2. Automated Audit Vault</h3>
-                            <p class="text-xs text-slate-600 leading-relaxed">Cryptographic proof prevents double-accounting and ensures 99.4% direct efficiency for every initiative.</p>
                         </div>
-                        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-subtle space-y-3">
-                            <div class="h-10 w-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
-                                <i class="fa-solid fa-map-location-dot"></i>
+                    </section>
+
+                    <section class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
+                        <div class="grid items-end gap-6 md:grid-cols-2">
+                            <div>
+                                <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">${t('landing_vision_label')}</p>
+                                <h2 class="landing-serif max-w-2xl text-4xl leading-tight text-[#10253b] sm:text-5xl">${t('landing_vision_title')}</h2>
                             </div>
-                            <h3 class="text-base font-bold text-slate-900">3. Verified Field Milestones</h3>
-                            <p class="text-xs text-slate-600 leading-relaxed">Track hydro-drilling, solar construction, and school installations via geotagged EXIF logs from field directors.</p>
+                            <p class="max-w-lg text-sm leading-7 text-slate-600 md:justify-self-end">${t('landing_vision_copy')}</p>
                         </div>
-                    </div>
+                        <div class="mt-12 grid gap-4 md:grid-cols-3">
+                            <article class="group border-t border-slate-300 px-1 py-7 transition hover:border-emerald-700">
+                                <span class="font-mono text-xs text-emerald-800">01 /</span>
+                                <div class="my-8 flex h-14 w-14 items-center justify-center rounded-full bg-[#e8eee4] text-xl text-[#244e39] transition group-hover:bg-[#d5e8c7]"><i class="fa-solid fa-compass"></i></div>
+                                <h3 class="landing-serif text-2xl text-[#10253b]">${t('landing_discover_title')}</h3>
+                                <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">${t('landing_discover_copy')}</p>
+                            </article>
+                            <article class="group border-t border-slate-300 px-1 py-7 transition hover:border-emerald-700">
+                                <span class="font-mono text-xs text-emerald-800">02 /</span>
+                                <div class="my-8 flex h-14 w-14 items-center justify-center rounded-full bg-[#e8eee4] text-xl text-[#244e39] transition group-hover:bg-[#d5e8c7]"><i class="fa-solid fa-book-open"></i></div>
+                                <h3 class="landing-serif text-2xl text-[#10253b]">${t('landing_follow_title')}</h3>
+                                <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">${t('landing_follow_copy')}</p>
+                            </article>
+                            <article class="group border-t border-slate-300 px-1 py-7 transition hover:border-emerald-700">
+                                <span class="font-mono text-xs text-emerald-800">03 /</span>
+                                <div class="my-8 flex h-14 w-14 items-center justify-center rounded-full bg-[#e8eee4] text-xl text-[#244e39] transition group-hover:bg-[#d5e8c7]"><i class="fa-solid fa-people-arrows-left-right"></i></div>
+                                <h3 class="landing-serif text-2xl text-[#10253b]">${t('landing_alliance_title')}</h3>
+                                <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">${t('landing_alliance_copy')}</p>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="overflow-hidden bg-[#e9eee7]">
+                        <div class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
+                            <div class="mb-12 max-w-2xl">
+                                <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">${t('landing_preview_label')}</p>
+                                <h2 class="landing-serif text-4xl leading-tight text-[#10253b] sm:text-5xl">${t('landing_preview_title')}</h2>
+                                <p class="mt-5 max-w-xl text-sm leading-7 text-slate-600">${t('landing_preview_copy')}</p>
+                            </div>
+                            <div class="landing-shadow grid overflow-hidden rounded-2xl bg-white lg:grid-cols-[230px_1fr]">
+                                <aside class="hidden bg-[#12283b] p-6 text-white lg:block">
+                                    <div class="mb-10 flex items-center gap-2 font-mono text-sm font-bold tracking-widest"><span class="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-400 text-[#10253b]">Z</span>ZULIOV</div>
+                                    <p class="mb-4 text-[9px] font-bold uppercase tracking-[.2em] text-slate-400">${t('landing_mock_org')}</p>
+                                    <div class="flex items-center gap-3 rounded-xl bg-white/10 p-3">
+                                        <img src="assets/cleanwater-logo.jpg" alt="" class="h-9 w-9 rounded-full bg-white object-cover">
+                                        <span class="text-xs font-semibold leading-4">CleanWater<br>International</span>
+                                    </div>
+                                    <div class="mt-8 space-y-4 text-xs text-slate-300">
+                                        <p class="flex items-center gap-3 text-white"><i class="fa-solid fa-house w-4 text-emerald-300"></i> ${t('landing_mock_overview')}</p>
+                                        <p class="flex items-center gap-3"><i class="fa-solid fa-folder-open w-4"></i> ${t('landing_mock_projects')}</p>
+                                        <p class="flex items-center gap-3"><i class="fa-solid fa-receipt w-4"></i> ${t('landing_mock_records')}</p>
+                                    </div>
+                                    <div class="mt-16 border-t border-white/10 pt-5 text-[10px] leading-5 text-slate-400">${t('landing_mock_journal')}<br><span class="text-white">${t('landing_mock_journal_note')}</span></div>
+                                </aside>
+                                <div class="min-w-0 p-4 sm:p-7 lg:p-9">
+                                    <div class="flex flex-wrap items-start justify-between gap-4 border-b border-slate-100 pb-5">
+                                        <div class="flex items-center gap-3">
+                                            <img src="assets/cleanwater-logo.jpg" alt="" class="h-12 w-12 rounded-full border border-slate-100 object-cover">
+                                            <div>
+                                                <h3 class="text-sm font-bold text-[#10253b]">CleanWater International <span class="ml-1 text-emerald-700"><i class="fa-solid fa-circle-check"></i></span></h3>
+                                                <p class="mt-1 text-[10px] text-slate-500">${t('landing_verified')} · Kitui, Kenya</p>
+                                            </div>
+                                        </div>
+                                        <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider text-emerald-800"><i class="fa-solid fa-shield-check mr-1"></i> 98 / 100</span>
+                                    </div>
+                                    <div class="grid gap-5 pt-6 xl:grid-cols-[1fr_260px]">
+                                        <article class="overflow-hidden rounded-xl border border-slate-100">
+                                            <div class="landing-photo aspect-[2/1] bg-slate-200" role="img" aria-label="${t('landing_story_title')}" style="background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1100&auto=format&fit=crop&q=85')"></div>
+                                            <div class="p-5 sm:p-6">
+                                                <p class="text-[9px] font-bold uppercase tracking-[.16em] text-emerald-800">${t('landing_story_tag')}</p>
+                                                <h4 class="landing-serif mt-3 text-2xl leading-tight text-[#10253b]">${t('landing_story_title')}</h4>
+                                                <p class="mt-3 text-xs leading-6 text-slate-600">${t('landing_story_copy')}</p>
+                                                <div class="mt-5 flex items-center justify-between border-t border-slate-100 pt-4 text-[10px] text-slate-500">
+                                                    <span><i class="fa-regular fa-heart mr-1 text-emerald-800"></i> 126</span>
+                                                    <span>Marcus Vance · ${t('landing_recent')}</span>
+                                                </div>
+                                            </div>
+                                        </article>
+                                        <div class="space-y-4">
+                                            <div class="rounded-xl border border-slate-100 bg-[#fbfcfa] p-5">
+                                                <div class="mb-4 flex items-center justify-between">
+                                                    <p class="text-[9px] font-bold uppercase tracking-[.13em] text-slate-500">${t('landing_audit_title')}</p>
+                                                    <i class="fa-solid fa-file-shield text-emerald-800"></i>
+                                                </div>
+                                                <p class="text-lg font-semibold text-[#10253b]">$2,400.00</p>
+                                                <p class="mt-1 text-[10px] text-slate-500">${t('landing_audit_copy')}</p>
+                                                <div class="mt-4 border-t border-slate-200 pt-3 text-[9px] font-semibold text-emerald-800"><i class="fa-solid fa-circle-check mr-1"></i>${t('landing_audit_status')}</div>
+                                            </div>
+                                            <div class="rounded-xl border border-slate-100 p-5">
+                                                <p class="mb-4 text-[9px] font-bold uppercase tracking-[.13em] text-slate-500">${t('landing_community')}</p>
+                                                <div class="flex gap-3">
+                                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="" class="h-8 w-8 rounded-full object-cover">
+                                                    <p class="text-[10px] leading-5 text-slate-600">${t('landing_comment')}</p>
+                                                </div>
+                                                <div class="mt-4 flex -space-x-2">
+                                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&auto=format&fit=crop&q=80" alt="" class="h-7 w-7 rounded-full border-2 border-white object-cover">
+                                                    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=80&auto=format&fit=crop&q=80" alt="" class="h-7 w-7 rounded-full border-2 border-white object-cover">
+                                                    <span class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-[#d7edc4] text-[8px] font-bold text-[#21472c]">+24</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
+                        <div class="mb-12 max-w-2xl">
+                            <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">${t('landing_how_label')}</p>
+                            <h2 class="landing-serif text-4xl leading-tight text-[#10253b] sm:text-5xl">${t('landing_how_title')}</h2>
+                        </div>
+                        <div class="grid gap-6 lg:grid-cols-2">
+                            <article class="rounded-2xl bg-[#10253b] p-7 text-white sm:p-9">
+                                <div class="mb-9 flex items-center justify-between">
+                                    <h3 class="landing-serif text-3xl">${t('landing_org_title')}</h3>
+                                    <i class="fa-solid fa-seedling text-2xl text-emerald-300"></i>
+                                </div>
+                                <ol class="space-y-6">
+                                    <li class="flex gap-4"><span class="font-mono text-xs text-emerald-300">01</span><div><p class="text-sm font-semibold">${t('landing_org_step1')}</p><p class="mt-1 text-xs leading-5 text-slate-300">${t('landing_org_step1_copy')}</p></div></li>
+                                    <li class="flex gap-4"><span class="font-mono text-xs text-emerald-300">02</span><div><p class="text-sm font-semibold">${t('landing_org_step2')}</p><p class="mt-1 text-xs leading-5 text-slate-300">${t('landing_org_step2_copy')}</p></div></li>
+                                    <li class="flex gap-4"><span class="font-mono text-xs text-emerald-300">03</span><div><p class="text-sm font-semibold">${t('landing_org_step3')}</p><p class="mt-1 text-xs leading-5 text-slate-300">${t('landing_org_step3_copy')}</p></div></li>
+                                </ol>
+                            </article>
+                            <article class="rounded-2xl border border-slate-200 bg-white p-7 sm:p-9">
+                                <div class="mb-9 flex items-center justify-between">
+                                    <h3 class="landing-serif text-3xl text-[#10253b]">${t('landing_people_title')}</h3>
+                                    <i class="fa-solid fa-people-group text-2xl text-emerald-800"></i>
+                                </div>
+                                <ol class="space-y-6">
+                                    <li class="flex gap-4"><span class="font-mono text-xs text-emerald-800">01</span><div><p class="text-sm font-semibold text-[#10253b]">${t('landing_people_step1')}</p><p class="mt-1 text-xs leading-5 text-slate-600">${t('landing_people_step1_copy')}</p></div></li>
+                                    <li class="flex gap-4"><span class="font-mono text-xs text-emerald-800">02</span><div><p class="text-sm font-semibold text-[#10253b]">${t('landing_people_step2')}</p><p class="mt-1 text-xs leading-5 text-slate-600">${t('landing_people_step2_copy')}</p></div></li>
+                                    <li class="flex gap-4"><span class="font-mono text-xs text-emerald-800">03</span><div><p class="text-sm font-semibold text-[#10253b]">${t('landing_people_step3')}</p><p class="mt-1 text-xs leading-5 text-slate-600">${t('landing_people_step3_copy')}</p></div></li>
+                                </ol>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="bg-[#eef1e9]">
+                        <div class="mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[.9fr_1.1fr] lg:items-center lg:gap-24 lg:px-12">
+                            <div>
+                                <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">${t('landing_trust_label')}</p>
+                                <h2 class="landing-serif text-4xl leading-tight text-[#10253b] sm:text-5xl">${t('landing_trust_title')}</h2>
+                                <p class="mt-6 text-sm leading-7 text-slate-600">${t('landing_trust_copy')}</p>
+                            </div>
+                            <div class="space-y-4">
+                                <article class="flex gap-5 rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
+                                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e8eee4] text-emerald-900"><i class="fa-solid fa-quote-left"></i></span>
+                                    <div><h3 class="text-sm font-bold text-[#10253b]">${t('landing_trust_user')}</h3><p class="mt-2 text-xs leading-6 text-slate-600">${t('landing_trust_user_copy')}</p></div>
+                                </article>
+                                <article class="flex gap-5 rounded-xl border border-emerald-200 bg-[#f7fbf3] p-5 sm:p-6">
+                                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#d7edc4] text-emerald-900"><i class="fa-solid fa-file-circle-check"></i></span>
+                                    <div><h3 class="text-sm font-bold text-[#10253b]">${t('landing_trust_audited')}</h3><p class="mt-2 text-xs leading-6 text-slate-600">${t('landing_trust_audited_copy')}</p></div>
+                                </article>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-[#10253b] px-5 py-20 text-center text-white sm:px-8 sm:py-28">
+                        <div class="mx-auto max-w-3xl">
+                            <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-300">${t('landing_cta_label')}</p>
+                            <h2 class="landing-serif text-4xl leading-tight sm:text-6xl">${t('landing_cta_title')}</h2>
+                            <p class="mx-auto mt-6 max-w-xl text-sm leading-7 text-slate-300">${t('landing_cta_copy')}</p>
+                            <div class="mt-9 flex flex-wrap justify-center gap-3">
+                                <button onclick="navigateTo('browse')" class="rounded-full bg-[#b7df93] px-6 py-3.5 text-sm font-bold text-[#17372a] transition hover:bg-emerald-200">${t('landing_cta_explore')} <i class="fa-solid fa-arrow-right ml-2 text-xs"></i></button>
+                                <button onclick="navigateTo('groups')" class="rounded-full border border-white/25 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">${t('landing_cta_community')}</button>
+                            </div>
+                            <p class="mt-14 border-t border-white/10 pt-6 text-[10px] font-medium uppercase tracking-[.16em] text-slate-400">${t('landing_footer_note')}</p>
+                        </div>
+                    </section>
                 </div>
             `;
         }
