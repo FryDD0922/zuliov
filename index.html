@@ -927,6 +927,20 @@
             showToast(lang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English', 'info');
         }
 
+        function toggleMobileMenu(forceExpanded) {
+            const button = document.getElementById('mobile-menu-toggle');
+            const menu = document.getElementById('mobile-navigation');
+            const expanded = forceExpanded ?? button.getAttribute('aria-expanded') !== 'true';
+
+            button.setAttribute('aria-expanded', String(expanded));
+            button.setAttribute('aria-label', currentLang === 'es'
+                ? (expanded ? 'Cerrar menú' : 'Abrir menú')
+                : (expanded ? 'Close menu' : 'Open menu'));
+            menu.classList.toggle('hidden', !expanded);
+            document.getElementById('mobile-menu-icon').classList.toggle('fa-xmark', expanded);
+            document.getElementById('mobile-menu-icon').classList.toggle('fa-bars', !expanded);
+        }
+
         function updateThemeToggle() {
             const isDark = document.documentElement.classList.contains('dark');
             const button = document.getElementById('theme-toggle');
@@ -1890,16 +1904,16 @@
 
                 <!-- Navigation Links -->
                 <nav class="hidden md:flex items-center space-x-8">
-                    <button onclick="navigateTo('home')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-home">HOME</button>
-                    <button onclick="navigateTo('browse')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
-                    <button onclick="navigateTo('groups')" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">GRUPOS</button>
+                    <button onclick="navigateTo('home')" data-screen="home" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-home">HOME</button>
+                    <button onclick="navigateTo('browse')" data-screen="browse" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
+                    <button onclick="navigateTo('groups')" data-screen="groups" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">GRUPOS</button>
                     <button onclick="navigateTo('ngo-profile')" class="nav-link font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 text-slate-600 hover:text-primary-600" id="nav-ngoProfile">
                         <i class="fa-solid fa-building-ngo text-xs"></i> <span id="nav-ngoProfile-text">Perfil ONG Verificada</span>
                     </button>
                 </nav>
 
                 <!-- Language Switcher & User Profile Menu -->
-                <div class="flex items-center space-x-4">
+                <div class="hidden items-center space-x-4 md:flex">
                     
                     <!-- Language Selector: ES | EN -->
                     <div class="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200/80 text-[11px] font-mono font-bold">
@@ -1927,7 +1941,29 @@
                     </div>
 
                 </div>
+                <button type="button" id="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú" aria-controls="mobile-navigation" aria-expanded="false" class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-colors hover:bg-slate-100 md:hidden">
+                    <i id="mobile-menu-icon" class="fa-solid fa-bars" aria-hidden="true"></i>
+                </button>
             </div>
+            <nav id="mobile-navigation" aria-label="Mobile navigation" class="hidden space-y-1 border-t border-slate-200/80 py-3 md:hidden">
+                <button type="button" onclick="navigateTo('home')" data-screen="home" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-home">HOME</button>
+                <button type="button" onclick="navigateTo('browse')" data-screen="browse" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-browse">BROWSE PROJECTS</button>
+                <button type="button" onclick="navigateTo('groups')" data-screen="groups" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-groups">GROUPS</button>
+                <div class="flex items-center justify-between border-t border-slate-200/80 px-3 pt-3">
+                    <span id="mobile-language-label" class="text-xs font-semibold text-slate-500">Language</span>
+                    <div class="inline-flex rounded-lg bg-slate-100 p-0.5 text-[11px] font-mono font-bold">
+                        <button type="button" onclick="setLanguage('en')" id="mobile-btn-lang-en" class="rounded-md px-3 py-2">EN</button>
+                        <button type="button" onclick="setLanguage('es')" id="mobile-btn-lang-es" class="rounded-md px-3 py-2">ES</button>
+                    </div>
+                </div>
+                <button type="button" onclick="navigateTo('profile')" class="mt-2 flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors hover:bg-slate-100">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-primary-700"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
+                    <span>
+                        <span id="mobile-profile-label" class="block text-xs font-semibold text-slate-500">User profile</span>
+                        <span id="mobile-profile-name" class="block text-sm font-bold text-slate-900">Sarah Miller</span>
+                    </span>
+                </button>
+            </nav>
         </div>
     </header>
 
@@ -2051,6 +2087,7 @@
         function navigateTo(screenId) {
             currentScreen = screenId;
             if (screenId === 'groups') state.activeGroupId = null;
+            toggleMobileMenu(false);
             closeNotificationDrawer();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             renderApp();
@@ -2197,11 +2234,26 @@
                 btnEn.className = "px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-xs";
                 btnEs.className = "px-2.5 py-1 rounded-md text-slate-500 hover:text-slate-900";
             }
+            const mobileBtnEs = document.getElementById('mobile-btn-lang-es');
+            const mobileBtnEn = document.getElementById('mobile-btn-lang-en');
+            mobileBtnEs.className = currentLang === 'es'
+                ? 'rounded-md bg-white px-3 py-2 text-slate-900 shadow-xs'
+                : 'rounded-md px-3 py-2 text-slate-500 hover:text-slate-900';
+            mobileBtnEn.className = currentLang === 'en'
+                ? 'rounded-md bg-white px-3 py-2 text-slate-900 shadow-xs'
+                : 'rounded-md px-3 py-2 text-slate-500 hover:text-slate-900';
+            document.getElementById('mobile-language-label').textContent = currentLang === 'es' ? 'Idioma' : 'Language';
+            toggleMobileMenu(document.getElementById('mobile-menu-toggle').getAttribute('aria-expanded') === 'true');
 
             document.getElementById('nav-browse').textContent = t('nav_browse');
             document.getElementById('nav-home').textContent = t('nav_home');
             document.getElementById('nav-groups').textContent = t('nav_groups');
             document.getElementById('nav-ngoProfile-text').textContent = t('nav_ngoProfile');
+            document.getElementById('mobile-nav-home').textContent = t('nav_home');
+            document.getElementById('mobile-nav-browse').textContent = t('nav_browse');
+            document.getElementById('mobile-nav-groups').textContent = t('nav_groups');
+            document.getElementById('mobile-profile-label').textContent = currentLang === 'es' ? 'Perfil de usuario' : 'User profile';
+            document.getElementById('mobile-profile-name').textContent = state.currentUser.name;
             document.getElementById('sim-title').textContent = t('sim_controller');
             document.getElementById('sim-desc').textContent = t('sim_desc');
             document.getElementById('sim-donor-label').textContent = t('sim_donor_btn');
@@ -2214,13 +2266,13 @@
             navLinks.forEach(link => link.classList.remove('text-primary-600'));
             
             if (currentScreen === 'home') {
-                document.getElementById('nav-home').classList.add('text-primary-600');
+                document.querySelectorAll('[data-screen="home"]').forEach(link => link.classList.add('text-primary-600'));
             } else if (currentScreen === 'ngo-profile') {
                 document.getElementById('nav-ngoProfile').classList.add('text-primary-600');
             } else if (currentScreen === 'browse') {
-                document.getElementById('nav-browse').classList.add('text-primary-600');
+                document.querySelectorAll('[data-screen="browse"]').forEach(link => link.classList.add('text-primary-600'));
             } else if (currentScreen === 'groups') {
-                document.getElementById('nav-groups').classList.add('text-primary-600');
+                document.querySelectorAll('[data-screen="groups"]').forEach(link => link.classList.add('text-primary-600'));
             }
         }
 
@@ -4387,7 +4439,7 @@
                                 <p class="mb-6 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">
                                     <span class="h-px w-8 bg-emerald-600"></span>${t('landing_eyebrow')}
                                 </p>
-                                <h1 class="landing-serif max-w-3xl text-5xl leading-[1.02] text-[#10253b] sm:text-6xl lg:text-[5.4rem]">${t('landing_hero_title')}</h1>
+                                <h1 class="landing-serif max-w-3xl text-3xl leading-[1.08] text-[#10253b] sm:text-5xl sm:leading-[1.02] md:text-6xl lg:text-[5.4rem]">${t('landing_hero_title')}</h1>
                                 <p class="mt-7 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">${t('landing_hero_copy')}</p>
                                 <div class="mt-9 flex flex-wrap items-center gap-4">
                                     <button onclick="navigateTo('browse')" class="inline-flex items-center gap-3 rounded-full bg-[#102b40] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-emerald-800">
@@ -4431,7 +4483,7 @@
                                 <p class="landing-serif max-w-md text-3xl leading-tight text-emerald-100 sm:text-4xl">${t('landing_problem_quote')}</p>
                             </div>
                             <div class="border-l border-white/15 pl-6 sm:pl-10">
-                                <h2 class="landing-serif max-w-2xl text-4xl leading-tight sm:text-5xl">${t('landing_problem_title')}</h2>
+                                <h2 class="landing-serif max-w-2xl text-3xl leading-tight sm:text-4xl md:text-5xl">${t('landing_problem_title')}</h2>
                                 <p class="mt-6 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">${t('landing_problem_copy')}</p>
                                 <div class="mt-9 flex items-center gap-4 text-xs font-semibold text-slate-300">
                                     <span class="flex h-11 w-11 items-center justify-center rounded-full border border-emerald-300/40 text-emerald-300"><i class="fa-solid fa-eye"></i></span>
@@ -4445,7 +4497,7 @@
                         <div class="grid items-end gap-6 md:grid-cols-2">
                             <div>
                                 <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">${t('landing_vision_label')}</p>
-                                <h2 class="landing-serif max-w-2xl text-4xl leading-tight text-[#10253b] sm:text-5xl">${t('landing_vision_title')}</h2>
+                                <h2 class="landing-serif max-w-2xl text-3xl leading-tight text-[#10253b] sm:text-4xl md:text-5xl">${t('landing_vision_title')}</h2>
                             </div>
                             <p class="max-w-lg text-sm leading-7 text-slate-600 md:justify-self-end">${t('landing_vision_copy')}</p>
                         </div>
@@ -4475,7 +4527,7 @@
                         <div class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
                             <div class="mb-12 max-w-2xl">
                                 <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">${t('landing_preview_label')}</p>
-                                <h2 class="landing-serif text-4xl leading-tight text-[#10253b] sm:text-5xl">${t('landing_preview_title')}</h2>
+                                <h2 class="landing-serif text-3xl leading-tight text-[#10253b] sm:text-4xl md:text-5xl">${t('landing_preview_title')}</h2>
                                 <p class="mt-5 max-w-xl text-sm leading-7 text-slate-600">${t('landing_preview_copy')}</p>
                             </div>
                             <div class="landing-shadow grid overflow-hidden rounded-2xl bg-white lg:grid-cols-[230px_1fr]">
@@ -4549,7 +4601,7 @@
                     <section class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
                         <div class="mb-12 max-w-2xl">
                             <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">${t('landing_how_label')}</p>
-                            <h2 class="landing-serif text-4xl leading-tight text-[#10253b] sm:text-5xl">${t('landing_how_title')}</h2>
+                            <h2 class="landing-serif text-3xl leading-tight text-[#10253b] sm:text-4xl md:text-5xl">${t('landing_how_title')}</h2>
                         </div>
                         <div class="grid gap-6 lg:grid-cols-2">
                             <article class="rounded-2xl bg-[#10253b] p-7 text-white sm:p-9">
@@ -4581,7 +4633,7 @@
                         <div class="mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[.9fr_1.1fr] lg:items-center lg:gap-24 lg:px-12">
                             <div>
                                 <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-800">${t('landing_trust_label')}</p>
-                                <h2 class="landing-serif text-4xl leading-tight text-[#10253b] sm:text-5xl">${t('landing_trust_title')}</h2>
+                                <h2 class="landing-serif text-3xl leading-tight text-[#10253b] sm:text-4xl md:text-5xl">${t('landing_trust_title')}</h2>
                                 <p class="mt-6 text-sm leading-7 text-slate-600">${t('landing_trust_copy')}</p>
                             </div>
                             <div class="space-y-4">
@@ -4600,7 +4652,7 @@
                     <section class="bg-[#10253b] px-5 py-20 text-center text-white sm:px-8 sm:py-28">
                         <div class="mx-auto max-w-3xl">
                             <p class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-emerald-300">${t('landing_cta_label')}</p>
-                            <h2 class="landing-serif text-4xl leading-tight sm:text-6xl">${t('landing_cta_title')}</h2>
+                            <h2 class="landing-serif text-3xl leading-tight sm:text-5xl md:text-6xl">${t('landing_cta_title')}</h2>
                             <p class="mx-auto mt-6 max-w-xl text-sm leading-7 text-slate-300">${t('landing_cta_copy')}</p>
                             <div class="mt-9 flex flex-wrap justify-center gap-3">
                                 <button onclick="navigateTo('browse')" class="rounded-full bg-[#b7df93] px-6 py-3.5 text-sm font-bold text-[#17372a] transition hover:bg-emerald-200">${t('landing_cta_explore')} <i class="fa-solid fa-arrow-right ml-2 text-xs"></i></button>
@@ -4864,8 +4916,8 @@
                             <h1 class="text-2xl font-black text-slate-900">Explore Verified Projects</h1>
                             <p class="text-xs text-slate-500">All non-profits listed here are 100% Zuliov Open-Ledger compliant</p>
                         </div>
-                        <div id="browse-search-container" class="relative flex items-center space-x-2">
-                            <input id="browse-project-search" type="search" value="${state.projectSearchTerm}" placeholder="Search by region or category..." aria-label="Search by region or category" aria-controls="browse-project-search-menu" aria-expanded="${state.projectSearchOpen}" onfocus="setBrowseSearchOpen(true)" oninput="filterBrowseProjects(this.value)" class="px-4 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 w-64">
+                        <div id="browse-search-container" class="relative flex w-full items-center space-x-2 sm:w-auto">
+                            <input id="browse-project-search" type="search" value="${state.projectSearchTerm}" placeholder="Search by region or category..." aria-label="Search by region or category" aria-controls="browse-project-search-menu" aria-expanded="${state.projectSearchOpen}" onfocus="setBrowseSearchOpen(true)" oninput="filterBrowseProjects(this.value)" class="w-full rounded-xl border border-slate-200 px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 sm:w-64">
                             <div id="browse-project-search-menu" role="dialog" aria-label="Filtros de proyectos" aria-hidden="${!state.projectSearchOpen}" ${state.projectSearchOpen ? '' : 'inert'} class="absolute right-0 top-full z-30 mt-2 w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-slate-200 bg-white p-4 shadow-floating transition-all duration-150 ease-out ${state.projectSearchOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-1 opacity-0'}">
                                 <div class="space-y-4">
                                     <section>
@@ -4900,7 +4952,7 @@
                     </nav>
 
                     <div class="grid grid-cols-1 items-start gap-6 ${selectedProject ? 'md:grid-cols-12' : ''}">
-                        <div class="grid gap-4 ${selectedProject ? 'grid-cols-2 md:col-span-7' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}">
+                        <div class="grid min-w-0 gap-4 ${selectedProject ? 'grid-cols-1 sm:grid-cols-2 md:col-span-7' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'}">
                             ${visibleProjects.length ? visibleProjects.map(proj => `
                                 <button type="button" data-browse-project-id="${escapeHTML(proj.id)}" aria-pressed="${state.selectedBrowseProjectId === proj.id}" onclick="event.stopPropagation(); selectBrowseProject('${escapeHTML(proj.id)}')" class="group w-full max-w-sm cursor-pointer overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
                                     <span class="relative block h-40 overflow-hidden bg-slate-100">
@@ -4926,7 +4978,7 @@
                             ` : ''}
                         </div>
                         ${selectedProject ? `
-                            <aside id="browse-project-detail-panel" aria-labelledby="browse-project-detail-title" onclick="event.stopPropagation()" class="self-start overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card md:sticky md:top-20 md:col-span-5">
+                            <aside id="browse-project-detail-panel" aria-labelledby="browse-project-detail-title" onclick="event.stopPropagation()" class="w-full min-w-0 self-start overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card md:sticky md:top-20 md:col-span-5">
                                 <div class="relative">
                                     <img src="${escapeHTML(selectedProject.coverImage)}" alt="${escapeHTML(localizedProjectText(selectedProject, 'title'))}" class="h-48 w-full object-cover">
                                     <button type="button" onclick="clearBrowseProjectSelection()" aria-label="Close project details" title="Close project details" class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-slate-950/70 text-lg font-bold text-white transition-colors hover:bg-slate-950">
