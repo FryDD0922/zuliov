@@ -2024,7 +2024,7 @@
     </footer>
 
     <script>
-        let currentScreen = 'ngo-profile'; // Flagship NGO Profile View on load
+        let currentScreen = 'landing';
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
@@ -4393,8 +4393,8 @@
                                     <button onclick="navigateTo('browse')" class="inline-flex items-center gap-3 rounded-full bg-[#102b40] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-emerald-800">
                                         ${t('landing_cta_explore')} <i class="fa-solid fa-arrow-right text-xs"></i>
                                     </button>
-                                    <button onclick="navigateTo('ngo-profile')" class="inline-flex items-center gap-2 px-3 py-3 text-sm font-semibold text-[#102b40] transition hover:text-emerald-800">
-                                        ${t('hero_btn_demo')} <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                    <button onclick="navigateTo('groups')" class="inline-flex items-center gap-2 px-3 py-3 text-sm font-semibold text-[#102b40] transition hover:text-emerald-800">
+                                        ${t('landing_cta_community')} <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                                     </button>
                                 </div>
                                 <p class="mt-10 flex items-center gap-2 text-xs font-medium text-slate-500">
