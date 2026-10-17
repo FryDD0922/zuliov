@@ -260,7 +260,12 @@
         const locales = {
             es: {
                 nav_home: "FEED DE COMUNIDAD",
-                nav_browse: "Explorar proyectos",
+                nav_browse: "PROYECTOS Y ONGS",
+                explore_tab_projects: "Proyectos",
+                explore_tab_ngos: "ONGs",
+                explore_tabs_label: "Explorar proyectos y organizaciones",
+                browse_title: "Proyectos verificados",
+                browse_subtitle: "Explora iniciativas auditadas por región y sigue su impacto.",
                 home_feed_title: "Feed de la comunidad",
                 home_feed_subtitle: "Historias, avances e iniciativas compartidas por tus comunidades.",
                 home_feed_posted_in: "Publicado en:",
@@ -279,10 +284,20 @@
                 browse_region_all: "Todos",
                 browse_region_africa: "África",
                 browse_region_latin_america: "América Latina",
-                browse_region_north_america: "Norteamérica",
+                browse_region_north_america: "USA",
                 browse_region_asia: "Asia",
                 nav_groups: "GRUPOS",
-                nav_ngoProfile: "Perfil ONG Verificada",
+                ngo_directory_eyebrow: "Organizaciones registradas",
+                ngo_directory_title: "Explora ONGs",
+                ngo_directory_description: "Conoce las organizaciones, revisa su trabajo y sigue el impacto de sus proyectos verificados.",
+                ngo_directory_verified: "Auditada y verificada",
+                ngo_view_profile: "Ver Perfil",
+                ngo_profile_back: "Volver a ONGs",
+                ngo_profile_projects: "Proyectos vinculados",
+                ngo_profile_no_projects: "Esta organización aún no tiene proyectos publicados.",
+                ngo_profile_metric_projects: "Proyectos verificados",
+                ngo_profile_metric_funds: "Fondos recaudados",
+                ngo_profile_metric_overhead: "Gastos generales promedio",
                 hero_tag: "Infraestructura de Transparencia Real",
                 hero_title: "Conoce tu impacto.",
                 hero_subtitle: "Descubre exactamente cómo cada donación genera un cambio real a través de historias transparentes, actualizaciones verificadas e impacto medible.",
@@ -550,7 +565,12 @@
             },
             en: {
                 nav_home: "COMMUNITY FEED",
-                nav_browse: "Browse Projects",
+                nav_browse: "PROJECTS & NGOS",
+                explore_tab_projects: "Projects",
+                explore_tab_ngos: "NGOs",
+                explore_tabs_label: "Explore projects and organizations",
+                browse_title: "Verified Projects",
+                browse_subtitle: "Explore audited initiatives by region and follow their impact.",
                 home_feed_title: "Community Feed",
                 home_feed_subtitle: "Stories, progress, and initiatives shared by your communities.",
                 home_feed_posted_in: "Posted in:",
@@ -569,10 +589,20 @@
                 browse_region_all: "All",
                 browse_region_africa: "Africa",
                 browse_region_latin_america: "Latin America",
-                browse_region_north_america: "North America",
+                browse_region_north_america: "USA",
                 browse_region_asia: "Asia",
                 nav_groups: "GROUPS",
-                nav_ngoProfile: "Verified NGO Profile",
+                ngo_directory_eyebrow: "Registered organizations",
+                ngo_directory_title: "Browse NGOs",
+                ngo_directory_description: "Meet the organizations, explore their work, and follow the impact of their verified projects.",
+                ngo_directory_verified: "Audited & verified",
+                ngo_view_profile: "View NGO Profile",
+                ngo_profile_back: "Back to NGOs",
+                ngo_profile_projects: "Projects linked to this NGO",
+                ngo_profile_no_projects: "This organization has no published projects yet.",
+                ngo_profile_metric_projects: "Verified projects",
+                ngo_profile_metric_funds: "Funds raised",
+                ngo_profile_metric_overhead: "Average overhead",
                 hero_tag: "Radical Transparency Infrastructure",
                 hero_title: "Know your impact.",
                 hero_subtitle: "See exactly how every donation creates real change through transparent stories, verified updates and measurable impact.",
@@ -1909,9 +1939,6 @@
                     <button onclick="navigateTo('home')" data-screen="home" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-home">COMMUNITY FEED</button>
                     <button onclick="navigateTo('browse')" data-screen="browse" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
                     <button onclick="navigateTo('groups')" data-screen="groups" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">GRUPOS</button>
-                    <button onclick="navigateTo('ngo-profile')" class="nav-link font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 text-slate-600 hover:text-primary-600" id="nav-ngoProfile">
-                        <i class="fa-solid fa-building-ngo text-xs"></i> <span id="nav-ngoProfile-text">Perfil ONG Verificada</span>
-                    </button>
                 </nav>
 
                 <!-- Language Switcher & User Profile Menu -->
@@ -2066,6 +2093,8 @@
 
     <script>
         let currentScreen = 'landing';
+        let exploreTab = 'projects';
+        let selectedNGOId = 'ngo_clean_water';
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
@@ -2090,6 +2119,13 @@
         }
 
         function navigateTo(screenId) {
+            if (screenId === 'ngo-directory') {
+                exploreTab = 'ngos';
+                screenId = 'browse';
+            } else if (screenId === 'browse' && currentScreen !== 'browse') {
+                exploreTab = 'projects';
+            }
+            if (screenId === 'ngo-profile' && currentScreen !== 'browse') selectedNGOId = 'ngo_clean_water';
             currentScreen = screenId;
             if (screenId === 'groups') state.activeGroupId = null;
             toggleMobileMenu(false);
@@ -2262,7 +2298,6 @@
             document.getElementById('nav-browse').textContent = t('nav_browse');
             document.getElementById('nav-home').textContent = t('nav_home');
             document.getElementById('nav-groups').textContent = t('nav_groups');
-            document.getElementById('nav-ngoProfile-text').textContent = t('nav_ngoProfile');
             document.getElementById('mobile-nav-home').textContent = t('nav_home');
             document.getElementById('mobile-nav-browse').textContent = t('nav_browse');
             document.getElementById('mobile-nav-groups').textContent = t('nav_groups');
@@ -2281,9 +2316,7 @@
             
             if (currentScreen === 'home') {
                 document.querySelectorAll('[data-screen="home"]').forEach(link => link.classList.add('text-primary-600'));
-            } else if (currentScreen === 'ngo-profile') {
-                document.getElementById('nav-ngoProfile').classList.add('text-primary-600');
-            } else if (currentScreen === 'browse') {
+            } else if (currentScreen === 'browse' || currentScreen === 'ngo-profile') {
                 document.querySelectorAll('[data-screen="browse"]').forEach(link => link.classList.add('text-primary-600'));
             } else if (currentScreen === 'groups') {
                 document.querySelectorAll('[data-screen="groups"]').forEach(link => link.classList.add('text-primary-600'));
@@ -3047,7 +3080,186 @@
     </script>
 
     <script>
+        function getNGODirectoryEntries() {
+            const organizations = new Map();
+
+            state.projects.forEach(project => {
+                if (!project.ngoId || !project.ngoName) return;
+                if (!organizations.has(project.ngoId)) {
+                    organizations.set(project.ngoId, {
+                        id: project.ngoId,
+                        name: project.ngoName,
+                        logo: project.ngoLogo || '🏢',
+                        coverImage: project.coverImage,
+                        location: project.location || '',
+                        description: localizedProjectText(project, 'description'),
+                        verified: project.verifiedStatus === 'Audited & Verified',
+                        projects: []
+                    });
+                }
+                organizations.get(project.ngoId).projects.push(project);
+            });
+
+            const cleanWater = organizations.get('ngo_clean_water');
+            if (cleanWater) {
+                cleanWater.logo = ngoData.logoUrl;
+                cleanWater.coverImage = ngoData.coverImage;
+                cleanWater.location = `${ngoData.city}, ${ngoData.country}`;
+                cleanWater.description = currentLang === 'es'
+                    ? 'Impulsa a las comunidades rurales de África Oriental con redes de agua solar y seguimiento financiero verificable.'
+                    : ngoData.tagline;
+            }
+
+            return Array.from(organizations.values()).sort((first, second) => first.name.localeCompare(second.name));
+        }
+
+        function openNGOProfile(ngoId) {
+            selectedNGOId = ngoId;
+            navigateTo('ngo-profile');
+        }
+
+        function renderExploreTabs() {
+            const tabs = [
+                { id: 'projects', label: t('explore_tab_projects') },
+                { id: 'ngos', label: t('explore_tab_ngos') }
+            ];
+
+            return `
+                <nav role="tablist" aria-label="${t('explore_tabs_label')}" class="flex justify-center gap-1 border-b border-slate-200">
+                    ${tabs.map(tab => `
+                        <button type="button" role="tab" aria-selected="${exploreTab === tab.id}" onclick="setExploreTab('${tab.id}')" class="border-b-2 px-4 py-3 text-sm font-bold transition-colors ${exploreTab === tab.id ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-800'}">
+                            ${tab.label}
+                        </button>
+                    `).join('')}
+                </nav>
+            `;
+        }
+
+        function setExploreTab(tab) {
+            if (tab !== 'projects' && tab !== 'ngos') return;
+            exploreTab = tab;
+            state.projectSearchOpen = false;
+            renderApp();
+        }
+
+        function renderNGODirectoryPage(canvas) {
+            const organizations = getNGODirectoryEntries().filter(organization => organization.id === 'ngo_clean_water');
+            canvas.innerHTML = `
+                <div class="mx-auto max-w-7xl space-y-7 px-4 py-8 sm:px-6 lg:px-8">
+                    ${renderExploreTabs()}
+                    <section>
+                    <header class="mb-8 border-b border-slate-200 pb-6">
+                        <p class="mb-2 text-[11px] font-mono font-bold uppercase tracking-wider text-primary-600">${t('ngo_directory_eyebrow')}</p>
+                        <h1 class="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">${t('ngo_directory_title')}</h1>
+                        <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">${t('ngo_directory_description')}</p>
+                    </header>
+                    <p class="mb-4 text-xs font-mono font-semibold text-slate-500">${organizations.length} ${currentLang === 'es' ? 'organización' : (organizations.length === 1 ? 'organization' : 'organizations')}</p>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        ${organizations.map(organization => `
+                            <article class="flex min-h-64 flex-col border border-slate-200 bg-white p-5 shadow-subtle transition-colors hover:border-primary-200">
+                                <div class="flex items-start gap-4">
+                                    <div class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-3xl">
+                                        ${organization.id === 'ngo_clean_water'
+                                            ? `<img src="${escapeHTML(organization.logo)}" alt="${escapeHTML(organization.name)} logo" class="h-full w-full object-cover">`
+                                            : `<span role="img" aria-label="${escapeHTML(organization.name)} logo">${escapeHTML(organization.logo)}</span>`}
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <h2 class="text-base font-bold leading-snug text-slate-900">${escapeHTML(organization.name)}</h2>
+                                        <p class="mt-1 text-xs text-slate-500">${escapeHTML(organization.location)}</p>
+                                        <span class="mt-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide ${organization.verified ? 'text-emerald-700' : 'text-slate-500'}">
+                                            <i class="fa-solid ${organization.verified ? 'fa-circle-check' : 'fa-circle-question'}" aria-hidden="true"></i>
+                                            ${organization.verified ? t('ngo_directory_verified') : (currentLang === 'es' ? 'Verificación pendiente' : 'Verification pending')}
+                                        </span>
+                                    </div>
+                                </div>
+                                <p class="mt-4 flex-1 text-sm leading-relaxed text-slate-600">${escapeHTML(organization.description)}</p>
+                                <button type="button" onclick="openNGOProfile('${escapeHTML(organization.id)}')" class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-primary-700">
+                                    ${t('ngo_view_profile')} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                </button>
+                            </article>
+                        `).join('')}
+                    </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        function renderNGODirectoryProfilePage(canvas, organization) {
+            const projects = organization.projects;
+            const location = organization.location || (currentLang === 'es' ? 'Ubicación no disponible' : 'Location unavailable');
+            const fundsRaised = projects.reduce((total, project) => total + (Number(project.amountRaised) || 0), 0);
+            const averageOverhead = projects.length
+                ? Math.round(projects.reduce((total, project) => total + (Number(project.averageOverhead) || 0), 0) / projects.length)
+                : 0;
+            canvas.innerHTML = `
+                <main class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+                    <button type="button" onclick="navigateTo('ngo-directory')" class="inline-flex items-center gap-2 text-xs font-bold text-primary-700 hover:text-primary-900">
+                        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> ${t('ngo_profile_back')}
+                    </button>
+                    <section class="overflow-hidden border border-slate-200 bg-white shadow-card">
+                        <div class="relative h-56 bg-slate-900 sm:h-80">
+                            <img src="${escapeHTML(organization.coverImage || '')}" alt="${escapeHTML(organization.name)}" class="h-full w-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-3 py-1.5 text-[11px] font-bold text-white">
+                                <i class="fa-solid fa-shield-check" aria-hidden="true"></i> ${t('ngo_directory_verified')}
+                            </span>
+                        </div>
+                        <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-8">
+                            <div class="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 text-4xl">
+                                ${organization.id === 'ngo_clean_water'
+                                    ? `<img src="${escapeHTML(organization.logo)}" alt="${escapeHTML(organization.name)} logo" class="h-full w-full object-cover">`
+                                    : `<span role="img" aria-label="${escapeHTML(organization.name)} logo">${escapeHTML(organization.logo)}</span>`}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h1 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">${escapeHTML(organization.name)}</h1>
+                                <p class="mt-2 text-xs font-mono text-slate-500"><i class="fa-solid fa-location-dot mr-1.5" aria-hidden="true"></i>${escapeHTML(location)}</p>
+                                <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">${escapeHTML(organization.description)}</p>
+                            </div>
+                            <button type="button" onclick="openDonateModal()" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
+                                <i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i> ${t('ngo_donate')}
+                            </button>
+                        </div>
+                    </section>
+                    <section aria-label="${currentLang === 'es' ? 'Métricas de la ONG' : 'NGO metrics'}" class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                        <article class="border border-slate-200 bg-white p-5">
+                            <p class="text-[10px] font-mono font-bold uppercase tracking-wide text-slate-500">${t('ngo_profile_metric_projects')}</p>
+                            <p class="mt-2 text-2xl font-black text-slate-900">${projects.length}</p>
+                        </article>
+                        <article class="border border-slate-200 bg-white p-5">
+                            <p class="text-[10px] font-mono font-bold uppercase tracking-wide text-slate-500">${t('ngo_profile_metric_funds')}</p>
+                            <p class="mt-2 text-2xl font-black text-slate-900">${formatCurrency(fundsRaised)}</p>
+                        </article>
+                        <article class="border border-slate-200 bg-white p-5">
+                            <p class="text-[10px] font-mono font-bold uppercase tracking-wide text-slate-500">${t('ngo_profile_metric_overhead')}</p>
+                            <p class="mt-2 text-2xl font-black text-slate-900">${averageOverhead}%</p>
+                        </article>
+                    </section>
+                    <section aria-labelledby="ngo-directory-projects-title">
+                        <div class="mb-4 flex items-end justify-between border-b border-slate-200 pb-3">
+                            <h2 id="ngo-directory-projects-title" class="text-xl font-black tracking-tight text-slate-900">${t('ngo_profile_projects')}</h2>
+                            <span class="text-xs font-mono text-slate-500">${projects.length}</span>
+                        </div>
+                        ${projects.length ? `<div class="grid grid-cols-1 gap-4 md:grid-cols-2">${projects.map(project => `
+                            <article class="overflow-hidden border border-slate-200 bg-white">
+                                <img src="${escapeHTML(project.coverImage || '')}" alt="" class="h-40 w-full object-cover">
+                                <div class="p-5">
+                                    <span class="text-[10px] font-bold uppercase tracking-wide text-emerald-700"><i class="fa-solid fa-circle-check mr-1" aria-hidden="true"></i>${t('ngo_directory_verified')}</span>
+                                    <h3 class="mt-2 text-base font-bold text-slate-900">${escapeHTML(localizedProjectText(project, 'title'))}</h3>
+                                    <p class="mt-2 text-sm leading-relaxed text-slate-600">${escapeHTML(localizedProjectText(project, 'description'))}</p>
+                                </div>
+                            </article>
+                        `).join('')}</div>` : `<p class="py-8 text-sm text-slate-500">${t('ngo_profile_no_projects')}</p>`}
+                    </section>
+                </main>
+            `;
+        }
+
         function renderNGOProfilePage(canvas) {
+            const directoryEntry = getNGODirectoryEntries().find(organization => organization.id === selectedNGOId);
+            if (directoryEntry && directoryEntry.id !== 'ngo_clean_water') {
+                renderNGODirectoryProfilePage(canvas, directoryEntry);
+                return;
+            }
             const ngo = ngoData;
             const isEmp = state.ngoEmptyStateActive;
 
@@ -3645,6 +3857,9 @@
 
         function openDonateModal() {
             state.activeDonationProject = null;
+            const donationOrganization = currentScreen === 'ngo-profile'
+                ? getNGODirectoryEntries().find(organization => organization.id === selectedNGOId)
+                : null;
             const container = document.getElementById('modal-container');
             container.innerHTML = `
                 <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
@@ -3657,7 +3872,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-sm font-bold text-slate-900">Direct Audited Donation</h3>
-                                    <p class="text-[10px] font-mono text-slate-400">CleanWater International Trust Account</p>
+                                    <p class="text-[10px] font-mono text-slate-400">${escapeHTML(donationOrganization?.name || ngoData.name)}</p>
                                 </div>
                             </div>
                             <button onclick="closeModal()" class="rounded-lg text-slate-400 hover:text-slate-600 p-1">
@@ -4839,6 +5054,11 @@
         }
 
         function renderBrowsePage(canvas) {
+            if (exploreTab === 'ngos') {
+                renderNGODirectoryPage(canvas);
+                return;
+            }
+
             function formatProjectLocation(project) {
                 const locationParts = (project.location || ngoData.country || 'Kenya')
                     .split(',')
@@ -4872,10 +5092,11 @@
 
             canvas.innerHTML = `
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
+                    ${renderExploreTabs()}
                     <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <h1 class="text-2xl font-black text-slate-900">Explore Verified Projects</h1>
-                            <p class="text-xs text-slate-500">All non-profits listed here are 100% Zuliov Open-Ledger compliant</p>
+                            <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
+                            <p class="text-xs text-slate-500">${t('browse_subtitle')}</p>
                         </div>
                         <div id="browse-search-container" class="relative flex w-full items-center space-x-2 sm:w-auto">
                             <input id="browse-project-search" type="search" value="${state.projectSearchTerm}" placeholder="Search by region or category..." aria-label="Search by region or category" aria-controls="browse-project-search-menu" aria-expanded="${state.projectSearchOpen}" onfocus="setBrowseSearchOpen(true)" oninput="filterBrowseProjects(this.value)" class="w-full rounded-xl border border-slate-200 px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 sm:w-64">
@@ -4923,6 +5144,7 @@
                                         </span>
                                     </span>
                                     <span class="block p-4 text-sm font-bold leading-snug text-slate-900">${escapeHTML(localizedProjectText(proj, 'title'))}</span>
+                                    <span class="block px-4 pb-4 text-[10px] font-bold uppercase tracking-wide text-emerald-700"><i class="fa-solid fa-circle-check mr-1" aria-hidden="true"></i>${t('ngo_directory_verified')}</span>
                                 </button>
                             `).join('') : `
                                 <div role="status" class="col-span-full rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center">
