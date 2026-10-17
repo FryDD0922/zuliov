@@ -332,6 +332,12 @@
                 group_members: "miembros",
                 group_join: "Unirse al Grupo",
                 group_joined: "Unido",
+                group_upcoming_events_title: "PRÓXIMOS EVENTOS",
+                group_event_join: "Confirmar asistencia",
+                group_event_going: "Asistiré",
+                group_event_interested: "Me interesa",
+                group_event_going_count: "personas asistirán",
+                group_event_interested_count: "personas interesadas",
                 group_official: "ORGANIZACIÓN OFICIAL",
                 group_verified_ngo: "ONG Verificada",
                 group_back: "Volver a Grupos",
@@ -410,6 +416,22 @@
                         role: "Voluntaria",
                         date: "Ayer",
                         text: "Esta semana acompañamos a personas mayores del vecindario y organizamos una tarde de juegos y conversación. ¡Gracias a todos los voluntarios!"
+                    }
+                },
+                group_events_data: {
+                    cleanwater_event_cleanup: {
+                        title: "Limpieza comunitaria y taller de suministro de agua",
+                        dateShort: "SÁB, OCT 24",
+                        dateTime: "Sábado, 24 de oct · 9:00 a. m.",
+                        location: "Centro Comunitario de Kitui · Presencial",
+                        summary: "Acompáñanos para limpiar el vecindario y aprender sobre soluciones locales de suministro de agua."
+                    },
+                    cleanwater_event_orientation: {
+                        title: "Orientación y capacitación regional para voluntarios",
+                        dateShort: "MIÉ, NOV 4",
+                        dateTime: "Miércoles, 4 de nov · 6:00 p. m.",
+                        location: "Sesión regional en línea · En línea",
+                        summary: "Conoce al equipo regional y recibe capacitación práctica para apoyar las iniciativas comunitarias."
                     }
                 },
                 group_report_prompt: "¿Quieres denunciar esta publicación para que el equipo la revise?",
@@ -530,6 +552,12 @@
                 group_members: "members",
                 group_join: "Join Group",
                 group_joined: "Joined",
+                group_upcoming_events_title: "UPCOMING EVENTS",
+                group_event_join: "Join Event",
+                group_event_going: "Going",
+                group_event_interested: "Interested",
+                group_event_going_count: "people going",
+                group_event_interested_count: "interested",
                 group_official: "OFFICIAL ORGANIZATION",
                 group_verified_ngo: "Verified NGO",
                 group_back: "Back to Groups",
@@ -680,6 +708,22 @@
                         role: "Volunteer",
                         date: "Yesterday",
                         text: "This week we spent time with older neighbors and organized an afternoon of games and conversation. Thank you to all our volunteers!"
+                    }
+                },
+                group_events_data: {
+                    cleanwater_event_cleanup: {
+                        title: "Community Clean-Up & Water Supply Workshop",
+                        dateShort: "SAT, OCT 24",
+                        dateTime: "Saturday, Oct 24 · 9:00 AM",
+                        location: "Kitui Community Center · In person",
+                        summary: "Join us to clean up the neighborhood and learn about local water supply solutions."
+                    },
+                    cleanwater_event_orientation: {
+                        title: "Regional Volunteer Orientation & Training",
+                        dateShort: "WED, NOV 4",
+                        dateTime: "Wednesday, Nov 4 · 6:00 PM",
+                        location: "Regional online session · Online",
+                        summary: "Meet the regional team and get hands-on training to support community initiatives."
                     }
                 },
                 empty_state_title: "No Records Found",
@@ -1357,6 +1401,22 @@
                     banner: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800',
                     members: 326,
                     joined: false,
+                    upcomingEvents: [
+                        {
+                            id: 'cleanwater_event_cleanup',
+                            image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=1200',
+                            going: 42,
+                            interested: 18,
+                            response: null
+                        },
+                        {
+                            id: 'cleanwater_event_orientation',
+                            image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200',
+                            going: 27,
+                            interested: 14,
+                            response: null
+                        }
+                    ],
                     posts: [
                         {
                             id: 'post_cleanwater_1',
@@ -1367,6 +1427,30 @@
                             text: '¡Bienvenidos a la comunidad oficial de CleanWater! Aquí compartiremos avances de campo y novedades de nuestros proyectos de agua limpia.',
                             projectId: 'proj_water_well',
                             likes: 28,
+                            likedByCurrentUser: false,
+                            comments: []
+                        },
+                        {
+                            id: 'post_cleanwater_event_cleanup',
+                            author: 'Marcus Vance',
+                            roleKey: 'group_role_ngo',
+                            avatar: '👷',
+                            authorPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120',
+                            eventId: 'cleanwater_event_cleanup',
+                            createdAt: Date.UTC(2026, 9, 16, 13),
+                            likes: 42,
+                            likedByCurrentUser: false,
+                            comments: []
+                        },
+                        {
+                            id: 'post_cleanwater_event_orientation',
+                            author: 'Regional Volunteer Team',
+                            roleKey: 'group_role_ngo',
+                            avatar: '👷',
+                            authorPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120',
+                            eventId: 'cleanwater_event_orientation',
+                            createdAt: Date.UTC(2026, 9, 16, 12),
+                            likes: 27,
                             likedByCurrentUser: false,
                             comments: []
                         }
@@ -1487,6 +1571,146 @@
             activeGroupId: null,
             groupFilter: 'all'
         };
+
+        const groupUpcomingEventData = {
+            group_education: [{
+                id: 'education_learning_workshop',
+                title: 'Digital Learning Workshop for Rural Classrooms',
+                titleEs: 'Taller de aprendizaje digital para aulas rurales',
+                dateShort: 'TUE, OCT 27',
+                dateShortEs: 'MAR, OCT 27',
+                dateTime: 'Tuesday, Oct 27 · 10:00 AM',
+                dateTimeEs: 'Martes, 27 de oct · 10:00 a. m.',
+                location: 'Malindi Learning Center · In person',
+                locationEs: 'Centro de Aprendizaje de Malindi · Presencial',
+                summary: 'Explore hands-on digital learning activities and classroom resources with local educators.',
+                summaryEs: 'Explora actividades prácticas de aprendizaje digital y recursos para el aula junto a educadores locales.',
+                image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200',
+                going: 31,
+                interested: 12
+            }],
+            group_childhood: [{
+                id: 'childhood_family_health_fair',
+                title: 'Children’s Health & Family Support Fair',
+                titleEs: 'Feria de salud infantil y apoyo familiar',
+                dateShort: 'THU, OCT 29',
+                dateShortEs: 'JUE, OCT 29',
+                dateTime: 'Thursday, Oct 29 · 9:30 AM',
+                dateTimeEs: 'Jueves, 29 de oct · 9:30 a. m.',
+                location: 'Community Family Center · In person',
+                locationEs: 'Centro Comunitario Familiar · Presencial',
+                summary: 'Connect families with wellness resources, children’s activities, and local support services.',
+                summaryEs: 'Conecta a las familias con recursos de bienestar, actividades infantiles y servicios de apoyo local.',
+                image: 'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=1200',
+                going: 46,
+                interested: 21
+            }],
+            group_volunteers_latam: [{
+                id: 'latam_community_outreach_day',
+                title: 'Regional Community Outreach & Volunteer Day',
+                titleEs: 'Jornada regional de voluntariado y apoyo comunitario',
+                dateShort: 'SUN, NOV 1',
+                dateShortEs: 'DOM, NOV 1',
+                dateTime: 'Sunday, Nov 1 · 8:30 AM',
+                dateTimeEs: 'Domingo, 1 de nov · 8:30 a. m.',
+                location: 'Regional volunteer hubs · In person',
+                locationEs: 'Centros regionales de voluntariado · Presencial',
+                summary: 'Spend a day supporting neighborhood projects and meet volunteers from across Latin America.',
+                summaryEs: 'Dedica un día a apoyar proyectos vecinales y conoce a voluntarios de toda Latinoamérica.',
+                image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
+                going: 58,
+                interested: 24
+            }],
+            group_jehovah_volunteer_relief: [{
+                id: 'relief_preparedness_training',
+                title: 'Community Relief & Emergency Preparedness Training',
+                titleEs: 'Capacitación comunitaria para socorro y preparación ante emergencias',
+                dateShort: 'MON, NOV 2',
+                dateShortEs: 'LUN, NOV 2',
+                dateTime: 'Monday, Nov 2 · 6:00 PM',
+                dateTimeEs: 'Lunes, 2 de nov · 6:00 p. m.',
+                location: 'Volunteer Coordination Hall · In person',
+                locationEs: 'Sala de Coordinación de Voluntarios · Presencial',
+                summary: 'Learn practical ways to coordinate local relief efforts and support neighbors during emergencies.',
+                summaryEs: 'Aprende formas prácticas de coordinar labores de socorro y apoyar a la comunidad durante emergencias.',
+                image: 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1200',
+                going: 36,
+                interested: 17
+            }],
+            group_university_volunteers: [{
+                id: 'university_peer_tutoring_day',
+                title: 'Campus Peer Tutoring & Mentorship Day',
+                titleEs: 'Jornada universitaria de tutoría y mentoría entre pares',
+                dateShort: 'FRI, NOV 6',
+                dateShortEs: 'VIE, NOV 6',
+                dateTime: 'Friday, Nov 6 · 1:00 PM',
+                dateTimeEs: 'Viernes, 6 de nov · 1:00 p. m.',
+                location: 'University Student Commons · In person',
+                locationEs: 'Centro de Estudiantes Universitario · Presencial',
+                summary: 'Join student volunteers for tutoring, mentorship, and collaborative community project planning.',
+                summaryEs: 'Participa con voluntarios universitarios en tutorías, mentoría y planificación de proyectos comunitarios.',
+                image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200',
+                going: 29,
+                interested: 16
+            }],
+            group_animal_rescue: [{
+                id: 'animal_rescue_adoption_day',
+                title: 'Pet Adoption & Animal Wellness Day',
+                titleEs: 'Jornada de adopción y bienestar animal',
+                dateShort: 'SUN, NOV 8',
+                dateShortEs: 'DOM, NOV 8',
+                dateTime: 'Sunday, Nov 8 · 11:00 AM',
+                dateTimeEs: 'Domingo, 8 de nov · 11:00 a. m.',
+                location: 'Neighborhood Animal Shelter · In person',
+                locationEs: 'Refugio Animal del Vecindario · Presencial',
+                summary: 'Meet adoptable pets, learn about animal care, and help local rescue teams prepare supplies.',
+                summaryEs: 'Conoce mascotas en adopción, aprende sobre su cuidado y ayuda a los equipos de rescate con suministros.',
+                image: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200',
+                going: 41,
+                interested: 23
+            }],
+            group_senior_care: [{
+                id: 'senior_wellness_afternoon',
+                title: 'Senior Wellness & Companionship Afternoon',
+                titleEs: 'Tarde de bienestar y acompañamiento para personas mayores',
+                dateShort: 'TUE, NOV 10',
+                dateShortEs: 'MAR, NOV 10',
+                dateTime: 'Tuesday, Nov 10 · 2:00 PM',
+                dateTimeEs: 'Martes, 10 de nov · 2:00 p. m.',
+                location: 'Sunnyvale Senior Community · In person',
+                locationEs: 'Comunidad para Mayores Sunnyvale · Presencial',
+                summary: 'Share games and conversation while connecting older neighbors with community wellness resources.',
+                summaryEs: 'Comparte juegos y conversación y conecta a personas mayores con recursos comunitarios de bienestar.',
+                image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200',
+                going: 22,
+                interested: 11
+            }]
+        };
+
+        state.groups.forEach(group => {
+            group.upcomingEvents = [
+                ...(group.upcomingEvents || []),
+                ...(groupUpcomingEventData[group.id] || []).map(event => ({ ...event, response: null }))
+            ];
+            group.eventPosts = (group.posts || []).filter(post => post.eventId);
+            group.posts = (group.posts || []).filter(post => !post.eventId);
+            group.upcomingEvents.forEach((event, index) => {
+                if (group.eventPosts.some(post => post.eventId === event.id)) return;
+                group.eventPosts.push({
+                    id: `post_${event.id}`,
+                    author: group.id === 'group_cleanwater_official' ? 'Marcus Vance' : 'Community Volunteer Team',
+                    authorEs: group.id === 'group_cleanwater_official' ? undefined : 'Equipo de voluntariado comunitario',
+                    roleKey: 'group_role_ngo',
+                    avatar: '👥',
+                    authorPhoto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120',
+                    eventId: event.id,
+                    createdAt: Date.UTC(2026, 9, 16, 13) - index,
+                    likes: event.going,
+                    likedByCurrentUser: false,
+                    comments: []
+                });
+            });
+        });
     </script>
 
     <header id="app-header" class="bg-white/90 backdrop-blur-glass border-b border-slate-200/80 sticky top-0 z-40 transition-all">
@@ -1931,13 +2155,65 @@
         function groupPostText(post, field) {
             if (field === 'role' && post.roleKey) return t(post.roleKey);
             if (field === 'date' && post.dateKey) return t(post.dateKey);
+            if (field === 'author' && currentLang === 'es' && post.authorEs) return post.authorEs;
             const translations = locales[currentLang].group_posts_data;
             return translations?.[post.id]?.[field] || post[field];
         }
 
+        function groupEventText(event, field) {
+            const translatedField = currentLang === 'es' ? event[`${field}Es`] : null;
+            return translatedField
+                || event[field]
+                || locales[currentLang].group_events_data?.[event.id]?.[field]
+                || locales.en.group_events_data?.[event.id]?.[field]
+                || '';
+        }
+
+        function findGroupPost(group, postId) {
+            return [...(group?.posts || []), ...(group?.eventPosts || [])]
+                .find(post => post.id === postId);
+        }
+
+        function renderUpcomingEvent(group, event) {
+            const responseLabel = event.response === 'going'
+                ? t('group_event_going')
+                : event.response === 'interested'
+                    ? t('group_event_interested')
+                    : t('group_event_join');
+            return `
+                <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
+                    <div class="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-lg bg-primary-50 text-center text-[9px] font-black uppercase leading-tight text-primary-700">${escapeHTML(groupEventText(event, 'dateShort'))}</div>
+                    <div class="min-w-0 flex-1">
+                        <h3 class="text-xs font-bold leading-snug text-slate-900">${escapeHTML(groupEventText(event, 'title'))}</h3>
+                        <p class="mt-1 text-[10px] text-slate-500">${escapeHTML(groupEventText(event, 'location'))}</p>
+                    </div>
+                    <button type="button" aria-pressed="${event.response === 'going'}" aria-label="${t('group_event_join')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="toggleEventResponse('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', 'going')" class="shrink-0 rounded-lg px-3 py-2 text-[10px] font-bold transition-colors ${event.response === 'going' ? 'bg-emerald-100 text-emerald-800' : 'bg-primary-600 text-white hover:bg-primary-700'}">${responseLabel}</button>
+                </article>
+            `;
+        }
+
+        function renderGroupEventPostCard(group, event) {
+            return `
+                <div class="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
+                    <img src="${escapeHTML(event.image)}" alt="${escapeHTML(groupEventText(event, 'title'))}" class="h-44 w-full bg-slate-100 object-cover sm:h-56">
+                    <div class="p-4">
+                        <p class="text-xs font-bold text-primary-700">${escapeHTML(groupEventText(event, 'dateTime'))}</p>
+                        <h3 class="mt-1 text-base font-extrabold leading-snug text-slate-900">${escapeHTML(groupEventText(event, 'title'))}</h3>
+                        <p class="mt-2 text-xs leading-relaxed text-slate-600">${escapeHTML(groupEventText(event, 'summary'))}</p>
+                        <p class="mt-2 text-[11px] font-semibold text-slate-500"><i class="fa-solid fa-location-dot mr-1.5" aria-hidden="true"></i>${escapeHTML(groupEventText(event, 'location'))}</p>
+                        <p class="mt-3 text-[11px] text-slate-500">${event.going} ${t('group_event_going_count')} · ${event.interested} ${t('group_event_interested_count')}</p>
+                        <div class="mt-3 grid grid-cols-2 gap-2">
+                            <button type="button" aria-pressed="${event.response === 'going'}" onclick="toggleEventResponse('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', 'going')" class="rounded-lg px-3 py-2 text-xs font-bold transition-colors ${event.response === 'going' ? 'bg-primary-100 text-primary-800' : 'bg-slate-100 text-slate-700 hover:bg-primary-50 hover:text-primary-700'}">${t('group_event_going')}</button>
+                            <button type="button" aria-pressed="${event.response === 'interested'}" onclick="toggleEventResponse('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', 'interested')" class="rounded-lg px-3 py-2 text-xs font-bold transition-colors ${event.response === 'interested' ? 'bg-primary-100 text-primary-800' : 'bg-slate-100 text-slate-700 hover:bg-primary-50 hover:text-primary-700'}">${t('group_event_interested')}</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         function renderHomeFeed(canvas) {
             const feedPosts = state.groups.flatMap(group =>
-                group.posts.map(post => ({ group, post }))
+                [...group.posts, ...(group.eventPosts || [])].map(post => ({ group, post }))
             ).sort((first, second) => (second.post.createdAt || 0) - (first.post.createdAt || 0));
             const defaultGroupId = state.groups.find(group => group.id === 'group_cleanwater_official')?.id
                 || state.groups[0]?.id;
@@ -1984,6 +2260,7 @@
             const commentsVisible = state.expandedGroupPostId === post.id;
             const isLiked = Boolean(post.likedByCurrentUser);
             const likes = Number(post.likes) || 0;
+            const event = group.upcomingEvents?.find(item => item.id === post.eventId);
 
             return `
                 <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-subtle">
@@ -2000,9 +2277,9 @@
                                 <p class="text-[10px] text-slate-500">${escapeHTML(groupPostText(post, 'role') || t('group_role_member'))} · ${escapeHTML(groupPostText(post, 'date') || t('group_now'))}</p>
                             </div>
                         </div>
-                        <p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>
+                        ${event ? renderGroupEventPostCard(group, event) : `<p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>`}
                     </div>
-                    <img src="${escapeHTML(image)}" alt="${t('home_feed_post_image')}" class="mt-4 max-h-[28rem] w-full bg-slate-100 object-cover">
+                    ${event ? '' : `<img src="${escapeHTML(image)}" alt="${t('home_feed_post_image')}" class="mt-4 max-h-[28rem] w-full bg-slate-100 object-cover">`}
                     <div class="mx-4 flex items-center gap-1 border-b border-slate-100 py-2 text-[10px] text-slate-500 sm:mx-5">
                         <i class="fa-solid fa-heart text-rose-500" aria-hidden="true"></i>${likes}
                         <span class="ml-2">${comments.length} ${t('home_feed_comment_count')}</span>
@@ -2114,6 +2391,7 @@
 
         function renderGroupDetail(canvas, group) {
             const projects = state.projects;
+            const groupPosts = [...group.posts, ...(group.eventPosts || [])];
             canvas.innerHTML = `
                 <section id="group-detail-view" class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
                     <button type="button" onclick="showGroupDirectory()" class="mb-5 inline-flex items-center gap-2 text-xs font-bold text-slate-500 transition-colors hover:text-primary-600"><i class="fa-solid fa-arrow-left"></i> ${t('group_back')}</button>
@@ -2132,6 +2410,14 @@
                         </div>
                         <div class="p-5 sm:p-8">
                             <p class="text-sm leading-relaxed text-slate-600">${escapeHTML(groupText(group, 'description'))}</p>
+                            ${group.upcomingEvents?.length ? `
+                                <section aria-labelledby="group-upcoming-events-title" class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                                    <h2 id="group-upcoming-events-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_upcoming_events_title')}</h2>
+                                    <div class="mt-4 grid gap-3 lg:grid-cols-2">
+                                        ${group.upcomingEvents.map(event => renderUpcomingEvent(group, event)).join('')}
+                                    </div>
+                                </section>
+                            ` : ''}
                             <div class="mt-6 grid gap-5 lg:grid-cols-2">
                                 <section aria-labelledby="group-leaders-title" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
                                     <h2 id="group-leaders-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_leaders_title')}</h2>
@@ -2200,7 +2486,7 @@
 
                             <div class="mt-8 space-y-5">
                                 <h2 class="text-sm font-black uppercase tracking-wider text-slate-800">${t('group_posts')}</h2>
-                                ${group.posts.length ? group.posts.map(post => renderGroupPost(group, post)).join('') : `
+                                ${groupPosts.length ? groupPosts.map(post => renderGroupPost(group, post)).join('') : `
                                     <div class="rounded-2xl border border-dashed border-slate-200 p-8 text-center">
                                         <i class="fa-regular fa-comments text-2xl text-slate-300"></i>
                                         <p class="mt-2 text-sm font-semibold text-slate-700">${t('group_no_posts')}</p>
@@ -2217,6 +2503,7 @@
         function renderGroupPost(group, post) {
             const project = state.projects.find(item => item.id === post.projectId);
             const commentsVisible = state.expandedGroupPostId === post.id;
+            const event = group.upcomingEvents?.find(item => item.id === post.eventId);
             return `
                 <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle sm:p-5">
                     <div class="flex items-start justify-between gap-3">
@@ -2234,7 +2521,7 @@
                             </div>
                         </details>
                     </div>
-                    <p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>
+                    ${event ? renderGroupEventPostCard(group, event) : `<p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>`}
                     ${project ? `
                         <button type="button" onclick="openProjectDetail('${project.id}')" class="mt-4 flex w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-left transition-colors hover:border-primary-300 hover:bg-primary-50/50">
                             <img src="${escapeHTML(project.coverImage)}" alt="" class="h-24 w-28 flex-shrink-0 object-cover sm:w-36">
@@ -2302,6 +2589,24 @@
                     .replace('{name}', alliance.name),
                 isFollowing ? 'success' : 'info'
             );
+        }
+
+        function toggleEventResponse(groupId, eventId, response) {
+            const event = state.groups
+                .find(group => group.id === groupId)
+                ?.upcomingEvents?.find(item => item.id === eventId);
+            if (!event || !['going', 'interested'].includes(response)) return;
+
+            if (event.response) {
+                event[event.response] = Math.max(0, event[event.response] - 1);
+            }
+            if (event.response !== response) {
+                event[response] += 1;
+                event.response = response;
+            } else {
+                event.response = null;
+            }
+            renderApp();
         }
 
         function toggleGroupMembership(groupId) {
@@ -2410,8 +2715,10 @@
             }
             const kind = String(formData.get('kind'));
             const visibility = String(formData.get('visibility'));
-            state.groups.unshift({
-                id: `group_${Date.now()}`,
+            const groupId = `group_${Date.now()}`;
+            const eventId = `${groupId}_community_meetup`;
+            const group = {
+                id: groupId,
                 name,
                 category,
                 description,
@@ -2420,8 +2727,38 @@
                 banner: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
                 members: 1,
                 joined: true,
-                posts: []
-            });
+                posts: [],
+                upcomingEvents: [{
+                    id: eventId,
+                    title: 'Community Meetup & Planning Session',
+                    titleEs: 'Encuentro comunitario y sesión de planificación',
+                    dateShort: 'THU, NOV 12',
+                    dateShortEs: 'JUE, NOV 12',
+                    dateTime: 'Thursday, Nov 12 · 6:00 PM',
+                    dateTimeEs: 'Jueves, 12 de nov · 6:00 p. m.',
+                    location: 'Online community meeting · Online',
+                    locationEs: 'Encuentro comunitario en línea · En línea',
+                    summary: 'Meet group members, share ideas, and help plan upcoming community activities.',
+                    summaryEs: 'Conoce a los miembros, comparte ideas y ayuda a planificar las próximas actividades comunitarias.',
+                    image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
+                    going: 0,
+                    interested: 0,
+                    response: null
+                }],
+                eventPosts: [{
+                    id: `post_${eventId}`,
+                    author: 'Community Volunteer Team',
+                    authorEs: 'Equipo de voluntariado comunitario',
+                    roleKey: 'group_role_member',
+                    avatar: '👥',
+                    eventId,
+                    createdAt: Date.now(),
+                    likes: 0,
+                    likedByCurrentUser: false,
+                    comments: []
+                }]
+            };
+            state.groups.unshift(group);
             state.activeGroupId = null;
             closeModal();
             renderApp();
@@ -2489,7 +2826,7 @@
         }
 
         function toggleFeedPostLike(groupId, postId) {
-            const post = state.groups.find(group => group.id === groupId)?.posts.find(item => item.id === postId);
+            const post = findGroupPost(state.groups.find(group => group.id === groupId), postId);
             if (!post) return;
             post.likedByCurrentUser = !post.likedByCurrentUser;
             post.likes = Math.max(0, (Number(post.likes) || 0) + (post.likedByCurrentUser ? 1 : -1));
@@ -2504,7 +2841,7 @@
         function addGroupComment(event, groupId, postId) {
             event.preventDefault();
             const group = state.groups.find(item => item.id === groupId);
-            const post = group?.posts.find(item => item.id === postId);
+            const post = findGroupPost(group, postId);
             if (!post) return;
             const text = String(new FormData(event.currentTarget).get('comment')).trim();
             if (!text) return;
@@ -2526,7 +2863,7 @@
 
         function reportGroupPost(groupId, postId) {
             const group = state.groups.find(item => item.id === groupId);
-            const post = group?.posts.find(item => item.id === postId);
+            const post = findGroupPost(group, postId);
             if (!post) return;
             if (window.confirm(t('group_report_prompt'))) {
                 post.reported = true;
