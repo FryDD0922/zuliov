@@ -303,8 +303,28 @@
                 profile_view: "Ver perfil",
                 profile_log_out: "Cerrar sesión",
                 profile_menu_toggle: "Abrir menú de perfil",
+                guest_name: "Invitado",
                 auth_sign_in: "Iniciar sesión",
                 auth_register: "Registrarse",
+                register_title: "Crea tu cuenta en Zuliov",
+                register_subtitle: "Únete a una comunidad que hace visible el impacto.",
+                register_account_type: "¿Qué tipo de cuenta necesitas?",
+                register_individual: "Individual / Donante",
+                register_individual_description: "Para personas, donantes y miembros de la comunidad.",
+                register_ngo: "ONG verificada",
+                register_ngo_description: "Para organizaciones sin fines de lucro.",
+                register_first_name: "Nombre",
+                register_last_name: "Apellido",
+                register_organization_name: "Nombre de la organización",
+                register_id: "Registro / Identificación fiscal",
+                register_country: "País",
+                register_email: "Correo electrónico",
+                register_password: "Contraseña",
+                register_password_hint: "Usa al menos 8 caracteres.",
+                register_create_account: "Crear cuenta",
+                register_close: "Cerrar registro",
+                register_success_individual: "¡Tu cuenta está lista! Bienvenido a Zuliov.",
+                register_success_ngo: "¡Tu cuenta de organización está lista! Bienvenido a Zuliov.",
                 ngo_directory_eyebrow: "Organizaciones registradas",
                 ngo_directory_title: "Explora ONGs",
                 ngo_directory_description: "Conoce las organizaciones, revisa su trabajo y sigue el impacto de sus proyectos verificados.",
@@ -613,8 +633,28 @@
                 profile_view: "View Profile",
                 profile_log_out: "Log Out",
                 profile_menu_toggle: "Open profile menu",
+                guest_name: "Guest",
                 auth_sign_in: "Sign In",
                 auth_register: "Register",
+                register_title: "Create your Zuliov account",
+                register_subtitle: "Join a community making impact visible.",
+                register_account_type: "What type of account do you need?",
+                register_individual: "Individual / Donor",
+                register_individual_description: "For individuals, donors, and community members.",
+                register_ngo: "Verified NGO",
+                register_ngo_description: "For nonprofit organizations.",
+                register_first_name: "First name",
+                register_last_name: "Last name",
+                register_organization_name: "Organization name",
+                register_id: "Registration / Tax ID",
+                register_country: "Country",
+                register_email: "Email address",
+                register_password: "Password",
+                register_password_hint: "Use at least 8 characters.",
+                register_create_account: "Create Account",
+                register_close: "Close registration",
+                register_success_individual: "Your account is ready! Welcome to Zuliov.",
+                register_success_ngo: "Your organization account is ready! Welcome to Zuliov.",
                 ngo_directory_eyebrow: "Registered organizations",
                 ngo_directory_title: "Browse NGOs",
                 ngo_directory_description: "Meet the organizations, explore their work, and follow the impact of their verified projects.",
@@ -977,6 +1017,7 @@
             currentLang = lang;
             document.documentElement.lang = lang;
             renderApp();
+            if (document.getElementById('register-modal')) renderRegisterModal();
             showToast(lang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English', 'info');
         }
 
@@ -1981,6 +2022,7 @@
                         <button onclick="setLanguage('es')" id="btn-lang-es" class="px-2.5 py-1 rounded-md transition-all">ES</button>
                         <button onclick="setLanguage('en')" id="btn-lang-en" class="px-2.5 py-1 rounded-md transition-all">EN</button>
                     </div>
+                    <button type="button" id="header-register-button" onclick="openRegisterModal(event)" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">Register</button>
                     <button onclick="toggleDarkMode()" id="theme-toggle" type="button" aria-pressed="false" aria-label="Activar modo oscuro" title="Activar modo oscuro" class="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 transition-all">
                         <i id="theme-toggle-icon" class="fa-solid fa-moon"></i>
                     </button>
@@ -2001,6 +2043,16 @@
                                 <span id="header-role" class="block text-[10px] text-slate-500 font-mono mt-0.5 capitalize">Donor</span>
                             </span>
                         </button>
+                        <div id="header-guest-menu" role="menu" aria-labelledby="header-profile" class="hidden absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg animate-dropdown-in">
+                            <button type="button" role="menuitem" onclick="openRegisterModal(event)" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                                <i class="fa-solid fa-user-plus w-4 text-center text-slate-500" aria-hidden="true"></i>
+                                <span id="header-guest-register-label">Register</span>
+                            </button>
+                            <button type="button" role="menuitem" onclick="logIn()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                                <i class="fa-solid fa-arrow-right-to-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
+                                <span id="header-guest-sign-in-label">Sign In</span>
+                            </button>
+                        </div>
                         <div id="header-profile-menu" role="menu" aria-labelledby="header-profile" class="hidden absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg animate-dropdown-in">
                             <button type="button" role="menuitem" onclick="navigateTo('profile')" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                                 <i class="fa-regular fa-user w-4 text-center text-slate-500" aria-hidden="true"></i>
@@ -2011,10 +2063,6 @@
                                 <span id="header-profile-logout-label">Log Out</span>
                             </button>
                         </div>
-                    </div>
-                    <div id="guest-auth-actions-desktop" class="guest-hidden flex items-center gap-2">
-                        <button type="button" onclick="logIn()" id="desktop-sign-in" class="rounded-lg px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100">Sign In</button>
-                        <button type="button" onclick="logIn()" id="desktop-register" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-primary-700">Register</button>
                     </div>
 
                 </div>
@@ -2027,10 +2075,7 @@
                         <i id="guest-theme-toggle-icon-mobile" class="fa-solid fa-moon" aria-hidden="true"></i>
                     </button>
                 </div>
-                <div id="guest-auth-actions-mobile" class="guest-hidden flex shrink-0 items-center gap-2 md:hidden">
-                    <button type="button" onclick="logIn()" id="mobile-sign-in" class="rounded-lg px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-100">Sign In</button>
-                    <button type="button" onclick="logIn()" id="mobile-register" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-primary-700">Register</button>
-                </div>
+                <button type="button" id="mobile-register-button" onclick="openRegisterModal(event)" class="md:hidden rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">Register</button>
                 <button type="button" id="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú" aria-controls="mobile-navigation" aria-expanded="false" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-colors hover:bg-slate-100 md:hidden">
                     <i id="mobile-menu-icon" class="fa-solid fa-bars" aria-hidden="true"></i>
                 </button>
@@ -2049,8 +2094,6 @@
                 <div id="mobile-profile-wrapper" class="relative mt-2">
                     <button type="button" id="mobile-profile-trigger" onclick="toggleProfileDropdown('mobile')" aria-label="Open profile menu" aria-controls="mobile-profile-menu" aria-expanded="false" class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors hover:bg-slate-100">
                         <span id="mobile-profile-avatar-container" class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-100 font-bold text-xs text-primary-700 ring-2 ring-slate-200">
-                            <img id="mobile-profile-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400" alt="Sarah Miller" class="h-full w-full rounded-full object-cover">
-                            <span id="mobile-profile-avatar-fallback" class="hidden"></span>
                         </span>
                         <span>
                             <span id="mobile-profile-label" class="block text-xs font-semibold text-slate-500">User profile</span>
@@ -2058,6 +2101,17 @@
                         </span>
                     </button>
                     <div id="mobile-profile-menu" role="menu" aria-labelledby="mobile-profile-trigger" class="hidden absolute left-3 right-3 top-full z-50 mt-1 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg animate-dropdown-in">
+                        <div id="mobile-guest-menu">
+                            <button type="button" role="menuitem" onclick="openRegisterModal(event)" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                                <i class="fa-solid fa-user-plus w-4 text-center text-slate-500" aria-hidden="true"></i>
+                                <span id="mobile-guest-register-label">Register</span>
+                            </button>
+                            <button type="button" role="menuitem" onclick="logIn()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                                <i class="fa-solid fa-arrow-right-to-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
+                                <span id="mobile-guest-sign-in-label">Sign In</span>
+                            </button>
+                        </div>
+                        <div id="mobile-authenticated-menu">
                         <button type="button" role="menuitem" onclick="navigateTo('profile')" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                             <i class="fa-regular fa-user w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-view-label">View Profile</span>
@@ -2066,6 +2120,7 @@
                             <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-logout-label">Log Out</span>
                         </button>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -2210,6 +2265,7 @@
 
         function closeProfileDropdown() {
             [
+                ['header-profile', 'header-guest-menu'],
                 ['header-profile', 'header-profile-menu'],
                 ['mobile-profile-trigger', 'mobile-profile-menu']
             ].forEach(([triggerId, menuId]) => {
@@ -2220,7 +2276,9 @@
 
         function toggleProfileDropdown(location) {
             const triggerId = location === 'mobile' ? 'mobile-profile-trigger' : 'header-profile';
-            const menuId = location === 'mobile' ? 'mobile-profile-menu' : 'header-profile-menu';
+            const menuId = location === 'mobile'
+                ? 'mobile-profile-menu'
+                : (isAuthenticated ? 'header-profile-menu' : 'header-guest-menu');
             const trigger = document.getElementById(triggerId);
             const menu = document.getElementById(menuId);
             const shouldOpen = trigger.getAttribute('aria-expanded') !== 'true';
@@ -2233,6 +2291,155 @@
             menu.classList.remove('animate-dropdown-in');
             void menu.offsetWidth;
             menu.classList.add('animate-dropdown-in');
+        }
+
+        let registrationAccountType = 'individual';
+        let registrationDraft = {};
+        let registerTrigger = null;
+
+        function openRegisterModal(trigger) {
+            registrationAccountType = 'individual';
+            registrationDraft = {};
+            registerTrigger = trigger instanceof HTMLElement
+                ? trigger
+                : (trigger?.currentTarget instanceof HTMLElement ? trigger.currentTarget : null);
+            closeProfileDropdown();
+            toggleMobileMenu(false);
+            renderRegisterModal();
+            document.body.classList.add('overflow-hidden');
+            document.querySelector('#register-modal input')?.focus();
+        }
+
+        function closeRegisterModal() {
+            const modal = document.getElementById('register-modal');
+            if (!modal) return;
+            document.getElementById('modal-container').innerHTML = '';
+            document.body.classList.remove('overflow-hidden');
+            if (registerTrigger?.isConnected) registerTrigger.focus();
+            registerTrigger = null;
+        }
+
+        function captureRegistrationDraft() {
+            const form = document.getElementById('register-form');
+            if (!form) return;
+            new FormData(form).forEach((value, key) => {
+                registrationDraft[key] = String(value);
+            });
+        }
+
+        function setRegistrationAccountType(type) {
+            captureRegistrationDraft();
+            registrationAccountType = type;
+            renderRegisterModal();
+            document.querySelector('#register-modal input')?.focus();
+        }
+
+        function renderRegisterModal() {
+            captureRegistrationDraft();
+            const individual = registrationAccountType === 'individual';
+            const selectedCard = 'border-primary-600 bg-primary-50 ring-2 ring-primary-100';
+            const unselectedCard = 'border-slate-200 bg-white hover:border-primary-300 hover:bg-slate-50';
+            const fieldClass = 'mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-100';
+            const value = key => escapeHTML(registrationDraft[key] || '');
+            const individualFields = `
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <label class="block text-xs font-semibold text-slate-700">${t('register_first_name')}
+                        <input class="${fieldClass}" name="firstName" autocomplete="given-name" value="${value('firstName')}" required>
+                    </label>
+                    <label class="block text-xs font-semibold text-slate-700">${t('register_last_name')}
+                        <input class="${fieldClass}" name="lastName" autocomplete="family-name" value="${value('lastName')}" required>
+                    </label>
+                </div>
+            `;
+            const ngoFields = `
+                <label class="block text-xs font-semibold text-slate-700">${t('register_organization_name')}
+                    <input class="${fieldClass}" name="organization" autocomplete="organization" value="${value('organization')}" required>
+                </label>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <label class="block text-xs font-semibold text-slate-700">${t('register_id')}
+                        <input class="${fieldClass}" name="registrationId" value="${value('registrationId')}" required>
+                    </label>
+                    <label class="block text-xs font-semibold text-slate-700">${t('register_country')}
+                        <input class="${fieldClass}" name="country" autocomplete="country-name" value="${value('country')}" required>
+                    </label>
+                </div>
+            `;
+
+            document.getElementById('modal-container').innerHTML = `
+                <div id="register-modal" class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm animate-modal-in" role="dialog" aria-modal="true" aria-labelledby="register-modal-title" onclick="closeRegisterModal()">
+                    <section class="relative my-auto w-full max-w-xl overflow-hidden rounded-3xl border border-white/70 bg-white shadow-2xl" onclick="event.stopPropagation()">
+                        <div class="bg-zuliov-mesh px-6 py-6 text-white sm:px-8">
+                            <button type="button" onclick="closeRegisterModal()" aria-label="${t('register_close')}" class="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                            <span class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-primary-200"><i class="fa-solid fa-user-plus" aria-hidden="true"></i></span>
+                            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-primary-200">ZULIOV</p>
+                            <h2 id="register-modal-title" class="mt-1 pr-8 text-2xl font-bold tracking-tight">${t('register_title')}</h2>
+                            <p class="mt-2 text-sm leading-relaxed text-slate-300">${t('register_subtitle')}</p>
+                        </div>
+                        <form id="register-form" class="space-y-5 px-6 py-6 sm:px-8" oninput="captureRegistrationDraft()" onsubmit="submitRegistration(event)">
+                            <fieldset>
+                                <legend class="mb-2.5 text-xs font-semibold text-slate-700">${t('register_account_type')}</legend>
+                                <div class="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="${t('register_account_type')}">
+                                    <button type="button" role="radio" aria-checked="${individual}" onclick="setRegistrationAccountType('individual')" class="rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${individual ? selectedCard : unselectedCard}">
+                                        <span class="flex items-center gap-2 text-sm font-bold text-slate-900"><i class="fa-solid fa-user text-primary-600" aria-hidden="true"></i>${t('register_individual')}</span>
+                                        <span class="mt-1.5 block text-xs leading-relaxed text-slate-500">${t('register_individual_description')}</span>
+                                    </button>
+                                    <button type="button" role="radio" aria-checked="${!individual}" onclick="setRegistrationAccountType('ngo')" class="rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${individual ? unselectedCard : selectedCard}">
+                                        <span class="flex items-center gap-2 text-sm font-bold text-slate-900"><i class="fa-solid fa-building-ngo text-primary-600" aria-hidden="true"></i>${t('register_ngo')}</span>
+                                        <span class="mt-1.5 block text-xs leading-relaxed text-slate-500">${t('register_ngo_description')}</span>
+                                    </button>
+                                </div>
+                            </fieldset>
+                            <div class="space-y-4">
+                                ${individual ? individualFields : ngoFields}
+                                <label class="block text-xs font-semibold text-slate-700">${t('register_email')}
+                                    <input class="${fieldClass}" type="email" name="email" autocomplete="email" value="${value('email')}" required>
+                                </label>
+                                <label class="block text-xs font-semibold text-slate-700">${t('register_password')}
+                                    <input class="${fieldClass}" type="password" name="password" autocomplete="new-password" minlength="8" value="${value('password')}" required>
+                                    <span class="mt-1.5 block text-[11px] font-normal text-slate-500">${t('register_password_hint')}</span>
+                                </label>
+                            </div>
+                            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                                ${t('register_create_account')}<i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </section>
+                </div>
+            `;
+        }
+
+        function submitRegistration(event) {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            const email = String(formData.get('email')).trim();
+            const isNGO = registrationAccountType === 'ngo';
+            const firstName = String(formData.get('firstName') || '').trim();
+            const lastName = String(formData.get('lastName') || '').trim();
+            const organization = String(formData.get('organization') || '').trim();
+            const country = String(formData.get('country') || '').trim();
+            const name = isNGO ? organization : `${firstName} ${lastName}`.trim();
+
+            state.currentUser = {
+                ...defaultUserProfile,
+                id: `user_${Date.now()}`,
+                name,
+                role: isNGO ? 'ngo' : 'donor',
+                avatar: null,
+                coverImage: null,
+                email,
+                location: isNGO ? country : '',
+                registrationId: isNGO ? String(formData.get('registrationId')).trim() : '',
+                joinedDate: currentLang === 'es' ? 'Miembro desde hoy' : 'Member since today',
+                badges: []
+            };
+            isAuthenticated = true;
+            currentScreen = 'landing';
+            updateSimulationRoleButtons(isNGO ? 'ngo' : 'donor');
+            closeRegisterModal();
+            renderApp();
+            showToast(t(isNGO ? 'register_success_ngo' : 'register_success_individual'));
         }
 
         function logOut() {
@@ -2273,6 +2480,10 @@
 
         document.addEventListener('keydown', event => {
             if (event.key !== 'Escape') return;
+            if (document.getElementById('register-modal')) {
+                closeRegisterModal();
+                return;
+            }
             const openTrigger = ['header-profile', 'mobile-profile-trigger']
                 .map(id => document.getElementById(id))
                 .find(trigger => trigger.getAttribute('aria-expanded') === 'true');
@@ -2394,23 +2605,28 @@
         function updateHeaderUI() {
             const navigationVisible = isAuthenticated;
             document.getElementById('main-navigation').classList.toggle('guest-hidden', !navigationVisible);
-            document.getElementById('header-profile-wrapper').classList.toggle('guest-hidden', !navigationVisible);
             document.getElementById('notification-button').classList.toggle('guest-hidden', !navigationVisible);
-            document.getElementById('guest-auth-actions-desktop').classList.toggle('guest-hidden', navigationVisible);
-            document.getElementById('guest-auth-actions-mobile').classList.toggle('guest-hidden', navigationVisible);
             document.getElementById('guest-header-controls-mobile').classList.toggle('guest-hidden', navigationVisible);
-            document.getElementById('mobile-menu-toggle').classList.toggle('guest-hidden', !navigationVisible);
-            ['mobile-nav-home', 'mobile-nav-browse', 'mobile-nav-groups', 'mobile-profile-wrapper']
+            ['mobile-nav-home', 'mobile-nav-browse', 'mobile-nav-groups']
                 .forEach(id => document.getElementById(id).classList.toggle('guest-hidden', !navigationVisible));
-            ['desktop-sign-in', 'mobile-sign-in'].forEach(id => {
+            document.getElementById('header-guest-menu').classList.toggle('hidden', navigationVisible);
+            document.getElementById('header-profile-menu').classList.toggle('hidden', !navigationVisible);
+            document.getElementById('mobile-guest-menu').classList.toggle('hidden', navigationVisible);
+            document.getElementById('mobile-authenticated-menu').classList.toggle('hidden', !navigationVisible);
+            ['header-guest-register-label', 'mobile-guest-register-label'].forEach(id => {
+                document.getElementById(id).textContent = t('auth_register');
+            });
+            ['header-guest-sign-in-label', 'mobile-guest-sign-in-label'].forEach(id => {
                 document.getElementById(id).textContent = t('auth_sign_in');
             });
-            ['desktop-register', 'mobile-register'].forEach(id => {
+            ['header-register-button', 'mobile-register-button'].forEach(id => {
                 document.getElementById(id).textContent = t('auth_register');
             });
 
             const container = document.getElementById('header-avatar-container');
-            if (state.currentUser.role === 'corporate') {
+            if (!isAuthenticated) {
+                container.innerHTML = '<i class="fa-regular fa-user text-sm" aria-hidden="true"></i>';
+            } else if (state.currentUser.role === 'corporate') {
                 container.innerHTML = `<span class="flex h-full w-full items-center justify-center rounded-full bg-slate-950 p-1.5 ring-2 ring-white"><img src="${state.currentUser.logoUrl}" alt="Tesla logo" class="h-full w-full object-contain"></span>`;
             } else if (state.currentUser.avatar) {
                 container.innerHTML = `<img src="${state.currentUser.avatar}" class="h-full w-full object-cover">`;
@@ -2419,17 +2635,27 @@
                 container.innerHTML = `<span>${initials}</span>`;
             }
 
-            const mobileAvatar = document.getElementById('mobile-profile-avatar');
-            const mobileAvatarFallback = document.getElementById('mobile-profile-avatar-fallback');
+            const mobileAvatarContainer = document.getElementById('mobile-profile-avatar-container');
             const mobileAvatarSource = state.currentUser.avatar || state.currentUser.logoUrl;
-            mobileAvatar.hidden = !mobileAvatarSource;
-            mobileAvatarFallback.classList.toggle('hidden', Boolean(mobileAvatarSource));
-            mobileAvatarFallback.textContent = state.currentUser.name.split(' ').map(namePart => namePart[0]).join('');
-            if (mobileAvatarSource) mobileAvatar.src = mobileAvatarSource;
-            mobileAvatar.alt = `${state.currentUser.name} profile photo`;
+            if (!isAuthenticated) {
+                mobileAvatarContainer.innerHTML = '<i class="fa-regular fa-user text-base" aria-hidden="true"></i>';
+            } else if (mobileAvatarSource) {
+                mobileAvatarContainer.innerHTML = `<img src="${mobileAvatarSource}" alt="${state.currentUser.name} profile photo" class="h-full w-full rounded-full object-cover">`;
+            } else {
+                const initials = state.currentUser.name.split(' ').map(namePart => namePart[0]).join('');
+                mobileAvatarContainer.textContent = initials;
+            }
 
-            document.getElementById('header-name').textContent = state.currentUser.name;
-            document.getElementById('header-role').textContent = state.currentUser.role === 'corporate'
+            document.getElementById('header-profile').setAttribute('aria-label', isAuthenticated ? t('profile_menu_toggle') : t('auth_sign_in'));
+            document.getElementById('mobile-profile-trigger').setAttribute('aria-label', isAuthenticated ? t('profile_menu_toggle') : t('auth_sign_in'));
+            document.getElementById('header-name').textContent = isAuthenticated ? state.currentUser.name : t('guest_name');
+            document.getElementById('mobile-profile-name').textContent = isAuthenticated ? state.currentUser.name : t('guest_name');
+            document.getElementById('mobile-profile-label').textContent = isAuthenticated
+                ? (currentLang === 'es' ? 'Perfil de usuario' : 'User profile')
+                : t('guest_name');
+            document.getElementById('header-role').textContent = !isAuthenticated
+                ? ''
+                : state.currentUser.role === 'corporate'
                 ? (currentLang === 'es' ? 'Sponsor Corporativo' : 'Corporate Sponsor')
                 : state.currentUser.role;
             updateThemeToggle();
@@ -2460,10 +2686,12 @@
             document.getElementById('mobile-nav-home').textContent = t('nav_home');
             document.getElementById('mobile-nav-browse').textContent = t('nav_browse');
             document.getElementById('mobile-nav-groups').textContent = t('nav_groups');
-            document.getElementById('mobile-profile-label').textContent = currentLang === 'es' ? 'Perfil de usuario' : 'User profile';
-            document.getElementById('mobile-profile-name').textContent = state.currentUser.name;
-            document.getElementById('header-profile').setAttribute('aria-label', t('profile_menu_toggle'));
-            document.getElementById('mobile-profile-trigger').setAttribute('aria-label', t('profile_menu_toggle'));
+            document.getElementById('mobile-profile-label').textContent = isAuthenticated
+                ? (currentLang === 'es' ? 'Perfil de usuario' : 'User profile')
+                : t('guest_name');
+            document.getElementById('mobile-profile-name').textContent = isAuthenticated ? state.currentUser.name : t('guest_name');
+            document.getElementById('header-profile').setAttribute('aria-label', isAuthenticated ? t('profile_menu_toggle') : t('auth_sign_in'));
+            document.getElementById('mobile-profile-trigger').setAttribute('aria-label', isAuthenticated ? t('profile_menu_toggle') : t('auth_sign_in'));
             document.getElementById('header-profile-view-label').textContent = t('profile_view');
             document.getElementById('mobile-profile-view-label').textContent = t('profile_view');
             document.getElementById('header-profile-logout-label').textContent = t('profile_log_out');
