@@ -2294,6 +2294,44 @@
         let registrationAccountType = 'individual';
         let registrationDraft = {};
         let registerTrigger = null;
+        let registrationCountryActiveIndex = -1;
+        const registrationCountryRequiredMessage = () => currentLang === 'es'
+            ? 'Selecciona un país de la lista.'
+            : 'Select a country from the list.';
+        const registrationCountries = [
+            { code: 'VE', flag: '🇻🇪', es: 'Venezuela', en: 'Venezuela' },
+            { code: 'CO', flag: '🇨🇴', es: 'Colombia', en: 'Colombia' },
+            { code: 'US', flag: '🇺🇸', es: 'Estados Unidos', en: 'United States' },
+            { code: 'CL', flag: '🇨🇱', es: 'Chile', en: 'Chile' },
+            { code: 'SV', flag: '🇸🇻', es: 'El Salvador', en: 'El Salvador' },
+            { code: 'PE', flag: '🇵🇪', es: 'Perú', en: 'Peru' },
+            { code: 'BR', flag: '🇧🇷', es: 'Brasil', en: 'Brazil' },
+            { code: 'DE', flag: '🇩🇪', es: 'Alemania', en: 'Germany' },
+            { code: 'FR', flag: '🇫🇷', es: 'Francia', en: 'France' },
+            { code: 'IT', flag: '🇮🇹', es: 'Italia', en: 'Italy' },
+            { code: 'JP', flag: '🇯🇵', es: 'Japón', en: 'Japan' },
+            { code: 'KR', flag: '🇰🇷', es: 'Corea del Sur', en: 'South Korea' },
+            { code: 'LA', flag: '🇱🇦', es: 'Laos', en: 'Laos' },
+            { code: 'TW', flag: '🇹🇼', es: 'Taiwán', en: 'Taiwan' },
+            { code: 'PH', flag: '🇵🇭', es: 'Filipinas', en: 'Philippines' },
+            { code: 'CA', flag: '🇨🇦', es: 'Canadá', en: 'Canada' },
+            { code: 'AR', flag: '🇦🇷', es: 'Argentina', en: 'Argentina' },
+            { code: 'ES', flag: '🇪🇸', es: 'España', en: 'Spain' },
+            { code: 'MX', flag: '🇲🇽', es: 'México', en: 'Mexico' },
+            { code: 'IR', flag: '🇮🇷', es: 'Irán', en: 'Iran' },
+            { code: 'SS', flag: '🇸🇸', es: 'Sudán del Sur', en: 'South Sudan' },
+            { code: 'AU', flag: '🇦🇺', es: 'Australia', en: 'Australia' },
+            { code: 'CN', flag: '🇨🇳', es: 'China', en: 'China' },
+            { code: 'RU', flag: '🇷🇺', es: 'Rusia', en: 'Russia' }
+        ];
+
+        function getRegistrationCountryName(country) {
+            return country[currentLang];
+        }
+
+        function getRegistrationCountryLabel(country) {
+            return `${country.flag} ${getRegistrationCountryName(country)}`;
+        }
 
         function openRegisterModal(trigger) {
             registrationAccountType = 'individual';
@@ -2325,6 +2363,132 @@
             });
         }
 
+        function getRegistrationCountryMatches(query) {
+            const normalizedQuery = query.trim().toLocaleLowerCase();
+            return registrationCountries.filter(country => getRegistrationCountryName(country).toLocaleLowerCase().includes(normalizedQuery));
+        }
+
+        function renderRegistrationCountryOptions(query = '') {
+            const list = document.getElementById('registration-country-options');
+            if (!list) return;
+            const matches = getRegistrationCountryMatches(query);
+            registrationCountryActiveIndex = matches.length ? Math.min(registrationCountryActiveIndex, matches.length - 1) : -1;
+            list.innerHTML = matches.length
+                ? matches.map((country, index) => `
+                    <button type="button" id="registration-country-option-${index}" role="option"
+                        aria-selected="${index === registrationCountryActiveIndex}"
+                        onmousedown="event.preventDefault()"
+                        onclick="selectRegistrationCountry('${country.code}')"
+                        class="flex w-full items-center gap-2 px-3.5 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 ${index === registrationCountryActiveIndex ? 'bg-slate-100' : ''}">
+                        <span>${getRegistrationCountryLabel(country)}</span>
+                    </button>
+                `).join('')
+                : `<p class="px-3.5 py-2 text-sm text-slate-500">${currentLang === 'es' ? 'No hay países que coincidan.' : 'No matching countries.'}</p>`;
+            const input = document.getElementById('registration-country-input');
+            if (input) {
+                input.setAttribute('aria-activedescendant', registrationCountryActiveIndex >= 0
+                    ? `registration-country-option-${registrationCountryActiveIndex}`
+                    : '');
+            }
+        }
+
+        function openRegistrationCountryOptions(query) {
+            const list = document.getElementById('registration-country-options');
+            const input = document.getElementById('registration-country-input');
+            if (!list || !input) return;
+            list.classList.remove('hidden');
+            input.setAttribute('aria-expanded', 'true');
+            renderRegistrationCountryOptions(query === undefined ? input.value : query);
+        }
+
+        function focusRegistrationCountryInput() {
+            const input = document.getElementById('registration-country-input');
+            if (!input) return;
+            if (input.dataset.selectedCountry) input.value = '';
+            openRegistrationCountryOptions('');
+        }
+
+        function closeRegistrationCountryOptions() {
+            const list = document.getElementById('registration-country-options');
+            const input = document.getElementById('registration-country-input');
+            if (!list || !input) return;
+            list.classList.add('hidden');
+            input.setAttribute('aria-expanded', 'false');
+            input.removeAttribute('aria-activedescendant');
+            registrationCountryActiveIndex = -1;
+        }
+
+        function filterRegistrationCountries() {
+            const input = document.getElementById('registration-country-input');
+            const selectedCountry = document.getElementById('registration-country-value');
+            if (!input || !selectedCountry) return;
+            selectedCountry.value = '';
+            input.setCustomValidity(registrationCountryRequiredMessage());
+            input.setAttribute('aria-invalid', 'true');
+            registrationCountryActiveIndex = -1;
+            openRegistrationCountryOptions(input.value);
+        }
+
+        function selectRegistrationCountry(countryCode) {
+            const country = registrationCountries.find(option => option.code === countryCode);
+            const input = document.getElementById('registration-country-input');
+            const selectedCountry = document.getElementById('registration-country-value');
+            if (!country || !input || !selectedCountry) return;
+            input.value = getRegistrationCountryLabel(country);
+            input.dataset.selectedCountry = country.code;
+            input.setCustomValidity('');
+            input.removeAttribute('aria-invalid');
+            selectedCountry.value = country.code;
+            closeRegistrationCountryOptions();
+            captureRegistrationDraft();
+        }
+
+        function handleRegistrationCountryBlur() {
+            const input = document.getElementById('registration-country-input');
+            const selectedCountry = document.getElementById('registration-country-value');
+            if (!input || !selectedCountry) return;
+            const selectedCode = input.dataset.selectedCountry || '';
+            const country = registrationCountries.find(option => option.code === selectedCode);
+            if (country) {
+                input.value = getRegistrationCountryLabel(country);
+                selectedCountry.value = country.code;
+                input.setCustomValidity('');
+                closeRegistrationCountryOptions();
+            } else {
+                input.value = '';
+                selectedCountry.value = '';
+                input.setCustomValidity(registrationCountryRequiredMessage());
+                input.setAttribute('aria-invalid', 'true');
+                openRegistrationCountryOptions();
+                renderRegistrationCountryOptions('');
+            }
+            captureRegistrationDraft();
+        }
+
+        function handleRegistrationCountryKeydown(event) {
+            const input = event.currentTarget;
+            const matches = getRegistrationCountryMatches(input.value);
+            const list = document.getElementById('registration-country-options');
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                if (list?.classList.contains('hidden')) openRegistrationCountryOptions();
+                if (matches.length) registrationCountryActiveIndex = (registrationCountryActiveIndex + 1) % matches.length;
+                renderRegistrationCountryOptions(input.value);
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                if (matches.length) registrationCountryActiveIndex = registrationCountryActiveIndex <= 0
+                    ? matches.length - 1
+                    : registrationCountryActiveIndex - 1;
+                renderRegistrationCountryOptions(input.value);
+            } else if (event.key === 'Enter' && list && !list.classList.contains('hidden') && registrationCountryActiveIndex >= 0) {
+                event.preventDefault();
+                selectRegistrationCountry(matches[registrationCountryActiveIndex].code);
+            } else if (event.key === 'Escape' && list && !list.classList.contains('hidden')) {
+                event.preventDefault();
+                closeRegistrationCountryOptions();
+            }
+        }
+
         function setRegistrationAccountType(type) {
             captureRegistrationDraft();
             registrationAccountType = type;
@@ -2339,6 +2503,8 @@
             const unselectedCard = 'border-slate-200 bg-white hover:border-primary-300 hover:bg-slate-50';
             const fieldClass = 'mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-100';
             const value = key => escapeHTML(registrationDraft[key] || '');
+            const selectedCountry = registrationCountries.find(country => country.code === registrationDraft.country);
+            const countryInputValue = selectedCountry ? getRegistrationCountryLabel(selectedCountry) : '';
             const individualFields = `
                 <div class="grid gap-4 sm:grid-cols-2">
                     <label class="block text-xs font-semibold text-slate-700">${t('register_first_name')}
@@ -2357,16 +2523,36 @@
                     <label class="block text-xs font-semibold text-slate-700">${t('register_id')}
                         <input class="${fieldClass}" name="registrationId" value="${value('registrationId')}" required>
                     </label>
-                    <label class="block text-xs font-semibold text-slate-700">${t('register_country')}
-                        <input class="${fieldClass}" name="country" autocomplete="country-name" value="${value('country')}" required>
-                    </label>
+                    <div class="relative">
+                        <label for="registration-country-input" class="block text-xs font-semibold text-slate-700">${t('register_country')}</label>
+                        <input id="registration-country-input" class="${fieldClass}" type="text" autocomplete="off"
+                            role="combobox" aria-autocomplete="list" aria-haspopup="listbox"
+                            aria-controls="registration-country-options" aria-expanded="false"
+                            aria-label="${t('register_country')}" value="${escapeHTML(countryInputValue)}"
+                            data-selected-country="${escapeHTML(selectedCountry?.code || '')}"
+                            onfocus="focusRegistrationCountryInput()" onclick="focusRegistrationCountryInput()" oninput="filterRegistrationCountries()"
+                            onblur="handleRegistrationCountryBlur()" onkeydown="handleRegistrationCountryKeydown(event)"
+                            required>
+                        <input id="registration-country-value" type="hidden" name="country" value="${selectedCountry ? escapeHTML(selectedCountry.code) : ''}">
+                        <div id="registration-country-options" role="listbox" aria-label="${t('register_country')}"
+                            class="absolute left-0 top-full z-50 mt-1 hidden max-h-48 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-1 text-slate-900 shadow-lg">
+                            ${registrationCountries.map((country, index) => `
+                                <button type="button" id="registration-country-option-${index}" role="option"
+                                    aria-selected="false" onmousedown="event.preventDefault()"
+                                    onclick="selectRegistrationCountry('${country.code}')"
+                                    class="flex w-full items-center gap-2 px-3.5 py-2 text-left text-sm text-slate-800 hover:bg-slate-100">
+                                    <span>${getRegistrationCountryLabel(country)}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
                 </div>
             `;
 
             document.getElementById('modal-container').innerHTML = `
                 <div id="register-modal" class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm animate-modal-in" role="dialog" aria-modal="true" aria-labelledby="register-modal-title" onclick="closeRegisterModal()">
-                    <section class="relative my-auto w-full max-w-xl overflow-hidden rounded-3xl border border-white/70 bg-white shadow-2xl" onclick="event.stopPropagation()">
-                        <div class="bg-zuliov-mesh px-6 py-6 text-white sm:px-8">
+                    <section class="relative my-auto w-full max-w-xl rounded-3xl border border-white/70 bg-white shadow-2xl" onclick="event.stopPropagation()">
+                        <div class="rounded-t-3xl bg-zuliov-mesh px-6 py-6 text-white sm:px-8">
                             <button type="button" onclick="closeRegisterModal()" aria-label="${t('register_close')}" class="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                                 <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                             </button>
@@ -2375,7 +2561,7 @@
                             <h2 id="register-modal-title" class="mt-1 pr-8 text-2xl font-bold tracking-tight">${t('register_title')}</h2>
                             <p class="mt-2 text-sm leading-relaxed text-slate-300">${t('register_subtitle')}</p>
                         </div>
-                        <form id="register-form" class="space-y-5 px-6 py-6 sm:px-8" oninput="captureRegistrationDraft()" onsubmit="submitRegistration(event)">
+                        <form id="register-form" class="space-y-5 rounded-b-3xl px-6 py-6 sm:px-8" oninput="captureRegistrationDraft()" onsubmit="submitRegistration(event)">
                             <fieldset>
                                 <legend class="mb-2.5 text-xs font-semibold text-slate-700">${t('register_account_type')}</legend>
                                 <div class="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="${t('register_account_type')}">
@@ -2416,7 +2602,17 @@
             const firstName = String(formData.get('firstName') || '').trim();
             const lastName = String(formData.get('lastName') || '').trim();
             const organization = String(formData.get('organization') || '').trim();
-            const country = String(formData.get('country') || '').trim();
+            const countryCode = String(formData.get('country') || '').trim();
+            const selectedCountry = registrationCountries.find(option => option.code === countryCode);
+            if (isNGO && !selectedCountry) {
+                const countryInput = document.getElementById('registration-country-input');
+                countryInput?.setCustomValidity(registrationCountryRequiredMessage());
+                countryInput?.setAttribute('aria-invalid', 'true');
+                countryInput?.focus();
+                openRegistrationCountryOptions();
+                return;
+            }
+            const country = selectedCountry ? getRegistrationCountryName(selectedCountry) : '';
             const name = isNGO ? organization : `${firstName} ${lastName}`.trim();
 
             state.currentUser = {
