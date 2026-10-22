@@ -306,6 +306,14 @@
                 guest_name: "Invitado",
                 auth_sign_in: "Iniciar sesión",
                 auth_register: "Registrarse",
+                login_title: "Bienvenido de nuevo",
+                login_email: "Correo electrónico",
+                login_password: "Contraseña",
+                login_submit: "Iniciar sesión",
+                login_register_prompt: "¿No tienes cuenta?",
+                login_register_link: "Regístrate",
+                login_close: "Cerrar inicio de sesión",
+                login_success: "¡Has iniciado sesión correctamente!",
                 register_title: "Crea tu cuenta en Zuliov",
                 register_subtitle: "Únete a una comunidad que hace visible el impacto.",
                 register_account_type: "¿Qué tipo de cuenta necesitas?",
@@ -498,6 +506,31 @@
                 group_comment_submit: "Enviar",
                 group_now: "Ahora",
                 group_leaders_title: "Líderes del Grupo",
+                group_manage: "Administrar",
+                group_manage_leaders_title: "Administrar líderes",
+                group_manage_alliances_title: "Administrar alianzas",
+                group_manage_current_leaders: "Líderes actuales",
+                group_manage_pending_leader_requests: "Solicitudes pendientes",
+                group_manage_active_alliances: "Alianzas activas",
+                group_manage_alliance_requests: "Solicitudes de alianza",
+                group_manage_remove: "Quitar",
+                group_manage_remove_alliance: "Finalizar alianza",
+                group_manage_accept: "Aceptar",
+                group_manage_decline: "Rechazar",
+                group_manage_approve: "Aprobar",
+                group_manage_reject: "Rechazar",
+                group_manage_empty_leaders: "No hay líderes actuales.",
+                group_manage_empty_leader_requests: "No hay solicitudes pendientes.",
+                group_manage_empty_alliances: "No hay alianzas activas.",
+                group_manage_empty_alliance_requests: "No hay solicitudes de alianza.",
+                group_manage_leader_outreach_role: "Coordinadora de participación comunitaria",
+                group_manage_leader_programs_role: "Coordinador de programas",
+                group_manage_leader_removed: "Se quitó al líder del grupo.",
+                group_manage_leader_accepted: "Se aceptó la solicitud de liderazgo.",
+                group_manage_leader_declined: "Se rechazó la solicitud de liderazgo.",
+                group_manage_alliance_removed: "Se finalizó la alianza.",
+                group_manage_alliance_approved: "Se aprobó la solicitud de alianza.",
+                group_manage_alliance_rejected: "Se rechazó la solicitud de alianza.",
                 group_leader_coordinator_name: "Coordinación de voluntariado",
                 group_leader_coordinator: "Coordinador de Campo",
                 group_leader_facilitator_name: "Equipo de voluntariado regional",
@@ -636,6 +669,14 @@
                 guest_name: "Guest",
                 auth_sign_in: "Sign In",
                 auth_register: "Register",
+                login_title: "Welcome Back",
+                login_email: "Email Address",
+                login_password: "Password",
+                login_submit: "Sign In",
+                login_register_prompt: "Don't have an account?",
+                login_register_link: "Register",
+                login_close: "Close sign in",
+                login_success: "You have signed in successfully!",
                 register_title: "Create your Zuliov account",
                 register_subtitle: "Join a community making impact visible.",
                 register_account_type: "What type of account do you need?",
@@ -828,6 +869,31 @@
                 group_comment_submit: "Send",
                 group_now: "Just now",
                 group_leaders_title: "GROUP LEADERS",
+                group_manage: "Manage",
+                group_manage_leaders_title: "Manage group leaders",
+                group_manage_alliances_title: "Manage alliances",
+                group_manage_current_leaders: "Current leaders",
+                group_manage_pending_leader_requests: "Pending Requests",
+                group_manage_active_alliances: "Active alliances",
+                group_manage_alliance_requests: "Alliance Requests",
+                group_manage_remove: "Remove",
+                group_manage_remove_alliance: "Remove Alliance",
+                group_manage_accept: "Accept",
+                group_manage_decline: "Decline",
+                group_manage_approve: "Approve",
+                group_manage_reject: "Reject",
+                group_manage_empty_leaders: "There are no current leaders.",
+                group_manage_empty_leader_requests: "There are no pending requests.",
+                group_manage_empty_alliances: "There are no active alliances.",
+                group_manage_empty_alliance_requests: "There are no alliance requests.",
+                group_manage_leader_outreach_role: "Community Outreach Coordinator",
+                group_manage_leader_programs_role: "Programs Coordinator",
+                group_manage_leader_removed: "The group leader was removed.",
+                group_manage_leader_accepted: "The leadership request was accepted.",
+                group_manage_leader_declined: "The leadership request was declined.",
+                group_manage_alliance_removed: "The alliance was removed.",
+                group_manage_alliance_approved: "The alliance request was approved.",
+                group_manage_alliance_rejected: "The alliance request was rejected.",
                 group_leader_coordinator_name: "Volunteer Coordination",
                 group_leader_coordinator: "Field Coordinator",
                 group_leader_facilitator_name: "Regional Volunteer Team",
@@ -1018,6 +1084,8 @@
             document.documentElement.lang = lang;
             renderApp();
             if (document.getElementById('register-modal')) renderRegisterModal();
+            if (document.getElementById('login-modal')) renderLoginModal();
+            if (state.activeGroupManagementModal) renderGroupManagementModal();
             showToast(lang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English', 'info');
         }
 
@@ -1839,6 +1907,28 @@
             selectedBrowseProjectId: null,
             expandedProjectComments: {},
             followedGroupAlliances: {},
+            groupLeaders: locales.en.group_leaders.map(leader => ({ ...leader })),
+            groupLeaderRequests: [
+                {
+                    id: 'leader-request-maya',
+                    name: 'Maya Thompson',
+                    roleKey: 'group_manage_leader_outreach_role',
+                    photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120'
+                },
+                {
+                    id: 'leader-request-daniel',
+                    name: 'Daniel Kim',
+                    roleKey: 'group_manage_leader_programs_role',
+                    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120'
+                }
+            ],
+            groupAlliances: locales.en.group_alliances.map(alliance => ({ ...alliance })),
+            groupAllianceRequests: [
+                { id: 'alliance-request-education', name: 'Global Education Network', type: 'group', icon: '🌍' },
+                { id: 'alliance-request-water', name: 'Water for Every Community', type: 'ngo', icon: '💧' }
+            ],
+            activeGroupManagementModal: null,
+            groupManagementTab: 'active',
             expandedGroupPostId: null,
             activeDonationProject: null,
             activeGroupId: null,
@@ -2047,7 +2137,7 @@
                                 <i class="fa-solid fa-user-plus w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-guest-register-label">Register</span>
                             </button>
-                            <button type="button" role="menuitem" onclick="logIn()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                            <button type="button" role="menuitem" onclick="openLoginModal(event)" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                                 <i class="fa-solid fa-arrow-right-to-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-guest-sign-in-label">Sign In</span>
                             </button>
@@ -2104,7 +2194,7 @@
                                 <i class="fa-solid fa-user-plus w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="mobile-guest-register-label">Register</span>
                             </button>
-                            <button type="button" role="menuitem" onclick="logIn()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                            <button type="button" role="menuitem" onclick="openLoginModal(event)" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                                 <i class="fa-solid fa-arrow-right-to-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="mobile-guest-sign-in-label">Sign In</span>
                             </button>
@@ -2289,6 +2379,89 @@
             menu.classList.remove('animate-dropdown-in');
             void menu.offsetWidth;
             menu.classList.add('animate-dropdown-in');
+        }
+
+        let loginDraft = {};
+        let loginTrigger = null;
+
+        function captureLoginDraft() {
+            const form = document.getElementById('login-form');
+            if (!form) return;
+            new FormData(form).forEach((value, key) => {
+                loginDraft[key] = String(value);
+            });
+        }
+
+        function openLoginModal(event) {
+            const menuItem = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+            loginTrigger = menuItem?.closest('#mobile-profile-menu')
+                ? document.getElementById('mobile-profile-trigger')
+                : document.getElementById('header-profile');
+            loginDraft = {};
+            closeProfileDropdown();
+            toggleMobileMenu(false);
+            renderLoginModal();
+            document.body.classList.add('overflow-hidden');
+            document.querySelector('#login-modal input')?.focus();
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('login-modal');
+            if (!modal) return;
+            modal.remove();
+            document.body.classList.remove('overflow-hidden');
+            if (loginTrigger?.isConnected) loginTrigger.focus();
+            loginTrigger = null;
+            loginDraft = {};
+        }
+
+        function renderLoginModal() {
+            captureLoginDraft();
+            const fieldClass = 'mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-100';
+            document.getElementById('modal-container').innerHTML = `
+                <div id="login-modal" class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm animate-modal-in" role="dialog" aria-modal="true" aria-labelledby="login-modal-title" onclick="closeLoginModal()">
+                    <section class="relative my-auto w-full max-w-md rounded-3xl border border-white/70 bg-white shadow-2xl" onclick="event.stopPropagation()">
+                        <div class="rounded-t-3xl bg-zuliov-mesh px-6 py-6 text-white sm:px-8">
+                            <div class="absolute right-4 top-4 flex items-center gap-2">
+                                <div class="inline-flex rounded-lg border border-white/20 bg-white/10 p-0.5 text-[10px] font-mono font-bold">
+                                    <button type="button" onclick="setLanguage('es')" aria-label="Español" aria-pressed="${currentLang === 'es'}" class="rounded-md px-2 py-1 ${currentLang === 'es' ? 'bg-white text-slate-900' : 'text-white'}">ES</button>
+                                    <button type="button" onclick="setLanguage('en')" aria-label="English" aria-pressed="${currentLang === 'en'}" class="rounded-md px-2 py-1 ${currentLang === 'en' ? 'bg-white text-slate-900' : 'text-white'}">EN</button>
+                                </div>
+                                <button type="button" onclick="closeLoginModal()" aria-label="${t('login_close')}" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <span class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-primary-200"><i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i></span>
+                            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-primary-200">ZULIOV</p>
+                            <h2 id="login-modal-title" class="mt-1 pr-8 text-2xl font-bold tracking-tight">${t('login_title')}</h2>
+                        </div>
+                        <form id="login-form" class="space-y-5 rounded-b-3xl px-6 py-6 sm:px-8" oninput="captureLoginDraft()" onsubmit="submitLogin(event)">
+                            <label class="block text-xs font-semibold text-slate-700">${t('login_email')}
+                                <input class="${fieldClass}" type="email" name="email" autocomplete="email" value="${escapeHTML(loginDraft.email || '')}" required>
+                            </label>
+                            <label class="block text-xs font-semibold text-slate-700">${t('login_password')}
+                                <input class="${fieldClass}" type="password" name="password" autocomplete="current-password" value="${escapeHTML(loginDraft.password || '')}" required>
+                            </label>
+                            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                                ${t('login_submit')}<i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                            </button>
+                            <p class="text-center text-xs text-slate-500">${t('login_register_prompt')}
+                                <button type="button" onclick="closeLoginModal(); openRegisterModal()" class="font-semibold text-primary-700 hover:underline">${t('login_register_link')}</button>
+                            </p>
+                        </form>
+                    </section>
+                </div>
+            `;
+        }
+
+        function submitLogin(event) {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            const email = String(formData.get('email')).trim();
+            logIn(email);
+            closeLoginModal();
+            renderApp();
+            showToast(t('login_success'));
         }
 
         let registrationAccountType = 'individual';
@@ -2651,9 +2824,10 @@
             navigateTo('landing');
         }
 
-        function logIn() {
+        function logIn(email) {
             state.currentUser = {
                 ...defaultUserProfile,
+                email,
                 badges: [...defaultUserProfile.badges]
             };
             isAuthenticated = true;
@@ -2684,6 +2858,10 @@
 
         document.addEventListener('keydown', event => {
             if (event.key !== 'Escape') return;
+            if (document.getElementById('login-modal')) {
+                closeLoginModal();
+                return;
+            }
             if (document.getElementById('register-modal')) {
                 closeRegisterModal();
                 return;
@@ -3249,13 +3427,16 @@
                             ` : ''}
                             <div class="mt-6 grid gap-5 lg:grid-cols-2">
                                 <section aria-labelledby="group-leaders-title" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
-                                    <h2 id="group-leaders-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_leaders_title')}</h2>
+                                    <div class="flex items-center justify-between gap-3">
+                                        <h2 id="group-leaders-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_leaders_title')}</h2>
+                                        <button type="button" onclick="openGroupManagementModal('leaders')" class="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-bold text-slate-600 transition-colors hover:border-primary-200 hover:text-primary-700">${t('group_manage')}</button>
+                                    </div>
                                     <div class="mt-4 grid gap-3 sm:grid-cols-2">
-                                        ${locales[currentLang].group_leaders.map(leader => `
+                                        ${state.groupLeaders.map(leader => `
                                             <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
-                                                <img src="${escapeHTML(leader.photo)}" alt="${t(leader.nameKey)}" class="h-12 w-12 shrink-0 rounded-full object-cover">
+                                                <img src="${escapeHTML(leader.photo)}" alt="${escapeHTML(leader.name || t(leader.nameKey))}" class="h-12 w-12 shrink-0 rounded-full object-cover">
                                                 <div class="min-w-0">
-                                                    <h3 class="truncate text-xs font-bold text-slate-900">${t(leader.nameKey)}</h3>
+                                                    <h3 class="truncate text-xs font-bold text-slate-900">${escapeHTML(leader.name || t(leader.nameKey))}</h3>
                                                     <p class="mt-1 text-[10px] leading-snug text-slate-500">${t(leader.roleKey)}</p>
                                                 </div>
                                             </article>
@@ -3263,12 +3444,15 @@
                                     </div>
                                 </section>
                                 <section aria-labelledby="group-alliances-title" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
-                                    <div>
-                                        <h2 id="group-alliances-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_alliances_title')}</h2>
-                                        <p class="mt-1 text-[10px] text-slate-500">${t('group_alliances_subtitle')}</p>
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <h2 id="group-alliances-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_alliances_title')}</h2>
+                                            <p class="mt-1 text-[10px] text-slate-500">${t('group_alliances_subtitle')}</p>
+                                        </div>
+                                        <button type="button" onclick="openGroupManagementModal('alliances')" class="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-bold text-slate-600 transition-colors hover:border-primary-200 hover:text-primary-700">${t('group_manage')}</button>
                                     </div>
                                     <div class="mt-4 space-y-2">
-                                        ${locales[currentLang].group_alliances.map(alliance => {
+                                        ${state.groupAlliances.map(alliance => {
                                             const isFollowing = Boolean(state.followedGroupAlliances[alliance.id]);
                                             return `
                                                 <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-2.5">
@@ -3408,7 +3592,7 @@
         }
 
         function toggleGroupAllianceFollow(allianceId) {
-            const alliance = locales[currentLang].group_alliances.find(item => item.id === allianceId);
+            const alliance = state.groupAlliances.find(item => item.id === allianceId);
             if (!alliance) return;
             const isFollowing = !state.followedGroupAlliances[allianceId];
             state.followedGroupAlliances[allianceId] = isFollowing;
@@ -3418,6 +3602,137 @@
                     .replace('{name}', alliance.name),
                 isFollowing ? 'success' : 'info'
             );
+        }
+
+        function openGroupManagementModal(type) {
+            state.activeGroupManagementModal = type;
+            state.groupManagementTab = 'active';
+            renderGroupManagementModal();
+        }
+
+        function setGroupManagementTab(tab) {
+            state.groupManagementTab = tab;
+            renderGroupManagementModal();
+        }
+
+        function closeGroupManagementModal() {
+            state.activeGroupManagementModal = null;
+            document.getElementById('modal-container').innerHTML = '';
+        }
+
+        function renderGroupManagementModal() {
+            const type = state.activeGroupManagementModal;
+            const container = document.getElementById('modal-container');
+            if (!type || !container) return;
+
+            const isLeaders = type === 'leaders';
+            const tab = state.groupManagementTab;
+            const title = isLeaders ? t('group_manage_leaders_title') : t('group_manage_alliances_title');
+            const activeLabel = t(isLeaders ? 'group_manage_current_leaders' : 'group_manage_active_alliances');
+            const requestsLabel = t(isLeaders ? 'group_manage_pending_leader_requests' : 'group_manage_alliance_requests');
+            const activeItems = isLeaders ? state.groupLeaders : state.groupAlliances;
+            const requestItems = isLeaders ? state.groupLeaderRequests : state.groupAllianceRequests;
+            const emptyMessage = isLeaders
+                ? (tab === 'active' ? t('group_manage_empty_leaders') : t('group_manage_empty_leader_requests'))
+                : (tab === 'active' ? t('group_manage_empty_alliances') : t('group_manage_empty_alliance_requests'));
+
+            container.innerHTML = `
+                <div class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" onclick="closeGroupManagementModal()">
+                    <section id="group-management-modal" role="dialog" aria-modal="true" aria-labelledby="group-management-title" class="relative z-10 max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-floating animate-modal-in sm:p-7" onclick="event.stopPropagation()">
+                        <header class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-600">ZULIOV · ${t(isLeaders ? 'group_leaders_title' : 'group_alliances_title')}</p>
+                                <h2 id="group-management-title" class="mt-2 text-xl font-black text-slate-900">${title}</h2>
+                            </div>
+                            <button type="button" onclick="closeGroupManagementModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                        </header>
+                        <div class="mt-5 grid grid-cols-2 rounded-xl bg-slate-100 p-1" role="tablist" aria-label="${title}">
+                            <button type="button" role="tab" aria-selected="${tab === 'active'}" onclick="setGroupManagementTab('active')" class="rounded-lg px-3 py-2 text-xs font-bold transition-colors ${tab === 'active' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}">${activeLabel}</button>
+                            <button type="button" role="tab" aria-selected="${tab === 'requests'}" onclick="setGroupManagementTab('requests')" class="rounded-lg px-3 py-2 text-xs font-bold transition-colors ${tab === 'requests' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}">${requestsLabel}</button>
+                        </div>
+                        <div class="mt-4 space-y-3" role="tabpanel">
+                            ${(tab === 'active' ? activeItems.map(item => {
+                                const name = isLeaders ? (item.name || t(item.nameKey)) : item.name;
+                                const subtitle = isLeaders ? t(item.roleKey) : t(item.type === 'ngo' ? 'group_alliance_ngo' : 'group_alliance_group');
+                                return `
+                                    <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                                        ${isLeaders
+                                            ? `<img src="${escapeHTML(item.photo)}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover">`
+                                            : `<span aria-hidden="true" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-xl">${escapeHTML(item.icon)}</span>`}
+                                        <div class="min-w-0 flex-1">
+                                            <h3 class="truncate text-sm font-bold text-slate-900">${escapeHTML(name)}</h3>
+                                            <p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">${escapeHTML(subtitle)}</p>
+                                        </div>
+                                        <button type="button" onclick="${isLeaders ? `removeGroupLeader('${item.nameKey}')` : `removeGroupAlliance('${item.id}')`}" class="shrink-0 rounded-lg px-3 py-2 text-[10px] font-bold text-rose-700 transition-colors hover:bg-rose-50">${t(isLeaders ? 'group_manage_remove' : 'group_manage_remove_alliance')}</button>
+                                    </article>
+                                `;
+                            }).join('') : requestItems.map(item => {
+                                const name = item.name;
+                                const subtitle = t(isLeaders ? item.roleKey : (item.type === 'ngo' ? 'group_alliance_ngo' : 'group_alliance_group'));
+                                return `
+                                    <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                                        ${isLeaders
+                                            ? `<img src="${escapeHTML(item.photo)}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover">`
+                                            : `<span aria-hidden="true" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-xl">${escapeHTML(item.icon)}</span>`}
+                                        <div class="min-w-0 flex-1">
+                                            <h3 class="truncate text-sm font-bold text-slate-900">${escapeHTML(name)}</h3>
+                                            <p class="mt-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">${escapeHTML(subtitle)}</p>
+                                        </div>
+                                        ${isLeaders
+                                            ? `<button type="button" onclick="processGroupLeaderRequest('${item.id}', true)" class="rounded-lg bg-primary-600 px-3 py-2 text-[10px] font-bold text-white transition-colors hover:bg-primary-700">${t('group_manage_accept')}</button><button type="button" onclick="processGroupLeaderRequest('${item.id}', false)" class="rounded-lg px-2 py-2 text-[10px] font-bold text-slate-500 transition-colors hover:bg-slate-200">${t('group_manage_decline')}</button>`
+                                            : `<button type="button" onclick="processGroupAllianceRequest('${item.id}', true)" class="rounded-lg bg-primary-600 px-3 py-2 text-[10px] font-bold text-white transition-colors hover:bg-primary-700">${t('group_manage_approve')}</button><button type="button" onclick="processGroupAllianceRequest('${item.id}', false)" class="rounded-lg px-2 py-2 text-[10px] font-bold text-slate-500 transition-colors hover:bg-slate-200">${t('group_manage_reject')}</button>`}
+                                    </article>
+                                `;
+                            }).join('')) || `<p class="rounded-xl border border-dashed border-slate-300 p-6 text-center text-xs text-slate-500">${emptyMessage}</p>`}
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        function removeGroupLeader(nameKey) {
+            const index = state.groupLeaders.findIndex(leader => leader.nameKey === nameKey);
+            if (index === -1) return;
+            state.groupLeaders.splice(index, 1);
+            renderApp();
+            renderGroupManagementModal();
+            showToast(t('group_manage_leader_removed'), 'info');
+        }
+
+        function processGroupLeaderRequest(requestId, accepted) {
+            const index = state.groupLeaderRequests.findIndex(request => request.id === requestId);
+            if (index === -1) return;
+            const [request] = state.groupLeaderRequests.splice(index, 1);
+            if (accepted) {
+                state.groupLeaders.push({
+                    nameKey: request.id,
+                    roleKey: request.roleKey,
+                    name: request.name,
+                    photo: request.photo
+                });
+            }
+            renderApp();
+            renderGroupManagementModal();
+            showToast(t(accepted ? 'group_manage_leader_accepted' : 'group_manage_leader_declined'), accepted ? 'success' : 'info');
+        }
+
+        function removeGroupAlliance(allianceId) {
+            const index = state.groupAlliances.findIndex(alliance => alliance.id === allianceId);
+            if (index === -1) return;
+            state.groupAlliances.splice(index, 1);
+            renderApp();
+            renderGroupManagementModal();
+            showToast(t('group_manage_alliance_removed'), 'info');
+        }
+
+        function processGroupAllianceRequest(requestId, approved) {
+            const index = state.groupAllianceRequests.findIndex(request => request.id === requestId);
+            if (index === -1) return;
+            const [request] = state.groupAllianceRequests.splice(index, 1);
+            if (approved) state.groupAlliances.push({ ...request });
+            renderApp();
+            renderGroupManagementModal();
+            showToast(t(approved ? 'group_manage_alliance_approved' : 'group_manage_alliance_rejected'), approved ? 'success' : 'info');
         }
 
         function toggleEventResponse(groupId, eventId, response) {
