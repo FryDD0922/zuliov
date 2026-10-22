@@ -477,6 +477,14 @@
                 group_members: "miembros",
                 group_join: "Unirse al Grupo",
                 group_joined: "Unido",
+                group_request_alliance: "Solicitar Alianza",
+                group_alliance_request_title: "Solicitar alianza con {group}",
+                group_alliance_request_message: "Mensaje / Razón de la alianza (Opcional)",
+                group_alliance_request_placeholder: "Cuéntanos por qué te gustaría colaborar...",
+                group_alliance_request_note: "Este campo es opcional. Puedes enviar la solicitud sin escribir un mensaje.",
+                group_alliance_request_characters: "{count} / 2500 caracteres",
+                group_alliance_request_send: "Enviar Solicitud",
+                group_alliance_request_success: "Solicitud de alianza enviada con éxito",
                 group_upcoming_events_title: "PRÓXIMOS EVENTOS",
                 group_event_join: "Confirmar asistencia",
                 group_event_going: "Asistiré",
@@ -535,6 +543,11 @@
                 group_leader_coordinator: "Coordinador de Campo",
                 group_leader_facilitator_name: "Equipo de voluntariado regional",
                 group_leader_facilitator: "Facilitador Regional",
+                group_view_all_leaders: "Ver todos los líderes",
+                group_view_all_alliances: "Ver todas las alianzas",
+                group_directory_search: "Buscar por nombre...",
+                group_directory_no_leaders: "No se encontraron líderes.",
+                group_directory_leaders_hint: "Lista completa de miembros y líderes del grupo.",
                 group_alliances_title: "Alianzas",
                 group_alliances_subtitle: "Grupos y ONGs asociadas",
                 group_alliance_group: "Grupo",
@@ -840,6 +853,14 @@
                 group_members: "members",
                 group_join: "Join Group",
                 group_joined: "Joined",
+                group_request_alliance: "Request Alliance",
+                group_alliance_request_title: "Request Alliance with {group}",
+                group_alliance_request_message: "Message / Reason for Alliance (Optional)",
+                group_alliance_request_placeholder: "Tell us why you would like to collaborate...",
+                group_alliance_request_note: "This field is optional. You can send the request without a message.",
+                group_alliance_request_characters: "{count} / 2500 characters",
+                group_alliance_request_send: "Send Request",
+                group_alliance_request_success: "Alliance request sent successfully",
                 group_upcoming_events_title: "UPCOMING EVENTS",
                 group_event_join: "Join Event",
                 group_event_going: "Going",
@@ -898,6 +919,11 @@
                 group_leader_coordinator: "Field Coordinator",
                 group_leader_facilitator_name: "Regional Volunteer Team",
                 group_leader_facilitator: "Regional Facilitator",
+                group_view_all_leaders: "View All Leaders",
+                group_view_all_alliances: "View All Alliances",
+                group_directory_search: "Search by name...",
+                group_directory_no_leaders: "No leaders found.",
+                group_directory_leaders_hint: "The complete list of group members and leaders.",
                 group_alliances_title: "ALLIANCES",
                 group_alliances_subtitle: "Groups and NGOs following each other",
                 group_alliance_group: "Group",
@@ -1086,6 +1112,8 @@
             if (document.getElementById('register-modal')) renderRegisterModal();
             if (document.getElementById('login-modal')) renderLoginModal();
             if (state.activeGroupManagementModal) renderGroupManagementModal();
+            if (state.activeGroupDirectoryModal) renderGroupDirectoryModal();
+            if (state.activeGroupAllianceRequestId) renderGroupAllianceRequestModal();
             showToast(lang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English', 'info');
         }
 
@@ -1907,6 +1935,10 @@
             selectedBrowseProjectId: null,
             expandedProjectComments: {},
             followedGroupAlliances: {},
+            activeGroupDirectoryModal: null,
+            groupLeaderSearchTerm: '',
+            activeGroupAllianceRequestId: null,
+            groupAllianceRequestMessage: '',
             groupLeaders: locales.en.group_leaders.map(leader => ({ ...leader })),
             groupLeaderRequests: [
                 {
@@ -3272,11 +3304,13 @@
             return `
                 <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-subtle">
                     <div class="px-4 pt-4 sm:px-5">
-                        <p class="mb-3 inline-flex max-w-full items-center gap-1.5 rounded-full bg-primary-50 px-3 py-1.5 text-[10px] font-bold text-primary-700 ring-1 ring-primary-100">
-                            <i class="fa-solid fa-users" aria-hidden="true"></i>
-                            <span>${t('home_feed_posted_in')}</span>
-                            <span class="truncate">${escapeHTML(groupText(group, 'name'))}</span>
-                        </p>
+                        <div class="mb-3 flex min-w-0 items-center gap-2 text-[10px] text-slate-500">
+                            <span class="shrink-0">${t('home_feed_posted_in')}</span>
+                            <button type="button" onclick="openGroup('${escapeHTML(group.id)}')" aria-label="${currentLang === 'es' ? 'Abrir grupo' : 'Open group'} ${escapeHTML(groupText(group, 'name'))}" class="inline-flex min-w-0 items-center gap-1.5 rounded-full py-0.5 pr-2 text-left font-bold text-primary-700 transition-colors hover:bg-primary-50 hover:text-primary-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400">
+                                <img src="${escapeHTML(group.banner)}" alt="" aria-hidden="true" class="h-6 w-6 shrink-0 rounded-full border border-primary-100 bg-primary-50 object-cover">
+                                <span class="truncate">${escapeHTML(groupText(group, 'name'))}</span>
+                            </button>
+                        </div>
                         <div class="flex items-center gap-3">
                             <img src="${escapeHTML(post.authorPhoto || state.currentUser.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120')}" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover">
                             <div class="min-w-0">
@@ -3412,7 +3446,10 @@
                                     <h1 class="mt-1 text-2xl font-black sm:text-3xl">${escapeHTML(groupText(group, 'name'))}</h1>
                                     <p class="mt-2 text-xs text-white/80"><i class="fa-solid fa-users mr-1.5"></i>${group.members.toLocaleString(currentLang === 'es' ? 'es-ES' : 'en-US')} ${t('group_members')}</p>
                                 </div>
-                                <button type="button" onclick="toggleGroupMembership('${group.id}')" class="rounded-xl px-4 py-2.5 text-xs font-bold ${group.joined ? 'bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25' : 'bg-white text-primary-700 hover:bg-primary-50'}">${group.joined ? t('group_joined') : t('group_join')}</button>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <button type="button" onclick="toggleGroupMembership('${group.id}')" class="rounded-xl px-4 py-2.5 text-xs font-bold ${group.joined ? 'bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25' : 'bg-white text-primary-700 hover:bg-primary-50'}">${group.joined ? t('group_joined') : t('group_join')}</button>
+                                    <button type="button" onclick="openGroupAllianceRequestModal('${escapeHTML(group.id)}')" class="rounded-xl border border-white/50 bg-white/10 px-4 py-2.5 text-xs font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/20">${t('group_request_alliance')}</button>
+                                </div>
                             </div>
                         </div>
                         <div class="p-5 sm:p-8">
@@ -3425,25 +3462,37 @@
                                     </div>
                                 </section>
                             ` : ''}
-                            <div class="mt-6 grid gap-5 lg:grid-cols-2">
-                                <section aria-labelledby="group-leaders-title" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                            <div class="mt-6 grid items-stretch gap-5 lg:grid-cols-2">
+                                <section aria-labelledby="group-leaders-title" class="flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
                                     <div class="flex items-center justify-between gap-3">
                                         <h2 id="group-leaders-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_leaders_title')}</h2>
                                         <button type="button" onclick="openGroupManagementModal('leaders')" class="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-bold text-slate-600 transition-colors hover:border-primary-200 hover:text-primary-700">${t('group_manage')}</button>
                                     </div>
                                     <div class="mt-4 grid gap-3 sm:grid-cols-2">
-                                        ${state.groupLeaders.map(leader => `
+                                        ${getGroupLeaderDirectoryEntries().slice(0, 4).map(leader => {
+                                            const name = leader.name || t(leader.nameKey);
+                                            const previewName = leader.nameKey === 'group_leader_coordinator_name'
+                                                ? 'Volunteer Coord...'
+                                                : leader.nameKey === 'group_leader_facilitator_name'
+                                                    ? 'Regional Volunt...'
+                                                    : name;
+                                            return `
                                             <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
-                                                <img src="${escapeHTML(leader.photo)}" alt="${escapeHTML(leader.name || t(leader.nameKey))}" class="h-12 w-12 shrink-0 rounded-full object-cover">
+                                                <img src="${escapeHTML(leader.photo)}" alt="${escapeHTML(name)}" class="h-12 w-12 shrink-0 rounded-full object-cover">
                                                 <div class="min-w-0">
-                                                    <h3 class="truncate text-xs font-bold text-slate-900">${escapeHTML(leader.name || t(leader.nameKey))}</h3>
+                                                    <h3 class="truncate text-xs font-bold text-slate-900">${escapeHTML(previewName)}</h3>
                                                     <p class="mt-1 text-[10px] leading-snug text-slate-500">${t(leader.roleKey)}</p>
                                                 </div>
                                             </article>
-                                        `).join('')}
+                                        `}).join('')}
+                                    </div>
+                                    <div class="mt-auto border-t border-slate-200 pt-3 text-right">
+                                        <button type="button" onclick="openGroupDirectoryModal('leaders')" class="inline-flex items-center gap-1.5 text-[10px] font-bold text-primary-700 transition-colors hover:text-primary-900">
+                                            ${t('group_view_all_leaders')} <span aria-hidden="true">→</span>
+                                        </button>
                                     </div>
                                 </section>
-                                <section aria-labelledby="group-alliances-title" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                                <section aria-labelledby="group-alliances-title" class="flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
                                     <div class="flex items-start justify-between gap-3">
                                         <div>
                                             <h2 id="group-alliances-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_alliances_title')}</h2>
@@ -3452,7 +3501,7 @@
                                         <button type="button" onclick="openGroupManagementModal('alliances')" class="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-bold text-slate-600 transition-colors hover:border-primary-200 hover:text-primary-700">${t('group_manage')}</button>
                                     </div>
                                     <div class="mt-4 space-y-2">
-                                        ${state.groupAlliances.map(alliance => {
+                                        ${getGroupAlliancePreview().map(alliance => {
                                             const isFollowing = Boolean(state.followedGroupAlliances[alliance.id]);
                                             return `
                                                 <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-2.5">
@@ -3467,6 +3516,11 @@
                                                 </article>
                                             `;
                                         }).join('')}
+                                    </div>
+                                    <div class="mt-auto border-t border-slate-200 pt-3 text-right">
+                                        <button type="button" onclick="openGroupDirectoryModal('alliances')" class="inline-flex items-center gap-1.5 text-[10px] font-bold text-primary-700 transition-colors hover:text-primary-900">
+                                            ${t('group_view_all_alliances')} <span aria-hidden="true">→</span>
+                                        </button>
                                     </div>
                                 </section>
                             </div>
@@ -3592,7 +3646,7 @@
         }
 
         function toggleGroupAllianceFollow(allianceId) {
-            const alliance = state.groupAlliances.find(item => item.id === allianceId);
+            const alliance = getGroupAllianceDirectoryEntries().find(item => item.id === allianceId);
             if (!alliance) return;
             const isFollowing = !state.followedGroupAlliances[allianceId];
             state.followedGroupAlliances[allianceId] = isFollowing;
@@ -3602,6 +3656,125 @@
                     .replace('{name}', alliance.name),
                 isFollowing ? 'success' : 'info'
             );
+            if (state.activeGroupDirectoryModal === 'alliances') renderGroupDirectoryModal();
+        }
+
+        function openGroupDirectoryModal(type) {
+            state.activeGroupDirectoryModal = type;
+            state.groupLeaderSearchTerm = '';
+            renderGroupDirectoryModal();
+        }
+
+        function closeGroupDirectoryModal() {
+            state.activeGroupDirectoryModal = null;
+            state.groupLeaderSearchTerm = '';
+            document.getElementById('modal-container').innerHTML = '';
+            document.removeEventListener('keydown', handleGroupDirectoryModalKeydown);
+        }
+
+        function handleGroupDirectoryModalKeydown(event) {
+            if (event.key === 'Escape') closeGroupDirectoryModal();
+        }
+
+        function getGroupLeaderDirectoryEntries() {
+            return [...state.groupLeaders, ...state.groupLeaderRequests];
+        }
+
+        function getGroupAllianceDirectoryEntries() {
+            const allianceIds = new Set(state.groupAlliances.map(alliance => alliance.id));
+            return [
+                ...state.groupAlliances,
+                ...state.groupAllianceRequests.filter(alliance => !allianceIds.has(alliance.id))
+            ];
+        }
+
+        function getGroupAlliancePreview() {
+            const alliances = getGroupAllianceDirectoryEntries();
+            const previewIds = [
+                'cleanwater-international',
+                'alliance-request-education',
+                'alliance-request-water'
+            ];
+            return previewIds
+                .map(id => alliances.find(alliance => alliance.id === id))
+                .filter(Boolean);
+        }
+
+        function renderGroupDirectoryModal() {
+            const type = state.activeGroupDirectoryModal;
+            const container = document.getElementById('modal-container');
+            if (!type || !container) return;
+
+            const isLeaders = type === 'leaders';
+            const title = t(isLeaders ? 'group_leaders_title' : 'group_alliances_title');
+            const items = isLeaders
+                ? renderGroupLeaderDirectoryItems(state.groupLeaderSearchTerm)
+                : getGroupAllianceDirectoryEntries().map(alliance => {
+                    const isFollowing = Boolean(state.followedGroupAlliances[alliance.id]);
+                    return `
+                        <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                            ${alliance.id === 'cleanwater-international'
+                                ? `<img src="${escapeHTML(ngoData.logoUrl)}" alt="${escapeHTML(alliance.name)}" class="h-11 w-11 shrink-0 rounded-xl border border-slate-100 object-cover">`
+                                : `<span aria-hidden="true" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-2xl">${escapeHTML(alliance.icon)}</span>`}
+                            <div class="min-w-0 flex-1">
+                                <h3 class="truncate text-sm font-bold text-slate-900">${escapeHTML(alliance.name)}</h3>
+                                <p class="mt-1 text-[10px] font-semibold uppercase tracking-wide ${alliance.type === 'ngo' ? 'text-emerald-700' : 'text-slate-500'}">${t(alliance.type === 'ngo' ? 'group_alliance_ngo' : 'group_alliance_group')}</p>
+                            </div>
+                            <button type="button" aria-pressed="${isFollowing}" onclick="toggleGroupAllianceFollow('${alliance.id}')" class="shrink-0 rounded-lg px-3 py-2 text-xs font-bold transition-colors ${isFollowing ? 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-100' : 'bg-primary-600 text-white hover:bg-primary-700'}">${isFollowing ? t('group_alliance_following') : t('group_alliance_follow')}</button>
+                        </article>
+                    `;
+                }).join('');
+
+            container.innerHTML = `
+                <div class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" onclick="closeGroupDirectoryModal()">
+                    <section role="dialog" aria-modal="true" aria-labelledby="group-directory-title" class="relative z-10 max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-floating animate-modal-in sm:p-7" onclick="event.stopPropagation()">
+                        <header class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-600">ZULIOV · ${title}</p>
+                                <h2 id="group-directory-title" class="mt-2 text-xl font-black text-slate-900">${title}</h2>
+                                ${isLeaders ? `<p class="mt-1 text-xs text-slate-500">${t('group_directory_leaders_hint')}</p>` : ''}
+                            </div>
+                            <button type="button" onclick="closeGroupDirectoryModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                        </header>
+                        ${isLeaders ? `
+                            <label class="relative mt-5 block">
+                                <span class="sr-only">${t('group_directory_search')}</span>
+                                <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400" aria-hidden="true"></i>
+                                <input type="search" value="${escapeHTML(state.groupLeaderSearchTerm)}" oninput="filterGroupLeaders(this.value)" aria-label="${t('group_directory_search')}" placeholder="${t('group_directory_search')}" class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-900 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                            </label>
+                        ` : ''}
+                        <div id="group-directory-items" class="mt-4 space-y-3">
+                            ${items || `<p class="rounded-xl border border-dashed border-slate-300 p-6 text-center text-xs text-slate-500">${t('group_directory_no_leaders')}</p>`}
+                        </div>
+                    </section>
+                </div>
+            `;
+            document.addEventListener('keydown', handleGroupDirectoryModalKeydown);
+        }
+
+        function renderGroupLeaderDirectoryItems(searchTerm) {
+            const matchingLeaders = getGroupLeaderDirectoryEntries().filter(leader => {
+                const name = leader.name || t(leader.nameKey);
+                return name.toLocaleLowerCase().includes(searchTerm.trim().toLocaleLowerCase());
+            });
+            return matchingLeaders.length
+                ? matchingLeaders.map(leader => `
+                    <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                        <img src="${escapeHTML(leader.photo)}" alt="${escapeHTML(leader.name || t(leader.nameKey))}" class="h-12 w-12 shrink-0 rounded-full object-cover">
+                        <div class="min-w-0">
+                            <h3 class="truncate text-sm font-bold text-slate-900">${escapeHTML(leader.name || t(leader.nameKey))}</h3>
+                            <p class="mt-1 text-xs text-slate-500">${escapeHTML(t(leader.roleKey))}</p>
+                        </div>
+                    </article>
+                `).join('')
+                : `<p class="rounded-xl border border-dashed border-slate-300 p-6 text-center text-xs text-slate-500">${t('group_directory_no_leaders')}</p>`;
+        }
+
+        function filterGroupLeaders(searchTerm) {
+            state.groupLeaderSearchTerm = searchTerm;
+            const list = document.getElementById('group-directory-items');
+            if (!list) return;
+            list.innerHTML = renderGroupLeaderDirectoryItems(searchTerm);
         }
 
         function openGroupManagementModal(type) {
@@ -3764,6 +3937,84 @@
                     .replace('{group}', groupText(group, 'name')),
                 group.joined ? 'success' : 'info'
             );
+        }
+
+        function openGroupAllianceRequestModal(groupId) {
+            const group = state.groups.find(item => item.id === groupId);
+            if (!group) {
+                showToast(currentLang === 'es' ? 'No se pudo encontrar este grupo.' : 'Could not find this group.', 'info');
+                return;
+            }
+            state.activeGroupAllianceRequestId = groupId;
+            state.groupAllianceRequestMessage = '';
+            renderGroupAllianceRequestModal();
+        }
+
+        function closeGroupAllianceRequestModal() {
+            state.activeGroupAllianceRequestId = null;
+            state.groupAllianceRequestMessage = '';
+            document.getElementById('modal-container').innerHTML = '';
+            document.removeEventListener('keydown', handleGroupAllianceRequestModalKeydown);
+        }
+
+        function handleGroupAllianceRequestModalKeydown(event) {
+            if (event.key === 'Escape') closeGroupAllianceRequestModal();
+        }
+
+        function renderGroupAllianceRequestModal() {
+            const group = state.groups.find(item => item.id === state.activeGroupAllianceRequestId);
+            const container = document.getElementById('modal-container');
+            if (!group || !container) return;
+
+            const groupName = groupText(group, 'name');
+            const title = t('group_alliance_request_title').replace('{group}', groupName);
+            const characterCount = t('group_alliance_request_characters')
+                .replace('{count}', String(state.groupAllianceRequestMessage.length));
+
+            container.innerHTML = `
+                <div class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" onclick="closeGroupAllianceRequestModal()">
+                    <section role="dialog" aria-modal="true" aria-labelledby="group-alliance-request-title" class="relative z-10 w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-5 shadow-floating animate-modal-in sm:p-7" onclick="event.stopPropagation()">
+                        <header class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-600">ZULIOV · ${t('group_request_alliance')}</p>
+                                <h2 id="group-alliance-request-title" class="mt-2 text-xl font-black text-slate-900">${escapeHTML(title)}</h2>
+                            </div>
+                            <button type="button" onclick="closeGroupAllianceRequestModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                        </header>
+                        <form class="mt-5 space-y-4" onsubmit="submitGroupAllianceRequest(event)">
+                            <div>
+                                <label for="group-alliance-request-message" class="text-xs font-bold text-slate-700">${t('group_alliance_request_message')}</label>
+                                <textarea id="group-alliance-request-message" name="message" rows="5" maxlength="2500" oninput="updateGroupAllianceRequestMessage(this.value)" placeholder="${t('group_alliance_request_placeholder')}" class="mt-2 w-full resize-y rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary-400 focus:ring-2 focus:ring-primary-100">${escapeHTML(state.groupAllianceRequestMessage)}</textarea>
+                                <div class="mt-1 flex items-start justify-between gap-3">
+                                    <p class="text-[10px] leading-relaxed text-slate-500">${t('group_alliance_request_note')}</p>
+                                    <span id="group-alliance-request-character-count" aria-live="polite" class="shrink-0 text-[10px] font-mono text-slate-400">${characterCount}</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="submit" class="rounded-xl bg-primary-600 px-5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('group_alliance_request_send')}</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            `;
+            document.removeEventListener('keydown', handleGroupAllianceRequestModalKeydown);
+            document.addEventListener('keydown', handleGroupAllianceRequestModalKeydown);
+        }
+
+        function updateGroupAllianceRequestMessage(message) {
+            state.groupAllianceRequestMessage = message.slice(0, 2500);
+            const counter = document.getElementById('group-alliance-request-character-count');
+            if (counter) {
+                counter.textContent = t('group_alliance_request_characters')
+                    .replace('{count}', String(state.groupAllianceRequestMessage.length));
+            }
+        }
+
+        function submitGroupAllianceRequest(event) {
+            event.preventDefault();
+            if (!state.activeGroupAllianceRequestId) return;
+            closeGroupAllianceRequestModal();
+            showToast(t('group_alliance_request_success'), 'success');
         }
 
         function joinOfficialNGOGroup() {
