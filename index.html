@@ -2299,38 +2299,48 @@
             ? 'Selecciona un país de la lista.'
             : 'Select a country from the list.';
         const registrationCountries = [
-            { code: 'VE', flag: '🇻🇪', es: 'Venezuela', en: 'Venezuela' },
-            { code: 'CO', flag: '🇨🇴', es: 'Colombia', en: 'Colombia' },
-            { code: 'US', flag: '🇺🇸', es: 'Estados Unidos', en: 'United States' },
-            { code: 'CL', flag: '🇨🇱', es: 'Chile', en: 'Chile' },
-            { code: 'SV', flag: '🇸🇻', es: 'El Salvador', en: 'El Salvador' },
-            { code: 'PE', flag: '🇵🇪', es: 'Perú', en: 'Peru' },
-            { code: 'BR', flag: '🇧🇷', es: 'Brasil', en: 'Brazil' },
-            { code: 'DE', flag: '🇩🇪', es: 'Alemania', en: 'Germany' },
-            { code: 'FR', flag: '🇫🇷', es: 'Francia', en: 'France' },
-            { code: 'IT', flag: '🇮🇹', es: 'Italia', en: 'Italy' },
-            { code: 'JP', flag: '🇯🇵', es: 'Japón', en: 'Japan' },
-            { code: 'KR', flag: '🇰🇷', es: 'Corea del Sur', en: 'South Korea' },
-            { code: 'LA', flag: '🇱🇦', es: 'Laos', en: 'Laos' },
-            { code: 'TW', flag: '🇹🇼', es: 'Taiwán', en: 'Taiwan' },
-            { code: 'PH', flag: '🇵🇭', es: 'Filipinas', en: 'Philippines' },
-            { code: 'CA', flag: '🇨🇦', es: 'Canadá', en: 'Canada' },
-            { code: 'AR', flag: '🇦🇷', es: 'Argentina', en: 'Argentina' },
-            { code: 'ES', flag: '🇪🇸', es: 'España', en: 'Spain' },
-            { code: 'MX', flag: '🇲🇽', es: 'México', en: 'Mexico' },
-            { code: 'IR', flag: '🇮🇷', es: 'Irán', en: 'Iran' },
-            { code: 'SS', flag: '🇸🇸', es: 'Sudán del Sur', en: 'South Sudan' },
-            { code: 'AU', flag: '🇦🇺', es: 'Australia', en: 'Australia' },
-            { code: 'CN', flag: '🇨🇳', es: 'China', en: 'China' },
-            { code: 'RU', flag: '🇷🇺', es: 'Rusia', en: 'Russia' }
+            { code: 'VE', es: 'Venezuela', en: 'Venezuela' },
+            { code: 'CO', es: 'Colombia', en: 'Colombia' },
+            { code: 'US', es: 'Estados Unidos', en: 'United States' },
+            { code: 'CL', es: 'Chile', en: 'Chile' },
+            { code: 'SV', es: 'El Salvador', en: 'El Salvador' },
+            { code: 'PE', es: 'Perú', en: 'Peru' },
+            { code: 'BR', es: 'Brasil', en: 'Brazil' },
+            { code: 'DE', es: 'Alemania', en: 'Germany' },
+            { code: 'FR', es: 'Francia', en: 'France' },
+            { code: 'IT', es: 'Italia', en: 'Italy' },
+            { code: 'JP', es: 'Japón', en: 'Japan' },
+            { code: 'KR', es: 'Corea del Sur', en: 'South Korea' },
+            { code: 'LA', es: 'Laos', en: 'Laos' },
+            { code: 'TW', es: 'Taiwán', en: 'Taiwan' },
+            { code: 'PH', es: 'Filipinas', en: 'Philippines' },
+            { code: 'CA', es: 'Canadá', en: 'Canada' },
+            { code: 'AR', es: 'Argentina', en: 'Argentina' },
+            { code: 'ES', es: 'España', en: 'Spain' },
+            { code: 'MX', es: 'México', en: 'Mexico' },
+            { code: 'IR', es: 'Irán', en: 'Iran' },
+            { code: 'SS', es: 'Sudán del Sur', en: 'South Sudan' },
+            { code: 'AU', es: 'Australia', en: 'Australia' },
+            { code: 'CN', es: 'China', en: 'China' },
+            { code: 'RU', es: 'Rusia', en: 'Russia' }
         ];
 
         function getRegistrationCountryName(country) {
             return country[currentLang];
         }
 
+        function getSortedRegistrationCountries() {
+            return [...registrationCountries].sort((a, b) =>
+                getRegistrationCountryName(a).localeCompare(getRegistrationCountryName(b), currentLang)
+            );
+        }
+
         function getRegistrationCountryLabel(country) {
-            return `${country.flag} ${getRegistrationCountryName(country)}`;
+            return getRegistrationCountryName(country);
+        }
+
+        function getRegistrationCountryOptionContent(country) {
+            return `<img src="https://flagcdn.com/24x18/${country.code.toLowerCase()}.png" alt="flag" class="w-5 h-3.5 inline-block mr-2 rounded-sm" /><span>${escapeHTML(getRegistrationCountryName(country))}</span>`;
         }
 
         function openRegisterModal(trigger) {
@@ -2365,7 +2375,7 @@
 
         function getRegistrationCountryMatches(query) {
             const normalizedQuery = query.trim().toLocaleLowerCase();
-            return registrationCountries.filter(country => getRegistrationCountryName(country).toLocaleLowerCase().includes(normalizedQuery));
+            return getSortedRegistrationCountries().filter(country => getRegistrationCountryName(country).toLocaleLowerCase().includes(normalizedQuery));
         }
 
         function renderRegistrationCountryOptions(query = '') {
@@ -2379,8 +2389,8 @@
                         aria-selected="${index === registrationCountryActiveIndex}"
                         onmousedown="event.preventDefault()"
                         onclick="selectRegistrationCountry('${country.code}')"
-                        class="flex w-full items-center gap-2 px-3.5 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 ${index === registrationCountryActiveIndex ? 'bg-slate-100' : ''}">
-                        <span>${getRegistrationCountryLabel(country)}</span>
+                        class="flex w-full items-center px-3.5 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 ${index === registrationCountryActiveIndex ? 'bg-slate-100' : ''}">
+                        ${getRegistrationCountryOptionContent(country)}
                     </button>
                 `).join('')
                 : `<p class="px-3.5 py-2 text-sm text-slate-500">${currentLang === 'es' ? 'No hay países que coincidan.' : 'No matching countries.'}</p>`;
@@ -2536,12 +2546,12 @@
                         <input id="registration-country-value" type="hidden" name="country" value="${selectedCountry ? escapeHTML(selectedCountry.code) : ''}">
                         <div id="registration-country-options" role="listbox" aria-label="${t('register_country')}"
                             class="absolute left-0 top-full z-50 mt-1 hidden max-h-48 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-1 text-slate-900 shadow-lg">
-                            ${registrationCountries.map((country, index) => `
+                            ${getSortedRegistrationCountries().map((country, index) => `
                                 <button type="button" id="registration-country-option-${index}" role="option"
                                     aria-selected="false" onmousedown="event.preventDefault()"
                                     onclick="selectRegistrationCountry('${country.code}')"
-                                    class="flex w-full items-center gap-2 px-3.5 py-2 text-left text-sm text-slate-800 hover:bg-slate-100">
-                                    <span>${getRegistrationCountryLabel(country)}</span>
+                                    class="flex w-full items-center px-3.5 py-2 text-left text-sm text-slate-800 hover:bg-slate-100">
+                                    ${getRegistrationCountryOptionContent(country)}
                                 </button>
                             `).join('')}
                         </div>
