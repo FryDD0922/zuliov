@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-50 dark:bg-slate-950">
 <head>
     <meta charset="UTF-8">
@@ -301,6 +301,17 @@
                 browse_region_asia: "Asia",
                 nav_groups: "GRUPOS",
                 profile_view: "Ver perfil",
+                leader_profile_full: "Ver perfil completo →",
+                leader_profile_back: "Volver al perfil de la ONG",
+                leader_profile_verified: "Identidad y antecedentes verificados",
+                leader_profile_member_since: "MIEMBRO DESDE",
+                leader_profile_verified_email: "CORREO VERIFICADO",
+                leader_profile_verified_phone: "TELÉFONO VERIFICADO",
+                leader_profile_yes: "Sí",
+                leader_profile_biography: "Biografía",
+                leader_profile_projects: "Proyectos gestionados",
+                leader_profile_activity: "Actividad reciente en campo",
+                leader_profile_unavailable: "No se pudo encontrar este perfil.",
                 profile_log_out: "Cerrar sesión",
                 profile_menu_toggle: "Abrir menú de perfil",
                 guest_name: "Invitado",
@@ -677,6 +688,17 @@
                 browse_region_asia: "Asia",
                 nav_groups: "GROUPS",
                 profile_view: "View Profile",
+                leader_profile_full: "View Full Profile →",
+                leader_profile_back: "Back to NGO Profile",
+                leader_profile_verified: "Identity & Background Verified",
+                leader_profile_member_since: "MEMBER SINCE",
+                leader_profile_verified_email: "VERIFIED EMAIL",
+                leader_profile_verified_phone: "VERIFIED PHONE",
+                leader_profile_yes: "Yes",
+                leader_profile_biography: "Biography",
+                leader_profile_projects: "Managed Projects",
+                leader_profile_activity: "Recent Field Activity",
+                leader_profile_unavailable: "This profile could not be found.",
                 profile_log_out: "Log Out",
                 profile_menu_toggle: "Open profile menu",
                 guest_name: "Guest",
@@ -1564,12 +1586,7 @@
                 email: 'sarah.miller@zuliov-impact.org',
                 location: 'San Francisco, CA',
                 joinedDate: 'Member since Jan 2024',
-                bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.',
-                badges: ['Transparency Pioneer', 'Clean Water Advocate', 'Audited Donor 2026'],
-                impactScore: 1240,
-                verifiedInvoicesCount: 14,
-                totalContributed: 18500,
-                projectsSupported: 5
+                bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.'
             },
 
             commentHistory: [
@@ -1969,8 +1986,7 @@
 
         let isAuthenticated = true;
         const defaultUserProfile = {
-            ...state.currentUser,
-            badges: [...state.currentUser.badges]
+            ...state.currentUser
         };
 
         const groupUpcomingEventData = {
@@ -2343,6 +2359,7 @@
         let currentScreen = 'landing';
         let exploreTab = 'projects';
         let selectedNGOId = 'ngo_clean_water';
+        let selectedLeaderId = null;
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
@@ -2840,8 +2857,7 @@
                 email,
                 location: isNGO ? country : '',
                 registrationId: isNGO ? String(formData.get('registrationId')).trim() : '',
-                joinedDate: currentLang === 'es' ? 'Miembro desde hoy' : 'Member since today',
-                badges: []
+                joinedDate: currentLang === 'es' ? 'Miembro desde hoy' : 'Member since today'
             };
             isAuthenticated = true;
             currentScreen = 'landing';
@@ -2859,8 +2875,7 @@
         function logIn(email) {
             state.currentUser = {
                 ...defaultUserProfile,
-                email,
-                badges: [...defaultUserProfile.badges]
+                email
             };
             isAuthenticated = true;
             updateSimulationRoleButtons('donor');
@@ -2948,12 +2963,7 @@
                     email: 'sarah.miller@zuliov-impact.org',
                     location: 'San Francisco, CA',
                     joinedDate: 'Member since Jan 2024',
-                    bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.',
-                    badges: ['Transparency Pioneer', 'Clean Water Advocate', 'Audited Donor 2026'],
-                    impactScore: 1240,
-                    verifiedInvoicesCount: 14,
-                    totalContributed: 18500,
-                    projectsSupported: 5
+                    bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.'
                 },
                 ngo: {
                     id: 'marcus_ngo_301',
@@ -2965,12 +2975,7 @@
                     email: 'm.vance@cleanwaterintl.org',
                     location: 'Nairobi, Kenya',
                     joinedDate: 'Verified NGO Partner 2023',
-                    bio: 'Field Operations Lead at CleanWater International. Overseeing solar water pump infrastructure across 12 rural districts.',
-                    badges: ['Verified NGO Lead', '100% Invoice Compliance', 'Field Auditor'],
-                    impactScore: 3890,
-                    verifiedInvoicesCount: 48,
-                    totalContributed: 142000,
-                    projectsSupported: 12
+                    bio: 'Field Operations Lead at CleanWater International. Overseeing solar water pump infrastructure across 12 rural districts.'
                 },
                 corporate: {
                     id: 'tesla_csr_2026',
@@ -2983,19 +2988,7 @@
                     email: 'sustainability@tesla.com',
                     location: 'Austin, Texas, USA',
                     joinedDate: 'Corporate Sponsor since 2021',
-                    bio: "Accelerating the world's transition to sustainable energy. Financiando microredes solares comunitarias e infraestructura de agua limpia con energía 100% renovable.",
-                    badges: ['Sponsor ESG Verificado 2026', 'Corporate Impact Partner', '100% Open Ledger Compliant'],
-                    corporateMetrics: [
-                        { label: 'Impact Score Corporativo', value: '8,450', detail: 'Sponsor ESG verificado 2026', color: 'text-primary-600' },
-                        { label: 'Facturas Verificadas', value: '32', detail: '100% conciliadas en Zuliov', color: 'text-emerald-600' },
-                        { label: 'Total Contribuido', value: '$500,000', detail: 'Tesla Impact Fund & Global Clean Water Microgrids', color: 'text-slate-900' },
-                        { label: 'Proyectos Apoyados', value: '8', detail: 'Proyectos solares e hídricos', color: 'text-indigo-600' }
-                    ],
-                    corporateTransactions: [
-                        { title: 'Garissa Solar Aqueduct', detail: 'Transferencia institucional · Factura tesorería Tesla TIF-2026-0048', amount: '$225,000 USD', date: 'Feb 18, 2026', icon: 'fa-solar-panel', iconClasses: 'bg-primary-100 text-primary-700' },
-                        { title: 'Kitui Solar Pump', detail: 'Transferencia institucional · Factura tesorería Tesla TIF-2026-0032', amount: '$175,000 USD', date: 'Jan 30, 2026', icon: 'fa-droplet', iconClasses: 'bg-emerald-100 text-emerald-700' },
-                        { title: 'Tesla Impact Fund · Microredes de agua limpia', detail: 'Desembolso ESG · Factura tesorería Tesla TIF-2025-0196', amount: '$100,000 USD', date: 'Dec 16, 2025', icon: 'fa-bolt', iconClasses: 'bg-rose-100 text-rose-700' }
-                    ]
+                    bio: "Accelerating the world's transition to sustainable energy. Financiando microredes solares comunitarias e infraestructura de agua limpia con energía 100% renovable."
                 }
             };
 
@@ -3118,7 +3111,7 @@
             
             if (currentScreen === 'home') {
                 document.querySelectorAll('[data-screen="home"]').forEach(link => link.classList.add('text-primary-600'));
-            } else if (currentScreen === 'browse' || currentScreen === 'ngo-profile') {
+            } else if (currentScreen === 'browse' || currentScreen === 'ngo-profile' || currentScreen === 'leader-profile') {
                 document.querySelectorAll('[data-screen="browse"]').forEach(link => link.classList.add('text-primary-600'));
             } else if (currentScreen === 'groups') {
                 document.querySelectorAll('[data-screen="groups"]').forEach(link => link.classList.add('text-primary-600'));
@@ -3179,6 +3172,9 @@
             switch(currentScreen) {
                 case 'ngo-profile':
                     renderNGOProfilePage(canvas);
+                    break;
+                case 'leader-profile':
+                    renderLeaderProfilePage(canvas);
                     break;
                 case 'profile':
                     renderProfilePage(canvas);
@@ -3446,9 +3442,9 @@
                                     <h1 class="mt-1 text-2xl font-black sm:text-3xl">${escapeHTML(groupText(group, 'name'))}</h1>
                                     <p class="mt-2 text-xs text-white/80"><i class="fa-solid fa-users mr-1.5"></i>${group.members.toLocaleString(currentLang === 'es' ? 'es-ES' : 'en-US')} ${t('group_members')}</p>
                                 </div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <button type="button" onclick="toggleGroupMembership('${group.id}')" class="rounded-xl px-4 py-2.5 text-xs font-bold ${group.joined ? 'bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25' : 'bg-white text-primary-700 hover:bg-primary-50'}">${group.joined ? t('group_joined') : t('group_join')}</button>
-                                    <button type="button" onclick="openGroupAllianceRequestModal('${escapeHTML(group.id)}')" class="rounded-xl border border-white/50 bg-white/10 px-4 py-2.5 text-xs font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/20">${t('group_request_alliance')}</button>
+                                <div class="flex shrink-0 flex-col items-end gap-2">
+                                    <button type="button" onclick="openGroupAllianceRequestModal('${escapeHTML(group.id)}')" class="w-44 max-w-full rounded-xl border border-white/50 bg-slate-950/45 px-4 py-2.5 text-center text-xs font-bold text-white backdrop-blur-sm transition-colors hover:bg-slate-950/65">${t('group_request_alliance')}</button>
+                                    <button type="button" onclick="toggleGroupMembership('${group.id}')" class="w-44 max-w-full rounded-xl px-4 py-2.5 text-center text-xs font-bold ${group.joined ? 'bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25' : 'bg-white text-primary-700 hover:bg-primary-50'}">${group.joined ? t('group_joined') : t('group_join')}</button>
                                 </div>
                             </div>
                         </div>
@@ -5120,35 +5116,12 @@
                                     <h3 class="text-xl font-black text-slate-900">${leader.name}</h3>
                                     <p class="text-xs font-mono text-primary-600 font-semibold">${leader.position}</p>
                                 </div>
-                                ${leader.id === 'lead_1' ? `
-                                    <button type="button" onclick="openNGOInfoModal()" aria-haspopup="dialog" aria-label="Ver información de CleanWater International" class="group flex w-full max-w-sm items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:w-auto">
-                                        <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-100 bg-white">
-                                            <img src="${ngoData.logoUrl}" alt="Logo de CleanWater International" class="h-full w-full object-cover">
-                                        </span>
-                                        <span class="min-w-0 flex-1">
-                                            <span class="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">ONG vinculada</span>
-                                            <span class="block truncate text-sm font-bold text-slate-900">${ngoData.name}</span>
-                                            <span class="mt-0.5 flex items-center gap-1 text-[10px] font-semibold text-emerald-600">
-                                                <i class="fa-solid fa-circle-check"></i> Verificada en Zuliov
-                                            </span>
-                                        </span>
-                                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 transition-colors group-hover:text-primary-600"></i>
-                                    </button>
-                                ` : ''}
                             </div>
 
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 text-xs font-mono">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 text-xs font-mono">
                                 <div>
                                     <span class="text-[10px] text-slate-400 block font-bold">MEMBER SINCE</span>
                                     <span class="font-bold text-slate-800">${leader.memberSince}</span>
-                                </div>
-                                <div>
-                                    <span class="text-[10px] text-slate-400 block font-bold">VERIFIED EMAIL</span>
-                                    <span class="font-bold text-slate-800 flex items-center gap-1"><i class="fa-solid fa-circle-check text-emerald-500 text-[10px]"></i> Yes</span>
-                                </div>
-                                <div>
-                                    <span class="text-[10px] text-slate-400 block font-bold">VERIFIED PHONE</span>
-                                    <span class="font-bold text-slate-800 flex items-center gap-1"><i class="fa-solid fa-circle-check text-emerald-500 text-[10px]"></i> Yes</span>
                                 </div>
                             </div>
 
@@ -5157,30 +5130,104 @@
                                 <p class="text-xs text-slate-600 leading-relaxed">${leader.bio}</p>
                             </div>
 
-                            <div class="space-y-2">
-                                <h4 class="text-xs font-bold text-slate-900 font-mono uppercase">Managed Projects</h4>
-                                <div class="flex flex-wrap gap-2">
-                                    ${leader.projectsManaged.map(p => `
-                                        <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-mono font-semibold">${p}</span>
-                                    `).join('')}
-                                </div>
-                            </div>
-
-                            <div class="space-y-2">
-                                <h4 class="text-xs font-bold text-slate-900 font-mono uppercase">Recent Field Activity</h4>
-                                <ul class="space-y-1 text-xs text-slate-600">
-                                    ${leader.recentUpdates.map(u => `
-                                        <li class="flex items-start gap-2">
-                                            <i class="fa-solid fa-angle-right text-primary-600 text-[10px] mt-1"></i>
-                                            <span>${u}</span>
-                                        </li>
-                                    `).join('')}
-                                </ul>
+                            <div class="flex justify-end border-t border-slate-200 pt-5">
+                                <button type="button" onclick="openLeaderProfile('${leader.id}')" class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-xs font-bold text-white shadow-sm transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                                    ${t('leader_profile_full')}
+                                </button>
                             </div>
                         </div>
 
                     </div>
                 </div>
+            `;
+        }
+
+        function openLeaderProfile(leaderId) {
+            if (!ngoData.leadership.some(leader => leader.id === leaderId)) {
+                showToast(t('leader_profile_unavailable'), 'info');
+                return;
+            }
+
+            selectedLeaderId = leaderId;
+            closeModal();
+            navigateTo('leader-profile');
+        }
+
+        function renderLeaderProfilePage(canvas) {
+            const leader = ngoData.leadership.find(item => item.id === selectedLeaderId);
+            if (!leader) {
+                showToast(t('leader_profile_unavailable'), 'info');
+                navigateTo('ngo-profile');
+                return;
+            }
+
+            canvas.innerHTML = `
+                <main class="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+                    <button type="button" onclick="navigateTo('ngo-profile')" class="inline-flex items-center gap-2 text-xs font-bold text-primary-700 transition-colors hover:text-primary-900">
+                        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> ${t('leader_profile_back')}
+                    </button>
+                    <article class="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-card">
+                        <div class="relative h-48 bg-slate-900 sm:h-64">
+                            <img src="${escapeHTML(leader.coverImage)}" alt="${escapeHTML(leader.name)}" class="h-full w-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent"></div>
+                        </div>
+                        <div class="space-y-8 px-6 pb-8 sm:px-10">
+                            <header class="-mt-14 flex flex-col gap-4 sm:-mt-16 sm:flex-row sm:items-end sm:justify-between">
+                                <div class="flex items-end gap-4">
+                                    <img src="${escapeHTML(leader.photo)}" alt="${escapeHTML(leader.name)}" class="h-24 w-24 rounded-full border-4 border-white bg-white object-cover shadow-card sm:h-28 sm:w-28">
+                                    <div class="pb-1">
+                                        <h1 class="text-2xl font-black tracking-tight text-slate-900">${escapeHTML(leader.name)}</h1>
+                                        <p class="mt-1 text-sm font-semibold text-primary-700">${escapeHTML(leader.position)}</p>
+                                    </div>
+                                </div>
+                                <span class="inline-flex items-center gap-2 self-start rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-[10px] font-bold text-emerald-700 sm:self-auto">
+                                    <i class="fa-solid fa-user-check" aria-hidden="true"></i> ${t('leader_profile_verified')}
+                                </span>
+                            </header>
+
+                            <dl class="grid gap-3 rounded-2xl border border-slate-200/80 bg-slate-50 p-4 text-xs sm:grid-cols-3">
+                                <div>
+                                    <dt class="text-[10px] font-bold text-slate-400">${t('leader_profile_member_since')}</dt>
+                                    <dd class="mt-1 font-semibold text-slate-800">${escapeHTML(leader.memberSince)}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-[10px] font-bold text-slate-400">${t('leader_profile_verified_email')}</dt>
+                                    <dd class="mt-1 flex items-center gap-1 font-semibold text-slate-800"><i class="fa-solid fa-circle-check text-emerald-500" aria-hidden="true"></i> ${t('leader_profile_yes')}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-[10px] font-bold text-slate-400">${t('leader_profile_verified_phone')}</dt>
+                                    <dd class="mt-1 flex items-center gap-1 font-semibold text-slate-800"><i class="fa-solid fa-circle-check text-emerald-500" aria-hidden="true"></i> ${t('leader_profile_yes')}</dd>
+                                </div>
+                            </dl>
+
+                            <section class="space-y-3">
+                                <h2 class="text-sm font-bold uppercase tracking-wide text-slate-900">${t('leader_profile_biography')}</h2>
+                                <p class="text-sm leading-relaxed text-slate-600">${escapeHTML(leader.bio)}</p>
+                            </section>
+
+                            <section class="space-y-3">
+                                <h2 class="text-sm font-bold uppercase tracking-wide text-slate-900">${t('leader_profile_projects')}</h2>
+                                <ul class="flex flex-wrap gap-2">
+                                    ${leader.projectsManaged.map(project => `
+                                        <li class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">${escapeHTML(project)}</li>
+                                    `).join('')}
+                                </ul>
+                            </section>
+
+                            <section class="space-y-3">
+                                <h2 class="text-sm font-bold uppercase tracking-wide text-slate-900">${t('leader_profile_activity')}</h2>
+                                <ul class="space-y-3">
+                                    ${leader.recentUpdates.map(update => `
+                                        <li class="flex items-start gap-3 text-sm leading-relaxed text-slate-600">
+                                            <i class="fa-solid fa-angle-right mt-1 text-primary-600" aria-hidden="true"></i>
+                                            <span>${escapeHTML(update)}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </section>
+                        </div>
+                    </article>
+                </main>
             `;
         }
 
@@ -5492,16 +5539,6 @@
             const user = state.currentUser;
             const initials = user.name.split(' ').map(n => n[0]).join('');
             const isCorporate = user.role === 'corporate';
-            const profileStats = isCorporate ? user.corporateMetrics : [
-                { label: 'Impact Score', value: user.impactScore, detail: 'Top 5% Conscious Donor', color: 'text-primary-600' },
-                { label: 'Verified Invoices', value: user.verifiedInvoicesCount, detail: '100% Cryptographically Matched', color: 'text-emerald-600' },
-                { label: 'Total Contributed', value: formatCurrency(user.totalContributed), detail: 'Direct Field Capital', color: 'text-slate-900' },
-                { label: 'Projects Supported', value: user.projectsSupported, detail: 'Active & Completed', color: 'text-indigo-600' }
-            ];
-            const activityEntries = isCorporate ? user.corporateTransactions : [
-                { title: 'Kitui Clean Water Well #12', detail: 'Matched to Grundfos Pump Invoice #INV-8821', amount: '$150.00 USD', date: 'Jan 14, 2026', icon: 'fa-droplet', iconClasses: 'bg-emerald-100 text-emerald-700' },
-                { title: 'Solar Aqueduct Extension Garissa', detail: 'Matched to SolarTech Array Receipt #902', amount: '$500.00 USD', date: 'Dec 22, 2025', icon: 'fa-solar-panel', iconClasses: 'bg-primary-100 text-primary-700' }
-            ];
 
             let coverContentHtml = '';
             if (user.coverImage) {
@@ -5614,14 +5651,6 @@
                                     ${user.bio}
                                 </p>
 
-                                <div class="flex flex-wrap gap-2 pt-1">
-                                    ${user.badges.map(b => `
-                                        <span class="px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-primary-50 text-primary-700 border border-primary-100 flex items-center gap-1.5">
-                                            <i class="fa-solid fa-certificate text-primary-500 text-xs"></i> ${b}
-                                        </span>
-                                    `).join('')}
-                                </div>
-
                                 ${user.id === 'marcus_ngo_301' ? `
                                     <button type="button" onclick="openNGOInfoModal()" aria-haspopup="dialog" aria-label="Ver información de CleanWater International" class="group mt-2 flex w-full max-w-sm items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                                         <span class="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-100 bg-white">
@@ -5653,48 +5682,6 @@
                                 ` : ''}
                             </div>
 
-                        </div>
-                    </div>
-
-                    <!-- USER IMPACT STATS GRID -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
-                        ${profileStats.map(metric => `
-                            <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-subtle space-y-2">
-                                <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">${metric.label}</span>
-                                <div class="break-words text-xl sm:text-2xl font-black font-mono ${metric.color}">${metric.value}</div>
-                                <span class="text-[10px] text-slate-500 block">${metric.detail}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-
-                    <!-- AUDITED LEDGER RECENT ACTIVITY -->
-                    <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-6">
-                        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                            <div>
-                                <h3 class="text-lg font-black text-slate-900 tracking-tight">${isCorporate ? 'Historial de Transacciones Institucionales' : 'Recent Audited Activity'}</h3>
-                                <p class="text-xs text-slate-500">${isCorporate ? 'Aportes corporativos y desembolsos ESG verificados en el libro de Zuliov' : 'Your direct contribution history verified by Zuliov Automated Treasury'}</p>
-                            </div>
-                            <span class="text-xs font-mono font-semibold text-emerald-600"><i class="fa-solid fa-lock mr-1"></i> Immutable Ledger</span>
-                        </div>
-
-                        <div class="space-y-3">
-                            ${activityEntries.map(entry => `
-                                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="h-10 w-10 rounded-xl ${entry.iconClasses || (entry.icon === 'fa-droplet' ? 'bg-emerald-100 text-emerald-700' : entry.icon === 'fa-solar-panel' ? 'bg-primary-100 text-primary-700' : 'bg-indigo-100 text-indigo-700')} flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                            <i class="fa-solid ${entry.icon}"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="text-xs font-bold text-slate-900">${entry.title}</h4>
-                                            <p class="text-[11px] text-slate-500 font-mono">${entry.detail}</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-left sm:text-right font-mono">
-                                        <span class="text-xs font-bold text-slate-900 block">${entry.amount}</span>
-                                        <span class="text-[10px] text-slate-400">${entry.date}</span>
-                                    </div>
-                                </div>
-                            `).join('')}
                         </div>
                     </div>
 
