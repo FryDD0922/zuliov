@@ -432,6 +432,17 @@
                 landing_footer_note: "Historias humanas. Progreso visible. Confianza compartida.",
                 profile_title: "Perfil de Impacto Verificado",
                 profile_subtitle: "Gestión de identidad, imágenes de portada, credenciales de auditoría y registros de transparencia.",
+                profile_owner_view: "Vista de propietario",
+                profile_visitor_view: "Vista de visitante",
+                profile_view_as_visitor: "Ver como visitante",
+                profile_edit_mode: "Modo edición",
+                profile_edit_avatar: "Editar avatar",
+                profile_edit_cover: "Editar portada",
+                profile_test_empty_images: "Probar imágenes vacías",
+                profile_follow: "Seguir",
+                profile_following: "Siguiendo",
+                profile_connect: "Conectar",
+                profile_pending: "Pendiente",
                 change_photo: "Cambiar foto",
                 change_cover: "Cambiar portada",
                 reposition_cover: "Reposicionar",
@@ -819,6 +830,17 @@
                 landing_footer_note: "Human stories. Visible progress. Shared trust.",
                 profile_title: "Verified Impact Profile",
                 profile_subtitle: "Manage your identity, cover media, audit badges and financial transparency proof.",
+                profile_owner_view: "Owner View",
+                profile_visitor_view: "Visitor View",
+                profile_view_as_visitor: "View as Visitor",
+                profile_edit_mode: "Edit Mode",
+                profile_edit_avatar: "Edit Avatar",
+                profile_edit_cover: "Edit Cover",
+                profile_test_empty_images: "Test Empty Images",
+                profile_follow: "Follow",
+                profile_following: "Following",
+                profile_connect: "Connect",
+                profile_pending: "Pending",
                 change_photo: "Change Photo",
                 change_cover: "Change Cover",
                 reposition_cover: "Reposition",
@@ -1576,6 +1598,9 @@
 
         // Global State
         const state = {
+            profileViewMode: 'owner',
+            profileFollowing: false,
+            profileConnectionPending: false,
             currentUser: {
                 id: 'sarah_donor_102',
                 name: 'Sarah Miller',
@@ -2920,6 +2945,21 @@
             closeProfileDropdown();
             openTrigger.focus();
         });
+
+        function toggleProfileViewMode() {
+            state.profileViewMode = state.profileViewMode === 'owner' ? 'visitor' : 'owner';
+            renderApp();
+        }
+
+        function followProfile() {
+            state.profileFollowing = true;
+            renderApp();
+        }
+
+        function connectProfile() {
+            state.profileConnectionPending = true;
+            renderApp();
+        }
 
         function toggleEmptyStateTest() {
             if (state.currentUser.avatar || state.currentUser.coverImage) {
@@ -5539,6 +5579,7 @@
             const user = state.currentUser;
             const initials = user.name.split(' ').map(n => n[0]).join('');
             const isCorporate = user.role === 'corporate';
+            const isVisitorView = state.profileViewMode === 'visitor';
 
             let coverContentHtml = '';
             if (user.coverImage) {
@@ -5583,9 +5624,9 @@
                     
                     <div class="bg-white rounded-3xl border border-slate-200/80 shadow-card overflow-hidden">
                         
-                        <div class="relative h-64 sm:h-80 w-full bg-slate-900 group overflow-hidden cursor-pointer" onclick="openCoverModal()">
+                        <div class="relative h-64 sm:h-80 w-full bg-slate-900 group overflow-hidden ${isVisitorView ? '' : 'cursor-pointer'}" ${isVisitorView ? '' : 'onclick="openCoverModal()"'}>
                             ${coverContentHtml}
-                            <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-3 backdrop-blur-[2px]">
+                            <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-3 backdrop-blur-[2px] ${isVisitorView ? 'hidden' : ''}">
                                 <div class="bg-white/90 text-slate-900 px-4 py-2 rounded-xl text-xs font-bold font-mono shadow-floating flex items-center gap-2 hover:bg-white transition-transform transform scale-95 group-hover:scale-100">
                                     <i class="fa-solid fa-camera text-primary-600 text-sm"></i>
                                     <span>${t('change_cover')}</span>
@@ -5608,27 +5649,43 @@
                         <div class="px-6 sm:px-10 pb-8 relative">
                             <div class="flex flex-col sm:flex-row sm:items-end justify-between -mt-16 sm:-mt-20 mb-6 gap-4">
                                 
-                                <div class="relative h-36 w-36 sm:h-40 sm:w-40 rounded-full ring-4 ring-white shadow-floating bg-white overflow-hidden group cursor-pointer flex-shrink-0" onclick="openAvatarModal()">
+                                <div class="relative h-36 w-36 sm:h-40 sm:w-40 rounded-full ring-4 ring-white shadow-floating bg-white overflow-hidden group ${isVisitorView ? '' : 'cursor-pointer'} flex-shrink-0" ${isVisitorView ? '' : 'onclick="openAvatarModal()"'}>
                                     ${avatarContentHtml}
-                                    <div class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center text-white text-center p-2 rounded-full backdrop-blur-[2px]">
+                                    <div class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center text-white text-center p-2 rounded-full backdrop-blur-[2px] ${isVisitorView ? 'hidden' : ''}">
                                         <i class="fa-solid fa-camera text-xl mb-1 text-primary-400"></i>
                                         <span class="text-[11px] font-bold font-mono uppercase tracking-wider">${t('change_photo')}</span>
                                     </div>
                                 </div>
 
                                 <div class="flex flex-wrap items-center gap-2 pt-2 sm:pt-0">
-                                    <button onclick="openAvatarModal()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 shadow-xs transition-all flex items-center gap-2">
-                                        <i class="fa-solid fa-user-pen text-slate-400"></i>
-                                        <span>Edit Avatar</span>
+                                    <span class="px-3 py-2 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-wider">${t(isVisitorView ? 'profile_visitor_view' : 'profile_owner_view')}</span>
+                                    <button type="button" onclick="toggleProfileViewMode()" aria-pressed="${isVisitorView}" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 shadow-xs transition-all flex items-center gap-2">
+                                        <i class="fa-solid ${isVisitorView ? 'fa-pen-to-square' : 'fa-eye'} text-primary-600"></i>
+                                        <span>${t(isVisitorView ? 'profile_edit_mode' : 'profile_view_as_visitor')}</span>
                                     </button>
-                                    <button onclick="openCoverModal()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 shadow-xs transition-all flex items-center gap-2">
-                                        <i class="fa-solid fa-panorama text-slate-400"></i>
-                                        <span>Edit Cover</span>
-                                    </button>
-                                    <button onclick="toggleEmptyStateTest()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all flex items-center gap-2">
-                                        <i class="fa-solid fa-arrows-rotate text-slate-500"></i>
-                                        <span>Test Empty Images</span>
-                                    </button>
+                                    ${isVisitorView ? `
+                                        <button type="button" onclick="followProfile()" aria-pressed="${state.profileFollowing}" class="px-5 py-2.5 rounded-xl text-xs font-bold ${state.profileFollowing ? 'bg-primary-50 text-primary-700 border border-primary-200' : 'bg-primary-600 text-white hover:bg-primary-700'} shadow-xs transition-all flex items-center gap-2">
+                                            <i class="fa-solid ${state.profileFollowing ? 'fa-check' : 'fa-plus'}"></i>
+                                            <span>${t(state.profileFollowing ? 'profile_following' : 'profile_follow')}</span>
+                                        </button>
+                                        <button type="button" onclick="connectProfile()" aria-pressed="${state.profileConnectionPending}" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 shadow-xs transition-all flex items-center gap-2">
+                                            <i class="fa-solid ${state.profileConnectionPending ? 'fa-clock' : 'fa-user-plus'} text-slate-500"></i>
+                                            <span>${t(state.profileConnectionPending ? 'profile_pending' : 'profile_connect')}</span>
+                                        </button>
+                                    ` : `
+                                        <button type="button" onclick="openAvatarModal()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 shadow-xs transition-all flex items-center gap-2">
+                                            <i class="fa-solid fa-user-pen text-slate-400"></i>
+                                            <span>${t('profile_edit_avatar')}</span>
+                                        </button>
+                                        <button type="button" onclick="openCoverModal()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 shadow-xs transition-all flex items-center gap-2">
+                                            <i class="fa-solid fa-panorama text-slate-400"></i>
+                                            <span>${t('profile_edit_cover')}</span>
+                                        </button>
+                                        <button type="button" onclick="toggleEmptyStateTest()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all flex items-center gap-2">
+                                            <i class="fa-solid fa-arrows-rotate text-slate-500"></i>
+                                            <span>${t('profile_test_empty_images')}</span>
+                                        </button>
+                                    `}
                                 </div>
                             </div>
 
