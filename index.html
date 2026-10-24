@@ -443,6 +443,11 @@
                 profile_following: "Siguiendo",
                 profile_connect: "Conectar",
                 profile_pending: "Pendiente",
+                connection_modal_title: "Conectar con {name}",
+                connection_note_label: "Nota personal (opcional)",
+                connection_note_placeholder: "Añade un mensaje para presentarte...",
+                connection_note_optional: "El mensaje es completamente opcional. Puedes enviar la solicitud de conexión sin texto.",
+                connection_send_invitation: "Enviar Invitación",
                 change_photo: "Cambiar foto",
                 change_cover: "Cambiar portada",
                 reposition_cover: "Reposicionar",
@@ -841,6 +846,11 @@
                 profile_following: "Following",
                 profile_connect: "Connect",
                 profile_pending: "Pending",
+                connection_modal_title: "Connect with {name}",
+                connection_note_label: "Personal note (optional)",
+                connection_note_placeholder: "Add a message to introduce yourself...",
+                connection_note_optional: "Your message is completely optional. You can send the connection request without any text.",
+                connection_send_invitation: "Send Invitation",
                 change_photo: "Change Photo",
                 change_cover: "Change Cover",
                 reposition_cover: "Reposition",
@@ -1155,6 +1165,9 @@
             renderApp();
             if (document.getElementById('register-modal')) renderRegisterModal();
             if (document.getElementById('login-modal')) renderLoginModal();
+            if (document.getElementById('connection-request-modal')) {
+                renderConnectionRequestModal(document.getElementById('connection-note')?.value || '');
+            }
             if (state.activeGroupManagementModal) renderGroupManagementModal();
             if (state.activeGroupDirectoryModal) renderGroupDirectoryModal();
             if (state.activeGroupAllianceRequestId) renderGroupAllianceRequestModal();
@@ -2173,8 +2186,8 @@
                 <!-- Navigation Links -->
                 <nav id="main-navigation" class="hidden md:flex items-center space-x-8">
                     <button onclick="navigateTo('home')" data-screen="home" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-home">COMMUNITY FEED</button>
-                    <button onclick="navigateTo('browse')" data-screen="browse" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
                     <button onclick="navigateTo('groups')" data-screen="groups" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">GRUPOS</button>
+                    <button onclick="navigateTo('browse')" data-screen="browse" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
                 </nav>
 
                 <!-- Language Switcher & User Profile Menu -->
@@ -2243,8 +2256,8 @@
             </div>
             <nav id="mobile-navigation" aria-label="Mobile navigation" class="hidden space-y-1 border-t border-slate-200/80 py-3 md:hidden">
                 <button type="button" onclick="navigateTo('home')" data-screen="home" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-home">COMMUNITY FEED</button>
-                <button type="button" onclick="navigateTo('browse')" data-screen="browse" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-browse">BROWSE PROJECTS</button>
                 <button type="button" onclick="navigateTo('groups')" data-screen="groups" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-groups">GROUPS</button>
+                <button type="button" onclick="navigateTo('browse')" data-screen="browse" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-browse">BROWSE PROJECTS</button>
                 <div class="flex items-center justify-between border-t border-slate-200/80 px-3 pt-3">
                     <span id="mobile-language-label" class="text-xs font-semibold text-slate-500">Language</span>
                     <div class="inline-flex rounded-lg bg-slate-100 p-0.5 text-[11px] font-mono font-bold">
@@ -2938,6 +2951,10 @@
                 closeRegisterModal();
                 return;
             }
+            if (document.getElementById('connection-request-modal')) {
+                closeModal();
+                return;
+            }
             const openTrigger = ['header-profile', 'mobile-profile-trigger']
                 .map(id => document.getElementById(id))
                 .find(trigger => trigger.getAttribute('aria-expanded') === 'true');
@@ -2957,7 +2974,57 @@
         }
 
         function connectProfile() {
+            if (state.profileConnectionPending) return;
+            renderConnectionRequestModal();
+        }
+
+        function renderConnectionRequestModal(note = '') {
+            const container = document.getElementById('modal-container');
+            const userName = state.currentUser.name;
+            const title = t('connection_modal_title').replace('{name}', escapeHTML(userName));
+            container.innerHTML = `
+                <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+                    <button type="button" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity cursor-default" aria-label="${t('cancel')}" onclick="closeModal()"></button>
+                    <section id="connection-request-modal" role="dialog" aria-modal="true" aria-labelledby="connection-modal-title" class="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-floating border border-slate-200 dark:border-slate-700 relative z-10 animate-modal-in text-left space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="h-11 w-11 shrink-0 rounded-2xl bg-primary-50 dark:bg-primary-900/40 text-primary-600 dark:text-primary-300 flex items-center justify-center">
+                                <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <h2 id="connection-modal-title" class="text-lg font-bold text-slate-900 dark:text-white">${title}</h2>
+                                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">${t('connection_note_optional')}</p>
+                            </div>
+                            <button type="button" onclick="closeModal()" class="ml-auto p-2 -mr-2 -mt-2 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="${t('cancel')}">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label for="connection-note" class="text-sm font-semibold text-slate-700 dark:text-slate-200">${t('connection_note_label')}</label>
+                                <span id="connection-note-count" class="text-xs font-mono text-slate-400">0/1000</span>
+                            </div>
+                            <textarea id="connection-note" maxlength="1000" oninput="updateConnectionNoteCount()" placeholder="${t('connection_note_placeholder')}" class="w-full min-h-32 resize-y rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 px-4 py-3 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500">${escapeHTML(note)}</textarea>
+                        </div>
+                        <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 border-t border-slate-100 dark:border-slate-800 pt-5">
+                            <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">${t('cancel')}</button>
+                            <button type="button" onclick="sendConnectionInvitation()" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 shadow-sm transition-colors">${t('connection_send_invitation')}</button>
+                        </div>
+                    </section>
+                </div>
+            `;
+            updateConnectionNoteCount();
+            document.getElementById('connection-note').focus();
+        }
+
+        function updateConnectionNoteCount() {
+            const note = document.getElementById('connection-note');
+            const count = document.getElementById('connection-note-count');
+            if (note && count) count.textContent = `${note.value.length}/1000`;
+        }
+
+        function sendConnectionInvitation() {
             state.profileConnectionPending = true;
+            closeModal();
             renderApp();
         }
 
@@ -5668,7 +5735,7 @@
                                             <i class="fa-solid ${state.profileFollowing ? 'fa-check' : 'fa-plus'}"></i>
                                             <span>${t(state.profileFollowing ? 'profile_following' : 'profile_follow')}</span>
                                         </button>
-                                        <button type="button" onclick="connectProfile()" aria-pressed="${state.profileConnectionPending}" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90 shadow-xs transition-all flex items-center gap-2">
+                                        <button type="button" onclick="connectProfile()" aria-pressed="${state.profileConnectionPending}" ${state.profileConnectionPending ? 'disabled' : ''} class="px-4 py-2.5 rounded-xl text-xs font-bold ${state.profileConnectionPending ? 'bg-slate-100 text-slate-500 border border-slate-200 cursor-wait' : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200/90'} shadow-xs transition-all flex items-center gap-2">
                                             <i class="fa-solid ${state.profileConnectionPending ? 'fa-clock' : 'fa-user-plus'} text-slate-500"></i>
                                             <span>${t(state.profileConnectionPending ? 'profile_pending' : 'profile_connect')}</span>
                                         </button>
