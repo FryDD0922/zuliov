@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZULIOV — Transparent Non-Profit Infrastructure & User Profile</title>
+    <title>Zuliov</title>
     <meta name="description" content="ZULIOV provides real-time financial auditing and verifiable proof of impact for non-profit organizations and conscious donors.">
     <link rel="icon" type="image/png" href="assets/logo.png">
     <!-- Tailwind CSS CDN -->
@@ -446,6 +446,19 @@
                 profile_view_details: "Ver detalles",
                 profile_followers: "Seguidores",
                 profile_connections: "Conexiones",
+                profile_network_followers_title: "Seguidores",
+                profile_network_connections_title: "Conexiones",
+                profile_network_role: "Rol",
+                profile_network_follow: "Seguir",
+                profile_network_following: "Siguiendo",
+                profile_network_view_profile: "Ver perfil",
+                profile_network_back: "Volver a conexiones",
+                network_role_donor: "Donante verificada",
+                network_role_volunteer: "Voluntaria comunitaria",
+                network_role_advocate: "Defensor de causas sociales",
+                network_job_engineer: "Ingeniero de sistemas de agua",
+                network_job_organizer: "Organizadora comunitaria",
+                network_job_advisor: "Asesora filantrópica",
                 profile_connect: "Conectar",
                 profile_pending: "Pendiente",
                 connection_modal_title: "Conectar con {name}",
@@ -854,6 +867,19 @@
                 profile_view_details: "View details",
                 profile_followers: "Followers",
                 profile_connections: "Connections",
+                profile_network_followers_title: "Followers",
+                profile_network_connections_title: "Connections",
+                profile_network_role: "Role",
+                profile_network_follow: "Follow",
+                profile_network_following: "Following",
+                profile_network_view_profile: "View profile",
+                profile_network_back: "Back to connections",
+                network_role_donor: "Verified donor",
+                network_role_volunteer: "Community volunteer",
+                network_role_advocate: "Social impact advocate",
+                network_job_engineer: "Water systems engineer",
+                network_job_organizer: "Community organizer",
+                network_job_advisor: "Philanthropic advisor",
                 profile_connect: "Connect",
                 profile_pending: "Pending",
                 connection_modal_title: "Connect with {name}",
@@ -1624,6 +1650,9 @@
             profileViewMode: 'owner',
             profileFollowing: false,
             profileConnectionPending: false,
+            activeProfileNetworkModal: null,
+            activeProfileNetworkPerson: null,
+            profileNetworkFollowing: {},
             currentUser: {
                 id: 'sarah_donor_102',
                 name: 'Sarah Miller',
@@ -2972,6 +3001,108 @@
             closeProfileDropdown();
             openTrigger.focus();
         });
+
+        function getProfileNetworkEntries(type) {
+            const entries = {
+                followers: [
+                    { id: 'david-chen', name: 'David Chen', roleKey: 'network_role_donor', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120' },
+                    { id: 'miriam-njoroge', name: 'Miriam Njoroge', roleKey: 'network_role_volunteer', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120' },
+                    { id: 'marcus-vance', name: 'Marcus Vance', roleKey: 'network_role_advocate', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120' }
+                ],
+                connections: [
+                    { id: 'amara-okezie', name: 'Dr. Amara Okezie', roleKey: 'network_job_engineer', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120' },
+                    { id: 'elena-martinez', name: 'Elena Martinez', roleKey: 'network_job_organizer', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120' },
+                    { id: 'sophia-martinez', name: 'Sophia Martinez', roleKey: 'network_job_advisor', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120' }
+                ]
+            };
+            return entries[type] || [];
+        }
+
+        function openProfileNetworkModal(type) {
+            if (type !== 'followers' && type !== 'connections') return;
+            state.activeProfileNetworkModal = type;
+            state.activeProfileNetworkPerson = null;
+            renderProfileNetworkModal();
+        }
+
+        function closeProfileNetworkModal() {
+            state.activeProfileNetworkModal = null;
+            state.activeProfileNetworkPerson = null;
+            document.getElementById('modal-container').innerHTML = '';
+            document.removeEventListener('keydown', handleProfileNetworkModalKeydown);
+        }
+
+        function handleProfileNetworkModalKeydown(event) {
+            if (event.key === 'Escape') closeProfileNetworkModal();
+        }
+
+        function toggleProfileNetworkFollow(id) {
+            state.profileNetworkFollowing[id] = !state.profileNetworkFollowing[id];
+            renderProfileNetworkModal();
+        }
+
+        function showProfileNetworkPerson(id) {
+            state.activeProfileNetworkPerson = id;
+            renderProfileNetworkModal();
+        }
+
+        function renderProfileNetworkModal() {
+            const type = state.activeProfileNetworkModal;
+            const container = document.getElementById('modal-container');
+            if (!type || !container) return;
+
+            const isFollowers = type === 'followers';
+            const entries = getProfileNetworkEntries(type);
+            const selectedPerson = entries.find(person => person.id === state.activeProfileNetworkPerson);
+            const title = t(isFollowers ? 'profile_network_followers_title' : 'profile_network_connections_title');
+            const content = selectedPerson ? `
+                <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-center">
+                    <img src="${escapeHTML(selectedPerson.avatar)}" alt="" class="mx-auto h-20 w-20 rounded-full object-cover ring-4 ring-white shadow-card">
+                    <h3 class="mt-3 text-base font-bold text-slate-900">${escapeHTML(selectedPerson.name)}</h3>
+                    <p class="mt-1 text-sm text-slate-500">${t(selectedPerson.roleKey)}</p>
+                </div>
+                <button type="button" onclick="state.activeProfileNetworkPerson = null; renderProfileNetworkModal()" class="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>${t('profile_network_back')}
+                </button>
+            ` : `
+                <div class="mt-5 space-y-3">
+                    ${entries.map(person => `
+                        <article class="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3">
+                            <img src="${escapeHTML(person.avatar)}" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover">
+                            <div class="min-w-0 flex-1">
+                                <h3 class="truncate text-sm font-bold text-slate-900">${escapeHTML(person.name)}</h3>
+                                <p class="mt-0.5 truncate text-xs text-slate-500">${t(person.roleKey)}</p>
+                            </div>
+                            ${isFollowers ? `
+                                <button type="button" aria-pressed="${Boolean(state.profileNetworkFollowing[person.id])}" onclick="toggleProfileNetworkFollow('${person.id}')" class="shrink-0 rounded-lg px-3 py-2 text-xs font-bold transition-colors ${state.profileNetworkFollowing[person.id] ? 'border border-slate-200 bg-slate-50 text-slate-600' : 'bg-primary-600 text-white hover:bg-primary-700'}">
+                                    ${t(state.profileNetworkFollowing[person.id] ? 'profile_network_following' : 'profile_network_follow')}
+                                </button>
+                            ` : `
+                                <button type="button" onclick="showProfileNetworkPerson('${person.id}')" class="shrink-0 rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 transition-colors hover:border-primary-200 hover:text-primary-700">
+                                    ${t('profile_network_view_profile')}
+                                </button>
+                            `}
+                        </article>
+                    `).join('')}
+                </div>
+            `;
+
+            container.innerHTML = `
+                <div class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" onclick="closeProfileNetworkModal()">
+                    <section role="dialog" aria-modal="true" aria-labelledby="profile-network-modal-title" class="relative z-10 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-floating animate-modal-in sm:p-7" onclick="event.stopPropagation()">
+                        <header class="flex items-start justify-between gap-4 border-b border-slate-200 pb-4">
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-600">ZULIOV · ${title}</p>
+                                <h2 id="profile-network-modal-title" class="mt-2 text-xl font-black text-slate-900">${selectedPerson ? escapeHTML(selectedPerson.name) : title}</h2>
+                            </div>
+                            <button type="button" onclick="closeProfileNetworkModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                        </header>
+                        ${content}
+                    </section>
+                </div>
+            `;
+            document.addEventListener('keydown', handleProfileNetworkModalKeydown);
+        }
 
         function toggleProfileViewMode() {
             state.profileViewMode = state.profileViewMode === 'owner' ? 'visitor' : 'owner';
@@ -5777,8 +5908,8 @@
                                     <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-mono text-slate-500 sm:text-sm">
                                         <span><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i> ${user.location}</span>
                                         <span class="inline-flex items-center gap-2"><span aria-hidden="true">•</span><span><i class="fa-solid fa-calendar text-slate-400 mr-1"></i> ${user.joinedDate}</span></span>
-                                        <span class="inline-flex items-center gap-2"><span aria-hidden="true">•</span><span><strong class="font-semibold text-slate-700">142</strong> ${t('profile_followers')}</span></span>
-                                        <span class="inline-flex items-center gap-2"><span aria-hidden="true">•</span><span><strong class="font-semibold text-slate-700">500+</strong> ${t('profile_connections')}</span></span>
+                                        <span class="inline-flex items-center gap-2"><span aria-hidden="true">•</span><button type="button" onclick="openProfileNetworkModal('followers')" aria-haspopup="dialog" aria-label="${t('profile_network_followers_title')}: 142" class="rounded-sm text-left transition-colors hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"><strong class="font-semibold text-slate-700">142</strong> ${t('profile_followers')}</button></span>
+                                        <span class="inline-flex items-center gap-2"><span aria-hidden="true">•</span><button type="button" onclick="openProfileNetworkModal('connections')" aria-haspopup="dialog" aria-label="${t('profile_network_connections_title')}: 500+" class="rounded-sm text-left transition-colors hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"><strong class="font-semibold text-slate-700">500+</strong> ${t('profile_connections')}</button></span>
                                     </p>
                                 </div>
 
