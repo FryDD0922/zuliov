@@ -441,6 +441,11 @@
                 profile_test_empty_images: "Probar imágenes vacías",
                 profile_follow: "Seguir",
                 profile_following: "Siguiendo",
+                profile_following_groups: "Grupos que sigo",
+                profile_following_ngos: "ONGs que sigo",
+                profile_view_details: "Ver detalles",
+                profile_followers: "Seguidores",
+                profile_connections: "Conexiones",
                 profile_connect: "Conectar",
                 profile_pending: "Pendiente",
                 connection_modal_title: "Conectar con {name}",
@@ -844,6 +849,11 @@
                 profile_test_empty_images: "Test Empty Images",
                 profile_follow: "Follow",
                 profile_following: "Following",
+                profile_following_groups: "Following Groups",
+                profile_following_ngos: "Following NGOs",
+                profile_view_details: "View details",
+                profile_followers: "Followers",
+                profile_connections: "Connections",
                 profile_connect: "Connect",
                 profile_pending: "Pending",
                 connection_modal_title: "Connect with {name}",
@@ -5764,10 +5774,11 @@
                                             <i class="fa-solid ${isCorporate ? 'fa-shield-halved text-indigo-500' : 'fa-circle-check text-emerald-500'}"></i> ${isCorporate ? 'SPONSOR ESG VERIFICADO 2026' : 'AUDITED'}
                                         </span>
                                     </div>
-                                    <p class="text-xs sm:text-sm text-slate-500 font-mono flex items-center gap-3">
+                                    <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-mono text-slate-500 sm:text-sm">
                                         <span><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i> ${user.location}</span>
-                                        <span>•</span>
-                                        <span><i class="fa-solid fa-calendar text-slate-400 mr-1"></i> ${user.joinedDate}</span>
+                                        <span class="inline-flex items-center gap-2"><span aria-hidden="true">•</span><span><i class="fa-solid fa-calendar text-slate-400 mr-1"></i> ${user.joinedDate}</span></span>
+                                        <span class="inline-flex items-center gap-2"><span aria-hidden="true">•</span><span><strong class="font-semibold text-slate-700">142</strong> ${t('profile_followers')}</span></span>
+                                        <span class="inline-flex items-center gap-2"><span aria-hidden="true">•</span><span><strong class="font-semibold text-slate-700">500+</strong> ${t('profile_connections')}</span></span>
                                     </p>
                                 </div>
 
@@ -5807,6 +5818,49 @@
                             </div>
 
                         </div>
+                    </div>
+
+                    <div class="grid gap-6 lg:grid-cols-2">
+                        <section aria-labelledby="profile-following-groups-title" class="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-subtle sm:p-8">
+                            <div class="mb-5 flex items-center justify-between border-b border-slate-200 pb-3">
+                                <h2 id="profile-following-groups-title" class="text-lg font-black tracking-tight text-slate-900">${t('profile_following_groups')}</h2>
+                                <span class="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">02</span>
+                            </div>
+                            <div class="space-y-3">
+                                ${[
+                                    { name: 'JW Volunteers - Venezuela', icon: 'fa-hands-holding-circle', color: 'bg-rose-50 text-rose-700' },
+                                    { name: 'JW Volunteers - USA', icon: 'fa-people-group', color: 'bg-sky-50 text-sky-700' }
+                                ].map(group => `
+                                    <article class="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-100 p-3">
+                                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${group.color}"><i class="fa-solid ${group.icon}" aria-hidden="true"></i></span>
+                                        <span class="min-w-0 flex-1">
+                                            <span class="block truncate text-sm font-bold text-slate-900">${group.name}</span>
+                                            <span class="mt-1 inline-flex rounded-full bg-slate-100 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">${t('group_alliance_group')}</span>
+                                        </span>
+                                        <span class="inline-flex shrink-0 items-center gap-1 rounded-lg border border-primary-100 bg-primary-50 px-2.5 py-2 text-[10px] font-bold text-primary-700"><i class="fa-solid fa-check" aria-hidden="true"></i>${t('profile_following')}</span>
+                                    </article>
+                                `).join('')}
+                            </div>
+                        </section>
+
+                        <section aria-labelledby="profile-following-ngos-title" class="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-subtle sm:p-8">
+                            <div class="mb-5 flex items-center justify-between border-b border-slate-200 pb-3">
+                                <h2 id="profile-following-ngos-title" class="text-lg font-black tracking-tight text-slate-900">${t('profile_following_ngos')}</h2>
+                                <span class="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">01</span>
+                            </div>
+                            <article class="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-100 p-3">
+                                <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-100 bg-white">
+                                    <img src="${ngoData.logoUrl}" alt="" class="h-full w-full object-cover">
+                                </span>
+                                <span class="min-w-0 flex-1">
+                                    <span class="block truncate text-sm font-bold text-slate-900">CleanWater International</span>
+                                    <span class="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-emerald-700"><i class="fa-solid fa-circle-check" aria-hidden="true"></i>${t('group_alliance_ngo')}</span>
+                                </span>
+                                <button type="button" onclick="navigateTo('ngo-profile')" class="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 py-2 text-[10px] font-bold text-slate-700 transition-colors hover:border-primary-200 hover:text-primary-700">
+                                    ${t('profile_view_details')}<i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                                </button>
+                            </article>
+                        </section>
                     </div>
 
                     ${isCorporate ? '' : `<section aria-labelledby="profile-comment-history-title" class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-5">
