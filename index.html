@@ -273,12 +273,29 @@
         const locales = {
             es: {
                 nav_home: "FEED DE COMUNIDAD",
-                nav_browse: "PROYECTOS Y ONGS",
-                explore_tab_projects: "Proyectos",
-                explore_tab_ngos: "ONGs",
-                explore_tabs_label: "Explorar proyectos y organizaciones",
+                nav_browse: "PROYECTOS",
                 browse_title: "Proyectos verificados",
                 browse_subtitle: "Explora iniciativas auditadas por región y sigue su impacto.",
+                project_origin_ngo: "Proyecto de ONG",
+                project_origin_group: "Proyecto de grupo",
+                project_by: "Por",
+                project_creator_group: "Grupo",
+                project_creator_ngo: "Organización",
+                project_volunteer_role: "Roles de voluntariado",
+                project_volunteer_select_role: "Selecciona un rol",
+                project_volunteer_role_general: "Apoyo general",
+                project_volunteer_role_outreach: "Divulgación comunitaria",
+                project_volunteer_role_skills: "Apoyo basado en habilidades",
+                project_volunteer_join: "Unirse como voluntario",
+                project_volunteer_joined: "Ya eres voluntario",
+                project_volunteer_success: "Te uniste como voluntario para este proyecto.",
+                project_volunteer_already_joined: "Ya te has unido como voluntario a este proyecto.",
+                project_volunteer_role_required: "Selecciona un rol de voluntariado para continuar.",
+                project_volunteer_project_missing: "No se pudo encontrar el proyecto seleccionado.",
+                project_funding_progress: "Progreso de financiación",
+                project_funding_of: "de",
+                project_expand_view: "Ver detalles",
+                project_verified_organization: "Organización verificada",
                 home_feed_title: "Feed de la comunidad",
                 home_feed_subtitle: "Historias, avances e iniciativas compartidas por tus comunidades.",
                 home_feed_posted_in: "Publicado en:",
@@ -294,6 +311,7 @@
                 project_country_usa: "USA",
                 project_country_venezuela: "Venezuela",
                 project_country_laos: "Laos",
+                project_location_worldwide: "Global",
                 browse_region_all: "Todos",
                 browse_region_africa: "África",
                 browse_region_latin_america: "América Latina",
@@ -694,12 +712,29 @@
             },
             en: {
                 nav_home: "COMMUNITY FEED",
-                nav_browse: "PROJECTS & NGOS",
-                explore_tab_projects: "Projects",
-                explore_tab_ngos: "NGOs",
-                explore_tabs_label: "Explore projects and organizations",
+                nav_browse: "PROJECTS",
                 browse_title: "Verified Projects",
                 browse_subtitle: "Explore audited initiatives by region and follow their impact.",
+                project_origin_ngo: "NGO project",
+                project_origin_group: "Group project",
+                project_by: "By",
+                project_creator_group: "Group",
+                project_creator_ngo: "Organization",
+                project_volunteer_role: "Volunteer role",
+                project_volunteer_select_role: "Select a role",
+                project_volunteer_role_general: "General support",
+                project_volunteer_role_outreach: "Community outreach",
+                project_volunteer_role_skills: "Skills-based support",
+                project_volunteer_join: "Join as a volunteer",
+                project_volunteer_joined: "You're volunteering",
+                project_volunteer_success: "You joined this project as a volunteer.",
+                project_volunteer_already_joined: "You're already volunteering for this project.",
+                project_volunteer_role_required: "Select a volunteer role to continue.",
+                project_volunteer_project_missing: "The selected project could not be found.",
+                project_funding_progress: "Funding progress",
+                project_funding_of: "of",
+                project_expand_view: "Expand view",
+                project_verified_organization: "Verified organization",
                 home_feed_title: "Community Feed",
                 home_feed_subtitle: "Stories, progress, and initiatives shared by your communities.",
                 home_feed_posted_in: "Posted in:",
@@ -715,6 +750,7 @@
                 project_country_usa: "USA",
                 project_country_venezuela: "Venezuela",
                 project_country_laos: "Laos",
+                project_location_worldwide: "Worldwide",
                 browse_region_all: "All",
                 browse_region_africa: "Africa",
                 browse_region_latin_america: "Latin America",
@@ -1798,6 +1834,26 @@
                     coverImage: 'https://images.unsplash.com/photo-1437482078695-73f5ca6c96e2?w=1000',
                     kpi: 'Improves access to clean spring water and rural sanitation',
                     kpiEs: 'Mejora el acceso a agua limpia de manantial y saneamiento rural'
+                },
+                {
+                    id: 'proj_global_civic_tech',
+                    groupId: 'group_zuliov_global_community',
+                    creatorType: 'group',
+                    groupName: 'Zuliov Global Community',
+                    title: 'Global Open Source Civic Tech Initiative',
+                    titleEs: 'Iniciativa Global de Tecnología Cívica de Código Abierto',
+                    description: 'Building open-source civic technology that helps communities collaborate, share resources, and make local impact more visible around the world.',
+                    descriptionEs: 'Desarrolla tecnología cívica de código abierto para ayudar a las comunidades a colaborar, compartir recursos y visibilizar su impacto local en todo el mundo.',
+                    category: 'Civic Technology',
+                    categoryEs: 'Tecnología cívica',
+                    targetGoal: 50000,
+                    amountRaised: 12500,
+                    location: 'Worldwide',
+                    averageOverhead: 0,
+                    verifiedStatus: 'Audited & Verified',
+                    coverImage: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1000',
+                    kpi: 'Connects communities through accessible open-source civic tools',
+                    kpiEs: 'Conecta comunidades mediante herramientas cívicas de código abierto y accesibles'
                 }
             ],
 
@@ -2002,6 +2058,18 @@
                             comments: []
                         }
                     ]
+                },
+                {
+                    id: 'group_zuliov_global_community',
+                    name: 'Zuliov Global Community',
+                    description: 'A worldwide community building open-source civic technology for collaboration and social impact.',
+                    category: 'Civic Technology',
+                    type: 'community',
+                    visibility: 'Open',
+                    banner: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200',
+                    members: 1240,
+                    joined: false,
+                    posts: []
                 }
             ],
 
@@ -2027,6 +2095,7 @@
             projectSearchTerm: '',
             projectSearchOpen: false,
             selectedBrowseProjectId: null,
+            projectVolunteers: [],
             expandedProjectComments: {},
             followedGroupAlliances: {},
             activeGroupDirectoryModal: null,
@@ -4520,23 +4589,6 @@
             navigateTo('ngo-profile');
         }
 
-        function renderExploreTabs() {
-            const tabs = [
-                { id: 'projects', label: t('explore_tab_projects') },
-                { id: 'ngos', label: t('explore_tab_ngos') }
-            ];
-
-            return `
-                <nav role="tablist" aria-label="${t('explore_tabs_label')}" class="flex justify-center gap-1 border-b border-slate-200">
-                    ${tabs.map(tab => `
-                        <button type="button" role="tab" aria-selected="${exploreTab === tab.id}" onclick="setExploreTab('${tab.id}')" class="border-b-2 px-4 py-3 text-sm font-bold transition-colors ${exploreTab === tab.id ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-800'}">
-                            ${tab.label}
-                        </button>
-                    `).join('')}
-                </nav>
-            `;
-        }
-
         function setExploreTab(tab) {
             if (tab !== 'projects' && tab !== 'ngos') return;
             exploreTab = tab;
@@ -4548,7 +4600,6 @@
             const organizations = getNGODirectoryEntries().filter(organization => organization.id === 'ngo_clean_water');
             canvas.innerHTML = `
                 <div class="mx-auto max-w-7xl space-y-7 px-4 py-8 sm:px-6 lg:px-8">
-                    ${renderExploreTabs()}
                     <section>
                     <header class="mb-8 border-b border-slate-200 pb-6">
                         <p class="mb-2 text-[11px] font-mono font-bold uppercase tracking-wider text-primary-600">${t('ngo_directory_eyebrow')}</p>
@@ -6307,14 +6358,26 @@
             renderApp();
         }
 
-        function donateToBrowseProject(projectId) {
+        function volunteerForBrowseProject(projectId, roleSelectId) {
             const project = state.projects.find(item => item.id === projectId);
             if (!project) {
-                showToast('No se pudo encontrar el proyecto seleccionado.', 'info');
+                showToast(t('project_volunteer_project_missing'), 'info');
                 return;
             }
-            state.activeDonationProject = localizedProjectText(project, 'title');
-            processDonation();
+            if (state.projectVolunteers.some(item => item.projectId === projectId)) {
+                showToast(t('project_volunteer_already_joined'), 'info');
+                return;
+            }
+
+            const role = document.getElementById(roleSelectId)?.value;
+            if (!['general', 'outreach', 'skills'].includes(role)) {
+                showToast(t('project_volunteer_role_required'), 'info');
+                return;
+            }
+
+            state.projectVolunteers.push({ projectId, role });
+            renderApp();
+            showToast(t('project_volunteer_success'), 'success');
         }
 
         function openExpandedProjectModal(projectId) {
@@ -6524,7 +6587,9 @@
                     uganda: 'project_country_uganda',
                     guatemala: 'project_country_guatemala',
                     usa: 'project_country_usa',
-                    venezuela: 'project_country_venezuela'
+                    venezuela: 'project_country_venezuela',
+                    worldwide: 'project_location_worldwide',
+                    global: 'project_location_worldwide'
                 };
                 const countryKey = countryKeys[country.toLowerCase()];
                 const translatedCountry = countryKey ? t(countryKey) : country;
@@ -6543,7 +6608,10 @@
                 ? state.projects
                 : state.projects.filter(proj => projectRegion(proj) === state.projectContinent);
             const selectedProject = state.projects.find(proj => proj.id === state.selectedBrowseProjectId);
-            const renderProjectDetailPanel = (panelId, titleId, donationAmountId, className, includeImage) => `
+            const renderProjectDetailPanel = (panelId, titleId, volunteerRoleId, className, includeImage) => {
+                const volunteerCommitment = state.projectVolunteers.find(item => item.projectId === selectedProject.id);
+
+                return `
                 <aside id="${panelId}" aria-labelledby="${titleId}" onclick="event.stopPropagation()" class="${className} w-full min-w-0 self-start overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
                     <div class="${includeImage ? 'relative' : 'flex justify-end px-4 pt-4'}">
                         ${includeImage ? `<img src="${escapeHTML(selectedProject.coverImage)}" alt="${escapeHTML(localizedProjectText(selectedProject, 'title'))}" class="h-48 w-full object-cover">` : ''}
@@ -6558,19 +6626,19 @@
                             <p class="mt-2 text-xs font-mono text-slate-500">${escapeHTML(formatProjectLocation(selectedProject))}</p>
                         </div>
                         <div class="flex items-center gap-3 rounded-xl bg-slate-50 p-3">
-                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl">${selectedProject.ngoLogo}</span>
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl">${selectedProject.ngoLogo || (selectedProject.groupId ? '🌍' : '🏢')}</span>
                             <div>
-                                <p class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Organization</p>
-                                <p class="text-xs font-bold text-slate-900">${selectedProject.ngoName}</p>
-                                <p class="text-[10px] font-semibold text-emerald-700">${selectedProject.verifiedStatus || 'Verified organization'}</p>
+                                <p class="text-[10px] font-mono uppercase tracking-wider text-slate-400">${t(selectedProject.groupId ? 'project_creator_group' : 'project_creator_ngo')}</p>
+                                <p class="text-xs font-bold text-slate-900">${escapeHTML(selectedProject.groupName || selectedProject.ngoName || '')}</p>
+                                <p class="text-[10px] font-semibold text-emerald-700">${escapeHTML(selectedProject.verifiedStatus || t('project_verified_organization'))}</p>
                             </div>
                         </div>
                         <p class="text-xs leading-relaxed text-slate-600">${escapeHTML(localizedProjectText(selectedProject, 'description'))}</p>
                         <section aria-label="Funding progress">
                             <div class="flex items-end justify-between gap-2">
                                 <div>
-                                    <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Funding progress</p>
-                                    <p class="mt-1 text-base font-black text-slate-900">${formatCurrency(selectedProject.amountRaised)} <span class="text-[10px] font-medium text-slate-500">of ${formatCurrency(selectedProject.targetGoal)}</span></p>
+                                    <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">${t('project_funding_progress')}</p>
+                                    <p class="mt-1 text-base font-black text-slate-900">${formatCurrency(selectedProject.amountRaised)} <span class="text-[10px] font-medium text-slate-500">${t('project_funding_of')} ${formatCurrency(selectedProject.targetGoal)}</span></p>
                                 </div>
                                 <span class="text-xs font-bold text-primary-700">${Math.min(Math.round((selectedProject.amountRaised / selectedProject.targetGoal) * 100), 100)}%</span>
                             </div>
@@ -6579,25 +6647,30 @@
                             </div>
                         </section>
                         <button type="button" onclick="openExpandedProjectModal('${selectedProject.id}')" class="flex w-full items-center justify-center gap-2 rounded-xl border border-primary-200 bg-primary-50 px-4 py-2.5 text-xs font-bold text-primary-700 transition-colors hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
-                            <i class="fa-solid fa-expand" aria-hidden="true"></i> Expand View
+                            <i class="fa-solid fa-expand" aria-hidden="true"></i> ${t('project_expand_view')}
                         </button>
                         <div>
-                            <label for="${donationAmountId}" class="block text-[10px] font-mono font-bold uppercase text-slate-500">Donation amount (USD)</label>
-                            <input type="number" id="${donationAmountId}" min="1" step="1" value="150" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                            <button type="button" onclick="donateToBrowseProject('${selectedProject.id}')" class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
-                                <i class="fa-solid fa-hand-holding-heart"></i> Donate
+                            <label for="${volunteerRoleId}" class="block text-[10px] font-mono font-bold uppercase text-slate-500">${t('project_volunteer_role')}</label>
+                            <select id="${volunteerRoleId}" ${volunteerCommitment ? 'disabled' : ''} class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-slate-50">
+                                <option value="">${t('project_volunteer_select_role')}</option>
+                                <option value="general" ${volunteerCommitment?.role === 'general' ? 'selected' : ''}>${t('project_volunteer_role_general')}</option>
+                                <option value="outreach" ${volunteerCommitment?.role === 'outreach' ? 'selected' : ''}>${t('project_volunteer_role_outreach')}</option>
+                                <option value="skills" ${volunteerCommitment?.role === 'skills' ? 'selected' : ''}>${t('project_volunteer_role_skills')}</option>
+                            </select>
+                            <button type="button" onclick="volunteerForBrowseProject('${selectedProject.id}', '${volunteerRoleId}')" ${volunteerCommitment ? 'disabled' : ''} class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 disabled:cursor-default disabled:bg-emerald-700">
+                                <i class="fa-solid ${volunteerCommitment ? 'fa-circle-check' : 'fa-handshake-angle'}" aria-hidden="true"></i> ${t(volunteerCommitment ? 'project_volunteer_joined' : 'project_volunteer_join')}
                             </button>
                         </div>
                     </div>
                 </aside>
             `;
+            };
             const mobileDetailPanel = selectedProject
-                ? renderProjectDetailPanel('browse-project-detail-panel-mobile', 'browse-project-detail-title-mobile', 'custom-donate-amt-mobile', 'browse-project-detail-panel col-span-full md:hidden', false)
+                ? renderProjectDetailPanel('browse-project-detail-panel-mobile', 'browse-project-detail-title-mobile', 'volunteer-role-mobile', 'browse-project-detail-panel col-span-full md:hidden', false)
                 : '';
 
             canvas.innerHTML = `
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
-                    ${renderExploreTabs()}
                     <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
@@ -6640,7 +6713,16 @@
 
                     <div class="grid grid-cols-1 items-start gap-6 ${selectedProject ? 'md:grid-cols-12' : ''}">
                         <div class="grid min-w-0 gap-4 ${selectedProject ? 'grid-cols-1 md:grid-cols-2 md:col-span-7' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'}">
-                            ${visibleProjects.length ? visibleProjects.map(proj => `
+                            ${visibleProjects.length ? visibleProjects.map(proj => {
+                                const isGroupProject = String(proj.creatorType || '').toLowerCase() === 'group' || Boolean(proj.groupId);
+                                const creatorGroup = isGroupProject
+                                    ? state.groups.find(group => group.id === proj.groupId)
+                                    : null;
+                                const creatorName = isGroupProject
+                                    ? proj.groupName || creatorGroup?.name || proj.creatorName
+                                    : proj.ngoName || proj.creatorName;
+
+                                return `
                                 <button type="button" data-browse-project-id="${escapeHTML(proj.id)}" aria-pressed="${state.selectedBrowseProjectId === proj.id}" onclick="event.stopPropagation(); selectBrowseProject('${escapeHTML(proj.id)}')" class="group flex h-full w-full max-w-sm cursor-pointer flex-col overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
                                     <span class="relative block h-40 overflow-hidden bg-slate-100">
                                         <img src="${escapeHTML(proj.coverImage)}" alt="${escapeHTML(localizedProjectText(proj, 'title'))}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
@@ -6648,11 +6730,17 @@
                                             ${escapeHTML(formatProjectLocation(proj))}
                                         </span>
                                     </span>
-                                    <span class="block flex-1 p-4 text-sm font-bold leading-snug text-slate-900">${escapeHTML(localizedProjectText(proj, 'title'))}</span>
-                                    <span class="mt-auto block px-4 pb-4 text-[10px] font-bold uppercase tracking-wide text-emerald-700"><i class="fa-solid fa-circle-check mr-1" aria-hidden="true"></i>${t('ngo_directory_verified')}</span>
+                                    <span class="block flex-1 p-4 text-sm font-bold leading-snug text-slate-900">
+                                        ${escapeHTML(localizedProjectText(proj, 'title'))}
+                                        ${creatorName ? `<span class="mt-1 block text-xs font-medium leading-normal text-slate-500">${t('project_by')} ${escapeHTML(creatorName)}</span>` : ''}
+                                    </span>
+                                    <span class="mt-auto flex justify-end px-4 pb-4">
+                                        <span class="rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider ${isGroupProject ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-sky-200 bg-sky-50 text-sky-700'}">${t(isGroupProject ? 'project_origin_group' : 'project_origin_ngo')}</span>
+                                    </span>
                                 </button>
                                 ${state.selectedBrowseProjectId === proj.id ? mobileDetailPanel : ''}
-                            `).join('') : `
+                            `;
+                            }).join('') : `
                                 <div role="status" class="col-span-full rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center">
                                     <i class="fa-solid fa-clipboard-check text-2xl text-slate-400"></i>
                                     <h2 class="mt-3 text-sm font-bold text-slate-900">Proyectos en fase de auditoría</h2>
@@ -6667,7 +6755,7 @@
                             ` : ''}
                         </div>
                         ${selectedProject ? `
-                            ${renderProjectDetailPanel('browse-project-detail-panel', 'browse-project-detail-title', 'custom-donate-amt', 'browse-project-detail-panel hidden md:block md:sticky md:top-20 md:col-span-5', true)}
+                            ${renderProjectDetailPanel('browse-project-detail-panel', 'browse-project-detail-title', 'volunteer-role', 'browse-project-detail-panel hidden md:block md:sticky md:top-20 md:col-span-5', true)}
                         ` : ''}
                     </div>
                 </div>
