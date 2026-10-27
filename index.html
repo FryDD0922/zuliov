@@ -298,6 +298,9 @@
                 project_verified_organization: "Organización verificada",
                 home_feed_title: "Feed de la comunidad",
                 home_feed_subtitle: "Historias, avances e iniciativas compartidas por tus comunidades.",
+                home_feed_for_you: "Para ti",
+                home_feed_following: "Siguiendo",
+                home_feed_following_empty: "Aún no sigues grupos u organizaciones con publicaciones en el feed.",
                 home_feed_posted_in: "Publicado en:",
                 home_feed_like: "Me gusta",
                 home_feed_comment: "Comentar",
@@ -737,6 +740,9 @@
                 project_verified_organization: "Verified organization",
                 home_feed_title: "Community Feed",
                 home_feed_subtitle: "Stories, progress, and initiatives shared by your communities.",
+                home_feed_for_you: "For You",
+                home_feed_following: "Following",
+                home_feed_following_empty: "You are not following any groups or organizations with posts in the feed yet.",
                 home_feed_posted_in: "Posted in:",
                 home_feed_like: "Like",
                 home_feed_comment: "Comment",
@@ -1683,6 +1689,7 @@
 
         // Global State
         const state = {
+            homeFeedTab: 'for-you',
             profileViewMode: 'owner',
             profileFollowing: false,
             profileConnectionPending: false,
@@ -3586,9 +3593,14 @@
         }
 
         function renderHomeFeed(canvas) {
-            const feedPosts = state.groups.flatMap(group =>
+            const allFeedPosts = state.groups.flatMap(group =>
                 [...group.posts, ...(group.eventPosts || [])].map(post => ({ group, post }))
-            ).sort((first, second) => (second.post.createdAt || 0) - (first.post.createdAt || 0));
+            );
+            const feedPosts = allFeedPosts
+                .filter(({ group }) => state.homeFeedTab !== 'following'
+                    || group.joined
+                    || (group.id === 'group_cleanwater_official' && ngoData.isFollowing))
+                .sort((first, second) => (second.post.createdAt || 0) - (first.post.createdAt || 0));
 
             canvas.innerHTML = `
                 <section class="mx-auto max-w-3xl px-4 py-8 sm:px-6">
@@ -3596,13 +3608,30 @@
                         <h1 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">${t('home_feed_title')}</h1>
                         <p class="mt-2 text-sm leading-relaxed text-slate-600">${t('home_feed_subtitle')}</p>
                     </header>
-                    <div class="space-y-4" role="feed" aria-label="${t('home_feed_title')}">
+                    <div role="tablist" aria-label="${t('home_feed_title')}" class="mb-5 grid grid-cols-2 border-b border-slate-200">
+                        <button type="button" id="home-feed-tab-for-you" role="tab" aria-selected="${state.homeFeedTab === 'for-you'}" aria-controls="home-feed-panel" tabindex="${state.homeFeedTab === 'for-you' ? '0' : '-1'}" onkeydown="handleHomeFeedTabKeydown(event)" onclick="setHomeFeedTab('for-you')" class="border-b-2 px-4 py-3 text-sm font-bold transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${state.homeFeedTab === 'for-you' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500 hover:text-slate-800'}">${t('home_feed_for_you')}</button>
+                        <button type="button" id="home-feed-tab-following" role="tab" aria-selected="${state.homeFeedTab === 'following'}" aria-controls="home-feed-panel" tabindex="${state.homeFeedTab === 'following' ? '0' : '-1'}" onkeydown="handleHomeFeedTabKeydown(event)" onclick="setHomeFeedTab('following')" class="border-b-2 px-4 py-3 text-sm font-bold transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${state.homeFeedTab === 'following' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500 hover:text-slate-800'}">${t('home_feed_following')}</button>
+                    </div>
+                    <div id="home-feed-panel" role="tabpanel" aria-labelledby="home-feed-tab-${state.homeFeedTab}" class="space-y-4">
                         ${feedPosts.length
-                            ? feedPosts.map(({ group, post }) => renderHomeFeedPost(group, post)).join('')
-                            : `<p class="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">${t('home_feed_empty')}</p>`}
+                            ? `<div class="space-y-4" role="feed" aria-label="${t('home_feed_title')}">${feedPosts.map(({ group, post }) => renderHomeFeedPost(group, post)).join('')}</div>`
+                            : `<p class="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">${state.homeFeedTab === 'following' ? t('home_feed_following_empty') : t('home_feed_empty')}</p>`}
                     </div>
                 </section>
             `;
+        }
+
+        function setHomeFeedTab(tab) {
+            state.homeFeedTab = tab;
+            renderApp();
+        }
+
+        function handleHomeFeedTabKeydown(event) {
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+            event.preventDefault();
+            const nextTab = event.currentTarget.id === 'home-feed-tab-for-you' ? 'following' : 'for-you';
+            setHomeFeedTab(nextTab);
+            document.getElementById(`home-feed-tab-${nextTab}`).focus();
         }
 
         function renderHomeFeedPost(group, post) {
