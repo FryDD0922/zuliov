@@ -322,6 +322,7 @@
                 browse_region_asia: "Asia",
                 nav_groups: "GRUPOS",
                 profile_view: "Ver perfil",
+                profile_settings: "Configuración",
                 leader_profile_full: "Ver perfil completo →",
                 leader_profile_back: "Volver al perfil de la ONG",
                 leader_profile_verified: "Identidad y antecedentes verificados",
@@ -335,6 +336,20 @@
                 leader_profile_unavailable: "No se pudo encontrar este perfil.",
                 profile_log_out: "Cerrar sesión",
                 profile_menu_toggle: "Abrir menú de perfil",
+                settings_title: "Configuración",
+                settings_subtitle: "Ajusta tus preferencias de cuenta y comunicación.",
+                settings_account: "Cuenta",
+                settings_account_name: "Nombre",
+                settings_account_email: "Correo electrónico",
+                settings_manage_profile: "Gestionar perfil",
+                settings_notifications: "Notificaciones",
+                settings_project_updates: "Actualizaciones de proyectos",
+                settings_project_updates_desc: "Novedades de los proyectos que sigues.",
+                settings_community_activity: "Actividad de la comunidad",
+                settings_community_activity_desc: "Interacciones y noticias de tu comunidad.",
+                settings_language: "Idioma de la plataforma",
+                settings_language_desc: "Elige el idioma de la interfaz.",
+                settings_close: "Cerrar configuración",
                 guest_name: "Invitado",
                 auth_sign_in: "Iniciar sesión",
                 auth_register: "Registrarse",
@@ -764,6 +779,7 @@
                 browse_region_asia: "Asia",
                 nav_groups: "GROUPS",
                 profile_view: "View Profile",
+                profile_settings: "Settings",
                 leader_profile_full: "View Full Profile →",
                 leader_profile_back: "Back to NGO Profile",
                 leader_profile_verified: "Identity & Background Verified",
@@ -777,6 +793,20 @@
                 leader_profile_unavailable: "This profile could not be found.",
                 profile_log_out: "Log Out",
                 profile_menu_toggle: "Open profile menu",
+                settings_title: "Settings",
+                settings_subtitle: "Manage your account and communication preferences.",
+                settings_account: "Account",
+                settings_account_name: "Name",
+                settings_account_email: "Email address",
+                settings_manage_profile: "Manage profile",
+                settings_notifications: "Notifications",
+                settings_project_updates: "Project updates",
+                settings_project_updates_desc: "News from projects you follow.",
+                settings_community_activity: "Community activity",
+                settings_community_activity_desc: "Interactions and news from your community.",
+                settings_language: "Platform language",
+                settings_language_desc: "Choose the language used across the platform.",
+                settings_close: "Close settings",
                 guest_name: "Guest",
                 auth_sign_in: "Sign In",
                 auth_register: "Register",
@@ -1208,7 +1238,9 @@
             }
         };
 
-        let currentLang = 'en';
+        let currentLang = ['en', 'es'].includes(localStorage.getItem('zuliov-language'))
+            ? localStorage.getItem('zuliov-language')
+            : 'en';
 
         function t(key) {
             return (locales[currentLang] && locales[currentLang][key]) ? locales[currentLang][key] : (locales['en'][key] || key);
@@ -1238,9 +1270,12 @@
         }
 
         function setLanguage(lang) {
+            if (!['en', 'es'].includes(lang)) return;
             currentLang = lang;
+            localStorage.setItem('zuliov-language', lang);
             document.documentElement.lang = lang;
             renderApp();
+            if (document.getElementById('settings-modal')) renderSettingsModal();
             if (document.getElementById('register-modal')) renderRegisterModal();
             if (document.getElementById('login-modal')) renderLoginModal();
             if (document.getElementById('connection-request-modal')) {
@@ -2348,6 +2383,10 @@
                                 <i class="fa-regular fa-user w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-profile-view-label">View Profile</span>
                             </button>
+                            <button type="button" role="menuitem" onclick="openSettingsModal()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                                <i class="fa-solid fa-gear w-4 text-center text-slate-500" aria-hidden="true"></i>
+                                <span id="header-profile-settings-label">Settings</span>
+                            </button>
                             <button type="button" role="menuitem" onclick="logOut()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                                 <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-profile-logout-label">Log Out</span>
@@ -2404,6 +2443,10 @@
                         <button type="button" role="menuitem" onclick="navigateTo('profile')" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                             <i class="fa-regular fa-user w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-view-label">View Profile</span>
+                        </button>
+                        <button type="button" role="menuitem" onclick="openSettingsModal()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                            <i class="fa-solid fa-gear w-4 text-center text-slate-500" aria-hidden="true"></i>
+                            <span id="mobile-profile-settings-label">Settings</span>
                         </button>
                         <button type="button" role="menuitem" onclick="logOut()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                             <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
@@ -2581,6 +2624,115 @@
             menu.classList.remove('animate-dropdown-in');
             void menu.offsetWidth;
             menu.classList.add('animate-dropdown-in');
+        }
+
+        function getSettingsPreferences() {
+            try {
+                const savedPreferences = JSON.parse(localStorage.getItem('zuliov-settings') || '{}');
+                return {
+                    projectUpdates: savedPreferences.projectUpdates !== false,
+                    communityActivity: savedPreferences.communityActivity !== false
+                };
+            } catch {
+                return { projectUpdates: true, communityActivity: true };
+            }
+        }
+
+        function saveSettingsPreference(key, value) {
+            const preferences = getSettingsPreferences();
+            if (!(key in preferences)) return;
+            preferences[key] = value;
+            localStorage.setItem('zuliov-settings', JSON.stringify(preferences));
+        }
+
+        function handleSettingsModalKeydown(event) {
+            if (event.key === 'Escape') closeSettingsModal();
+        }
+
+        function openSettingsModal() {
+            closeProfileDropdown();
+            renderSettingsModal();
+            document.addEventListener('keydown', handleSettingsModalKeydown);
+            document.getElementById('settings-close-button')?.focus();
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('modal-container').innerHTML = '';
+            document.removeEventListener('keydown', handleSettingsModalKeydown);
+        }
+
+        function renderSettingsModal() {
+            const preferences = getSettingsPreferences();
+            document.getElementById('modal-container').innerHTML = `
+                <div id="settings-modal" class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm animate-modal-in" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title" onclick="if (event.target === event.currentTarget) closeSettingsModal()">
+                    <section class="my-auto w-full max-w-xl overflow-hidden rounded-xl border border-slate-200 bg-white shadow-floating dark:border-slate-700 dark:bg-slate-900">
+                        <header class="flex items-start justify-between border-b border-slate-200 px-6 py-5 dark:border-slate-700">
+                            <div>
+                                <p class="font-mono text-[10px] font-semibold uppercase tracking-widest text-primary-700 dark:text-primary-200">ZULIOV / ACCOUNT</p>
+                                <h2 id="settings-modal-title" class="landing-serif mt-1 text-3xl text-slate-900 dark:text-white">${t('settings_title')}</h2>
+                                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">${t('settings_subtitle')}</p>
+                            </div>
+                            <button type="button" id="settings-close-button" onclick="closeSettingsModal()" aria-label="${t('settings_close')}" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 dark:hover:bg-slate-800 dark:hover:text-white">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                        </header>
+                        <div class="divide-y divide-slate-200 px-6 dark:divide-slate-700">
+                            <section class="py-5">
+                                <h3 class="font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-500">${t('settings_account')}</h3>
+                                <div class="mt-4 flex flex-wrap items-end justify-between gap-4">
+                                    <dl class="space-y-3 text-sm">
+                                        <div>
+                                            <dt class="text-xs text-slate-500">${t('settings_account_name')}</dt>
+                                            <dd id="settings-account-name" class="mt-0.5 font-semibold text-slate-900 dark:text-white"></dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-xs text-slate-500">${t('settings_account_email')}</dt>
+                                            <dd id="settings-account-email" class="mt-0.5 font-medium text-slate-700 dark:text-slate-300"></dd>
+                                        </div>
+                                    </dl>
+                                    <button type="button" onclick="closeSettingsModal(); navigateTo('profile')" class="inline-flex items-center gap-2 pb-1 text-sm font-semibold text-primary-700 transition hover:text-primary-900 dark:text-primary-200 dark:hover:text-white">
+                                        ${t('settings_manage_profile')} <i class="fa-solid fa-arrow-up-right-from-square text-[10px]" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </section>
+                            <section class="py-5">
+                                <h3 class="font-mono text-[10px] font-semibold uppercase tracking-widest text-slate-500">${t('settings_notifications')}</h3>
+                                <div class="mt-2 divide-y divide-slate-100 dark:divide-slate-800">
+                                    <label class="flex cursor-pointer items-center justify-between gap-4 py-4">
+                                        <span>
+                                            <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">${t('settings_project_updates')}</span>
+                                            <span class="mt-1 block text-xs text-slate-500">${t('settings_project_updates_desc')}</span>
+                                        </span>
+                                        <input type="checkbox" onchange="saveSettingsPreference('projectUpdates', this.checked)" ${preferences.projectUpdates ? 'checked' : ''} class="peer sr-only">
+                                        <span aria-hidden="true" class="relative h-6 w-11 shrink-0 rounded-full bg-slate-300 transition peer-checked:bg-primary-600 after:absolute after:left-1 after:top-1 after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5 dark:bg-slate-600"></span>
+                                    </label>
+                                    <label class="flex cursor-pointer items-center justify-between gap-4 py-4">
+                                        <span>
+                                            <span class="block text-sm font-semibold text-slate-800 dark:text-slate-100">${t('settings_community_activity')}</span>
+                                            <span class="mt-1 block text-xs text-slate-500">${t('settings_community_activity_desc')}</span>
+                                        </span>
+                                        <input type="checkbox" onchange="saveSettingsPreference('communityActivity', this.checked)" ${preferences.communityActivity ? 'checked' : ''} class="peer sr-only">
+                                        <span aria-hidden="true" class="relative h-6 w-11 shrink-0 rounded-full bg-slate-300 transition peer-checked:bg-primary-600 after:absolute after:left-1 after:top-1 after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5 dark:bg-slate-600"></span>
+                                    </label>
+                                </div>
+                            </section>
+                            <section class="py-5">
+                                <div class="flex flex-wrap items-center justify-between gap-4">
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100">${t('settings_language')}</h3>
+                                        <p class="mt-1 text-xs text-slate-500">${t('settings_language_desc')}</p>
+                                    </div>
+                                    <div class="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-1 dark:border-slate-700 dark:bg-slate-800" role="group" aria-label="${t('settings_language')}">
+                                        <button type="button" onclick="setLanguage('en')" aria-pressed="${currentLang === 'en'}" class="rounded-md px-4 py-2 font-mono text-xs font-bold transition ${currentLang === 'en' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-white' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'}">EN</button>
+                                        <button type="button" onclick="setLanguage('es')" aria-pressed="${currentLang === 'es'}" class="rounded-md px-4 py-2 font-mono text-xs font-bold transition ${currentLang === 'es' ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-white' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'}">ES</button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </section>
+                </div>`;
+            document.getElementById('settings-account-name').textContent = state.currentUser.name || '';
+            document.getElementById('settings-account-email').textContent = state.currentUser.email || '';
         }
 
         let loginDraft = {};
@@ -3420,6 +3572,8 @@
             document.getElementById('mobile-profile-trigger').setAttribute('aria-label', isAuthenticated ? t('profile_menu_toggle') : t('auth_sign_in'));
             document.getElementById('header-profile-view-label').textContent = t('profile_view');
             document.getElementById('mobile-profile-view-label').textContent = t('profile_view');
+            document.getElementById('header-profile-settings-label').textContent = t('profile_settings');
+            document.getElementById('mobile-profile-settings-label').textContent = t('profile_settings');
             document.getElementById('header-profile-logout-label').textContent = t('profile_log_out');
             document.getElementById('mobile-profile-logout-label').textContent = t('profile_log_out');
             document.getElementById('sim-title').textContent = t('sim_controller');
