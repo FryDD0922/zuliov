@@ -264,6 +264,37 @@
         .landing-shadow {
             box-shadow: 0 30px 90px -42px rgba(2, 6, 23, .45);
         }
+
+        .inbox-layout {
+            grid-template-columns: minmax(17rem, 0.9fr) minmax(0, 1.8fr) minmax(17rem, 0.85fr);
+        }
+
+        @media (max-width: 1023px) {
+            .inbox-layout {
+                grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.5fr);
+            }
+
+            .inbox-profile-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .inbox-layout {
+                grid-template-columns: minmax(0, 1fr);
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
+            .inbox-conversation-panel {
+                max-height: 12rem;
+            }
+
+            .inbox-chat-panel {
+                min-height: 24rem;
+                flex-shrink: 0;
+            }
+        }
     </style>
 </head>
 <body class="h-full flex flex-col antialiased selection:bg-primary-100 selection:text-primary-700 dark:bg-slate-950 dark:text-slate-200">
@@ -324,6 +355,23 @@
                 profile_view: "Ver perfil",
                 profile_settings: "Configuración",
                 profile_create_organization: "Crear Organización",
+                profile_manage: "Gestionar",
+                profile_manage_section: "Administrar",
+                org_manage_title: "Gestionar organizaciones",
+                org_manage_status: "Estado",
+                org_manage_status_pending: "Pendiente de revisión",
+                org_manage_status_approved: "Aprobada",
+                org_manage_status_rejected: "Rechazada",
+                org_manage_status_submitted: "Enviada",
+                org_manage_country: "País",
+                org_manage_type: "Tipo",
+                org_manage_mission: "Misión",
+                org_manage_website: "Sitio web",
+                org_manage_contact: "Contacto",
+                org_manage_created: "Fecha de creación",
+                org_manage_close: "Cerrar administración de organización",
+                org_manage_load_error: "No se pudieron cargar las organizaciones. Inténtalo de nuevo más tarde.",
+                org_manage_open_error: "No se pudo abrir la organización seleccionada.",
                 org_proposal_eyebrow: "ZULIOV / COMUNIDAD",
                 org_proposal_title: "Crear una organización",
                 org_proposal_subtitle: "Crea tu ONG, grupo informal o movimiento cívico en Zuliov.",
@@ -335,8 +383,8 @@
                 org_proposal_type_movement: "Movimiento cívico",
                 org_proposal_registration_label: "Código de Registro Oficial / Tax ID",
                 org_proposal_registration_placeholder: "p. ej., EIN, RIF, RUT o número de registro de ONG",
-                org_proposal_country: "País o región",
-                org_proposal_country_placeholder: "Ej. Colombia",
+                org_proposal_country: "País",
+                org_proposal_country_placeholder: "Selecciona un país",
                 org_proposal_mission: "Misión y trabajo comunitario",
                 org_proposal_mission_placeholder: "Describe brevemente su propósito y el impacto que busca.",
                 org_proposal_website: "Sitio web (opcional)",
@@ -367,6 +415,27 @@
                 settings_account_email: "Correo electrónico",
                 settings_manage_profile: "Gestionar perfil",
                 settings_notifications: "Notificaciones",
+                header_messages: "Mensajes",
+                inbox_title: "Bandeja de entrada",
+                inbox_active: "Activos",
+                inbox_pending: "Pendientes",
+                inbox_connected: "Conectado",
+                inbox_pending_status: "Pendiente",
+                inbox_accept: "Aceptar solicitud",
+                inbox_empty: "No hay conversaciones en esta lista.",
+                inbox_select: "Selecciona una conversación para ver los mensajes.",
+                inbox_you: "Tú",
+                inbox_about: "Acerca de",
+                inbox_country: "País",
+                inbox_view_profile: "Ver perfil",
+                inbox_profile_unavailable: "Este perfil aún no está disponible.",
+                inbox_message_placeholder: "Escribe un mensaje...",
+                inbox_send: "Enviar",
+                inbox_close: "Cerrar bandeja de entrada",
+                inbox_online: "En línea",
+                inbox_organization: "Organización",
+                inbox_person: "Persona",
+                inbox_yesterday: "Ayer",
                 settings_project_updates: "Actualizaciones de proyectos",
                 settings_project_updates_desc: "Novedades de los proyectos que sigues.",
                 settings_community_activity: "Actividad de la comunidad",
@@ -800,6 +869,23 @@
                 profile_view: "View Profile",
                 profile_settings: "Settings",
                 profile_create_organization: "Create Organization",
+                profile_manage: "Manage",
+                profile_manage_section: "Manage",
+                org_manage_title: "Manage organizations",
+                org_manage_status: "Status",
+                org_manage_status_pending: "Pending review",
+                org_manage_status_approved: "Approved",
+                org_manage_status_rejected: "Rejected",
+                org_manage_status_submitted: "Submitted",
+                org_manage_country: "Country",
+                org_manage_type: "Type",
+                org_manage_mission: "Mission",
+                org_manage_website: "Website",
+                org_manage_contact: "Contact",
+                org_manage_created: "Created",
+                org_manage_close: "Close organization management",
+                org_manage_load_error: "Organizations could not be loaded. Please try again later.",
+                org_manage_open_error: "The selected organization could not be opened.",
                 org_proposal_eyebrow: "ZULIOV / COMMUNITY",
                 org_proposal_title: "Create an organization",
                 org_proposal_subtitle: "Set up your NGO, informal group, or civic movement on Zuliov.",
@@ -811,8 +897,8 @@
                 org_proposal_type_movement: "Civic movement",
                 org_proposal_registration_label: "Official Registration / Tax ID",
                 org_proposal_registration_placeholder: "e.g., EIN, RIF, RUT, or NGO registration number",
-                org_proposal_country: "Country or region",
-                org_proposal_country_placeholder: "e.g. Colombia",
+                org_proposal_country: "Country",
+                org_proposal_country_placeholder: "Select a country",
                 org_proposal_mission: "Mission and community work",
                 org_proposal_mission_placeholder: "Briefly describe its purpose and the impact it aims to make.",
                 org_proposal_website: "Website (optional)",
@@ -843,6 +929,27 @@
                 settings_account_email: "Email address",
                 settings_manage_profile: "Manage profile",
                 settings_notifications: "Notifications",
+                header_messages: "Messages",
+                inbox_title: "Inbox",
+                inbox_active: "Active",
+                inbox_pending: "Pending",
+                inbox_connected: "Connected",
+                inbox_pending_status: "Pending",
+                inbox_accept: "Accept request",
+                inbox_empty: "There are no conversations in this list.",
+                inbox_select: "Select a conversation to view messages.",
+                inbox_you: "You",
+                inbox_about: "About",
+                inbox_country: "Country",
+                inbox_view_profile: "View profile",
+                inbox_profile_unavailable: "This profile is not available yet.",
+                inbox_message_placeholder: "Write a message...",
+                inbox_send: "Send",
+                inbox_close: "Close inbox",
+                inbox_online: "Online",
+                inbox_organization: "Organization",
+                inbox_person: "Person",
+                inbox_yesterday: "Yesterday",
                 settings_project_updates: "Project updates",
                 settings_project_updates_desc: "News from projects you follow.",
                 settings_community_activity: "Community activity",
@@ -1316,6 +1423,7 @@
             localStorage.setItem('zuliov-language', lang);
             document.documentElement.lang = lang;
             renderApp();
+            if (!document.getElementById('inbox-modal').classList.contains('hidden')) renderInbox();
             if (document.getElementById('settings-modal')) renderSettingsModal();
             if (organizationProposalDraft) renderOrganizationProposalModal(organizationProposalDraft);
             if (document.getElementById('register-modal')) renderRegisterModal();
@@ -2174,6 +2282,62 @@
                 }
             ],
 
+            inboxFilter: 'active',
+            selectedInboxConversationId: 'inbox-cleanwater',
+            inboxConversations: [
+                {
+                    id: 'inbox-cleanwater',
+                    name: 'CleanWater International',
+                    avatar: 'assets/cleanwater-logo.jpg',
+                    country: 'Kenya',
+                    about: 'Empowering rural communities through sustainable solar-powered clean water infrastructure and transparent project reporting.',
+                    aboutEs: 'Impulsamos a las comunidades rurales con infraestructura de agua limpia alimentada por energía solar y reportes transparentes de proyectos.',
+                    connection: 'active',
+                    time: '5m ago',
+                    timeEs: 'hace 5 min',
+                    profileType: 'organization',
+                    profileId: 'ngo_clean_water',
+                    messages: [
+                        { from: 'them', text: 'Hello Sarah! We have a new update on the Kitui water project and would love to share the verified field report with you.', textEs: '¡Hola, Sarah! Tenemos novedades sobre el proyecto de agua de Kitui y nos gustaría compartir contigo el informe de campo verificado.', time: '10:32 AM' },
+                        { from: 'you', text: 'That sounds wonderful. Please send it over when it is ready.', textEs: 'Suena genial. Envíamelo cuando esté listo, por favor.', time: '10:38 AM' },
+                        { from: 'them', text: 'Absolutely! The report includes the latest well inspection and community feedback.', textEs: '¡Por supuesto! El informe incluye la inspección más reciente del pozo y comentarios de la comunidad.', time: '10:42 AM' }
+                    ]
+                },
+                {
+                    id: 'inbox-marcus',
+                    name: 'Marcus Vance',
+                    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120',
+                    country: 'Kenya',
+                    about: 'Executive Director at CleanWater International, working on water security and renewable energy across East Africa.',
+                    aboutEs: 'Director ejecutivo de CleanWater International; trabaja en seguridad hídrica y energía renovable en África Oriental.',
+                    connection: 'active',
+                    time: '1h ago',
+                    timeEs: 'hace 1 h',
+                    profileType: 'leader',
+                    profileId: 'lead_1',
+                    messages: [
+                        { from: 'them', text: 'Thank you for supporting community-led water access. Your contribution is making a real difference.', textEs: 'Gracias por apoyar el acceso comunitario al agua. Tu contribución está marcando una gran diferencia.', time: 'Yesterday' },
+                        { from: 'you', text: 'I am glad to be part of this work. How is the new site progressing?', textEs: 'Me alegra formar parte de este trabajo. ¿Cómo avanza el nuevo sitio?', time: 'Yesterday' }
+                    ]
+                },
+                {
+                    id: 'inbox-maji-community',
+                    name: 'Maji Community Network',
+                    avatar: 'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=120',
+                    country: 'Uganda',
+                    about: 'A local community network bringing neighbors together to improve access to clean water and sanitation.',
+                    aboutEs: 'Una red comunitaria local que reúne a sus vecinos para mejorar el acceso al agua potable y al saneamiento.',
+                    connection: 'pending',
+                    time: '2h ago',
+                    timeEs: 'hace 2 h',
+                    profileType: 'organization',
+                    profileId: null,
+                    messages: [
+                        { from: 'them', text: 'Hello Sarah, we would love to connect and tell you about our community water initiative.', textEs: 'Hola, Sarah. Nos gustaría conectar contigo y contarte sobre nuestra iniciativa comunitaria de agua.', time: '9:15 AM' }
+                    ]
+                }
+            ],
+
             ngoEmptyStateActive: false,
             projectContinent: 'all',
             projectSearchTerm: '',
@@ -2394,6 +2558,10 @@
                         <i id="theme-toggle-icon" class="fa-solid fa-moon"></i>
                     </button>
 
+                    <button type="button" id="messages-button" onclick="openInbox()" aria-haspopup="dialog" aria-controls="inbox-modal" aria-label="Messages" title="Messages" class="relative p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 rounded-lg transition-all">
+                        <i class="fa-regular fa-comment-dots text-base" aria-hidden="true"></i>
+                    </button>
+
                     <!-- Notification Drawer Button -->
                     <button type="button" id="notification-button" onclick="openNotificationDrawer()" class="relative p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 rounded-lg transition-all" title="Notifications">
                         <i class="fa-regular fa-bell text-base"></i>
@@ -2429,10 +2597,18 @@
                                 <i class="fa-solid fa-gear w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-profile-settings-label">Settings</span>
                             </button>
+                            <div id="header-managed-organizations" class="hidden border-t border-slate-100"></div>
                             <button type="button" role="menuitem" onclick="openOrganizationProposalModal(event)" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                                 <i class="fa-solid fa-people-group w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-profile-create-organization-label">Create Organization</span>
                             </button>
+                            <div role="group" aria-labelledby="header-profile-manage-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
+                                <p id="header-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
+                                <div class="mt-2 flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
+                                    <img src="assets/logo.png" alt="" class="h-7 w-7 rounded-md object-contain">
+                                    <span class="text-sm font-semibold text-slate-700">Zuliov</span>
+                                </div>
+                            </div>
                             <button type="button" role="menuitem" onclick="logOut()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                                 <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-profile-logout-label">Log Out</span>
@@ -2448,6 +2624,15 @@
                     </div>
                     <button onclick="toggleDarkMode()" id="guest-theme-toggle-mobile" type="button" aria-pressed="false" aria-label="Activar modo oscuro" title="Activar modo oscuro" class="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 transition-all">
                         <i id="guest-theme-toggle-icon-mobile" class="fa-solid fa-moon" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="guest-hidden flex shrink-0 items-center gap-1 md:hidden" id="mobile-header-messaging">
+                    <button type="button" id="mobile-messages-button" onclick="openInbox()" aria-haspopup="dialog" aria-controls="inbox-modal" aria-label="Messages" title="Messages" class="relative inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900">
+                        <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" id="mobile-notification-button" onclick="openNotificationDrawer()" aria-label="Notifications" title="Notifications" class="relative inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900">
+                        <i class="fa-regular fa-bell" aria-hidden="true"></i>
+                        <span id="mobile-notif-badge" class="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary-600 ring-2 ring-white"></span>
                     </button>
                 </div>
                 <button type="button" id="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú" aria-controls="mobile-navigation" aria-expanded="false" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-colors hover:bg-slate-100 md:hidden">
@@ -2494,10 +2679,18 @@
                             <i class="fa-solid fa-gear w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-settings-label">Settings</span>
                         </button>
+                        <div id="mobile-managed-organizations" class="hidden border-t border-slate-100"></div>
                         <button type="button" role="menuitem" onclick="openOrganizationProposalModal(event)" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                             <i class="fa-solid fa-people-group w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-create-organization-label">Create Organization</span>
                         </button>
+                        <div role="group" aria-labelledby="mobile-profile-manage-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
+                            <p id="mobile-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
+                            <div class="mt-2 flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
+                                <img src="assets/logo.png" alt="" class="h-7 w-7 rounded-md object-contain">
+                                <span class="text-sm font-semibold text-slate-700">Zuliov</span>
+                            </div>
+                        </div>
                         <button type="button" role="menuitem" onclick="logOut()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                             <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-logout-label">Log Out</span>
@@ -2534,6 +2727,42 @@
             </div>
         </div>
     </div>
+
+    <section id="inbox-modal" class="fixed inset-0 z-[60] hidden bg-slate-50 dark:bg-slate-950" role="dialog" aria-modal="true" aria-labelledby="inbox-title">
+        <div class="flex h-full flex-col">
+            <header class="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-3 sm:px-6 dark:border-slate-800 dark:bg-slate-900">
+                <div class="flex min-w-0 items-center gap-3">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-200">
+                        <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>
+                    </span>
+                    <div class="min-w-0">
+                        <p class="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-primary-600">ZULIOV / COMMUNITY</p>
+                        <h1 id="inbox-title" class="truncate text-lg font-bold text-slate-900 dark:text-white"></h1>
+                    </div>
+                </div>
+                <button type="button" onclick="closeInbox()" id="inbox-close-button" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800" aria-label="Close inbox">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+            <div class="flex min-h-0 flex-1 flex-col p-3 sm:p-5 lg:p-6">
+                <div class="mb-3 flex shrink-0 items-center gap-2 border-b border-slate-200 dark:border-slate-800">
+                    <button type="button" id="inbox-active-tab" onclick="setInboxFilter('active')" class="border-b-2 px-4 py-3 text-sm font-semibold transition-colors" aria-pressed="true"></button>
+                    <button type="button" id="inbox-pending-tab" onclick="setInboxFilter('pending')" class="border-b-2 px-4 py-3 text-sm font-semibold transition-colors" aria-pressed="false"></button>
+                </div>
+                <div class="inbox-layout grid min-h-0 flex-1 gap-3 overflow-hidden lg:gap-4">
+                    <section class="inbox-conversation-panel flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-subtle dark:border-slate-800 dark:bg-slate-900" aria-label="Conversation list">
+                        <div id="inbox-conversation-list" class="min-h-0 flex-1 overflow-y-auto"></div>
+                    </section>
+                    <section class="inbox-chat-panel flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-subtle dark:border-slate-800 dark:bg-slate-900" aria-label="Chat">
+                        <div id="inbox-chat-content" class="flex min-h-0 flex-1 flex-col"></div>
+                    </section>
+                    <aside class="inbox-profile-panel min-h-0 overflow-y-auto rounded-xl border border-slate-200 bg-white p-5 shadow-subtle dark:border-slate-800 dark:bg-slate-900" aria-label="Contact profile">
+                        <div id="inbox-profile-content"></div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Global Toast Notification Banner Container -->
     <div id="toast-container" class="fixed top-20 right-6 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm"></div>
@@ -2642,6 +2871,7 @@
             closeProfileDropdown();
             toggleMobileMenu(false);
             closeNotificationDrawer();
+            closeInbox();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             renderApp();
         }
@@ -2669,6 +2899,7 @@
             closeProfileDropdown();
             if (!shouldOpen) return;
 
+            if (isAuthenticated) renderManagedOrganizationsMenu();
             trigger.setAttribute('aria-expanded', 'true');
             menu.classList.remove('hidden');
             menu.classList.remove('animate-dropdown-in');
@@ -2785,6 +3016,274 @@
             document.getElementById('settings-account-email').textContent = state.currentUser.email || '';
         }
 
+        const organizationProposalCountries = [
+            { name: 'España', code: 'es' },
+            { name: 'México', code: 'mx' },
+            { name: 'Costa Rica', code: 'cr' },
+            { name: 'El Salvador', code: 'sv' },
+            { name: 'Guatemala', code: 'gt' },
+            { name: 'Honduras', code: 'hn' },
+            { name: 'Nicaragua', code: 'ni' },
+            { name: 'Panamá', code: 'pa' },
+            { name: 'Cuba', code: 'cu' },
+            { name: 'República Dominicana', code: 'do' },
+            { name: 'Argentina', code: 'ar' },
+            { name: 'Bolivia', code: 'bo' },
+            { name: 'Chile', code: 'cl' },
+            { name: 'Colombia', code: 'co' },
+            { name: 'Ecuador', code: 'ec' },
+            { name: 'Paraguay', code: 'py' },
+            { name: 'Perú', code: 'pe' },
+            { name: 'Uruguay', code: 'uy' },
+            { name: 'Venezuela', code: 've' },
+            { name: 'Guinea Ecuatorial', code: 'gq' },
+            { name: 'Puerto Rico', code: 'pr' },
+            { name: 'Estados Unidos', code: 'us' },
+            { name: 'Andorra', code: 'ad' },
+            { name: 'Belice', code: 'bz' }
+        ];
+        let organizationProposalCountryActiveIndex = -1;
+
+        function renderOrganizationProposalCountryOptions(query = '') {
+            const list = document.getElementById('organization-proposal-country-options');
+            if (!list) return;
+            const normalizedQuery = query.trim().toLocaleLowerCase();
+            const matches = organizationProposalCountries.filter(country =>
+                country.name.toLocaleLowerCase().includes(normalizedQuery)
+            );
+            organizationProposalCountryActiveIndex = matches.length
+                ? Math.min(organizationProposalCountryActiveIndex, matches.length - 1)
+                : -1;
+            list.innerHTML = matches.length
+                ? matches.map((country, index) => `
+                    <button type="button" id="organization-proposal-country-option-${index}" role="option"
+                        aria-selected="${index === organizationProposalCountryActiveIndex}"
+                        onmousedown="event.preventDefault()"
+                        onclick="selectOrganizationProposalCountry('${country.code}')"
+                        class="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-100 ${index === organizationProposalCountryActiveIndex ? 'bg-slate-100' : ''}">
+                        <img src="https://flagcdn.com/24x18/${country.code}.png" alt="" class="h-3.5 w-5 rounded-sm object-cover">
+                        <span>${country.name}</span>
+                    </button>
+                `).join('')
+                : `<p class="px-3 py-2 text-sm text-slate-500">${currentLang === 'es' ? 'No hay países que coincidan.' : 'No matching countries.'}</p>`;
+            const search = document.getElementById('organization-proposal-country-search');
+            if (search) {
+                search.setAttribute('aria-activedescendant', organizationProposalCountryActiveIndex >= 0
+                    ? `organization-proposal-country-option-${organizationProposalCountryActiveIndex}`
+                    : '');
+            }
+        }
+
+        function openOrganizationProposalCountryOptions() {
+            const input = document.getElementById('organization-proposal-country');
+            const popup = document.getElementById('organization-proposal-country-popup');
+            const search = document.getElementById('organization-proposal-country-search');
+            if (!input || !popup || !search) return;
+            popup.classList.remove('hidden');
+            input.setAttribute('aria-expanded', 'true');
+            search.value = '';
+            organizationProposalCountryActiveIndex = -1;
+            renderOrganizationProposalCountryOptions();
+            search.focus();
+        }
+
+        function closeOrganizationProposalCountryOptions(restoreFocus = false) {
+            const input = document.getElementById('organization-proposal-country');
+            const popup = document.getElementById('organization-proposal-country-popup');
+            if (!input || !popup) return;
+            popup.classList.add('hidden');
+            input.setAttribute('aria-expanded', 'false');
+            organizationProposalCountryActiveIndex = -1;
+            if (restoreFocus) input.focus();
+        }
+
+        function selectOrganizationProposalCountry(countryCode) {
+            const country = organizationProposalCountries.find(option => option.code === countryCode);
+            const input = document.getElementById('organization-proposal-country');
+            const flag = document.getElementById('organization-proposal-country-flag');
+            if (!country || !input || !flag) return;
+            input.value = country.name;
+            flag.src = `https://flagcdn.com/24x18/${country.code}.png`;
+            flag.classList.remove('hidden');
+            closeOrganizationProposalCountryOptions();
+            input.focus();
+        }
+
+        function handleOrganizationProposalCountrySearch(event) {
+            const search = event.currentTarget;
+            const query = search.value.trim().toLocaleLowerCase();
+            const matches = organizationProposalCountries.filter(country =>
+                country.name.toLocaleLowerCase().includes(query)
+            );
+            const list = document.getElementById('organization-proposal-country-options');
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                event.preventDefault();
+                if (!matches.length) return;
+                organizationProposalCountryActiveIndex = event.key === 'ArrowDown'
+                    ? (organizationProposalCountryActiveIndex + 1) % matches.length
+                    : (organizationProposalCountryActiveIndex <= 0
+                        ? matches.length - 1
+                        : organizationProposalCountryActiveIndex - 1);
+                renderOrganizationProposalCountryOptions(search.value);
+                document.getElementById(`organization-proposal-country-option-${organizationProposalCountryActiveIndex}`)?.scrollIntoView({ block: 'nearest' });
+            } else if (event.key === 'Enter' && list && organizationProposalCountryActiveIndex >= 0) {
+                event.preventDefault();
+                selectOrganizationProposalCountry(matches[organizationProposalCountryActiveIndex].code);
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                event.stopPropagation();
+                closeOrganizationProposalCountryOptions(true);
+            }
+        }
+
+        let organizationManagementTrigger = null;
+
+        function getManagedOrganizationProposals() {
+            let proposals;
+            try {
+                proposals = JSON.parse(localStorage.getItem('zuliov-organization-proposals') || '[]');
+            } catch (error) {
+                console.error('Unable to read organization proposals.', error);
+                return null;
+            }
+            if (!Array.isArray(proposals)) {
+                console.error('Stored organization proposals are not an array.');
+                return null;
+            }
+            return proposals.filter(proposal =>
+                proposal &&
+                typeof proposal.id === 'string' &&
+                typeof proposal.name === 'string' &&
+                proposal.submittedBy === state.currentUser.id
+            );
+        }
+
+        function renderManagedOrganizationsMenu() {
+            if (!isAuthenticated) {
+                ['header-managed-organizations', 'mobile-managed-organizations'].forEach(containerId => {
+                    const container = document.getElementById(containerId);
+                    if (container) {
+                        container.innerHTML = '';
+                        container.classList.add('hidden');
+                    }
+                });
+                return;
+            }
+            const proposals = getManagedOrganizationProposals();
+            ['header-managed-organizations', 'mobile-managed-organizations'].forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                container.classList.toggle('hidden', !proposals || proposals.length === 0);
+                if (!proposals) {
+                    container.innerHTML = `<p role="alert" class="px-4 py-3 text-xs text-rose-600">${t('org_manage_load_error')}</p>`;
+                    container.classList.remove('hidden');
+                    return;
+                }
+                container.innerHTML = proposals.length
+                    ? `<div role="group" aria-label="${t('profile_manage')}" class="py-1">
+                        <p class="px-4 pb-1 pt-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">${t('profile_manage')}</p>
+                        ${proposals.map(proposal => `
+                            <button type="button" role="menuitem" onclick="openOrganizationManagementPanel(${escapeHTML(JSON.stringify(proposal.id))})" aria-label="${escapeHTML(proposal.name)}" class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-primary-700"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
+                                <span class="min-w-0 truncate">${escapeHTML(proposal.name)}</span>
+                            </button>
+                        `).join('')}
+                    </div>`
+                    : '';
+            });
+        }
+
+        function getOrganizationProposalStatusLabel(status) {
+            const statusKeys = {
+                pending_review: 'org_manage_status_pending',
+                approved: 'org_manage_status_approved',
+                rejected: 'org_manage_status_rejected'
+            };
+            return t(statusKeys[status] || 'org_manage_status_submitted');
+        }
+
+        function openOrganizationManagementPanel(proposalId) {
+            const proposals = getManagedOrganizationProposals();
+            const proposal = proposals?.find(item => item.id === proposalId);
+            if (!proposal) {
+                showToast(proposals ? t('org_manage_open_error') : t('org_manage_load_error'), 'info');
+                return;
+            }
+            organizationManagementTrigger = document.activeElement instanceof HTMLElement
+                ? (document.activeElement.closest('#mobile-profile-menu')
+                    ? document.getElementById('mobile-profile-trigger')
+                    : document.getElementById('header-profile'))
+                : null;
+            closeProfileDropdown();
+            const typeKey = {
+                ngo: 'org_proposal_type_ngo',
+                informal_group: 'org_proposal_type_informal_group',
+                movement: 'org_proposal_type_movement'
+            }[proposal.type];
+            const statusClass = {
+                pending_review: 'bg-amber-50 text-amber-800',
+                approved: 'bg-emerald-50 text-emerald-800',
+                rejected: 'bg-rose-50 text-rose-800'
+            }[proposal.status] || 'bg-slate-100 text-slate-700';
+            const createdAt = new Date(proposal.createdAt);
+            const createdLabel = Number.isNaN(createdAt.getTime())
+                ? ''
+                : createdAt.toLocaleDateString(currentLang === 'es' ? 'es' : 'en', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            const detailRow = (label, value) => value
+                ? `<div class="grid gap-1 border-b border-slate-100 py-3 sm:grid-cols-[9rem_1fr] sm:gap-4"><dt class="text-xs font-semibold text-slate-500">${label}</dt><dd class="break-words text-sm text-slate-800">${escapeHTML(String(value))}</dd></div>`
+                : '';
+
+            document.getElementById('modal-container').innerHTML = `
+                <div id="organization-management-modal" class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm animate-modal-in" role="dialog" aria-modal="true" aria-labelledby="organization-management-title" onclick="if (event.target === event.currentTarget) closeOrganizationManagementPanel()">
+                    <section class="my-auto max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-floating">
+                        <header class="flex items-start justify-between gap-5 border-b border-slate-200 px-6 py-5 sm:px-8">
+                            <div class="flex min-w-0 items-center gap-3">
+                                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-700"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
+                                <div class="min-w-0">
+                                    <p class="font-mono text-[10px] font-semibold uppercase tracking-widest text-primary-700">${t('org_manage_title')}</p>
+                                    <h2 id="organization-management-title" class="mt-1 truncate text-xl font-bold text-slate-900">${escapeHTML(proposal.name)}</h2>
+                                </div>
+                            </div>
+                            <button type="button" id="organization-management-close-button" onclick="closeOrganizationManagementPanel()" aria-label="${t('org_manage_close')}" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                        </header>
+                        <div class="px-6 py-5 sm:px-8">
+                            <p class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${statusClass}">
+                                <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                                <span>${t('org_manage_status')}: ${getOrganizationProposalStatusLabel(proposal.status)}</span>
+                            </p>
+                            <dl class="mt-4">
+                                ${detailRow(t('org_manage_type'), typeKey ? t(typeKey) : '')}
+                                ${detailRow(t('org_manage_country'), proposal.country)}
+                                ${detailRow(t('org_manage_mission'), proposal.mission)}
+                                ${detailRow(t('org_manage_website'), proposal.website)}
+                                ${detailRow(t('org_manage_contact'), proposal.contact)}
+                                ${detailRow(t('org_manage_created'), createdLabel)}
+                            </dl>
+                        </div>
+                    </section>
+                </div>
+            `;
+            document.addEventListener('keydown', handleOrganizationManagementPanelKeydown);
+            document.getElementById('organization-management-close-button')?.focus();
+        }
+
+        function handleOrganizationManagementPanelKeydown(event) {
+            if (event.key === 'Escape') closeOrganizationManagementPanel();
+        }
+
+        function closeOrganizationManagementPanel() {
+            document.getElementById('modal-container').innerHTML = '';
+            document.removeEventListener('keydown', handleOrganizationManagementPanelKeydown);
+            if (organizationManagementTrigger?.isConnected) organizationManagementTrigger.focus();
+            organizationManagementTrigger = null;
+        }
+
         let organizationProposalTrigger = null;
 
         function handleOrganizationProposalModalKeydown(event) {
@@ -2832,7 +3331,8 @@
         function renderOrganizationProposalModal(draft = {}) {
             const selectedType = ['movement', 'informal_group'].includes(draft.type) ? draft.type : 'ngo';
             const name = escapeHTML(draft.name || '');
-            const country = escapeHTML(draft.country || '');
+            const selectedCountry = organizationProposalCountries.find(option => option.name === String(draft.country || ''));
+            const country = selectedCountry?.name || '';
             const mission = escapeHTML(draft.mission || '');
             const website = escapeHTML(draft.website || '');
             const contact = escapeHTML(draft.contact || state.currentUser.email || '');
@@ -2866,7 +3366,14 @@
                                 </div>
                                 <div>
                                     <label for="organization-proposal-country" class="mb-1.5 block text-xs font-semibold text-slate-700">${t('org_proposal_country')}</label>
-                                    <input id="organization-proposal-country" name="country" required maxlength="100" autocomplete="country-name" value="${country}" placeholder="${t('org_proposal_country_placeholder')}" class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                                    <div class="relative" onfocusout="if (!this.contains(event.relatedTarget)) closeOrganizationProposalCountryOptions()">
+                                        <img id="organization-proposal-country-flag" src="${selectedCountry ? `https://flagcdn.com/24x18/${selectedCountry.code}.png` : ''}" alt="" class="absolute left-3 top-1/2 z-10 h-3.5 w-5 -translate-y-1/2 rounded-sm object-cover ${selectedCountry ? '' : 'hidden'}">
+                                        <input id="organization-proposal-country" name="country" type="text" required readonly value="${escapeHTML(country)}" placeholder="${t('org_proposal_country_placeholder')}" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="organization-proposal-country-options" onclick="openOrganizationProposalCountryOptions()" onkeydown="if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') { event.preventDefault(); openOrganizationProposalCountryOptions(); }" class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 pl-11 text-sm text-slate-900 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                                        <div id="organization-proposal-country-popup" class="absolute left-0 right-0 top-full z-30 mt-1 hidden overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg">
+                                            <input id="organization-proposal-country-search" type="search" autocomplete="off" aria-label="${currentLang === 'es' ? 'Buscar país' : 'Search country'}" placeholder="${currentLang === 'es' ? 'Escribe para buscar...' : 'Type to search...'}" oninput="organizationProposalCountryActiveIndex = -1; renderOrganizationProposalCountryOptions(this.value)" onkeydown="handleOrganizationProposalCountrySearch(event)" class="w-full border-b border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-400">
+                                            <div id="organization-proposal-country-options" role="listbox" aria-label="${t('org_proposal_country')}" class="max-h-52 overflow-y-auto py-1"></div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <label for="organization-proposal-website" class="mb-1.5 block text-xs font-semibold text-slate-700">${t('org_proposal_website')}</label>
@@ -2911,7 +3418,7 @@
             const country = String(formData.get('country') || '').trim();
             const mission = String(formData.get('mission') || '').trim();
             const contact = String(formData.get('contact') || '').trim();
-            if (!name || !country || !mission || !contact || !['ngo', 'informal_group', 'movement'].includes(type) || (type === 'ngo' && !registration)) {
+            if (!name || !organizationProposalCountries.some(option => option.name === country) || !mission || !contact || !['ngo', 'informal_group', 'movement'].includes(type) || (type === 'ngo' && !registration)) {
                 showToast(t('org_proposal_error'), 'info');
                 return;
             }
@@ -2939,6 +3446,7 @@
                 return;
             }
 
+            renderManagedOrganizationsMenu();
             closeOrganizationProposalModal();
             showToast(t('org_proposal_saved'));
         }
@@ -3032,32 +3540,11 @@
         const registrationCountryRequiredMessage = () => currentLang === 'es'
             ? 'Selecciona un país de la lista.'
             : 'Select a country from the list.';
-        const registrationCountries = [
-            { code: 'VE', es: 'Venezuela', en: 'Venezuela' },
-            { code: 'CO', es: 'Colombia', en: 'Colombia' },
-            { code: 'US', es: 'Estados Unidos', en: 'United States' },
-            { code: 'CL', es: 'Chile', en: 'Chile' },
-            { code: 'SV', es: 'El Salvador', en: 'El Salvador' },
-            { code: 'PE', es: 'Perú', en: 'Peru' },
-            { code: 'BR', es: 'Brasil', en: 'Brazil' },
-            { code: 'DE', es: 'Alemania', en: 'Germany' },
-            { code: 'FR', es: 'Francia', en: 'France' },
-            { code: 'IT', es: 'Italia', en: 'Italy' },
-            { code: 'JP', es: 'Japón', en: 'Japan' },
-            { code: 'KR', es: 'Corea del Sur', en: 'South Korea' },
-            { code: 'LA', es: 'Laos', en: 'Laos' },
-            { code: 'TW', es: 'Taiwán', en: 'Taiwan' },
-            { code: 'PH', es: 'Filipinas', en: 'Philippines' },
-            { code: 'CA', es: 'Canadá', en: 'Canada' },
-            { code: 'AR', es: 'Argentina', en: 'Argentina' },
-            { code: 'ES', es: 'España', en: 'Spain' },
-            { code: 'MX', es: 'México', en: 'Mexico' },
-            { code: 'IR', es: 'Irán', en: 'Iran' },
-            { code: 'SS', es: 'Sudán del Sur', en: 'South Sudan' },
-            { code: 'AU', es: 'Australia', en: 'Australia' },
-            { code: 'CN', es: 'China', en: 'China' },
-            { code: 'RU', es: 'Rusia', en: 'Russia' }
-        ];
+        const registrationCountries = organizationProposalCountries.map(country => ({
+            code: country.code.toUpperCase(),
+            es: country.name,
+            en: country.name
+        }));
 
         function getRegistrationCountryName(country) {
             return country[currentLang];
@@ -3108,7 +3595,7 @@
 
         function getRegistrationCountryMatches(query) {
             const normalizedQuery = query.trim().toLocaleLowerCase();
-            return getSortedRegistrationCountries().filter(country => getRegistrationCountryName(country).toLocaleLowerCase().includes(normalizedQuery));
+            return registrationCountries.filter(country => getRegistrationCountryName(country).toLocaleLowerCase().includes(normalizedQuery));
         }
 
         function renderRegistrationCountryOptions(query = '') {
@@ -3127,108 +3614,84 @@
                     </button>
                 `).join('')
                 : `<p class="px-3.5 py-2 text-sm text-slate-500">${currentLang === 'es' ? 'No hay países que coincidan.' : 'No matching countries.'}</p>`;
-            const input = document.getElementById('registration-country-input');
-            if (input) {
-                input.setAttribute('aria-activedescendant', registrationCountryActiveIndex >= 0
+            const search = document.getElementById('registration-country-search');
+            if (search) {
+                search.setAttribute('aria-activedescendant', registrationCountryActiveIndex >= 0
                     ? `registration-country-option-${registrationCountryActiveIndex}`
                     : '');
             }
         }
 
         function openRegistrationCountryOptions(query) {
-            const list = document.getElementById('registration-country-options');
+            const popup = document.getElementById('registration-country-popup');
             const input = document.getElementById('registration-country-input');
-            if (!list || !input) return;
-            list.classList.remove('hidden');
+            const search = document.getElementById('registration-country-search');
+            if (!popup || !input || !search) return;
+            popup.classList.remove('hidden');
             input.setAttribute('aria-expanded', 'true');
-            renderRegistrationCountryOptions(query === undefined ? input.value : query);
-        }
-
-        function focusRegistrationCountryInput() {
-            const input = document.getElementById('registration-country-input');
-            if (!input) return;
-            if (input.dataset.selectedCountry) input.value = '';
-            openRegistrationCountryOptions('');
-        }
-
-        function closeRegistrationCountryOptions() {
-            const list = document.getElementById('registration-country-options');
-            const input = document.getElementById('registration-country-input');
-            if (!list || !input) return;
-            list.classList.add('hidden');
-            input.setAttribute('aria-expanded', 'false');
-            input.removeAttribute('aria-activedescendant');
+            search.value = query || '';
             registrationCountryActiveIndex = -1;
+            renderRegistrationCountryOptions(search.value);
+            search.focus();
+        }
+
+        function closeRegistrationCountryOptions(restoreFocus = false) {
+            const popup = document.getElementById('registration-country-popup');
+            const input = document.getElementById('registration-country-input');
+            if (!popup || !input) return;
+            popup.classList.add('hidden');
+            input.setAttribute('aria-expanded', 'false');
+            registrationCountryActiveIndex = -1;
+            if (restoreFocus) input.focus();
         }
 
         function filterRegistrationCountries() {
-            const input = document.getElementById('registration-country-input');
-            const selectedCountry = document.getElementById('registration-country-value');
-            if (!input || !selectedCountry) return;
-            selectedCountry.value = '';
-            input.setCustomValidity(registrationCountryRequiredMessage());
-            input.setAttribute('aria-invalid', 'true');
+            const search = document.getElementById('registration-country-search');
+            if (!search) return;
             registrationCountryActiveIndex = -1;
-            openRegistrationCountryOptions(input.value);
+            renderRegistrationCountryOptions(search.value);
         }
 
         function selectRegistrationCountry(countryCode) {
             const country = registrationCountries.find(option => option.code === countryCode);
             const input = document.getElementById('registration-country-input');
             const selectedCountry = document.getElementById('registration-country-value');
-            if (!country || !input || !selectedCountry) return;
+            const flag = document.getElementById('registration-country-flag');
+            if (!country || !input || !selectedCountry || !flag) return;
             input.value = getRegistrationCountryLabel(country);
             input.dataset.selectedCountry = country.code;
             input.setCustomValidity('');
             input.removeAttribute('aria-invalid');
             selectedCountry.value = country.code;
+            flag.src = `https://flagcdn.com/24x18/${country.code.toLowerCase()}.png`;
+            flag.classList.remove('hidden');
             closeRegistrationCountryOptions();
-            captureRegistrationDraft();
-        }
-
-        function handleRegistrationCountryBlur() {
-            const input = document.getElementById('registration-country-input');
-            const selectedCountry = document.getElementById('registration-country-value');
-            if (!input || !selectedCountry) return;
-            const selectedCode = input.dataset.selectedCountry || '';
-            const country = registrationCountries.find(option => option.code === selectedCode);
-            if (country) {
-                input.value = getRegistrationCountryLabel(country);
-                selectedCountry.value = country.code;
-                input.setCustomValidity('');
-                closeRegistrationCountryOptions();
-            } else {
-                input.value = '';
-                selectedCountry.value = '';
-                input.setCustomValidity(registrationCountryRequiredMessage());
-                input.setAttribute('aria-invalid', 'true');
-                openRegistrationCountryOptions();
-                renderRegistrationCountryOptions('');
-            }
+            input.focus();
             captureRegistrationDraft();
         }
 
         function handleRegistrationCountryKeydown(event) {
-            const input = event.currentTarget;
-            const matches = getRegistrationCountryMatches(input.value);
+            const search = event.currentTarget;
+            const matches = getRegistrationCountryMatches(search.value);
             const list = document.getElementById('registration-country-options');
             if (event.key === 'ArrowDown') {
                 event.preventDefault();
                 if (list?.classList.contains('hidden')) openRegistrationCountryOptions();
                 if (matches.length) registrationCountryActiveIndex = (registrationCountryActiveIndex + 1) % matches.length;
-                renderRegistrationCountryOptions(input.value);
+                renderRegistrationCountryOptions(search.value);
             } else if (event.key === 'ArrowUp') {
                 event.preventDefault();
                 if (matches.length) registrationCountryActiveIndex = registrationCountryActiveIndex <= 0
                     ? matches.length - 1
                     : registrationCountryActiveIndex - 1;
-                renderRegistrationCountryOptions(input.value);
+                renderRegistrationCountryOptions(search.value);
             } else if (event.key === 'Enter' && list && !list.classList.contains('hidden') && registrationCountryActiveIndex >= 0) {
                 event.preventDefault();
                 selectRegistrationCountry(matches[registrationCountryActiveIndex].code);
             } else if (event.key === 'Escape' && list && !list.classList.contains('hidden')) {
                 event.preventDefault();
-                closeRegistrationCountryOptions();
+                event.stopPropagation();
+                closeRegistrationCountryOptions(true);
             }
         }
 
@@ -3246,6 +3709,7 @@
                     </label>
                 </div>
             `;
+            const selectedCountry = registrationCountries.find(country => country.code === registrationDraft.country);
             document.getElementById('modal-container').innerHTML = `
                 <div id="register-modal" class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm animate-modal-in" role="dialog" aria-modal="true" aria-labelledby="register-modal-title" onclick="closeRegisterModal()">
                     <section class="relative my-auto w-full max-w-xl rounded-3xl border border-white/70 bg-white shadow-2xl" onclick="event.stopPropagation()">
@@ -3267,6 +3731,16 @@
                                 <input class="${fieldClass}" type="password" name="password" autocomplete="new-password" minlength="8" value="${value('password')}" required>
                                 <span class="mt-1.5 block text-[11px] font-normal text-slate-500">${t('register_password_hint')}</span>
                             </label>
+                            <div class="relative" onfocusout="if (!this.contains(event.relatedTarget)) closeRegistrationCountryOptions()">
+                                <label for="registration-country-input" class="block text-xs font-semibold text-slate-700">${t('register_country')}</label>
+                                <img id="registration-country-flag" src="${selectedCountry ? `https://flagcdn.com/24x18/${selectedCountry.code.toLowerCase()}.png` : ''}" alt="" class="absolute left-3 top-[2.45rem] z-10 h-3.5 w-5 rounded-sm object-cover ${selectedCountry ? '' : 'hidden'}">
+                                <input id="registration-country-input" type="text" required readonly autocomplete="off" value="${selectedCountry ? escapeHTML(getRegistrationCountryLabel(selectedCountry)) : ''}" placeholder="${t('org_proposal_country_placeholder')}" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="registration-country-options" aria-required="true" onclick="openRegistrationCountryOptions()" onkeydown="if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') { event.preventDefault(); openRegistrationCountryOptions(); }" oninvalid="this.setCustomValidity(registrationCountryRequiredMessage())" class="${fieldClass} pl-11">
+                                <input id="registration-country-value" type="hidden" name="country" value="${selectedCountry ? selectedCountry.code : ''}">
+                                <div id="registration-country-popup" class="absolute left-0 right-0 top-full z-30 mt-1 hidden overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg">
+                                    <input id="registration-country-search" type="search" autocomplete="off" aria-label="${currentLang === 'es' ? 'Buscar país' : 'Search country'}" placeholder="${currentLang === 'es' ? 'Escribe para buscar...' : 'Type to search...'}" oninput="filterRegistrationCountries()" onkeydown="handleRegistrationCountryKeydown(event)" class="w-full border-b border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-400">
+                                    <div id="registration-country-options" role="listbox" aria-label="${t('register_country')}" class="max-h-52 overflow-y-auto py-1"></div>
+                                </div>
+                            </div>
                             <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 ${t('register_create_account')}<i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                             </button>
@@ -3282,6 +3756,14 @@
             const email = String(formData.get('email')).trim();
             const firstName = String(formData.get('firstName') || '').trim();
             const lastName = String(formData.get('lastName') || '').trim();
+            const country = registrationCountries.find(option => option.code === String(formData.get('country') || ''));
+            if (!country) {
+                const countryInput = document.getElementById('registration-country-input');
+                countryInput?.setCustomValidity(registrationCountryRequiredMessage());
+                countryInput?.reportValidity();
+                showToast(registrationCountryRequiredMessage(), 'info');
+                return;
+            }
             const name = `${firstName} ${lastName}`.trim();
 
             state.currentUser = {
@@ -3292,7 +3774,7 @@
                 avatar: null,
                 coverImage: null,
                 email,
-                location: '',
+                location: getRegistrationCountryName(country),
                 registrationId: '',
                 joinedDate: currentLang === 'es' ? 'Miembro desde hoy' : 'Member since today'
             };
@@ -3621,7 +4103,18 @@
             const navigationVisible = isAuthenticated;
             closeProfileDropdown();
             document.getElementById('main-navigation').classList.toggle('guest-hidden', !navigationVisible);
+            renderManagedOrganizationsMenu();
+            const messagesButton = document.getElementById('messages-button');
+            messagesButton.classList.toggle('guest-hidden', !navigationVisible);
+            messagesButton.title = t('header_messages');
+            messagesButton.setAttribute('aria-label', t('header_messages'));
+            const mobileMessagesButton = document.getElementById('mobile-messages-button');
+            mobileMessagesButton.title = t('header_messages');
+            mobileMessagesButton.setAttribute('aria-label', t('header_messages'));
+            document.getElementById('mobile-header-messaging').classList.toggle('guest-hidden', !navigationVisible);
             document.getElementById('notification-button').classList.toggle('guest-hidden', !navigationVisible);
+            document.getElementById('mobile-notification-button').title = currentLang === 'es' ? 'Notificaciones' : 'Notifications';
+            document.getElementById('mobile-notification-button').setAttribute('aria-label', currentLang === 'es' ? 'Notificaciones' : 'Notifications');
             document.getElementById('guest-header-controls-mobile').classList.toggle('guest-hidden', navigationVisible);
             ['mobile-nav-home', 'mobile-nav-browse', 'mobile-nav-groups']
                 .forEach(id => document.getElementById(id).classList.toggle('guest-hidden', !navigationVisible));
@@ -3708,6 +4201,8 @@
             document.getElementById('mobile-profile-settings-label').textContent = t('profile_settings');
             document.getElementById('header-profile-create-organization-label').textContent = t('profile_create_organization');
             document.getElementById('mobile-profile-create-organization-label').textContent = t('profile_create_organization');
+            document.getElementById('header-profile-manage-label').textContent = t('profile_manage_section');
+            document.getElementById('mobile-profile-manage-label').textContent = t('profile_manage_section');
             document.getElementById('header-profile-logout-label').textContent = t('profile_log_out');
             document.getElementById('mobile-profile-logout-label').textContent = t('profile_log_out');
             document.getElementById('sim-title').textContent = t('sim_controller');
@@ -3739,9 +4234,218 @@
             document.getElementById('notification-drawer').classList.add('hidden');
         }
 
+        function openInbox() {
+            closeNotificationDrawer();
+            document.getElementById('inbox-modal').classList.remove('hidden');
+            document.getElementById('inbox-close-button').setAttribute('aria-label', t('inbox_close'));
+            document.addEventListener('keydown', handleInboxKeydown);
+            renderInbox();
+            document.getElementById('inbox-close-button').focus();
+        }
+
+        function closeInbox() {
+            const modal = document.getElementById('inbox-modal');
+            if (modal.classList.contains('hidden')) return;
+            modal.classList.add('hidden');
+            document.removeEventListener('keydown', handleInboxKeydown);
+        }
+
+        function handleInboxKeydown(event) {
+            if (event.key === 'Escape') closeInbox();
+        }
+
+        function setInboxFilter(filter) {
+            if (filter !== 'active' && filter !== 'pending') return;
+            state.inboxFilter = filter;
+            renderInbox();
+        }
+
+        function selectInboxConversation(conversationId) {
+            if (!state.inboxConversations.some(conversation => conversation.id === conversationId)) return;
+            state.selectedInboxConversationId = conversationId;
+            renderInbox();
+        }
+
+        function acceptInboxRequest(conversationId) {
+            const conversation = state.inboxConversations.find(item => item.id === conversationId);
+            if (!conversation || conversation.connection !== 'pending') return;
+            conversation.connection = 'active';
+            state.inboxFilter = 'active';
+            state.selectedInboxConversationId = conversation.id;
+            renderInbox();
+        }
+
+        function openInboxProfile() {
+            const conversation = state.inboxConversations.find(item => item.id === state.selectedInboxConversationId);
+            if (!conversation) return;
+            if (conversation.profileType === 'organization' && conversation.profileId) {
+                closeInbox();
+                openNGOProfile(conversation.profileId);
+                return;
+            }
+            if (conversation.profileType === 'leader' && conversation.profileId) {
+                closeInbox();
+                openLeaderProfile(conversation.profileId);
+                return;
+            }
+            showToast(t('inbox_profile_unavailable'), 'info');
+        }
+
+        function sendInboxMessage(event) {
+            event.preventDefault();
+            const conversation = state.inboxConversations.find(item => item.id === state.selectedInboxConversationId);
+            const input = event.currentTarget.querySelector('[name="message"]');
+            const message = input.value.trim();
+            if (!conversation || conversation.connection !== 'active' || !message) return;
+            conversation.messages.push({
+                from: 'you',
+                text: message,
+                time: new Date().toLocaleTimeString(currentLang === 'es' ? 'es' : 'en', {
+                    hour: 'numeric',
+                    minute: '2-digit'
+                })
+            });
+            conversation.time = currentLang === 'es' ? 'Ahora' : 'Now';
+            conversation.timeEs = 'Ahora';
+            renderInbox();
+            const nextInput = document.querySelector('#inbox-message-form [name="message"]');
+            if (nextInput) nextInput.focus();
+        }
+
+        function renderInbox() {
+            const conversations = state.inboxConversations.filter(conversation => conversation.connection === state.inboxFilter);
+            let selectedConversation = conversations.find(conversation => conversation.id === state.selectedInboxConversationId);
+            if (!selectedConversation) {
+                selectedConversation = conversations[0] || null;
+                state.selectedInboxConversationId = selectedConversation ? selectedConversation.id : null;
+            }
+
+            document.getElementById('inbox-title').textContent = t('inbox_title');
+            document.getElementById('inbox-close-button').setAttribute('aria-label', t('inbox_close'));
+            document.getElementById('inbox-active-tab').textContent = t('inbox_active');
+            document.getElementById('inbox-pending-tab').textContent = t('inbox_pending');
+            document.querySelector('.inbox-conversation-panel').setAttribute('aria-label', currentLang === 'es' ? 'Lista de conversaciones' : 'Conversation list');
+            document.querySelector('.inbox-chat-panel').setAttribute('aria-label', currentLang === 'es' ? 'Chat' : 'Chat');
+            document.querySelector('.inbox-profile-panel').setAttribute('aria-label', currentLang === 'es' ? 'Perfil del contacto' : 'Contact profile');
+            ['active', 'pending'].forEach(filter => {
+                const tab = document.getElementById(`inbox-${filter}-tab`);
+                const selected = state.inboxFilter === filter;
+                tab.setAttribute('aria-pressed', String(selected));
+                tab.className = `border-b-2 px-4 py-3 text-sm font-semibold transition-colors ${selected
+                    ? 'border-primary-600 text-primary-700 dark:text-primary-200'
+                    : 'border-transparent text-slate-500 hover:text-slate-900 dark:hover:text-white'}`;
+            });
+
+            const listContainer = document.getElementById('inbox-conversation-list');
+            if (conversations.length === 0) {
+                listContainer.innerHTML = `<p class="px-5 py-8 text-center text-sm text-slate-500">${t('inbox_empty')}</p>`;
+            } else {
+                listContainer.innerHTML = conversations.map(conversation => {
+                    const selected = conversation.id === state.selectedInboxConversationId;
+                    const lastMessage = conversation.messages[conversation.messages.length - 1];
+                    const connectionLabel = conversation.connection === 'active' ? t('inbox_connected') : t('inbox_pending_status');
+                    const previewTime = currentLang === 'es' && conversation.timeEs ? conversation.timeEs : conversation.time;
+                    const previewText = lastMessage
+                        ? (currentLang === 'es' && lastMessage.textEs ? lastMessage.textEs : lastMessage.text)
+                        : '';
+                    return `
+                        <article class="border-b border-slate-100 p-2.5 last:border-b-0 dark:border-slate-800">
+                            <button type="button" onclick="selectInboxConversation('${escapeHTML(conversation.id)}')" aria-pressed="${selected}" class="flex w-full min-w-0 items-start gap-3 rounded-lg p-2 text-left transition-colors ${selected ? 'bg-primary-50 dark:bg-slate-800' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}">
+                                <img src="${escapeHTML(conversation.avatar)}" alt="" class="h-11 w-11 shrink-0 rounded-full border border-slate-200 object-cover dark:border-slate-700">
+                                <span class="min-w-0 flex-1">
+                                    <span class="flex items-start justify-between gap-2">
+                                        <span class="truncate text-sm font-bold text-slate-900 dark:text-white">${escapeHTML(conversation.name)}</span>
+                                        <span class="shrink-0 pt-0.5 text-[10px] text-slate-400">${escapeHTML(previewTime)}</span>
+                                    </span>
+                                    <span class="mt-1 block truncate text-xs text-slate-500">${escapeHTML(previewText)}</span>
+                                    <span class="mt-2 inline-flex items-center gap-1.5 rounded-full ${conversation.connection === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300'} px-2 py-0.5 text-[10px] font-semibold">
+                                        <span class="h-1.5 w-1.5 rounded-full ${conversation.connection === 'active' ? 'bg-emerald-500' : 'bg-amber-500'}"></span>
+                                        ${connectionLabel}
+                                    </span>
+                                </span>
+                            </button>
+                            ${conversation.connection === 'pending' ? `<button type="button" onclick="acceptInboxRequest('${escapeHTML(conversation.id)}')" class="ml-16 mt-1 rounded-md px-2 py-1 text-[11px] font-bold text-primary-700 transition-colors hover:bg-primary-50 dark:text-primary-200 dark:hover:bg-slate-800">${t('inbox_accept')}</button>` : ''}
+                        </article>
+                    `;
+                }).join('');
+            }
+
+            const chatContainer = document.getElementById('inbox-chat-content');
+            const profileContainer = document.getElementById('inbox-profile-content');
+            if (!selectedConversation) {
+                chatContainer.innerHTML = `<div class="flex flex-1 items-center justify-center p-8 text-center text-sm text-slate-500">${t('inbox_select')}</div>`;
+                profileContainer.innerHTML = '';
+                return;
+            }
+
+            const isPending = selectedConversation.connection === 'pending';
+            chatContainer.innerHTML = `
+                <header class="flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 dark:border-slate-800 sm:px-5">
+                    <div class="flex min-w-0 items-center gap-3">
+                        <img src="${escapeHTML(selectedConversation.avatar)}" alt="" class="h-10 w-10 shrink-0 rounded-full border border-slate-200 object-cover dark:border-slate-700">
+                        <div class="min-w-0">
+                            <h2 class="truncate text-sm font-bold text-slate-900 dark:text-white">${escapeHTML(selectedConversation.name)}</h2>
+                            <p class="mt-0.5 flex items-center gap-1.5 text-[11px] ${isPending ? 'text-amber-600 dark:text-amber-300' : 'text-emerald-600 dark:text-emerald-300'}">
+                                <span class="h-1.5 w-1.5 rounded-full ${isPending ? 'bg-amber-500' : 'bg-emerald-500'}"></span>
+                                ${isPending ? t('inbox_pending_status') : t('inbox_online')}
+                            </p>
+                        </div>
+                    </div>
+                    ${isPending ? `<button type="button" onclick="acceptInboxRequest('${escapeHTML(selectedConversation.id)}')" class="shrink-0 rounded-lg bg-primary-600 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-primary-700">${t('inbox_accept')}</button>` : ''}
+                </header>
+                <div id="inbox-message-history" class="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4 sm:p-5">
+                    ${selectedConversation.messages.map(message => {
+                        const isYou = message.from === 'you';
+                        const timestamp = message.time === 'Yesterday' ? t('inbox_yesterday') : message.time;
+                        const messageText = currentLang === 'es' && message.textEs ? message.textEs : message.text;
+                        return `
+                            <div class="flex ${isYou ? 'justify-end' : 'justify-start'}">
+                                <div class="max-w-[88%] sm:max-w-[78%]">
+                                    <p class="mb-1 px-1 text-[10px] font-semibold text-slate-400 ${isYou ? 'text-right' : 'text-left'}">${isYou ? t('inbox_you') : escapeHTML(selectedConversation.name)}</p>
+                                    <div class="rounded-2xl ${isYou ? 'rounded-br-md bg-primary-600 text-white' : 'rounded-bl-md bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-100'} px-4 py-3 text-sm leading-relaxed">${escapeHTML(messageText)}</div>
+                                    <p class="mt-1 px-1 text-[10px] text-slate-400 ${isYou ? 'text-right' : 'text-left'}">${escapeHTML(timestamp)}</p>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+                ${isPending
+                    ? `<div class="border-t border-slate-100 p-4 text-center text-xs text-slate-500 dark:border-slate-800">${currentLang === 'es' ? 'Acepta la solicitud para responder.' : 'Accept this request to reply.'}</div>`
+                    : `<form id="inbox-message-form" onsubmit="sendInboxMessage(event)" class="flex shrink-0 items-center gap-2 border-t border-slate-100 p-3 dark:border-slate-800 sm:p-4">
+                        <input type="text" name="message" autocomplete="off" maxlength="2000" placeholder="${t('inbox_message_placeholder')}" aria-label="${t('inbox_message_placeholder')}" class="min-w-0 flex-1 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:ring-primary-900">
+                        <button type="submit" class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-primary-600 px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-primary-700">
+                            <span>${t('inbox_send')}</span><i class="fa-solid fa-paper-plane text-xs" aria-hidden="true"></i>
+                        </button>
+                    </form>`
+                }
+            `;
+            profileContainer.innerHTML = `
+                <div class="flex flex-col items-center border-b border-slate-100 pb-5 text-center dark:border-slate-800">
+                    <img src="${escapeHTML(selectedConversation.avatar)}" alt="" class="h-20 w-20 rounded-2xl border border-slate-200 object-cover dark:border-slate-700">
+                    <h2 class="mt-4 text-base font-bold text-slate-900 dark:text-white">${t('inbox_about')} ${escapeHTML(selectedConversation.name)}</h2>
+                    <span class="mt-2 rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:bg-slate-800">${selectedConversation.profileType === 'organization' ? t('inbox_organization') : t('inbox_person')}</span>
+                </div>
+                <div class="space-y-5 py-5">
+                    <div>
+                        <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300">${escapeHTML(currentLang === 'es' && selectedConversation.aboutEs ? selectedConversation.aboutEs : selectedConversation.about)}</p>
+                    </div>
+                    <div>
+                        <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400">${t('inbox_country')}</h3>
+                        <p class="mt-2 flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-200"><i class="fa-solid fa-location-dot text-primary-600" aria-hidden="true"></i>${escapeHTML(selectedConversation.country)}</p>
+                    </div>
+                    <button type="button" onclick="openInboxProfile()" class="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-3 text-xs font-bold text-slate-700 transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
+                        ${t('inbox_view_profile')}<i class="fa-solid fa-arrow-up-right-from-square text-[10px]" aria-hidden="true"></i>
+                    </button>
+                </div>
+            `;
+            const history = document.getElementById('inbox-message-history');
+            if (history) history.scrollTop = history.scrollHeight;
+        }
+
         function markAllNotificationsRead() {
             state.notifications.forEach(n => n.unread = false);
             document.getElementById('notif-badge').classList.add('hidden');
+            document.getElementById('mobile-notif-badge').classList.add('hidden');
             renderNotifications();
         }
 
@@ -4031,7 +4735,6 @@
                                     <div class="relative ${['group_cleanwater_official', 'group_senior_care'].includes(item.id) ? 'h-48' : 'h-40'} bg-slate-200">
                                         <img src="${escapeHTML(item.banner)}" alt="${item.id === 'group_cleanwater_official' ? 'Solar Panels CleanWater' : item.id === 'group_senior_care' ? (currentLang === 'es' ? 'Cuidado de Abuelitos' : 'Senior Care') : ''}" ${item.id === 'group_senior_care' ? `onerror="this.onerror=null; this.src='https://picsum.photos/id/1025/800/500';"` : ''} class="${['group_cleanwater_official', 'group_senior_care'].includes(item.id) ? 'w-full h-48 object-cover rounded-t-xl' : 'h-full w-full object-cover'}">
                                         <div class="absolute right-3 top-3 flex flex-col items-end gap-2">
-                                            ${item.official ? `<span class="rounded-full border border-emerald-300 bg-emerald-600 px-3 py-1 text-[10px] font-bold tracking-wide text-white shadow-md">✓ ${t('group_official')}</span>` : ''}
                                             <span class="rounded-full border border-white/30 bg-slate-950/70 px-3 py-1 text-[10px] font-bold text-white backdrop-blur">${t(item.visibility === 'Comunidad' ? 'group_visibility_community' : 'group_visibility_open')} · ${t(`group_type_${item.type}`)}</span>
                                         </div>
                                     </div>
