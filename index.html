@@ -568,6 +568,30 @@
                 profile_following_groups: "Grupos que sigo",
                 profile_following_ngos: "ONGs que sigo",
                 profile_view_details: "Ver detalles",
+                profile_activity_title: "Publicaciones y Actividad",
+                profile_activity_subtitle: "Publicaciones, aportes y avances que compartes con tu comunidad.",
+                profile_post_placeholder: "¿Qué te gustaría compartir?",
+                profile_post_publish: "Publicar",
+                profile_post_support: "Apoyar",
+                profile_post_repost: "Recompartir",
+                profile_post_comment: "Comentar",
+                profile_post_share: "Compartir",
+                profile_post_more: "Más acciones",
+                profile_post_quote_label: "Publicación citada",
+                profile_post_quote_thought: "Añade un comentario o una opinión...",
+                profile_post_quote_publish: "Publicar con comentario",
+                profile_post_cancel: "Cancelar",
+                profile_post_reply_placeholder: "Escribe un comentario...",
+                profile_post_reply: "Responder",
+                profile_post_empty: "Escribe una publicación antes de publicar.",
+                profile_post_quote_empty: "Añade un comentario antes de recompartir.",
+                profile_post_reply_empty: "Escribe un comentario antes de responder.",
+                profile_post_published: "Publicación compartida.",
+                profile_post_quote_published: "Publicación recompartida.",
+                profile_post_shared: "Enlace copiado.",
+                profile_post_share_error: "No se pudo copiar el enlace de la publicación.",
+                profile_post_direct_text_es: "Cada avance verificable nos acerca a un futuro con agua segura. Gracias a la comunidad de Kitui por hacerlo posible.",
+                profile_post_direct_text_en: "Every verifiable milestone brings us closer to a future with safe water. Thank you to the Kitui community for making it possible.",
                 profile_followers: "Seguidores",
                 profile_connections: "Conexiones",
                 profile_network_followers_title: "Seguidores",
@@ -1082,6 +1106,30 @@
                 profile_following_groups: "Following Groups",
                 profile_following_ngos: "Following NGOs",
                 profile_view_details: "View details",
+                profile_activity_title: "Activity & Posts",
+                profile_activity_subtitle: "Posts, contributions, and progress you share with your community.",
+                profile_post_placeholder: "What would you like to share?",
+                profile_post_publish: "Post",
+                profile_post_support: "Support",
+                profile_post_repost: "Repost",
+                profile_post_comment: "Comment",
+                profile_post_share: "Share",
+                profile_post_more: "More actions",
+                profile_post_quote_label: "Quoted post",
+                profile_post_quote_thought: "Add a comment or thought...",
+                profile_post_quote_publish: "Repost with comment",
+                profile_post_cancel: "Cancel",
+                profile_post_reply_placeholder: "Write a comment...",
+                profile_post_reply: "Reply",
+                profile_post_empty: "Write a post before publishing.",
+                profile_post_quote_empty: "Add a comment before reposting.",
+                profile_post_reply_empty: "Write a comment before replying.",
+                profile_post_published: "Post published.",
+                profile_post_quote_published: "Post reposted.",
+                profile_post_shared: "Link copied.",
+                profile_post_share_error: "Could not copy the post link.",
+                profile_post_direct_text_es: "Cada avance verificable nos acerca a un futuro con agua segura. Gracias a la comunidad de Kitui por hacerlo posible.",
+                profile_post_direct_text_en: "Every verifiable milestone brings us closer to a future with safe water. Thank you to the Kitui community for making it possible.",
                 profile_followers: "Followers",
                 profile_connections: "Connections",
                 profile_network_followers_title: "Followers",
@@ -1884,6 +1932,7 @@
             currentUser: {
                 id: 'sarah_donor_102',
                 name: 'Sarah Miller',
+                handle: '@sarahmiller',
                 role: 'donor',
                 avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
                 coverImage: 'assets/baner',
@@ -1914,6 +1963,23 @@
                     likes: 2
                 }
             ],
+
+            profilePosts: [
+                {
+                    id: 'profile_post_welcome',
+                    type: 'post',
+                    textEs: locales.es.profile_post_direct_text_es,
+                    textEn: locales.en.profile_post_direct_text_en,
+                    dateTime: '20 ene 2026 · 09:15',
+                    likes: 8,
+                    reposts: 2,
+                    shares: 1,
+                    comments: [],
+                    likedByCurrentUser: false
+                }
+            ],
+            activeQuotePostId: null,
+            activeCommentPostId: null,
             
             projects: [
                 {
@@ -6784,7 +6850,7 @@
             const historyEntry = state.commentHistory.find(entry => entry.updateId === updateId && entry.commentId === commentId);
             if (historyEntry) {
                 historyEntry.likes = comment.likes;
-                renderProfileCommentHistory();
+                renderProfileActivityFeed();
             }
             renderFieldArticleComments(update);
         }
@@ -6823,7 +6889,7 @@
             });
             input.value = '';
             renderFieldArticleComments(update);
-            renderProfileCommentHistory();
+            renderProfileActivityFeed();
             status.textContent = 'Comentario publicado.';
         }
 
@@ -7065,68 +7131,289 @@
                         </section>
                     </div>
 
-                    ${isCorporate ? '' : `<section aria-labelledby="profile-comment-history-title" class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-5">
+                    ${isCorporate ? '' : `<section aria-labelledby="profile-activity-title" class="space-y-5 rounded-3xl border border-slate-200/80 bg-white p-5 text-left shadow-subtle sm:p-8">
                         <div class="border-b border-slate-200 pb-3">
-                            <h3 id="profile-comment-history-title" class="text-lg font-black text-slate-900 tracking-tight">Historial de Comentarios</h3>
-                            <p class="text-xs text-slate-500">Interacciones y aportes realizados en la bitácora de campo</p>
+                            <h3 id="profile-activity-title" class="text-lg font-black tracking-tight text-slate-900">${t('profile_activity_title')}</h3>
+                            <p class="mt-1 text-xs text-slate-500">${t('profile_activity_subtitle')}</p>
                         </div>
-                        <div id="profile-comment-history-list" class="space-y-3"></div>
+                        <form onsubmit="publishProfilePost(event)" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/60">
+                            <div class="flex items-start gap-3">
+                                <img src="${escapeHTML(user.avatar || '')}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover">
+                                <textarea id="profile-post-content" name="post" rows="2" maxlength="1000" placeholder="${t('profile_post_placeholder')}" class="min-h-[5rem] w-full resize-y rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-primary-400 focus:ring-2 focus:ring-primary-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:focus:ring-primary-900"></textarea>
+                            </div>
+                            <div class="mt-3 flex items-center justify-between gap-3 pl-0 sm:pl-[3.25rem]">
+                                <p id="profile-post-status" class="text-xs text-slate-500" aria-live="polite"></p>
+                                <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-primary-600 px-4 py-2 text-xs font-bold text-white transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                                    <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>${t('profile_post_publish')}
+                                </button>
+                            </div>
+                        </form>
+                        <div id="profile-activity-feed" class="space-y-4" role="feed" aria-label="${t('profile_activity_title')}"></div>
                     </section>`}
 
                 </div>
             `;
-            renderProfileCommentHistory();
+            renderProfileActivityFeed();
         }
 
-        function renderProfileCommentHistory() {
-            const list = document.getElementById('profile-comment-history-list');
-            if (!list) return;
-
-            list.replaceChildren(...state.commentHistory.map(entry => {
-                const card = document.createElement('button');
-                card.type = 'button';
-                card.setAttribute('aria-label', `Abrir artículo comentado: ${entry.title}`);
-                card.className = 'w-full cursor-pointer rounded-xl border border-slate-200/80 bg-slate-50 p-4 text-left transition hover:border-primary-300 hover:bg-white hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-slate-800 dark:bg-slate-800/60 dark:hover:bg-slate-800';
-                card.addEventListener('click', () => openFieldUpdateArticle(entry.updateId));
-
-                const header = document.createElement('div');
-                header.className = 'flex flex-wrap items-start justify-between gap-3';
-
-                const context = document.createElement('div');
-                context.className = 'min-w-0';
-
-                const project = document.createElement('p');
-                project.className = 'text-[10px] font-mono font-bold uppercase text-primary-600 dark:text-primary-300';
-                project.textContent = entry.project;
-
-                const title = document.createElement('h4');
-                title.className = 'mt-1 text-sm font-bold text-slate-900 dark:text-slate-100';
-                title.textContent = entry.title;
-
-                const date = document.createElement('time');
-                date.className = 'shrink-0 text-[10px] font-mono text-slate-400';
-                date.textContent = entry.dateTime;
-
-                const text = document.createElement('p');
-                text.className = 'mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300';
-                text.textContent = entry.text;
-
-                const supports = document.createElement('span');
-                supports.className = 'mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary-700 dark:text-primary-300';
-
-                const thumb = document.createElement('i');
-                thumb.className = 'fa-solid fa-thumbs-up';
-                thumb.setAttribute('aria-hidden', 'true');
-
-                const supportCount = document.createElement('span');
-                supportCount.textContent = `${entry.likes} apoyos`;
-                supports.append(thumb, supportCount);
-
-                context.append(project, title);
-                header.append(context, date);
-                card.append(header, text, supports);
-                return card;
+        function getProfileActivityPosts() {
+            const user = state.currentUser;
+            const userPosts = state.profilePosts.map(post => ({
+                ...post,
+                author: user.name,
+                handle: user.handle || '@' + user.name.toLowerCase().replace(/[^a-z0-9]+/g, ''),
+                avatar: user.avatar,
+                text: currentLang === 'es' ? (post.textEs || post.textEn || '') : (post.textEn || post.textEs || ''),
+                source: post
             }));
+            const quotedComments = state.commentHistory.map(entry => {
+                const update = ngoData.updates.find(item => item.id === entry.updateId);
+                return {
+                    id: entry.id,
+                    type: 'quote',
+                    author: user.name,
+                    handle: user.handle || '@' + user.name.toLowerCase().replace(/[^a-z0-9]+/g, ''),
+                    avatar: user.avatar,
+                    text: entry.text,
+                    dateTime: entry.dateTime,
+                    likes: entry.likes || 0,
+                    reposts: entry.reposts || 0,
+                    shares: entry.shares || 0,
+                    likedByCurrentUser: entry.likedByCurrentUser || false,
+                    comments: entry.replies || [],
+                    quote: {
+                        updateId: entry.updateId,
+                        author: update?.author || t('profile_post_quote_label'),
+                        handle: update ? '@' + update.author.toLowerCase().replace(/[^a-z0-9]+/g, '') : '',
+                        avatar: update?.authorPhoto || '',
+                        dateTime: update?.publishedAt || entry.dateTime,
+                        text: update?.content || entry.title,
+                        title: entry.title,
+                        project: entry.project,
+                        image: update?.mediaUrl || ''
+                    },
+                    source: entry
+                };
+            });
+            return [...userPosts, ...quotedComments];
+        }
+
+        function renderProfileActivityFeed() {
+            const list = document.getElementById('profile-activity-feed');
+            if (!list) return;
+            list.innerHTML = getProfileActivityPosts().map(renderProfileActivityPost).join('');
+        }
+
+        function renderProfileActivityPost(post) {
+            const postId = escapeHTML(post.id);
+            const quote = post.quote;
+            const quoteCard = quote ? `
+                <article class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/50">
+                    ${quote.image ? `<img src="${escapeHTML(quote.image)}" alt="" class="max-h-64 w-full object-cover">` : ''}
+                    <div class="p-3 sm:p-4">
+                        <div class="flex min-w-0 items-center gap-2">
+                            ${quote.avatar ? `<img src="${escapeHTML(quote.avatar)}" alt="" class="h-7 w-7 shrink-0 rounded-full object-cover">` : ''}
+                            <span class="truncate text-xs font-bold text-slate-800 dark:text-slate-100">${escapeHTML(quote.author)}</span>
+                            <span class="truncate text-[11px] text-slate-500">${escapeHTML(quote.handle || '')}</span>
+                            <span class="text-slate-400" aria-hidden="true">·</span>
+                            <time class="shrink-0 text-[11px] text-slate-500">${escapeHTML(quote.dateTime || '')}</time>
+                        </div>
+                        ${quote.project ? `<p class="mt-2 text-[10px] font-bold uppercase tracking-wide text-primary-700 dark:text-primary-300">${escapeHTML(quote.project)}</p>` : ''}
+                        ${quote.title ? `<p class="mt-1 text-sm font-bold text-slate-800 dark:text-slate-100">${escapeHTML(quote.title)}</p>` : ''}
+                        <p class="mt-2 line-clamp-3 whitespace-pre-wrap text-xs leading-relaxed text-slate-600 dark:text-slate-300">${escapeHTML(quote.text || '')}</p>
+                        ${quote.updateId ? `<button type="button" onclick="openFieldUpdateArticle('${escapeHTML(quote.updateId)}')" class="mt-3 text-xs font-bold text-primary-700 hover:text-primary-800 dark:text-primary-300">${currentLang === 'es' ? 'Ver actualización' : 'View update'}<i class="fa-solid fa-arrow-up-right-from-square ml-1.5" aria-hidden="true"></i></button>` : ''}
+                    </div>
+                </article>` : '';
+            const replyList = (post.comments || []).map(reply => `
+                <div class="flex items-start gap-2 border-t border-slate-100 py-2.5 dark:border-slate-700">
+                    <img src="${escapeHTML(reply.avatar || state.currentUser.avatar || '')}" alt="" class="h-7 w-7 shrink-0 rounded-full object-cover">
+                    <p class="min-w-0 text-xs leading-relaxed text-slate-700 dark:text-slate-300"><span class="mr-1 font-bold text-slate-900 dark:text-slate-100">${escapeHTML(reply.author || state.currentUser.name)}</span>${escapeHTML(reply.text || '')}</p>
+                </div>`).join('');
+            return `
+                <article id="profile-post-${postId}" class="rounded-2xl border border-slate-200 bg-white p-4 transition hover:border-slate-300 sm:p-5 dark:border-slate-700 dark:bg-slate-900">
+                    <div class="flex items-start gap-3">
+                        <img src="${escapeHTML(post.avatar || '')}" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="flex min-w-0 flex-wrap items-baseline gap-x-1.5">
+                                    <span class="truncate text-sm font-bold text-slate-900 dark:text-slate-100">${escapeHTML(post.author)}</span>
+                                    <span class="truncate text-xs text-slate-500">${escapeHTML(post.handle)}</span>
+                                    <span class="text-slate-400" aria-hidden="true">·</span>
+                                    <time class="shrink-0 text-xs text-slate-500">${escapeHTML(post.dateTime || '')}</time>
+                                </div>
+                                <details class="relative shrink-0">
+                                    <summary aria-label="${t('profile_post_more')}" class="flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:hover:bg-slate-800">
+                                        <i class="fa-solid fa-ellipsis" aria-hidden="true"></i>
+                                    </summary>
+                                    <div class="absolute right-0 z-10 mt-1 min-w-36 rounded-xl border border-slate-200 bg-white p-1 shadow-card dark:border-slate-700 dark:bg-slate-800">
+                                        <button type="button" onclick="shareProfilePost('${postId}')" class="w-full rounded-lg px-3 py-2 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700">
+                                            <i class="fa-solid fa-share-nodes mr-2" aria-hidden="true"></i>${t('profile_post_share')}
+                                        </button>
+                                    </div>
+                                </details>
+                            </div>
+                            ${post.type === 'quote' ? `<p class="mt-1 text-[10px] font-semibold text-slate-500"><i class="fa-solid fa-retweet mr-1" aria-hidden="true"></i>${t('profile_post_quote_label')}</p>` : ''}
+                            <p class="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-800 dark:text-slate-200">${escapeHTML(post.text || '')}</p>
+                            ${quoteCard}
+                            <div class="mt-4 grid grid-cols-4 gap-1 border-t border-slate-100 pt-2 dark:border-slate-800">
+                                <button type="button" aria-pressed="${Boolean(post.likedByCurrentUser)}" onclick="toggleProfilePostLike('${postId}')" class="rounded-lg px-1 py-2 text-[11px] font-semibold ${post.likedByCurrentUser ? 'text-primary-700 dark:text-primary-300' : 'text-slate-500 hover:bg-slate-50 hover:text-primary-700 dark:hover:bg-slate-800'}">
+                                    <i class="fa-${post.likedByCurrentUser ? 'solid' : 'regular'} fa-heart mr-1" aria-hidden="true"></i>${t('profile_post_support')} <span>${Number(post.likes) || 0}</span>
+                                </button>
+                                <button type="button" aria-expanded="${state.activeQuotePostId === post.id}" onclick="toggleProfileQuoteComposer('${postId}')" class="rounded-lg px-1 py-2 text-[11px] font-semibold text-slate-500 hover:bg-slate-50 hover:text-emerald-700 dark:hover:bg-slate-800">
+                                    <i class="fa-solid fa-retweet mr-1" aria-hidden="true"></i>${t('profile_post_repost')} <span>${Number(post.reposts) || 0}</span>
+                                </button>
+                                <button type="button" aria-expanded="${state.activeCommentPostId === post.id}" onclick="toggleProfilePostComments('${postId}')" class="rounded-lg px-1 py-2 text-[11px] font-semibold text-slate-500 hover:bg-slate-50 hover:text-primary-700 dark:hover:bg-slate-800">
+                                    <i class="fa-regular fa-comment mr-1" aria-hidden="true"></i>${t('profile_post_comment')} <span>${(post.comments || []).length}</span>
+                                </button>
+                                <button type="button" onclick="shareProfilePost('${postId}')" class="rounded-lg px-1 py-2 text-[11px] font-semibold text-slate-500 hover:bg-slate-50 hover:text-primary-700 dark:hover:bg-slate-800">
+                                    <i class="fa-solid fa-share-nodes mr-1" aria-hidden="true"></i>${t('profile_post_share')} <span>${Number(post.shares) || 0}</span>
+                                </button>
+                            </div>
+                            ${state.activeQuotePostId === post.id ? `
+                                <form onsubmit="publishProfileQuote(event, '${postId}')" class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/60">
+                                    <textarea id="profile-quote-${postId}" name="thought" rows="2" maxlength="1000" placeholder="${t('profile_post_quote_thought')}" class="w-full resize-y rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-primary-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"></textarea>
+                                    <div class="mt-2 flex justify-end gap-2">
+                                        <button type="button" onclick="toggleProfileQuoteComposer('${postId}')" class="rounded-full px-3 py-1.5 text-xs font-semibold text-slate-500 hover:bg-white dark:hover:bg-slate-700">${t('profile_post_cancel')}</button>
+                                        <button type="submit" class="rounded-full bg-primary-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-primary-700">${t('profile_post_quote_publish')}</button>
+                                    </div>
+                                </form>` : ''}
+                            ${state.activeCommentPostId === post.id ? `
+                                <div class="mt-3 rounded-xl border border-slate-200 px-3 dark:border-slate-700">
+                                    ${replyList}
+                                    <form onsubmit="publishProfilePostComment(event, '${postId}')" class="flex items-center gap-2 border-t border-slate-100 py-2 dark:border-slate-700">
+                                        <input name="comment" maxlength="500" placeholder="${t('profile_post_reply_placeholder')}" class="min-w-0 flex-1 border-0 bg-transparent py-2 text-xs outline-none placeholder:text-slate-400 dark:text-slate-100">
+                                        <button type="submit" class="shrink-0 rounded-full px-3 py-1.5 text-xs font-bold text-primary-700 hover:bg-primary-50 dark:text-primary-300 dark:hover:bg-slate-800">${t('profile_post_reply')}</button>
+                                    </form>
+                                </div>` : ''}
+                        </div>
+                    </div>
+                </article>`;
+        }
+
+        function findProfileActivitySource(postId) {
+            return state.profilePosts.find(post => post.id === postId)
+                || state.commentHistory.find(entry => entry.id === postId)
+                || null;
+        }
+
+        function profilePostDateTime() {
+            return new Date().toLocaleString(currentLang === 'es' ? 'es-ES' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' });
+        }
+
+        function publishProfilePost(event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const text = String(new FormData(form).get('post') || '').trim();
+            if (!text) {
+                showToast(t('profile_post_empty'), 'info');
+                return;
+            }
+            state.profilePosts.unshift({
+                id: `profile_post_${Date.now()}`,
+                type: 'post',
+                textEs: currentLang === 'es' ? text : '',
+                textEn: currentLang === 'en' ? text : '',
+                dateTime: profilePostDateTime(),
+                likes: 0,
+                reposts: 0,
+                shares: 0,
+                comments: [],
+                likedByCurrentUser: false
+            });
+            renderProfileActivityFeed();
+            showToast(t('profile_post_published'), 'success');
+        }
+
+        function toggleProfilePostLike(postId) {
+            const post = findProfileActivitySource(postId);
+            if (!post) return;
+            post.likedByCurrentUser = !post.likedByCurrentUser;
+            post.likes = Math.max(0, (Number(post.likes) || 0) + (post.likedByCurrentUser ? 1 : -1));
+            renderProfileActivityFeed();
+        }
+
+        function toggleProfileQuoteComposer(postId) {
+            state.activeQuotePostId = state.activeQuotePostId === postId ? null : postId;
+            renderProfileActivityFeed();
+            if (state.activeQuotePostId) document.getElementById(`profile-quote-${postId}`)?.focus();
+        }
+
+        function publishProfileQuote(event, postId) {
+            event.preventDefault();
+            const text = String(new FormData(event.currentTarget).get('thought') || event.currentTarget.querySelector('textarea')?.value || '').trim();
+            if (!text) {
+                showToast(t('profile_post_quote_empty'), 'info');
+                return;
+            }
+            const originalPost = getProfileActivityPosts().find(post => post.id === postId);
+            const source = findProfileActivitySource(postId);
+            if (!originalPost || !source) return;
+            source.reposts = (Number(source.reposts) || 0) + 1;
+            const original = originalPost.quote || {
+                author: originalPost.author,
+                handle: originalPost.handle,
+                avatar: originalPost.avatar,
+                dateTime: originalPost.dateTime,
+                text: originalPost.text
+            };
+            state.profilePosts.unshift({
+                id: `profile_quote_${Date.now()}`,
+                type: 'quote',
+                textEs: currentLang === 'es' ? text : '',
+                textEn: currentLang === 'en' ? text : '',
+                dateTime: profilePostDateTime(),
+                likes: 0,
+                reposts: 0,
+                shares: 0,
+                comments: [],
+                likedByCurrentUser: false,
+                quote: { ...original }
+            });
+            state.activeQuotePostId = null;
+            renderProfileActivityFeed();
+            showToast(t('profile_post_quote_published'), 'success');
+        }
+
+        function toggleProfilePostComments(postId) {
+            state.activeCommentPostId = state.activeCommentPostId === postId ? null : postId;
+            renderProfileActivityFeed();
+        }
+
+        function publishProfilePostComment(event, postId) {
+            event.preventDefault();
+            const text = String(new FormData(event.currentTarget).get('comment') || '').trim();
+            if (!text) {
+                showToast(t('profile_post_reply_empty'), 'info');
+                return;
+            }
+            const source = findProfileActivitySource(postId);
+            if (!source) return;
+            const commentsKey = state.profilePosts.includes(source) ? 'comments' : 'replies';
+            source[commentsKey] = source[commentsKey] || [];
+            source[commentsKey].push({
+                author: state.currentUser.name,
+                avatar: state.currentUser.avatar,
+                text,
+                time: profilePostDateTime()
+            });
+            state.activeCommentPostId = postId;
+            renderProfileActivityFeed();
+        }
+
+        async function shareProfilePost(postId) {
+            const post = getProfileActivityPosts().find(item => item.id === postId);
+            const source = findProfileActivitySource(postId);
+            if (!post || !source) return;
+            const shareUrl = `${window.location.origin}${window.location.pathname}#profile-post-${encodeURIComponent(postId)}`;
+            try {
+                await navigator.clipboard.writeText(shareUrl);
+                source.shares = (Number(source.shares) || 0) + 1;
+                renderProfileActivityFeed();
+                showToast(t('profile_post_shared'), 'success');
+            } catch (error) {
+                console.error(t('profile_post_share_error'), error);
+                showToast(t('profile_post_share_error'), 'info');
+            }
         }
     </script>
 
@@ -7558,7 +7845,7 @@
                 state.expandedProjectComments[projectId].unshift(comment);
             }
             openExpandedProjectModal(projectId);
-            renderProfileCommentHistory();
+            renderProfileActivityFeed();
         }
 
         function renderBrowsePage(canvas) {
