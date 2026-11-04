@@ -311,6 +311,16 @@
                 activity_tab_events: "Eventos",
                 browse_events_empty: "No hay eventos agendados en este momento.",
                 browse_project_view: "Ver Proyecto",
+                project_details_title: "Detalles del proyecto",
+                project_funding_status: "Estado de financiación",
+                project_funding_raised_of: "recaudados de",
+                project_responsible_org: "Organización responsable",
+                project_impact_label: "Impacto esperado",
+                project_status_active: "Activo",
+                project_donate_title: "Apoya este proyecto",
+                project_donate_copy: "Tu aporte queda asociado a este proyecto y se refleja junto a sus comprobantes verificados.",
+                project_donation_amount: "Monto de donación (USD)",
+                project_complete_donation: "Completar donación directa",
                 event_details_title: "Detalles del evento",
                 event_details_open: "Ver detalles del evento",
                 event_details_date: "Fecha y hora",
@@ -885,6 +895,16 @@
                 activity_tab_events: "Events",
                 browse_events_empty: "There are no scheduled events right now.",
                 browse_project_view: "View Project",
+                project_details_title: "Project Details",
+                project_funding_status: "Funding status",
+                project_funding_raised_of: "raised of",
+                project_responsible_org: "Responsible organization",
+                project_impact_label: "Expected impact",
+                project_status_active: "Active",
+                project_donate_title: "Support this project",
+                project_donate_copy: "Your contribution is linked to this project and reflected alongside its verified receipts.",
+                project_donation_amount: "Donation amount (USD)",
+                project_complete_donation: "Complete direct donation",
                 event_details_title: "Event Details",
                 event_details_open: "View event details",
                 event_details_date: "Date & time",
@@ -4754,9 +4774,14 @@
 
         let eventDetailsReturnFocus = null;
         let eventDetailsReturnFocusId = null;
+        let projectDetailsReturnFocus = null;
 
         function handleEventDetailsModalKeydown(event) {
             if (event.key === 'Escape') closeEventDetailsModal();
+        }
+
+        function handleProjectDetailsModalKeydown(event) {
+            if (event.key === 'Escape') closeModal();
         }
 
         function openEventDetailsModal(groupId, eventId, trigger) {
@@ -6644,7 +6669,7 @@
             showToast("NGO Profile link copied to clipboard!", "success");
         }
 
-        function openProjectDetail(projectId) {
+        function openProjectDetail(projectId, trigger) {
             const projectAliases = {
                 proj_schools: 'proj_school_sanitation'
             };
@@ -6669,49 +6694,71 @@
             const updates = projectKeyword
                 ? ngoData.updates.filter(update => update.projectLabel.includes(projectKeyword))
                 : [];
-            const progress = Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100);
+            const amountRaised = Number(project.amountRaised) || 0;
+            const targetGoal = Number(project.targetGoal) || 0;
+            const progress = targetGoal > 0 ? Math.min(Math.round((amountRaised / targetGoal) * 100), 100) : 0;
             const location = project.location || catalogProject?.location || 'Kenya';
+            const responsibleOrganization = project.groupName || project.ngoName || project.creatorName || t(project.groupId ? 'project_creator_group' : 'project_creator_ngo');
             const projectTitle = localizedProjectText(project, 'title');
             const projectCategory = localizedProjectText(project, 'category');
             const projectDescription = localizedProjectText(project, 'description');
             const projectKpi = localizedProjectText(project, 'kpi');
 
             state.activeDonationProject = projectTitle;
+            projectDetailsReturnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
             const container = document.getElementById('modal-container');
             container.innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-3 sm:p-6" onclick="closeModal()">
-                    <div role="dialog" aria-modal="true" aria-labelledby="project-detail-title" class="relative z-10 max-h-[96vh] w-full max-w-5xl overflow-y-auto rounded-3xl border border-slate-200 bg-slate-50 shadow-floating animate-modal-in" onclick="event.stopPropagation()">
-                        <div class="relative h-56 bg-slate-900 sm:h-72">
+                <div class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm" onclick="closeModal()">
+                    <div id="project-details-modal" role="dialog" aria-modal="true" aria-labelledby="project-detail-title" tabindex="-1" class="relative z-10 max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-slate-200 bg-white shadow-floating animate-modal-in" onclick="event.stopPropagation()">
+                        <div class="relative h-48 bg-slate-100 sm:h-64">
                             <img src="${escapeHTML(project.coverImage)}" alt="${escapeHTML(projectTitle)}" class="h-full w-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent"></div>
-                            <button type="button" onclick="closeModal()" aria-label="Cerrar detalle del proyecto" class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/70 text-white hover:bg-slate-950">
-                                <i class="fa-solid fa-xmark"></i>
+                            <button id="project-details-close" type="button" onclick="closeModal()" aria-label="${t('close')}" title="${t('close')}" class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/75 text-xl font-bold text-white transition-colors hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                             </button>
-                            <div class="absolute inset-x-0 bottom-0 p-5 text-white sm:p-8">
-                                <span class="inline-flex rounded-full bg-white/15 px-3 py-1 text-[10px] font-mono font-bold uppercase">${escapeHTML(projectCategory)}</span>
-                                <h2 id="project-detail-title" class="mt-3 max-w-3xl text-xl font-black sm:text-3xl">${escapeHTML(projectTitle)}</h2>
-                                <p class="mt-2 text-xs font-mono text-white/80"><i class="fa-solid fa-location-dot mr-1"></i>${location}</p>
-                            </div>
                         </div>
 
                         <div class="space-y-6 p-5 sm:p-8">
+                            <header>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-primary-700">${t('project_details_title')} · ${escapeHTML(projectCategory)}</p>
+                                <h2 id="project-detail-title" class="mt-2 text-2xl font-black leading-tight text-slate-900 sm:text-3xl">${escapeHTML(projectTitle)}</h2>
+                            </header>
+                            <dl class="grid gap-4 rounded-2xl bg-slate-50 p-4 sm:grid-cols-2 sm:p-5">
+                                <div>
+                                    <dt class="text-[10px] font-bold uppercase tracking-wider text-slate-500">${t('project_funding_status')}</dt>
+                                    <dd class="mt-1 text-sm font-semibold text-slate-800">${formatCurrency(amountRaised)} ${t('project_funding_raised_of')} ${formatCurrency(targetGoal)} · ${escapeHTML(project.status || t('project_status_active'))} (${progress}%)</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-[10px] font-bold uppercase tracking-wider text-slate-500">${t('event_details_location')}</dt>
+                                    <dd class="mt-1 text-sm font-semibold text-slate-800">${escapeHTML(location)}</dd>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <dt class="text-[10px] font-bold uppercase tracking-wider text-slate-500">${t('project_responsible_org')}</dt>
+                                    <dd class="mt-1 text-sm font-semibold text-slate-800">${escapeHTML(responsibleOrganization)}${project.verifiedStatus ? ` · ${escapeHTML(project.verifiedStatus)}` : ''}</dd>
+                                </div>
+                            </dl>
                             <section aria-label="Estado de financiación" class="rounded-2xl border border-slate-200 bg-white p-5">
                                 <div class="flex flex-wrap items-end justify-between gap-2">
                                     <div>
-                                        <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Estado de financiación</span>
-                                        <p class="mt-1 text-lg font-black text-slate-900">${formatCurrency(project.amountRaised)} <span class="text-xs font-medium text-slate-500">recaudados de ${formatCurrency(project.targetGoal)}</span></p>
+                                        <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">${t('project_funding_status')}</span>
+                                        <p class="mt-1 text-lg font-black text-slate-900">${formatCurrency(amountRaised)} <span class="text-xs font-medium text-slate-500">${t('project_funding_raised_of')} ${formatCurrency(targetGoal)}</span></p>
                                     </div>
-                                    <span class="text-xs font-bold text-emerald-700">${project.status || 'Activo'} · ${progress}%</span>
+                                    <span class="text-xs font-bold text-emerald-700">${escapeHTML(project.status || t('project_status_active'))} · ${progress}%</span>
                                 </div>
                                 <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-emerald-600" style="width:${progress}%"></div></div>
                             </section>
 
-                            <section class="grid gap-5 md:grid-cols-2">
-                                <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                                    <h3 class="text-sm font-black text-slate-900">Acerca del Proyecto</h3>
-                                    <p class="mt-3 text-xs leading-relaxed text-slate-600">${escapeHTML(projectStories[dataProjectId] || projectDescription || 'Detalles del proyecto en preparación.')}</p>
-                                    <p class="mt-3 border-t border-slate-100 pt-3 text-xs font-semibold text-slate-700"><i class="fa-solid fa-bullseye mr-1.5 text-primary-600"></i>${escapeHTML(projectKpi || projectDescription || 'Impacto comunitario en seguimiento.')}</p>
+                            <section aria-labelledby="project-detail-description" class="space-y-5">
+                                <div>
+                                    <h3 id="project-detail-description" class="text-sm font-bold text-slate-900">${t('event_details_description')}</h3>
+                                    <p class="mt-2 text-sm leading-relaxed text-slate-600">${escapeHTML(projectStories[dataProjectId] || projectDescription || 'Detalles del proyecto en preparación.')}</p>
                                 </div>
+                                <div class="rounded-2xl border border-primary-100 bg-primary-50/60 p-4">
+                                    <h3 class="text-sm font-bold text-slate-900">${t('project_impact_label')}</h3>
+                                    <p class="mt-2 text-sm leading-relaxed text-slate-600">${escapeHTML(projectKpi || projectDescription || 'Impacto comunitario en seguimiento.')}</p>
+                                </div>
+                            </section>
+
+                            <section class="grid gap-5 md:grid-cols-2">
                                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
                                     <div class="flex items-center justify-between gap-3">
                                         <h3 class="text-sm font-black text-slate-900">Libro Contable Abierto</h3>
@@ -6769,8 +6816,8 @@
                                 <div class="flex items-start gap-3">
                                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700"><i class="fa-solid fa-hand-holding-heart"></i></span>
                                     <div>
-                                        <h3 class="text-sm font-black text-slate-900">Direct Audited Donation</h3>
-                                        <p class="mt-1 text-xs leading-relaxed text-slate-600">Tu aporte queda asociado a este proyecto y se refleja junto a sus comprobantes verificados.</p>
+                                        <h3 class="text-sm font-black text-slate-900">${t('project_donate_title')}</h3>
+                                        <p class="mt-1 text-xs leading-relaxed text-slate-600">${t('project_donate_copy')}</p>
                                     </div>
                                 </div>
                                 <div class="mt-4 grid grid-cols-4 gap-2">
@@ -6779,16 +6826,18 @@
                                     <button type="button" onclick="setDonateAmt(500)" class="rounded-xl border border-slate-200 bg-white py-2.5 text-xs font-bold text-slate-800 hover:border-emerald-500">$500</button>
                                     <button type="button" onclick="selectOtherDonateAmount()" class="rounded-xl border border-slate-200 bg-white py-2.5 text-xs font-bold text-slate-800 hover:border-emerald-500">Otro</button>
                                 </div>
-                                <label for="custom-donate-amt" class="mt-3 block text-[10px] font-mono font-bold uppercase text-slate-500">Monto de donación (USD)</label>
+                                <label for="custom-donate-amt" class="mt-3 block text-[10px] font-mono font-bold uppercase text-slate-500">${t('project_donation_amount')}</label>
                                 <input type="number" id="custom-donate-amt" min="1" step="1" value="150" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
                                 <button type="button" onclick="processDonation()" class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
-                                    <i class="fa-solid fa-lock text-[10px]"></i><span>Complete Direct Donation</span>
+                                    <i class="fa-solid fa-lock text-[10px]"></i><span>${t('project_complete_donation')}</span>
                                 </button>
                             </section>
                         </div>
                     </div>
                 </div>
             `;
+            document.addEventListener('keydown', handleProjectDetailsModalKeydown);
+            document.getElementById('project-details-close').focus({ preventScroll: true });
         }
 
         function openDonateModal() {
@@ -8459,8 +8508,8 @@
                                     : proj.ngoName || proj.creatorName;
 
                                 return `
-                                <article data-browse-project-id="${escapeHTML(proj.id)}" class="group flex h-[22rem] w-full max-w-sm flex-col overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
-                                    <button type="button" aria-pressed="${state.selectedBrowseProjectId === proj.id}" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); selectBrowseProject('${escapeHTML(proj.id)}')" class="flex min-h-0 w-full flex-1 cursor-pointer flex-col text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500">
+                                <article data-browse-project-id="${escapeHTML(proj.id)}" tabindex="0" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" aria-haspopup="dialog" onclick="openProjectDetail('${escapeHTML(proj.id)}', this)" onkeydown="if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openProjectDetail('${escapeHTML(proj.id)}', this); }" class="group flex h-[22rem] w-full max-w-sm flex-col overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
+                                    <button type="button" aria-haspopup="dialog" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); openProjectDetail('${escapeHTML(proj.id)}', this)" class="flex min-h-0 w-full flex-1 cursor-pointer flex-col text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500">
                                         <span class="relative block h-40 w-full shrink-0 overflow-hidden bg-slate-100">
                                             <img src="${escapeHTML(proj.coverImage)}" alt="${escapeHTML(localizedProjectText(proj, 'title'))}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
                                             <span class="absolute left-3 top-3 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-subtle backdrop-blur-sm">
@@ -8473,7 +8522,7 @@
                                         </span>
                                     </button>
                                     <span class="mt-auto flex items-center justify-between gap-2 px-4 pb-4 pt-3">
-                                        <button type="button" onclick="event.stopPropagation(); selectBrowseProject('${escapeHTML(proj.id)}')" class="rounded-full bg-primary-600 px-3 py-1 text-[10px] font-bold text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('browse_project_view')}</button>
+                                        <button type="button" aria-haspopup="dialog" onclick="event.stopPropagation(); openProjectDetail('${escapeHTML(proj.id)}', this)" class="rounded-full bg-primary-600 px-3 py-1 text-[10px] font-bold text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('browse_project_view')}</button>
                                         <span class="rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider ${isGroupProject ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-sky-200 bg-sky-50 text-sky-700'}">${t(isGroupProject ? 'project_origin_group' : 'project_origin_ngo')}</span>
                                     </span>
                                 </article>
@@ -8910,10 +8959,16 @@
         }
 
         function closeModal() {
+            const returnFocus = projectDetailsReturnFocus;
             document.getElementById('modal-container').innerHTML = '';
             document.removeEventListener('keydown', handleNGOInfoModalKeydown);
+            document.removeEventListener('keydown', handleProjectDetailsModalKeydown);
+            projectDetailsReturnFocus = null;
             selectedAvatarUrl = null;
             selectedCoverUrl = null;
+            if (returnFocus instanceof HTMLElement && returnFocus.isConnected) {
+                returnFocus.focus({ preventScroll: true });
+            }
         }
 
         // Initialize Application
