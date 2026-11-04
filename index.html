@@ -14,7 +14,6 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Pro / Free Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -304,9 +303,12 @@
         const locales = {
             es: {
                 nav_home: "FEED DE COMUNIDAD",
-                nav_browse: "PROYECTOS",
-                browse_title: "Proyectos verificados",
-                browse_subtitle: "Explora iniciativas auditadas por región y sigue su impacto.",
+                nav_browse: "Proyectos y Eventos",
+                browse_title: "Proyectos y Eventos",
+                browse_subtitle: "Explora iniciativas y proyectos, además de eventos agendados, en un mismo lugar.",
+                activity_tab_projects: "Proyectos",
+                activity_tab_events: "Eventos",
+                browse_events_empty: "No hay eventos agendados en este momento.",
                 project_origin_ngo: "Proyecto de ONG",
                 project_origin_group: "Proyecto de grupo",
                 project_by: "Por",
@@ -331,6 +333,13 @@
                 home_feed_subtitle: "Historias, avances e iniciativas compartidas por tus comunidades.",
                 home_feed_for_you: "Para ti",
                 home_feed_following: "Siguiendo",
+                home_feed_create_placeholder: "Comparte un avance, actualización o iniciativa...",
+                home_feed_add_media: "Añadir foto o archivo multimedia",
+                home_feed_post: "Publicar",
+                home_feed_destination_error: "No se pudo encontrar la comunidad global.",
+                home_feed_post_success: "Tu publicación se añadió a Zuliov Global Community.",
+                home_feed_media_preview: "Vista previa de la imagen",
+                home_feed_media_type_error: "Selecciona un archivo de imagen.",
                 home_feed_following_empty: "Aún no sigues grupos u organizaciones con publicaciones en el feed.",
                 home_feed_posted_in: "Publicado en:",
                 home_feed_like: "Me gusta",
@@ -339,6 +348,11 @@
                 home_feed_comment_count: "comentarios",
                 home_feed_post_image: "Foto de la publicación",
                 home_feed_empty: "Todavía no hay publicaciones en el feed.",
+                home_feed_category_empty: "Todavía no hay publicaciones ni comunidades asociadas a esta categoría.",
+                home_feed_related_communities: "Comunidades de esta categoría",
+                home_feed_no_category_posts: "Todavía no hay publicaciones de estas comunidades.",
+                home_feed_filter_label: "Filtrado por categoría:",
+                home_feed_clear_filter: "Quitar filtro",
                 project_country_kenya: "Kenia",
                 project_country_uganda: "Uganda",
                 project_country_guatemala: "Guatemala",
@@ -351,6 +365,14 @@
                 browse_region_latin_america: "América Latina",
                 browse_region_north_america: "USA",
                 browse_region_asia: "Asia",
+                nav_categories: "DESCUBRIR",
+                community_category_civic_movement: "Movimientos cívicos",
+                community_category_nonprofit_organization: "ONGs y fundaciones",
+                community_category_orphanages_child_care: "Orfanatos y atención infantil",
+                community_category_educational_institution: "Instituciones educativas",
+                community_category_volunteer_network: "Redes de voluntariado",
+                community_category_professional_association: "Asociaciones profesionales",
+                community_category_social_enterprise: "Empresas sociales",
                 nav_groups: "GRUPOS",
                 profile_view: "Ver perfil",
                 profile_settings: "Configuración",
@@ -469,10 +491,10 @@
                 register_success_individual: "¡Tu cuenta está lista! Bienvenido a Zuliov.",
                 register_success_ngo: "¡Tu cuenta de organización está lista! Bienvenido a Zuliov.",
                 ngo_directory_eyebrow: "Organizaciones registradas",
-                ngo_directory_title: "Explora ONGs",
-                ngo_directory_description: "Conoce las organizaciones, revisa su trabajo y sigue el impacto de sus proyectos verificados.",
+                ngo_directory_title: "Explorar",
+                ngo_directory_description: "Conoce movimientos cívicos, ONG, orfanatos, escuelas, redes de voluntariado y empresas sociales que generan un impacto real.",
                 ngo_directory_verified: "Auditada y verificada",
-                ngo_view_profile: "Ver Perfil",
+                ngo_view_profile: "Ver Perfil de la Organización",
                 ngo_profile_back: "Volver a ONGs",
                 ngo_profile_projects: "Proyectos vinculados",
                 ngo_profile_no_projects: "Esta organización aún no tiene proyectos publicados.",
@@ -842,9 +864,12 @@
             },
             en: {
                 nav_home: "COMMUNITY FEED",
-                nav_browse: "PROJECTS",
-                browse_title: "Verified Projects",
-                browse_subtitle: "Explore audited initiatives by region and follow their impact.",
+                nav_browse: "Projects & Events",
+                browse_title: "Projects & Events",
+                browse_subtitle: "Explore initiatives and projects, along with scheduled events, in one place.",
+                activity_tab_projects: "Projects",
+                activity_tab_events: "Events",
+                browse_events_empty: "There are no scheduled events right now.",
                 project_origin_ngo: "NGO project",
                 project_origin_group: "Group project",
                 project_by: "By",
@@ -869,6 +894,13 @@
                 home_feed_subtitle: "Stories, progress, and initiatives shared by your communities.",
                 home_feed_for_you: "For You",
                 home_feed_following: "Following",
+                home_feed_create_placeholder: "Share an update, progress, or community initiative...",
+                home_feed_add_media: "Add Photo/Media",
+                home_feed_post: "Post",
+                home_feed_destination_error: "The global community could not be found.",
+                home_feed_post_success: "Your post has been added to Zuliov Global Community.",
+                home_feed_media_preview: "Image preview",
+                home_feed_media_type_error: "Select an image file.",
                 home_feed_following_empty: "You are not following any groups or organizations with posts in the feed yet.",
                 home_feed_posted_in: "Posted in:",
                 home_feed_like: "Like",
@@ -877,6 +909,11 @@
                 home_feed_comment_count: "comments",
                 home_feed_post_image: "Post photo",
                 home_feed_empty: "There are no posts in the feed yet.",
+                home_feed_category_empty: "There are no posts or communities associated with this category yet.",
+                home_feed_related_communities: "Communities in this category",
+                home_feed_no_category_posts: "There are no posts from these communities yet.",
+                home_feed_filter_label: "Filtered by category:",
+                home_feed_clear_filter: "Clear filter",
                 project_country_kenya: "Kenya",
                 project_country_uganda: "Uganda",
                 project_country_guatemala: "Guatemala",
@@ -889,6 +926,14 @@
                 browse_region_latin_america: "Latin America",
                 browse_region_north_america: "USA",
                 browse_region_asia: "Asia",
+                nav_categories: "DISCOVER",
+                community_category_civic_movement: "Civic Movements",
+                community_category_nonprofit_organization: "Nonprofit Organizations",
+                community_category_orphanages_child_care: "Orphanages & Child Care",
+                community_category_educational_institution: "Educational Institutions",
+                community_category_volunteer_network: "Volunteer Networks",
+                community_category_professional_association: "Professional Associations",
+                community_category_social_enterprise: "Social Enterprises",
                 nav_groups: "GROUPS",
                 profile_view: "View Profile",
                 profile_settings: "Settings",
@@ -1007,10 +1052,10 @@
                 register_success_individual: "Your account is ready! Welcome to Zuliov.",
                 register_success_ngo: "Your organization account is ready! Welcome to Zuliov.",
                 ngo_directory_eyebrow: "Registered organizations",
-                ngo_directory_title: "Browse NGOs",
-                ngo_directory_description: "Meet the organizations, explore their work, and follow the impact of their verified projects.",
+                ngo_directory_title: "Browse",
+                ngo_directory_description: "Meet civic movements, NGOs, orphanages, schools, volunteer networks, and social enterprises driving real impact.",
                 ngo_directory_verified: "Audited & verified",
-                ngo_view_profile: "View NGO Profile",
+                ngo_view_profile: "View Organization Profile",
                 ngo_profile_back: "Back to NGOs",
                 ngo_profile_projects: "Projects linked to this NGO",
                 ngo_profile_no_projects: "This organization has no published projects yet.",
@@ -1434,6 +1479,30 @@
         let currentLang = ['en', 'es'].includes(localStorage.getItem('zuliov-language'))
             ? localStorage.getItem('zuliov-language')
             : 'en';
+        const communityCategoryKeys = [
+            'civic_movement',
+            'nonprofit_organization',
+            'orphanages_child_care',
+            'educational_institution',
+            'volunteer_network',
+            'professional_association',
+            'social_enterprise'
+        ];
+        let selectedCommunityCategory = null;
+        const communityCategoryGroupIds = {
+            civic_movement: ['group_zuliov_global_community'],
+            nonprofit_organization: ['group_cleanwater_official'],
+            orphanages_child_care: ['group_childhood'],
+            educational_institution: ['group_education', 'group_university_volunteers'],
+            volunteer_network: [
+                'group_volunteers_latam',
+                'group_jehovah_volunteer_relief',
+                'group_university_volunteers',
+                'group_senior_care'
+            ],
+            professional_association: [],
+            social_enterprise: []
+        };
 
         function t(key) {
             return (locales[currentLang] && locales[currentLang][key]) ? locales[currentLang][key] : (locales['en'][key] || key);
@@ -1497,6 +1566,12 @@
             menu.classList.toggle('hidden', !expanded);
             document.getElementById('mobile-menu-icon').classList.toggle('fa-xmark', expanded);
             document.getElementById('mobile-menu-icon').classList.toggle('fa-bars', !expanded);
+        }
+
+        function selectCommunityCategory(category) {
+            if (!communityCategoryKeys.includes(category)) return;
+            selectedCommunityCategory = selectedCommunityCategory === category ? null : category;
+            navigateTo('home');
         }
 
         function updateThemeToggle() {
@@ -1567,10 +1642,30 @@
     </script>
 
     <script>
-        // Modular Storage Service abstraction ready for Supabase Storage Integration
-        class SupabaseStorageAdapter {
+        const mockDatabase = {
+            data: {
+                userMedia: {}
+            },
+
+            saveData(collection, key, value) {
+                if (!this.data[collection]) this.data[collection] = {};
+                this.data[collection][key] = value;
+                return value;
+            },
+
+            loadData(collection, key) {
+                return this.data[collection]?.[key] ?? null;
+            },
+
+            deleteData(collection, key) {
+                if (!this.data[collection]) return false;
+                return delete this.data[collection][key];
+            }
+        };
+
+        class LocalMockStorageAdapter {
             constructor() {
-                this.bucketName = 'user-media';
+                this.collection = 'userMedia';
             }
 
             async uploadAvatar(userId, base64OrBlob, onProgress) {
@@ -1578,11 +1673,13 @@
                     let progress = 0;
                     const interval = setInterval(() => {
                         progress += 20;
-                        if (onProgress) onProgress(Math.min(progress, 95), "Compressing & Encrypting Avatar...");
+                        if (onProgress) onProgress(Math.min(progress, 95), "Saving mock avatar...");
                         if (progress >= 100) {
                             clearInterval(interval);
-                            if (onProgress) onProgress(100, "Stored in Zuliov Vault!");
-                            resolve(base64OrBlob);
+                            const key = `${userId}:avatar`;
+                            mockDatabase.saveData(this.collection, key, base64OrBlob);
+                            if (onProgress) onProgress(100, "Mock avatar saved.");
+                            resolve(mockDatabase.loadData(this.collection, key));
                         }
                     }, 100);
                 });
@@ -1593,27 +1690,27 @@
                     let progress = 0;
                     const interval = setInterval(() => {
                         progress += 15;
-                        if (onProgress) onProgress(Math.min(progress, 95), "Optimizing Banner Dimensions...");
+                        if (onProgress) onProgress(Math.min(progress, 95), "Saving mock cover...");
                         if (progress >= 100) {
                             clearInterval(interval);
                             if (onProgress) onProgress(100, "Cover Updated Successfully!");
-                            resolve({
+                            const key = `${userId}:cover`;
+                            mockDatabase.saveData(this.collection, key, {
                                 url: base64OrBlob,
                                 positionY: positionY
                             });
+                            resolve(mockDatabase.loadData(this.collection, key));
                         }
                     }, 80);
                 });
             }
 
-            async removeMedia(userId, type) {
-                return new Promise((resolve) => {
-                    setTimeout(() => resolve(true), 150);
-                });
+            removeMedia(userId, type) {
+                return mockDatabase.deleteData(this.collection, `${userId}:${type}`);
             }
         }
 
-        const storageService = new SupabaseStorageAdapter();
+        const storageService = new LocalMockStorageAdapter();
 
         // NGO Specific State & Data
         const ngoData = {
@@ -1923,6 +2020,8 @@
         // Global State
         const state = {
             homeFeedTab: 'for-you',
+            homeFeedDraft: '',
+            homeFeedImagePreviewUrl: null,
             profileViewMode: 'owner',
             profileFollowing: false,
             profileConnectionPending: false,
@@ -2609,7 +2708,8 @@
                 <nav id="main-navigation" class="hidden md:flex items-center space-x-8">
                     <button onclick="navigateTo('home')" data-screen="home" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-home">COMMUNITY FEED</button>
                     <button onclick="navigateTo('groups')" data-screen="groups" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-groups">GRUPOS</button>
-                    <button onclick="navigateTo('browse')" data-screen="browse" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-browse">Explorar proyectos</button>
+                    <button onclick="navigateTo('browse')" data-screen="browse" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs tracking-wider transition-colors" id="nav-browse">Projects &amp; Events</button>
+                    <button onclick="navigateTo('ngo-directory')" data-screen="ngo-directory" class="nav-link text-slate-600 hover:text-slate-900 font-medium text-xs uppercase tracking-wider transition-colors" id="nav-ngo-directory">DISCOVER</button>
                 </nav>
 
                 <!-- Language Switcher & User Profile Menu -->
@@ -2708,7 +2808,8 @@
             <nav id="mobile-navigation" aria-label="Mobile navigation" class="hidden space-y-1 border-t border-slate-200/80 py-3 md:hidden">
                 <button type="button" onclick="navigateTo('home')" data-screen="home" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-home">COMMUNITY FEED</button>
                 <button type="button" onclick="navigateTo('groups')" data-screen="groups" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-groups">GROUPS</button>
-                <button type="button" onclick="navigateTo('browse')" data-screen="browse" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-browse">BROWSE PROJECTS</button>
+                <button type="button" onclick="navigateTo('browse')" data-screen="browse" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-browse">Projects &amp; Events</button>
+                <button type="button" onclick="navigateTo('ngo-directory')" data-screen="ngo-directory" class="nav-link block w-full rounded-lg px-3 py-3 text-left text-sm font-semibold uppercase tracking-wide text-slate-600 transition-colors hover:bg-slate-100" id="mobile-nav-ngo-directory">DISCOVER</button>
                 <div class="flex items-center justify-between border-t border-slate-200/80 px-3 pt-3">
                     <span id="mobile-language-label" class="text-xs font-semibold text-slate-500">Language</span>
                     <div class="inline-flex rounded-lg bg-slate-100 p-0.5 text-[11px] font-mono font-bold">
@@ -2899,6 +3000,7 @@
     <script>
         let currentScreen = 'landing';
         let exploreTab = 'projects';
+        let activityTab = 'projects';
         let selectedNGOId = 'ngo_clean_water';
         let selectedLeaderId = null;
 
@@ -2928,8 +3030,9 @@
             if (screenId === 'ngo-directory') {
                 exploreTab = 'ngos';
                 screenId = 'browse';
-            } else if (screenId === 'browse' && currentScreen !== 'browse') {
+            } else if (screenId === 'browse') {
                 exploreTab = 'projects';
+                activityTab = 'projects';
             }
             if (screenId === 'ngo-profile' && currentScreen !== 'browse') selectedNGOId = 'ngo_clean_water';
             currentScreen = screenId;
@@ -2940,6 +3043,21 @@
             closeInbox();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             renderApp();
+        }
+
+        function setActivityTab(tab) {
+            if (!['projects', 'events'].includes(tab)) return;
+            activityTab = tab;
+            renderApp();
+        }
+
+        function renderActivityTabs() {
+            return `
+                <nav aria-label="${t('browse_title')}" class="flex flex-wrap gap-2">
+                    <button type="button" onclick="setActivityTab('projects')" aria-pressed="${activityTab === 'projects'}" class="rounded-full px-4 py-2 text-xs font-semibold transition-colors ${activityTab === 'projects' ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900'}">${t('activity_tab_projects')}</button>
+                    <button type="button" onclick="setActivityTab('events')" aria-pressed="${activityTab === 'events'}" class="rounded-full px-4 py-2 text-xs font-semibold transition-colors ${activityTab === 'events' ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900'}">${t('activity_tab_events')}</button>
+                </nav>
+            `;
         }
 
         function closeProfileDropdown() {
@@ -3775,7 +3893,6 @@
                     </label>
                 </div>
             `;
-            const selectedCountry = registrationCountries.find(country => country.code === registrationDraft.country);
             document.getElementById('modal-container').innerHTML = `
                 <div id="register-modal" class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm animate-modal-in" role="dialog" aria-modal="true" aria-labelledby="register-modal-title" onclick="closeRegisterModal()">
                     <section class="relative my-auto w-full max-w-xl rounded-3xl border border-white/70 bg-white shadow-2xl" onclick="event.stopPropagation()">
@@ -3797,16 +3914,6 @@
                                 <input class="${fieldClass}" type="password" name="password" autocomplete="new-password" minlength="8" value="${value('password')}" required>
                                 <span class="mt-1.5 block text-[11px] font-normal text-slate-500">${t('register_password_hint')}</span>
                             </label>
-                            <div class="relative" onfocusout="if (!this.contains(event.relatedTarget)) closeRegistrationCountryOptions()">
-                                <label for="registration-country-input" class="block text-xs font-semibold text-slate-700">${t('register_country')}</label>
-                                <img id="registration-country-flag" src="${selectedCountry ? `https://flagcdn.com/24x18/${selectedCountry.code.toLowerCase()}.png` : ''}" alt="" class="absolute left-3 top-[2.45rem] z-10 h-3.5 w-5 rounded-sm object-cover ${selectedCountry ? '' : 'hidden'}">
-                                <input id="registration-country-input" type="text" required readonly autocomplete="off" value="${selectedCountry ? escapeHTML(getRegistrationCountryLabel(selectedCountry)) : ''}" placeholder="${t('org_proposal_country_placeholder')}" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="registration-country-options" aria-required="true" onclick="openRegistrationCountryOptions()" onkeydown="if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') { event.preventDefault(); openRegistrationCountryOptions(); }" oninvalid="this.setCustomValidity(registrationCountryRequiredMessage())" class="${fieldClass} pl-11">
-                                <input id="registration-country-value" type="hidden" name="country" value="${selectedCountry ? selectedCountry.code : ''}">
-                                <div id="registration-country-popup" class="absolute left-0 right-0 top-full z-30 mt-1 hidden overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg">
-                                    <input id="registration-country-search" type="search" autocomplete="off" aria-label="${currentLang === 'es' ? 'Buscar país' : 'Search country'}" placeholder="${currentLang === 'es' ? 'Escribe para buscar...' : 'Type to search...'}" oninput="filterRegistrationCountries()" onkeydown="handleRegistrationCountryKeydown(event)" class="w-full border-b border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-400">
-                                    <div id="registration-country-options" role="listbox" aria-label="${t('register_country')}" class="max-h-52 overflow-y-auto py-1"></div>
-                                </div>
-                            </div>
                             <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                                 ${t('register_create_account')}<i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                             </button>
@@ -3822,14 +3929,6 @@
             const email = String(formData.get('email')).trim();
             const firstName = String(formData.get('firstName') || '').trim();
             const lastName = String(formData.get('lastName') || '').trim();
-            const country = registrationCountries.find(option => option.code === String(formData.get('country') || ''));
-            if (!country) {
-                const countryInput = document.getElementById('registration-country-input');
-                countryInput?.setCustomValidity(registrationCountryRequiredMessage());
-                countryInput?.reportValidity();
-                showToast(registrationCountryRequiredMessage(), 'info');
-                return;
-            }
             const name = `${firstName} ${lastName}`.trim();
 
             state.currentUser = {
@@ -3840,7 +3939,7 @@
                 avatar: null,
                 coverImage: null,
                 email,
-                location: getRegistrationCountryName(country),
+                location: '',
                 registrationId: '',
                 joinedDate: currentLang === 'es' ? 'Miembro desde hoy' : 'Member since today'
             };
@@ -4182,7 +4281,7 @@
             document.getElementById('mobile-notification-button').title = currentLang === 'es' ? 'Notificaciones' : 'Notifications';
             document.getElementById('mobile-notification-button').setAttribute('aria-label', currentLang === 'es' ? 'Notificaciones' : 'Notifications');
             document.getElementById('guest-header-controls-mobile').classList.toggle('guest-hidden', navigationVisible);
-            ['mobile-nav-home', 'mobile-nav-browse', 'mobile-nav-groups']
+            ['mobile-nav-home', 'mobile-nav-browse', 'mobile-nav-groups', 'mobile-nav-ngo-directory']
                 .forEach(id => document.getElementById(id).classList.toggle('guest-hidden', !navigationVisible));
             document.getElementById('mobile-guest-menu').classList.toggle('hidden', navigationVisible);
             document.getElementById('mobile-authenticated-menu').classList.toggle('hidden', !navigationVisible);
@@ -4252,9 +4351,11 @@
             document.getElementById('nav-browse').textContent = t('nav_browse');
             document.getElementById('nav-home').textContent = t('nav_home');
             document.getElementById('nav-groups').textContent = t('nav_groups');
+            document.getElementById('nav-ngo-directory').textContent = t('nav_categories');
             document.getElementById('mobile-nav-home').textContent = t('nav_home');
             document.getElementById('mobile-nav-browse').textContent = t('nav_browse');
             document.getElementById('mobile-nav-groups').textContent = t('nav_groups');
+            document.getElementById('mobile-nav-ngo-directory').textContent = t('nav_categories');
             document.getElementById('mobile-profile-label').textContent = isAuthenticated
                 ? (currentLang === 'es' ? 'Perfil de usuario' : 'User profile')
                 : t('guest_name');
@@ -4284,7 +4385,9 @@
             
             if (currentScreen === 'home') {
                 document.querySelectorAll('[data-screen="home"]').forEach(link => link.classList.add('text-primary-600'));
-            } else if (currentScreen === 'browse' || currentScreen === 'ngo-profile' || currentScreen === 'leader-profile') {
+            } else if ((currentScreen === 'browse' && exploreTab === 'ngos') || currentScreen === 'ngo-profile') {
+                document.querySelectorAll('[data-screen="ngo-directory"]').forEach(link => link.classList.add('text-primary-600'));
+            } else if (currentScreen === 'browse' || currentScreen === 'leader-profile') {
                 document.querySelectorAll('[data-screen="browse"]').forEach(link => link.classList.add('text-primary-600'));
             } else if (currentScreen === 'groups') {
                 document.querySelectorAll('[data-screen="groups"]').forEach(link => link.classList.add('text-primary-600'));
@@ -4654,10 +4757,17 @@
             const allFeedPosts = state.groups.flatMap(group =>
                 [...group.posts, ...(group.eventPosts || [])].map(post => ({ group, post }))
             );
+            const categoryGroupIds = selectedCommunityCategory
+                ? communityCategoryGroupIds[selectedCommunityCategory]
+                : null;
+            const categoryGroups = categoryGroupIds
+                ? state.groups.filter(group => categoryGroupIds.includes(group.id))
+                : [];
             const feedPosts = allFeedPosts
-                .filter(({ group }) => state.homeFeedTab !== 'following'
+                .filter(({ group }) => (!categoryGroupIds || categoryGroupIds.includes(group.id))
+                    && (state.homeFeedTab !== 'following'
                     || group.joined
-                    || (group.id === 'group_cleanwater_official' && ngoData.isFollowing))
+                    || (group.id === 'group_cleanwater_official' && ngoData.isFollowing)))
                 .sort((first, second) => (second.post.createdAt || 0) - (first.post.createdAt || 0));
 
             canvas.innerHTML = `
@@ -4666,17 +4776,111 @@
                         <h1 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">${t('home_feed_title')}</h1>
                         <p class="mt-2 text-sm leading-relaxed text-slate-600">${t('home_feed_subtitle')}</p>
                     </header>
+                    ${selectedCommunityCategory ? `
+                        <div class="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary-100 bg-primary-50 px-4 py-3">
+                            <p class="text-sm font-semibold text-primary-900">${t('home_feed_filter_label')} <span>${t(`community_category_${selectedCommunityCategory}`)}</span></p>
+                            <button type="button" onclick="selectCommunityCategory('${selectedCommunityCategory}')" class="rounded-lg px-3 py-1.5 text-xs font-bold text-primary-700 transition-colors hover:bg-white">${t('home_feed_clear_filter')}</button>
+                        </div>
+                        ${categoryGroups.length ? `
+                            <section aria-label="${t('home_feed_related_communities')}" class="mb-6">
+                                <h2 class="mb-3 text-xs font-bold uppercase tracking-wide text-slate-500">${t('home_feed_related_communities')}</h2>
+                                <div class="grid gap-3 sm:grid-cols-2">
+                                    ${categoryGroups.map(group => `
+                                        <button type="button" onclick="openGroup('${escapeHTML(group.id)}')" class="rounded-xl border border-slate-200 bg-white p-4 text-left shadow-subtle transition-colors hover:border-primary-300 hover:bg-primary-50/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                            <span class="block text-sm font-bold text-slate-900">${escapeHTML(groupText(group, 'name'))}</span>
+                                            <span class="mt-1 block text-xs leading-relaxed text-slate-600">${escapeHTML(groupText(group, 'description'))}</span>
+                                            <span class="mt-3 block text-[11px] font-semibold text-primary-700">${group.members} ${currentLang === 'es' ? 'miembros' : 'members'}</span>
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </section>
+                        ` : ''}
+                    ` : ''}
                     <div role="tablist" aria-label="${t('home_feed_title')}" class="mb-5 grid grid-cols-2 border-b border-slate-200">
                         <button type="button" id="home-feed-tab-for-you" role="tab" aria-selected="${state.homeFeedTab === 'for-you'}" aria-controls="home-feed-panel" tabindex="${state.homeFeedTab === 'for-you' ? '0' : '-1'}" onkeydown="handleHomeFeedTabKeydown(event)" onclick="setHomeFeedTab('for-you')" class="border-b-2 px-4 py-3 text-sm font-bold transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${state.homeFeedTab === 'for-you' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500 hover:text-slate-800'}">${t('home_feed_for_you')}</button>
                         <button type="button" id="home-feed-tab-following" role="tab" aria-selected="${state.homeFeedTab === 'following'}" aria-controls="home-feed-panel" tabindex="${state.homeFeedTab === 'following' ? '0' : '-1'}" onkeydown="handleHomeFeedTabKeydown(event)" onclick="setHomeFeedTab('following')" class="border-b-2 px-4 py-3 text-sm font-bold transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${state.homeFeedTab === 'following' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500 hover:text-slate-800'}">${t('home_feed_following')}</button>
                     </div>
+                    <form onsubmit="publishHomeFeedPost(event)" class="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle sm:p-5">
+                        <div class="flex items-start gap-3">
+                            <img src="${escapeHTML(state.currentUser.avatar || '')}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-slate-200">
+                            <label class="sr-only" for="home-feed-create-text">${t('home_feed_create_placeholder')}</label>
+                            <textarea id="home-feed-create-text" name="text" required maxlength="1200" rows="3" oninput="state.homeFeedDraft = this.value" placeholder="${escapeHTML(t('home_feed_create_placeholder'))}" class="min-h-24 w-full resize-y rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-primary-400 focus:bg-white focus:ring-2 focus:ring-primary-100">${escapeHTML(state.homeFeedDraft)}</textarea>
+                        </div>
+                        ${state.homeFeedImagePreviewUrl ? `
+                            <div id="home-feed-image-preview" class="relative ml-[3.25rem] mt-3 overflow-hidden rounded-xl border border-slate-200 sm:max-w-sm">
+                                <img src="${escapeHTML(state.homeFeedImagePreviewUrl)}" alt="${escapeHTML(t('home_feed_media_preview'))}" class="max-h-64 w-full bg-slate-50 object-cover">
+                            </div>
+                        ` : '<div id="home-feed-image-preview"></div>'}
+                        <div class="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
+                            <div class="flex items-center">
+                                <label for="home-feed-image-input" class="inline-flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-primary-700 transition-colors hover:bg-primary-50 focus-within:ring-2 focus-within:ring-primary-400">
+                                    <i class="fa-regular fa-image" aria-hidden="true"></i>${t('home_feed_add_media')}
+                                </label>
+                                <input id="home-feed-image-input" type="file" accept="image/*" onchange="handleHomeFeedImageChange(event)" class="sr-only">
+                            </div>
+                            <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                                <i class="fa-solid fa-paper-plane text-xs" aria-hidden="true"></i>${t('home_feed_post')}
+                            </button>
+                        </div>
+                    </form>
                     <div id="home-feed-panel" role="tabpanel" aria-labelledby="home-feed-tab-${state.homeFeedTab}" class="space-y-4">
                         ${feedPosts.length
                             ? `<div class="space-y-4" role="feed" aria-label="${t('home_feed_title')}">${feedPosts.map(({ group, post }) => renderHomeFeedPost(group, post)).join('')}</div>`
-                            : `<p class="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">${state.homeFeedTab === 'following' ? t('home_feed_following_empty') : t('home_feed_empty')}</p>`}
+                            : `<p class="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">${selectedCommunityCategory
+                                ? (categoryGroups.length ? t('home_feed_no_category_posts') : t('home_feed_category_empty'))
+                                : (state.homeFeedTab === 'following' ? t('home_feed_following_empty') : t('home_feed_empty'))}</p>`}
                     </div>
                 </section>
             `;
+        }
+
+        function handleHomeFeedImageChange(event) {
+            const input = event.currentTarget;
+            const file = input.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                input.value = '';
+                showToast(t('home_feed_media_type_error'), 'info');
+                return;
+            }
+            if (state.homeFeedImagePreviewUrl) URL.revokeObjectURL(state.homeFeedImagePreviewUrl);
+            state.homeFeedImagePreviewUrl = URL.createObjectURL(file);
+            input.value = '';
+            const preview = document.getElementById('home-feed-image-preview');
+            preview.innerHTML = `<img src="${escapeHTML(state.homeFeedImagePreviewUrl)}" alt="${escapeHTML(t('home_feed_media_preview'))}" class="max-h-64 w-full rounded-xl border border-slate-200 bg-slate-50 object-cover">`;
+        }
+
+        function publishHomeFeedPost(event) {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            const group = state.groups.find(item => item.id === 'group_zuliov_global_community');
+            if (!group) {
+                showToast(t('home_feed_destination_error'), 'info');
+                return;
+            }
+            const text = String(formData.get('text') || '').trim();
+            if (!text) {
+                showToast(t('group_post_empty_error'), 'info');
+                return;
+            }
+            const roleKey = state.currentUser.role === 'ngo' ? 'group_role_ngo' : 'group_role_member';
+            group.posts.unshift({
+                id: `post_home_${Date.now()}`,
+                author: state.currentUser.name,
+                role: t(roleKey),
+                roleKey,
+                authorPhoto: state.currentUser.avatar,
+                text,
+                image: state.homeFeedImagePreviewUrl || null,
+                comments: [],
+                dateKey: 'group_now',
+                createdAt: Date.now()
+            });
+            state.homeFeedTab = 'for-you';
+            state.homeFeedDraft = '';
+            state.homeFeedImagePreviewUrl = null;
+            renderApp();
+            showToast(t('home_feed_post_success'), 'success');
         }
 
         function setHomeFeedTab(tab) {
@@ -5667,6 +5871,69 @@
                     : ngoData.tagline;
             }
 
+            const sampleOrganizations = [
+                {
+                    id: 'sample_nonprofit',
+                    name: 'CleanWater Community',
+                    category: currentLang === 'es' ? 'ONG' : 'Nonprofit Organization',
+                    logo: '💧',
+                    location: currentLang === 'es' ? 'Kitui, Kenia' : 'Kitui, Kenya',
+                    description: currentLang === 'es'
+                        ? 'Apoya a las comunidades rurales con acceso sostenible al agua potable y soluciones lideradas localmente.'
+                        : 'Supports rural communities with sustainable access to clean water and locally led solutions.'
+                },
+                {
+                    id: 'sample_orphanage',
+                    name: 'Hope & Shelter Kids',
+                    category: currentLang === 'es' ? 'Orfanatos y atención infantil' : 'Orphanages & Child Care',
+                    logo: '🏠',
+                    location: currentLang === 'es' ? 'Nairobi, Kenia' : 'Nairobi, Kenya',
+                    description: currentLang === 'es'
+                        ? 'Crea entornos seguros y brinda atención integral a niños y familias.'
+                        : 'Creates safe environments and provides comprehensive care for children and families.'
+                },
+                {
+                    id: 'sample_civic_movement',
+                    name: 'Youth Action Movement',
+                    category: currentLang === 'es' ? 'Movimiento cívico' : 'Civic Movement',
+                    logo: '✊',
+                    location: currentLang === 'es' ? 'Ciudad de Guatemala, Guatemala' : 'Guatemala City, Guatemala',
+                    description: currentLang === 'es'
+                        ? 'Moviliza a jóvenes para impulsar la participación cívica y el liderazgo comunitario.'
+                        : 'Mobilizes young people to advance civic participation and community leadership.'
+                },
+                {
+                    id: 'sample_volunteer_network',
+                    name: 'Global Volunteer Network',
+                    category: currentLang === 'es' ? 'Red de voluntariado' : 'Volunteer Network',
+                    logo: '🤝',
+                    location: currentLang === 'es' ? 'Global' : 'Worldwide',
+                    description: currentLang === 'es'
+                        ? 'Conecta a personas voluntarias con iniciativas locales de impacto social.'
+                        : 'Connects volunteers with local initiatives making a social impact.'
+                },
+                {
+                    id: 'sample_social_enterprise',
+                    name: 'EcoInnovate Social Labs',
+                    category: currentLang === 'es' ? 'Empresa social' : 'Social Enterprise',
+                    logo: '🌱',
+                    location: currentLang === 'es' ? 'Kampala, Uganda' : 'Kampala, Uganda',
+                    description: currentLang === 'es'
+                        ? 'Desarrolla soluciones sostenibles que combinan innovación ambiental e inclusión económica.'
+                        : 'Develops sustainable solutions combining environmental innovation and economic inclusion.'
+                }
+            ];
+            sampleOrganizations.forEach(organization => {
+                if (!organizations.has(organization.id)) {
+                    organizations.set(organization.id, {
+                        ...organization,
+                        coverImage: 'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1200',
+                        verified: false,
+                        projects: []
+                    });
+                }
+            });
+
             return Array.from(organizations.values()).sort((first, second) => first.name.localeCompare(second.name));
         }
 
@@ -5683,7 +5950,7 @@
         }
 
         function renderNGODirectoryPage(canvas) {
-            const organizations = getNGODirectoryEntries().filter(organization => organization.id === 'ngo_clean_water');
+            const organizations = getNGODirectoryEntries();
             canvas.innerHTML = `
                 <div class="mx-auto max-w-7xl space-y-7 px-4 py-8 sm:px-6 lg:px-8">
                     <section>
@@ -5705,10 +5972,7 @@
                                     <div class="min-w-0 flex-1">
                                         <h2 class="text-base font-bold leading-snug text-slate-900">${escapeHTML(organization.name)}</h2>
                                         <p class="mt-1 text-xs text-slate-500">${escapeHTML(organization.location)}</p>
-                                        <span class="mt-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide ${organization.verified ? 'text-emerald-700' : 'text-slate-500'}">
-                                            <i class="fa-solid ${organization.verified ? 'fa-circle-check' : 'fa-circle-question'}" aria-hidden="true"></i>
-                                            ${organization.verified ? t('ngo_directory_verified') : (currentLang === 'es' ? 'Verificación pendiente' : 'Verification pending')}
-                                        </span>
+                                        <p class="mt-2 text-xs text-slate-600">${escapeHTML(organization.category || (currentLang === 'es' ? 'Organización' : 'Organization'))}</p>
                                     </div>
                                 </div>
                                 <p class="mt-4 flex-1 text-sm leading-relaxed text-slate-600">${escapeHTML(organization.description)}</p>
@@ -5739,9 +6003,9 @@
                         <div class="relative h-56 bg-slate-900 sm:h-80">
                             <img src="${escapeHTML(organization.coverImage || '')}" alt="${escapeHTML(organization.name)}" class="h-full w-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-                            <span class="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-3 py-1.5 text-[11px] font-bold text-white">
+                            ${organization.verified ? `<span class="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-3 py-1.5 text-[11px] font-bold text-white">
                                 <i class="fa-solid fa-shield-check" aria-hidden="true"></i> ${t('ngo_directory_verified')}
-                            </span>
+                            </span>` : ''}
                         </div>
                         <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-8">
                             <div class="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 text-4xl">
@@ -7854,6 +8118,35 @@
                 return;
             }
 
+            if (activityTab === 'events') {
+                const scheduledEvents = state.groups.flatMap(group =>
+                    (group.upcomingEvents || []).map(event => ({ group, event }))
+                );
+                canvas.innerHTML = `
+                    <div class="mx-auto max-w-7xl space-y-8 px-4 py-8 text-left sm:px-6 lg:px-8">
+                        ${renderActivityTabs()}
+                        <header class="border-b border-slate-200 pb-4">
+                            <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
+                            <p class="text-xs text-slate-500">${t('browse_subtitle')}</p>
+                        </header>
+                        <section aria-labelledby="browse-events-title">
+                            <h2 id="browse-events-title" class="mb-4 text-xs font-black uppercase tracking-widest text-slate-800">${t('group_upcoming_events_title')}</h2>
+                            ${scheduledEvents.length ? `
+                                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                                    ${scheduledEvents.map(({ group, event }) => `
+                                        <article class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                            <h3 class="mb-3 text-xs font-bold text-slate-600">${escapeHTML(groupText(group, 'name'))}</h3>
+                                            ${renderUpcomingEvent(group, event)}
+                                        </article>
+                                    `).join('')}
+                                </div>
+                            ` : `<p class="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">${t('browse_events_empty')}</p>`}
+                        </section>
+                    </div>
+                `;
+                return;
+            }
+
             function formatProjectLocation(project) {
                 const locationParts = (project.location || ngoData.country || 'Kenya')
                     .split(',')
@@ -7949,6 +8242,7 @@
 
             canvas.innerHTML = `
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
+                    ${renderActivityTabs()}
                     <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
@@ -8394,6 +8688,7 @@
                 reader.readAsDataURL(fileInput.files[0]);
             } else if (selectedAvatarUrl) {
                 state.currentUser.avatar = selectedAvatarUrl;
+                mockDatabase.saveData('userMedia', `${state.currentUser.id}:avatar`, selectedAvatarUrl);
                 closeModal();
                 renderApp();
                 showToast("Profile Avatar Updated!", "success");
@@ -8419,6 +8714,10 @@
             } else if (selectedCoverUrl) {
                 state.currentUser.coverImage = selectedCoverUrl;
                 state.currentUser.coverPositionY = 50;
+                mockDatabase.saveData('userMedia', `${state.currentUser.id}:cover`, {
+                    url: selectedCoverUrl,
+                    positionY: 50
+                });
                 closeModal();
                 renderApp();
                 showToast("Cover Banner Updated!", "success");
@@ -8428,6 +8727,7 @@
         }
 
         function removeAvatar() {
+            storageService.removeMedia(state.currentUser.id, 'avatar');
             state.currentUser.avatar = null;
             closeModal();
             renderApp();
@@ -8435,6 +8735,7 @@
         }
 
         function removeCover() {
+            storageService.removeMedia(state.currentUser.id, 'cover');
             state.currentUser.coverImage = null;
             closeModal();
             renderApp();
