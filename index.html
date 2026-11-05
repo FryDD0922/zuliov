@@ -303,7 +303,7 @@
         const locales = {
             es: {
                 nav_home: "FEED DE COMUNIDAD",
-                nav_browse: "Proyectos y Eventos",
+                nav_browse: "PROYECTOS Y EVENTOS",
                 browse_title: "Proyectos y Eventos",
                 browse_subtitle: "Explora iniciativas y proyectos, además de eventos agendados, en un mismo lugar.",
                 activity_tab_all: "Todos",
@@ -394,6 +394,15 @@
                 community_category_volunteer_network: "Redes de voluntariado",
                 community_category_professional_association: "Asociaciones profesionales",
                 community_category_social_enterprise: "Empresas sociales",
+                ngo_filter_all: "Todas",
+                ngo_filter_civic_movements: "Movimientos cívicos",
+                ngo_filter_nonprofits: "Organizaciones sin fines de lucro",
+                ngo_filter_orphanages: "Orfanatos",
+                ngo_filter_schools: "Escuelas",
+                ngo_filter_volunteer_networks: "Redes de voluntariado",
+                ngo_filter_social_enterprises: "Empresas sociales",
+                ngo_directory_filters: "Filtrar organizaciones por tipo",
+                ngo_directory_empty: "No hay organizaciones en esta categoría todavía.",
                 nav_groups: "GRUPOS",
                 profile_view: "Ver perfil",
                 profile_settings: "Configuración",
@@ -512,7 +521,7 @@
                 register_success_individual: "¡Tu cuenta está lista! Bienvenido a Zuliov.",
                 register_success_ngo: "¡Tu cuenta de organización está lista! Bienvenido a Zuliov.",
                 ngo_directory_eyebrow: "Organizaciones registradas",
-                ngo_directory_title: "Explorar",
+                ngo_directory_title: "Descubrir",
                 ngo_directory_description: "Conoce movimientos cívicos, ONG, orfanatos, escuelas, redes de voluntariado y empresas sociales que generan un impacto real.",
                 ngo_directory_verified: "Auditada y verificada",
                 ngo_view_profile: "Ver Perfil de la Organización",
@@ -887,7 +896,7 @@
             },
             en: {
                 nav_home: "COMMUNITY FEED",
-                nav_browse: "Projects & Events",
+                nav_browse: "PROJECTS & EVENTS",
                 browse_title: "Projects & Events",
                 browse_subtitle: "Explore initiatives and projects, along with scheduled events, in one place.",
                 activity_tab_all: "All",
@@ -978,6 +987,15 @@
                 community_category_volunteer_network: "Volunteer Networks",
                 community_category_professional_association: "Professional Associations",
                 community_category_social_enterprise: "Social Enterprises",
+                ngo_filter_all: "All",
+                ngo_filter_civic_movements: "Civic Movements",
+                ngo_filter_nonprofits: "Nonprofits",
+                ngo_filter_orphanages: "Orphanages",
+                ngo_filter_schools: "Schools",
+                ngo_filter_volunteer_networks: "Volunteer Networks",
+                ngo_filter_social_enterprises: "Social Enterprises",
+                ngo_directory_filters: "Filter organizations by type",
+                ngo_directory_empty: "There are no organizations in this category yet.",
                 nav_groups: "GROUPS",
                 profile_view: "View Profile",
                 profile_settings: "Settings",
@@ -1096,7 +1114,7 @@
                 register_success_individual: "Your account is ready! Welcome to Zuliov.",
                 register_success_ngo: "Your organization account is ready! Welcome to Zuliov.",
                 ngo_directory_eyebrow: "Registered organizations",
-                ngo_directory_title: "Browse",
+                ngo_directory_title: "Discover",
                 ngo_directory_description: "Meet civic movements, NGOs, orphanages, schools, volunteer networks, and social enterprises driving real impact.",
                 ngo_directory_verified: "Audited & verified",
                 ngo_view_profile: "View Organization Profile",
@@ -1535,6 +1553,15 @@
             'social_enterprise'
         ];
         let selectedCommunityCategory = null;
+        const ngoDirectoryCategoryKeys = [
+            'civic_movement',
+            'nonprofit_organization',
+            'orphanages_child_care',
+            'educational_institution',
+            'volunteer_network',
+            'social_enterprise'
+        ];
+        let selectedNGODirectoryCategory = null;
         const communityCategoryGroupIds = {
             civic_movement: ['group_zuliov_global_community'],
             nonprofit_organization: ['group_cleanwater_official'],
@@ -6010,6 +6037,7 @@
                         name: project.ngoName,
                         logo: project.ngoLogo || '🏢',
                         coverImage: project.coverImage,
+                        categoryKey: 'nonprofit_organization',
                         location: project.location || '',
                         description: localizedProjectText(project, 'description'),
                         verified: project.verifiedStatus === 'Audited & Verified',
@@ -6033,8 +6061,9 @@
                 {
                     id: 'sample_nonprofit',
                     name: 'CleanWater Community',
-                    category: currentLang === 'es' ? 'ONG' : 'Nonprofit Organization',
+                    categoryKey: 'nonprofit_organization',
                     logo: '💧',
+                    coverImage: 'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1200',
                     location: currentLang === 'es' ? 'Kitui, Kenia' : 'Kitui, Kenya',
                     description: currentLang === 'es'
                         ? 'Apoya a las comunidades rurales con acceso sostenible al agua potable y soluciones lideradas localmente.'
@@ -6043,8 +6072,9 @@
                 {
                     id: 'sample_orphanage',
                     name: 'Hope & Shelter Kids',
-                    category: currentLang === 'es' ? 'Orfanatos y atención infantil' : 'Orphanages & Child Care',
+                    categoryKey: 'orphanages_child_care',
                     logo: '🏠',
+                    coverImage: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200',
                     location: currentLang === 'es' ? 'Nairobi, Kenia' : 'Nairobi, Kenya',
                     description: currentLang === 'es'
                         ? 'Crea entornos seguros y brinda atención integral a niños y familias.'
@@ -6053,8 +6083,9 @@
                 {
                     id: 'sample_civic_movement',
                     name: 'Youth Action Movement',
-                    category: currentLang === 'es' ? 'Movimiento cívico' : 'Civic Movement',
+                    categoryKey: 'civic_movement',
                     logo: '✊',
+                    coverImage: 'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=1200',
                     location: currentLang === 'es' ? 'Ciudad de Guatemala, Guatemala' : 'Guatemala City, Guatemala',
                     description: currentLang === 'es'
                         ? 'Moviliza a jóvenes para impulsar la participación cívica y el liderazgo comunitario.'
@@ -6063,8 +6094,9 @@
                 {
                     id: 'sample_volunteer_network',
                     name: 'Global Volunteer Network',
-                    category: currentLang === 'es' ? 'Red de voluntariado' : 'Volunteer Network',
+                    categoryKey: 'volunteer_network',
                     logo: '🤝',
+                    coverImage: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
                     location: currentLang === 'es' ? 'Global' : 'Worldwide',
                     description: currentLang === 'es'
                         ? 'Conecta a personas voluntarias con iniciativas locales de impacto social.'
@@ -6073,19 +6105,30 @@
                 {
                     id: 'sample_social_enterprise',
                     name: 'EcoInnovate Social Labs',
-                    category: currentLang === 'es' ? 'Empresa social' : 'Social Enterprise',
+                    categoryKey: 'social_enterprise',
                     logo: '🌱',
+                    coverImage: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200',
                     location: currentLang === 'es' ? 'Kampala, Uganda' : 'Kampala, Uganda',
                     description: currentLang === 'es'
                         ? 'Desarrolla soluciones sostenibles que combinan innovación ambiental e inclusión económica.'
                         : 'Develops sustainable solutions combining environmental innovation and economic inclusion.'
+                },
+                {
+                    id: 'sample_school',
+                    name: 'Bright Futures Academy',
+                    categoryKey: 'educational_institution',
+                    logo: '📚',
+                    coverImage: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200',
+                    location: currentLang === 'es' ? 'Accra, Ghana' : 'Accra, Ghana',
+                    description: currentLang === 'es'
+                        ? 'Amplía el acceso a una educación de calidad con programas de aprendizaje comunitarios.'
+                        : 'Expands access to quality education through community-led learning programs.'
                 }
             ];
             sampleOrganizations.forEach(organization => {
                 if (!organizations.has(organization.id)) {
                     organizations.set(organization.id, {
                         ...organization,
-                        coverImage: 'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1200',
                         verified: false,
                         projects: []
                     });
@@ -6100,6 +6143,12 @@
             navigateTo('ngo-profile');
         }
 
+        function selectNGODirectoryCategory(category) {
+            if (category !== null && !ngoDirectoryCategoryKeys.includes(category)) return;
+            selectedNGODirectoryCategory = category;
+            renderApp();
+        }
+
         function setExploreTab(tab) {
             if (tab !== 'projects' && tab !== 'ngos') return;
             exploreTab = tab;
@@ -6109,37 +6158,73 @@
 
         function renderNGODirectoryPage(canvas) {
             const organizations = getNGODirectoryEntries();
+            const filters = [
+                { key: null, labelKey: 'ngo_filter_all' },
+                { key: 'civic_movement', labelKey: 'ngo_filter_civic_movements' },
+                { key: 'nonprofit_organization', labelKey: 'ngo_filter_nonprofits' },
+                { key: 'orphanages_child_care', labelKey: 'ngo_filter_orphanages' },
+                { key: 'educational_institution', labelKey: 'ngo_filter_schools' },
+                { key: 'volunteer_network', labelKey: 'ngo_filter_volunteer_networks' },
+                { key: 'social_enterprise', labelKey: 'ngo_filter_social_enterprises' }
+            ];
+            const badgeStyles = {
+                civic_movement: 'bg-sky-50 text-sky-700 ring-sky-200',
+                nonprofit_organization: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
+                orphanages_child_care: 'bg-rose-50 text-rose-700 ring-rose-200',
+                educational_institution: 'bg-indigo-50 text-indigo-700 ring-indigo-200',
+                volunteer_network: 'bg-amber-50 text-amber-700 ring-amber-200',
+                social_enterprise: 'bg-teal-50 text-teal-700 ring-teal-200'
+            };
+            const visibleOrganizations = selectedNGODirectoryCategory
+                ? organizations.filter(organization => organization.categoryKey === selectedNGODirectoryCategory)
+                : organizations;
             canvas.innerHTML = `
                 <div class="mx-auto max-w-7xl space-y-7 px-4 py-8 sm:px-6 lg:px-8">
                     <section>
-                    <header class="mb-8 border-b border-slate-200 pb-6">
-                        <p class="mb-2 text-[11px] font-mono font-bold uppercase tracking-wider text-primary-600">${t('ngo_directory_eyebrow')}</p>
-                        <h1 class="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">${t('ngo_directory_title')}</h1>
-                        <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">${t('ngo_directory_description')}</p>
-                    </header>
-                    <p class="mb-4 text-xs font-mono font-semibold text-slate-500">${organizations.length} ${currentLang === 'es' ? 'organización' : (organizations.length === 1 ? 'organization' : 'organizations')}</p>
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        ${organizations.map(organization => `
-                            <article class="flex min-h-64 flex-col border border-slate-200 bg-white p-5 shadow-subtle transition-colors hover:border-primary-200">
-                                <div class="flex items-start gap-4">
-                                    <div class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-3xl">
-                                        ${organization.id === 'ngo_clean_water'
-                                            ? `<img src="${escapeHTML(organization.logo)}" alt="${escapeHTML(organization.name)} logo" class="h-full w-full object-cover">`
-                                            : `<span role="img" aria-label="${escapeHTML(organization.name)} logo">${escapeHTML(organization.logo)}</span>`}
-                                    </div>
-                                    <div class="min-w-0 flex-1">
-                                        <h2 class="text-base font-bold leading-snug text-slate-900">${escapeHTML(organization.name)}</h2>
-                                        <p class="mt-1 text-xs text-slate-500">${escapeHTML(organization.location)}</p>
-                                        <p class="mt-2 text-xs text-slate-600">${escapeHTML(organization.category || (currentLang === 'es' ? 'Organización' : 'Organization'))}</p>
-                                    </div>
-                                </div>
-                                <p class="mt-4 flex-1 text-sm leading-relaxed text-slate-600">${escapeHTML(organization.description)}</p>
-                                <button type="button" onclick="openNGOProfile('${escapeHTML(organization.id)}')" class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-primary-700">
-                                    ${t('ngo_view_profile')} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                                </button>
-                            </article>
-                        `).join('')}
-                    </div>
+                        <header class="mb-6 border-b border-slate-200 pb-6">
+                            <p class="mb-2 text-[11px] font-mono font-bold uppercase tracking-wider text-primary-600">${t('ngo_directory_eyebrow')}</p>
+                            <h1 class="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">${t('ngo_directory_title')}</h1>
+                            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">${t('ngo_directory_description')}</p>
+                        </header>
+                        <nav aria-label="${t('ngo_directory_filters')}" class="mb-5 flex gap-2 overflow-x-auto pb-2">
+                            ${filters.map(filter => {
+                                const isActive = selectedNGODirectoryCategory === filter.key;
+                                return `<button type="button" aria-pressed="${isActive}" onclick="selectNGODirectoryCategory(${filter.key === null ? 'null' : `'${filter.key}'`})" class="shrink-0 rounded-full border px-4 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${isActive ? 'border-primary-600 bg-primary-600 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700'}">${t(filter.labelKey)}</button>`;
+                            }).join('')}
+                        </nav>
+                        <p class="mb-4 text-xs font-mono font-semibold text-slate-500">${visibleOrganizations.length} ${currentLang === 'es' ? 'organización' : (visibleOrganizations.length === 1 ? 'organization' : 'organizations')}</p>
+                        ${visibleOrganizations.length ? `
+                            <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                                ${visibleOrganizations.map(organization => {
+                                    const badgeClass = badgeStyles[organization.categoryKey] || 'bg-slate-100 text-slate-700 ring-slate-200';
+                                    return `
+                                        <article class="group flex min-h-80 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-subtle transition-all duration-200 hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-card">
+                                            <div class="relative h-28 shrink-0 overflow-hidden bg-slate-100">
+                                                <img src="${escapeHTML(organization.coverImage || '')}" alt="" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/25 to-transparent"></div>
+                                            </div>
+                                            <div class="flex flex-1 flex-col p-5 pt-0">
+                                                <div class="relative z-10 -mt-8 mb-3 flex items-end justify-between gap-3">
+                                                    <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white text-3xl shadow-card ring-4 ring-white">
+                                                        ${organization.id === 'ngo_clean_water'
+                                                            ? `<img src="${escapeHTML(organization.logo)}" alt="${escapeHTML(organization.name)} logo" class="h-full w-full object-cover">`
+                                                            : `<span role="img" aria-label="${escapeHTML(organization.name)} logo">${escapeHTML(organization.logo)}</span>`}
+                                                    </div>
+                                                    ${organization.verified ? `<span class="mb-1 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700 ring-1 ring-emerald-200"><i class="fa-solid fa-circle-check" aria-hidden="true"></i>${t('ngo_directory_verified')}</span>` : ''}
+                                                </div>
+                                                <span class="mb-2 inline-flex w-fit items-center rounded-full px-2.5 py-1 text-[10px] font-bold ring-1 ${badgeClass}">${t(`community_category_${organization.categoryKey}`)}</span>
+                                                <h2 class="text-base font-bold leading-snug text-slate-900">${escapeHTML(organization.name)}</h2>
+                                                <p class="mt-1 text-xs text-slate-500">${escapeHTML(organization.location)}</p>
+                                                <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">${escapeHTML(organization.description)}</p>
+                                                <button type="button" onclick="openNGOProfile('${escapeHTML(organization.id)}')" class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 transition-colors hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                                    ${t('ngo_view_profile')} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </article>
+                                    `;
+                                }).join('')}
+                            </div>
+                        ` : `<p class="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center text-sm text-slate-500">${t('ngo_directory_empty')}</p>`}
                     </section>
                 </div>
             `;
