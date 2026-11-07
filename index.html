@@ -228,6 +228,11 @@
             animation: fadeInScale 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
+        #support-modal::backdrop {
+            background: rgb(2 6 23 / 0.68);
+            backdrop-filter: blur(5px);
+        }
+
         @keyframes dropdown-in {
             from { opacity: 0; transform: translateY(-0.25rem) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -352,6 +357,11 @@
                 project_verified_organization: "Organización verificada",
                 home_feed_title: "Feed de la comunidad",
                 home_feed_subtitle: "Historias, avances e iniciativas compartidas por tus comunidades.",
+                home_feed_support_title: "Apoya el impacto de Zuliov",
+                home_feed_support_description: "Tu apoyo ayuda a que el impacto de las comunidades sea visible y llegue más lejos.",
+                support_close: "Cerrar ventana de apoyo",
+                home_feed_support_patreon: "Apoyar en Patreon",
+                home_feed_support_nakopay: "Donar con Nakopay",
                 home_feed_for_you: "Para ti",
                 home_feed_following: "Siguiendo",
                 home_feed_create_placeholder: "Comparte un avance, actualización o iniciativa...",
@@ -407,6 +417,7 @@
                 profile_view: "Ver perfil",
                 profile_settings: "Configuración",
                 profile_create_organization: "Crear Organización",
+                profile_support: "Apoyar a Zuliov",
                 profile_manage: "Gestionar",
                 profile_manage_section: "Administrar",
                 org_manage_title: "Gestionar organizaciones",
@@ -945,6 +956,11 @@
                 project_verified_organization: "Verified organization",
                 home_feed_title: "Community Feed",
                 home_feed_subtitle: "Stories, progress, and initiatives shared by your communities.",
+                home_feed_support_title: "Support Zuliov Impact",
+                home_feed_support_description: "Your support helps make community impact visible and reach even further.",
+                support_close: "Close support window",
+                home_feed_support_patreon: "Support on Patreon",
+                home_feed_support_nakopay: "Donate with Nakopay",
                 home_feed_for_you: "For You",
                 home_feed_following: "Following",
                 home_feed_create_placeholder: "Share an update, progress, or community initiative...",
@@ -1000,6 +1016,7 @@
                 profile_view: "View Profile",
                 profile_settings: "Settings",
                 profile_create_organization: "Create Organization",
+                profile_support: "Support Zuliov",
                 profile_manage: "Manage",
                 profile_manage_section: "Manage",
                 org_manage_title: "Manage organizations",
@@ -1581,6 +1598,26 @@
             return (locales[currentLang] && locales[currentLang][key]) ? locales[currentLang][key] : (locales['en'][key] || key);
         }
 
+        function openSupportModal() {
+            const modal = document.getElementById('support-modal');
+            if (modal && !modal.open) modal.showModal();
+        }
+
+        function updateSupportModalCopy() {
+            document.getElementById('support-modal-title').textContent = t('home_feed_support_title');
+            document.getElementById('support-modal-description').textContent = t('home_feed_support_description');
+            document.getElementById('support-modal-patreon-label').textContent = t('home_feed_support_patreon');
+            document.getElementById('support-modal-nakopay-label').textContent = t('home_feed_support_nakopay');
+            document.getElementById('support-modal-close').setAttribute('aria-label', t('support_close'));
+        }
+
+        function closeSupportModal() {
+            const modal = document.getElementById('support-modal');
+            if (modal?.open) modal.close();
+        }
+
+        document.addEventListener('DOMContentLoaded', updateSupportModalCopy);
+
         function localizedProjectText(project, field) {
             const translatedField = `${field}Es`;
             return currentLang === 'es' && project[translatedField]
@@ -1613,6 +1650,7 @@
             localStorage.setItem('zuliov-language', lang);
             document.documentElement.lang = lang;
             renderApp();
+            updateSupportModalCopy();
             if (!document.getElementById('inbox-modal').classList.contains('hidden')) renderInbox();
             if (document.getElementById('settings-modal')) renderSettingsModal();
             if (organizationProposalDraft) renderOrganizationProposalModal(organizationProposalDraft);
@@ -2786,7 +2824,7 @@
                     <div>
                         <div class="flex items-center space-x-1.5">
                             <span class="text-lg font-black tracking-tight text-slate-900 font-mono">ZULIOV</span>
-                            <span class="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-primary-50 text-primary-600 border border-primary-100">PLATFORM</span>
+                            <span class="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-primary-50 text-primary-600 border border-primary-100">BETA</span>
                         </div>
                     </div>
                 </div>
@@ -2810,7 +2848,6 @@
                     <button onclick="toggleDarkMode()" id="theme-toggle" type="button" aria-pressed="false" aria-label="Activar modo oscuro" title="Activar modo oscuro" class="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 transition-all">
                         <i id="theme-toggle-icon" class="fa-solid fa-moon"></i>
                     </button>
-
                     <button type="button" id="messages-button" onclick="openInbox()" aria-haspopup="dialog" aria-controls="inbox-modal" aria-label="Messages" title="Messages" class="relative p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 rounded-lg transition-all">
                         <i class="fa-regular fa-comment-dots text-base" aria-hidden="true"></i>
                     </button>
@@ -2854,6 +2891,10 @@
                             <button type="button" role="menuitem" onclick="openOrganizationProposalModal(event)" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                                 <i class="fa-solid fa-people-group w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-profile-create-organization-label">Create Organization</span>
+                            </button>
+                            <button type="button" role="menuitem" onclick="openSupportModal()" aria-haspopup="dialog" aria-controls="support-modal" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                                <i class="fa-regular fa-heart w-4 text-center text-slate-500" aria-hidden="true"></i>
+                                <span id="header-profile-support-label">Support Zuliov</span>
                             </button>
                             <div role="group" aria-labelledby="header-profile-manage-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
                                 <p id="header-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
@@ -2938,6 +2979,10 @@
                             <i class="fa-solid fa-people-group w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-create-organization-label">Create Organization</span>
                         </button>
+                        <button type="button" role="menuitem" onclick="openSupportModal()" aria-haspopup="dialog" aria-controls="support-modal" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
+                            <i class="fa-regular fa-heart w-4 text-center text-slate-500" aria-hidden="true"></i>
+                            <span id="mobile-profile-support-label">Support Zuliov</span>
+                        </button>
                         <div role="group" aria-labelledby="mobile-profile-manage-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
                             <p id="mobile-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
                             <div class="mt-2 flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
@@ -2981,6 +3026,33 @@
             </div>
         </div>
     </div>
+
+    <dialog id="support-modal" aria-labelledby="support-modal-title" onclick="if(event.target === this) closeSupportModal()" class="m-auto w-[calc(100%-2rem)] max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white p-0 text-left text-slate-900 shadow-2xl backdrop:bg-transparent dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100">
+        <article class="overflow-hidden rounded-2xl">
+            <div class="relative h-40 overflow-hidden bg-slate-900 sm:h-48">
+                <img src="assets/Patreon.png" alt="" class="h-full w-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent"></div>
+                <div class="absolute bottom-4 left-5 flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border-2 border-white bg-white shadow-lg">
+                    <img src="assets/Logo2.jpg" alt="Zuliov" class="h-full w-full object-cover">
+                </div>
+                <button type="button" id="support-modal-close" onclick="closeSupportModal()" aria-label="Close support window" class="absolute right-3 top-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-slate-950/50 text-white transition-colors hover:bg-slate-950/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="p-5 sm:p-6">
+                <h2 id="support-modal-title" class="text-xl font-black leading-snug text-slate-900 dark:text-white">Support Zuliov Impact</h2>
+                <p id="support-modal-description" class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Your support helps make community impact visible and reach even further.</p>
+                <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                    <a href="https://patreon.com/Zuliov" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#ff424d] px-4 py-3 text-sm font-bold text-white shadow-subtle transition-colors hover:bg-[#e63843] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff424d] focus-visible:ring-offset-2">
+                        <i class="fa-brands fa-patreon" aria-hidden="true"></i><span id="support-modal-patreon-label">Support on Patreon</span>
+                    </a>
+                    <a href="https://nakopay.com/l/plink_ryxabduaw8n" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-3 text-sm font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                        <i class="fa-solid fa-heart" aria-hidden="true"></i><span id="support-modal-nakopay-label">Donate with Nakopay</span>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </dialog>
 
     <section id="inbox-modal" class="fixed inset-0 z-[60] hidden bg-slate-50 dark:bg-slate-950" role="dialog" aria-modal="true" aria-labelledby="inbox-title">
         <div class="flex h-full flex-col">
@@ -4456,6 +4528,8 @@
             document.getElementById('mobile-profile-settings-label').textContent = t('profile_settings');
             document.getElementById('header-profile-create-organization-label').textContent = t('profile_create_organization');
             document.getElementById('mobile-profile-create-organization-label').textContent = t('profile_create_organization');
+            document.getElementById('header-profile-support-label').textContent = t('profile_support');
+            document.getElementById('mobile-profile-support-label').textContent = t('profile_support');
             document.getElementById('header-profile-manage-label').textContent = t('profile_manage_section');
             document.getElementById('mobile-profile-manage-label').textContent = t('profile_manage_section');
             document.getElementById('header-profile-logout-label').textContent = t('profile_log_out');
@@ -4952,7 +5026,8 @@
                 .sort((first, second) => (second.post.createdAt || 0) - (first.post.createdAt || 0));
 
             canvas.innerHTML = `
-                <section class="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+                <section class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+                    <div class="min-w-0">
                     <header class="mb-6">
                         <h1 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">${t('home_feed_title')}</h1>
                         <p class="mt-2 text-sm leading-relaxed text-slate-600">${t('home_feed_subtitle')}</p>
@@ -5010,6 +5085,7 @@
                             : `<p class="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">${selectedCommunityCategory
                                 ? (categoryGroups.length ? t('home_feed_no_category_posts') : t('home_feed_category_empty'))
                                 : (state.homeFeedTab === 'following' ? t('home_feed_following_empty') : t('home_feed_empty'))}</p>`}
+                    </div>
                     </div>
                 </section>
             `;
