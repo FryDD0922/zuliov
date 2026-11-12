@@ -362,6 +362,7 @@
                 support_close: "Cerrar ventana de apoyo",
                 home_feed_support_patreon: "Apoyar en Patreon",
                 home_feed_support_nakopay: "Donar con Nakopay",
+                home_feed_support_giveth: "Apoyar en Giveth",
                 home_feed_for_you: "Para ti",
                 home_feed_following: "Siguiendo",
                 home_feed_create_placeholder: "Comparte un avance, actualización o iniciativa...",
@@ -417,7 +418,10 @@
                 profile_view: "Ver perfil",
                 profile_settings: "Configuración",
                 profile_create_organization: "Crear Organización",
+                profile_create_group: "Crear grupo",
                 profile_support: "Apoyar a Zuliov",
+                profile_managed_group: "Administrado por ti",
+                profile_groups_empty: "Todavía no hay grupos asociados.",
                 profile_manage: "Gestionar",
                 profile_manage_section: "Administrar",
                 org_manage_title: "Gestionar organizaciones",
@@ -529,6 +533,18 @@
                 register_password_hint: "Usa al menos 8 caracteres.",
                 register_create_account: "Crear cuenta",
                 register_close: "Cerrar registro",
+                register_profile_title: "Completa tu perfil",
+                register_profile_subtitle: "Añade una foto y cuéntale a la comunidad un poco sobre ti.",
+                register_profile_avatar: "Foto de perfil",
+                register_profile_cover: "Foto de portada",
+                register_profile_image_url: "URL de la imagen",
+                register_profile_upload: "O selecciona un archivo",
+                register_profile_bio: "Descripción / Biografía",
+                register_profile_bio_hint: "Máximo 1000 caracteres.",
+                register_profile_back: "Volver",
+                register_profile_finish: "Finalizar configuración",
+                register_profile_file_type_error: "Selecciona un archivo de imagen válido.",
+                register_profile_file_read_error: "No se pudo leer el archivo de imagen.",
                 register_success_individual: "¡Tu cuenta está lista! Bienvenido a Zuliov.",
                 register_success_ngo: "¡Tu cuenta de organización está lista! Bienvenido a Zuliov.",
                 ngo_directory_eyebrow: "Organizaciones registradas",
@@ -961,6 +977,7 @@
                 support_close: "Close support window",
                 home_feed_support_patreon: "Support on Patreon",
                 home_feed_support_nakopay: "Donate with Nakopay",
+                home_feed_support_giveth: "Support on Giveth",
                 home_feed_for_you: "For You",
                 home_feed_following: "Following",
                 home_feed_create_placeholder: "Share an update, progress, or community initiative...",
@@ -1016,7 +1033,10 @@
                 profile_view: "View Profile",
                 profile_settings: "Settings",
                 profile_create_organization: "Create Organization",
+                profile_create_group: "Create Group",
                 profile_support: "Support Zuliov",
+                profile_managed_group: "Managed by you",
+                profile_groups_empty: "No groups are associated yet.",
                 profile_manage: "Manage",
                 profile_manage_section: "Manage",
                 org_manage_title: "Manage organizations",
@@ -1128,6 +1148,18 @@
                 register_password_hint: "Use at least 8 characters.",
                 register_create_account: "Create Account",
                 register_close: "Close registration",
+                register_profile_title: "Complete your profile",
+                register_profile_subtitle: "Add a photo and tell the community a little about yourself.",
+                register_profile_avatar: "Profile photo",
+                register_profile_cover: "Cover photo",
+                register_profile_image_url: "Image URL",
+                register_profile_upload: "Or choose a file",
+                register_profile_bio: "Description / Bio",
+                register_profile_bio_hint: "Maximum 1000 characters.",
+                register_profile_back: "Back",
+                register_profile_finish: "Finish Setup",
+                register_profile_file_type_error: "Choose a valid image file.",
+                register_profile_file_read_error: "The image file could not be read.",
                 register_success_individual: "Your account is ready! Welcome to Zuliov.",
                 register_success_ngo: "Your organization account is ready! Welcome to Zuliov.",
                 ngo_directory_eyebrow: "Registered organizations",
@@ -1608,6 +1640,7 @@
             document.getElementById('support-modal-description').textContent = t('home_feed_support_description');
             document.getElementById('support-modal-patreon-label').textContent = t('home_feed_support_patreon');
             document.getElementById('support-modal-nakopay-label').textContent = t('home_feed_support_nakopay');
+            document.getElementById('support-modal-giveth-label').textContent = t('home_feed_support_giveth');
             document.getElementById('support-modal-close').setAttribute('aria-label', t('support_close'));
         }
 
@@ -2150,7 +2183,9 @@
                 email: 'sarah.miller@zuliov-impact.org',
                 location: 'San Francisco, CA',
                 joinedDate: 'Member since Jan 2024',
-                bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.'
+                bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.',
+                groupIds: ['group_cleanwater_community_network'],
+                managedGroupIds: ['group_cleanwater_community_network']
             },
 
             commentHistory: [
@@ -2326,6 +2361,20 @@
             ],
 
             groups: [
+                {
+                    id: 'group_cleanwater_community_network',
+                    name: 'CleanWater Community Network',
+                    description: 'A community led by Sarah Miller to connect supporters and share verified clean water impact across East Africa.',
+                    category: 'Clean Water',
+                    type: 'community',
+                    visibility: 'Open',
+                    banner: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200',
+                    members: 84,
+                    joined: true,
+                    createdBy: 'sarah_donor_102',
+                    managerIds: ['sarah_donor_102'],
+                    posts: []
+                },
                 {
                     id: 'group_education',
                     name: 'Educación para todos',
@@ -2896,6 +2945,10 @@
                                 <i class="fa-regular fa-heart w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-profile-support-label">Support Zuliov</span>
                             </button>
+                            <div role="group" aria-labelledby="header-profile-groups-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
+                                <p id="header-profile-groups-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">GROUPS</p>
+                                <div id="header-profile-groups-list" class="mt-2 space-y-1"></div>
+                            </div>
                             <div role="group" aria-labelledby="header-profile-manage-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
                                 <p id="header-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
                                 <div class="mt-2 flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
@@ -2983,6 +3036,10 @@
                             <i class="fa-regular fa-heart w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-support-label">Support Zuliov</span>
                         </button>
+                        <div role="group" aria-labelledby="mobile-profile-groups-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
+                            <p id="mobile-profile-groups-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">GROUPS</p>
+                            <div id="mobile-profile-groups-list" class="mt-2 space-y-1"></div>
+                        </div>
                         <div role="group" aria-labelledby="mobile-profile-manage-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
                             <p id="mobile-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
                             <div class="mt-2 flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
@@ -3042,12 +3099,15 @@
             <div class="p-5 sm:p-6">
                 <h2 id="support-modal-title" class="text-xl font-black leading-snug text-slate-900 dark:text-white">Support Zuliov Impact</h2>
                 <p id="support-modal-description" class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Your support helps make community impact visible and reach even further.</p>
-                <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                <div class="mt-5 grid gap-3 sm:grid-cols-3">
                     <a href="https://patreon.com/Zuliov" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#ff424d] px-4 py-3 text-sm font-bold text-white shadow-subtle transition-colors hover:bg-[#e63843] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff424d] focus-visible:ring-offset-2">
                         <i class="fa-brands fa-patreon" aria-hidden="true"></i><span id="support-modal-patreon-label">Support on Patreon</span>
                     </a>
                     <a href="https://nakopay.com/l/plink_ryxabduaw8n" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-3 text-sm font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
                         <i class="fa-solid fa-heart" aria-hidden="true"></i><span id="support-modal-nakopay-label">Donate with Nakopay</span>
+                    </a>
+                    <a href="https://giveth.io/project/zuliov" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#5326EC] px-4 py-3 text-sm font-bold text-white shadow-subtle transition-colors hover:bg-[#4520c7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5326EC] focus-visible:ring-offset-2">
+                        <i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i><span id="support-modal-giveth-label">Support on Giveth</span>
                     </a>
                 </div>
             </div>
@@ -3280,7 +3340,10 @@
             closeProfileDropdown();
             if (!shouldOpen) return;
 
-            if (isAuthenticated) renderManagedOrganizationsMenu();
+            if (isAuthenticated) {
+                renderManagedOrganizationsMenu();
+                renderProfileGroupsMenu();
+            }
             trigger.setAttribute('aria-expanded', 'true');
             menu.classList.remove('hidden');
             menu.classList.remove('animate-dropdown-in');
@@ -3571,6 +3634,31 @@
                         `).join('')}
                     </div>`
                     : '';
+            });
+        }
+
+        function renderProfileGroupsMenu() {
+            const user = state.currentUser;
+            const groupIds = [...new Set([...(user.groupIds || []), ...(user.managedGroupIds || [])])];
+            const groups = groupIds
+                .map(groupId => state.groups.find(group => group.id === groupId))
+                .filter(Boolean);
+
+            ['header-profile-groups-list', 'mobile-profile-groups-list'].forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                container.innerHTML = groups.length
+                    ? groups.map(group => `
+                        <button type="button" role="menuitem" onclick="openGroup('${escapeHTML(group.id)}')" aria-label="${escapeHTML(group.name)}" class="flex w-full items-center gap-3 rounded-lg bg-slate-50 px-3 py-2 text-left transition-colors hover:bg-slate-100">
+                            <span class="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md">
+                                ${group.banner
+                                    ? `<img src="${escapeHTML(group.banner)}" alt="" class="h-full w-full object-cover">`
+                                    : '<i class="fa-solid fa-people-group text-sm text-primary-700" aria-hidden="true"></i>'}
+                            </span>
+                            <span class="min-w-0 truncate text-sm font-semibold text-slate-700">${escapeHTML(group.name)}</span>
+                        </button>
+                    `).join('')
+                    : `<p class="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500">${t('profile_groups_empty')}</p>`;
             });
         }
 
@@ -3923,6 +4011,8 @@
         }
 
         let registrationDraft = {};
+        let registrationStep = 1;
+        let registrationProfileDraft = {};
         let registerTrigger = null;
         let registrationCountryActiveIndex = -1;
         const registrationCountryRequiredMessage = () => currentLang === 'es'
@@ -3959,6 +4049,12 @@
                 email: 'sarah.miller@zuliov.com',
                 password: 'SecurePassword123'
             };
+            registrationStep = 1;
+            registrationProfileDraft = {
+                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                coverImage: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1600&q=85',
+                bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.'
+            };
             registerTrigger = trigger instanceof HTMLElement
                 ? trigger
                 : (trigger?.currentTarget instanceof HTMLElement ? trigger.currentTarget : null);
@@ -3976,6 +4072,9 @@
             document.body.classList.remove('overflow-hidden');
             if (registerTrigger?.isConnected) registerTrigger.focus();
             registerTrigger = null;
+            registrationStep = 1;
+            registrationDraft = {};
+            registrationProfileDraft = {};
         }
 
         function captureRegistrationDraft() {
@@ -4089,6 +4188,10 @@
         }
 
         function renderRegisterModal() {
+            if (registrationStep === 2) {
+                renderRegistrationProfileStep();
+                return;
+            }
             captureRegistrationDraft();
             const fieldClass = 'mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-100';
             const value = key => escapeHTML(registrationDraft[key] || '');
@@ -4135,28 +4238,139 @@
             `;
         }
 
+        function renderRegistrationProfileStep() {
+            const fieldClass = 'mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-100';
+            const value = key => escapeHTML(registrationProfileDraft[key] || '');
+            document.getElementById('modal-container').innerHTML = `
+                <div id="register-modal" class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm animate-modal-in" role="dialog" aria-modal="true" aria-labelledby="register-modal-title" onclick="closeRegisterModal()">
+                    <section class="relative my-auto w-full max-w-xl rounded-3xl border border-white/70 bg-white shadow-2xl" onclick="event.stopPropagation()">
+                        <div class="relative overflow-hidden rounded-t-3xl bg-zuliov-mesh px-6 py-6 text-white sm:px-8">
+                            <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="" class="absolute inset-0 h-full w-full object-cover opacity-[.85]" aria-hidden="true">
+                            <div class="absolute inset-0 bg-gradient-to-br from-slate-950/85 via-slate-950/70 to-slate-950/85" aria-hidden="true"></div>
+                            <button type="button" onclick="closeRegisterModal()" aria-label="${t('register_close')}" class="absolute right-4 top-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                            <div class="relative z-10">
+                                <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-primary-200">ZULIOV · 2/2</p>
+                                <h2 id="register-modal-title" class="mt-1 pr-8 text-2xl font-bold tracking-tight">${t('register_profile_title')}</h2>
+                                <p class="mt-2 text-sm leading-relaxed text-slate-300">${t('register_profile_subtitle')}</p>
+                            </div>
+                        </div>
+                        <form id="register-profile-form" class="space-y-4 rounded-b-3xl px-6 py-6 sm:px-8" onsubmit="finishRegistration(event)">
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label for="register-avatar-url" class="block text-xs font-semibold text-slate-700">${t('register_profile_avatar')} · ${t('register_profile_image_url')}</label>
+                                    <input id="register-avatar-url" class="${fieldClass}" type="url" name="avatar" value="${value('avatar')}" oninput="updateRegistrationProfileDraft(event)">
+                                    <label for="register-avatar-file" class="mt-2 block text-xs font-semibold text-slate-600">${t('register_profile_upload')}</label>
+                                    <input id="register-avatar-file" type="file" accept="image/*" onchange="handleRegistrationProfileFileChange(event)" data-profile-field="avatar" class="mt-1 w-full text-xs text-slate-500 file:mr-3 file:rounded-lg file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-primary-700">
+                                    <img id="registration-avatar-preview" src="${value('avatar')}" alt="${t('register_profile_avatar')}" class="mt-3 h-16 w-16 rounded-full border border-slate-200 object-cover">
+                                </div>
+                                <div>
+                                    <label for="register-cover-url" class="block text-xs font-semibold text-slate-700">${t('register_profile_cover')} · ${t('register_profile_image_url')}</label>
+                                    <input id="register-cover-url" class="${fieldClass}" type="url" name="coverImage" value="${value('coverImage')}" oninput="updateRegistrationProfileDraft(event)">
+                                    <label for="register-cover-file" class="mt-2 block text-xs font-semibold text-slate-600">${t('register_profile_upload')}</label>
+                                    <input id="register-cover-file" type="file" accept="image/*" onchange="handleRegistrationProfileFileChange(event)" data-profile-field="coverImage" class="mt-1 w-full text-xs text-slate-500 file:mr-3 file:rounded-lg file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-primary-700">
+                                    <img id="registration-cover-preview" src="${value('coverImage')}" alt="${t('register_profile_cover')}" class="mt-3 h-16 w-full rounded-xl border border-slate-200 object-cover">
+                                </div>
+                            </div>
+                            <label for="register-profile-bio" class="block text-xs font-semibold text-slate-700">${t('register_profile_bio')}
+                                <textarea id="register-profile-bio" class="${fieldClass} min-h-28 resize-y" name="bio" maxlength="1000" oninput="updateRegistrationProfileDraft(event)">${value('bio')}</textarea>
+                                <span class="mt-1 flex justify-between text-[11px] font-normal text-slate-500">
+                                    <span>${t('register_profile_bio_hint')}</span>
+                                    <span id="register-profile-bio-count" aria-live="polite">${registrationProfileDraft.bio.length} / 1000</span>
+                                </span>
+                            </label>
+                            <div class="flex flex-col-reverse gap-3 sm:flex-row">
+                                <button type="button" onclick="registrationStep = 1; renderRegisterModal()" class="flex flex-1 items-center justify-center rounded-xl border border-slate-200 px-4 py-3.5 text-sm font-bold text-slate-700 transition hover:bg-slate-50">${t('register_profile_back')}</button>
+                                <button type="submit" class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary-600/20 transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                                    ${t('register_profile_finish')}<i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            `;
+        }
+
+        function updateRegistrationProfileDraft(event) {
+            const input = event.currentTarget;
+            const field = input.name;
+            if (field === 'bio') {
+                registrationProfileDraft.bio = input.value.slice(0, 1000);
+                input.value = registrationProfileDraft.bio;
+                const counter = document.getElementById('register-profile-bio-count');
+                if (counter) counter.textContent = `${registrationProfileDraft.bio.length} / 1000`;
+                return;
+            }
+            registrationProfileDraft[field] = input.value;
+            updateRegistrationProfilePreview(field, input.value);
+        }
+
+        function updateRegistrationProfilePreview(field, imageUrl) {
+            const previewId = field === 'avatar' ? 'registration-avatar-preview' : 'registration-cover-preview';
+            const preview = document.getElementById(previewId);
+            if (!preview) return;
+            preview.classList.toggle('hidden', !imageUrl);
+            if (imageUrl) preview.src = imageUrl;
+            else preview.removeAttribute('src');
+        }
+
+        function handleRegistrationProfileFileChange(event) {
+            const input = event.currentTarget;
+            const file = input.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                input.value = '';
+                showToast(t('register_profile_file_type_error'), 'info');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (typeof reader.result !== 'string') {
+                    showToast(t('register_profile_file_read_error'), 'info');
+                    return;
+                }
+                const field = input.dataset.profileField;
+                registrationProfileDraft[field] = reader.result;
+                updateRegistrationProfilePreview(field, reader.result);
+            };
+            reader.onerror = () => {
+                input.value = '';
+                showToast(t('register_profile_file_read_error'), 'info');
+            };
+            reader.readAsDataURL(file);
+        }
+
         function submitRegistration(event) {
             event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const email = String(formData.get('email')).trim();
-            const firstName = String(formData.get('firstName') || '').trim();
-            const lastName = String(formData.get('lastName') || '').trim();
-            const name = `${firstName} ${lastName}`.trim();
+            captureRegistrationDraft();
+            registrationStep = 2;
+            renderRegisterModal();
+            document.getElementById('register-avatar-url')?.focus();
+        }
 
+        function finishRegistration(event) {
+            event.preventDefault();
+            const bio = String(registrationProfileDraft.bio || '').slice(0, 1000);
+            const email = String(registrationDraft.email || '').trim();
+            const firstName = String(registrationDraft.firstName || '').trim();
+            const lastName = String(registrationDraft.lastName || '').trim();
+            const name = `${firstName} ${lastName}`.trim();
             state.currentUser = {
                 ...defaultUserProfile,
                 id: `user_${Date.now()}`,
                 name,
                 role: 'donor',
-                avatar: null,
-                coverImage: null,
+                avatar: registrationProfileDraft.avatar || null,
+                coverImage: registrationProfileDraft.coverImage || null,
+                bio,
                 email,
                 location: '',
                 registrationId: '',
                 joinedDate: currentLang === 'es' ? 'Miembro desde hoy' : 'Member since today'
             };
             isAuthenticated = true;
-            currentScreen = 'landing';
+            currentScreen = 'profile';
             updateSimulationRoleButtons('donor');
             closeRegisterModal();
             renderApp();
@@ -4430,7 +4644,9 @@
                     email: 'sarah.miller@zuliov-impact.org',
                     location: 'San Francisco, CA',
                     joinedDate: 'Member since Jan 2024',
-                    bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.'
+                    bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.',
+                    groupIds: ['group_cleanwater_community_network'],
+                    managedGroupIds: ['group_cleanwater_community_network']
                 },
                 ngo: {
                     id: 'marcus_ngo_301',
@@ -4481,6 +4697,7 @@
             closeProfileDropdown();
             document.getElementById('main-navigation').classList.toggle('guest-hidden', !navigationVisible);
             renderManagedOrganizationsMenu();
+            renderProfileGroupsMenu();
             const messagesButton = document.getElementById('messages-button');
             messagesButton.classList.toggle('guest-hidden', !navigationVisible);
             messagesButton.title = t('header_messages');
@@ -4509,7 +4726,7 @@
             } else if (state.currentUser.role === 'corporate') {
                 container.innerHTML = `<span class="flex h-full w-full items-center justify-center rounded-full bg-slate-950 p-1.5 ring-2 ring-white"><img src="${state.currentUser.logoUrl}" alt="Tesla logo" class="h-full w-full object-contain"></span>`;
             } else if (state.currentUser.avatar) {
-                container.innerHTML = `<img src="${state.currentUser.avatar}" class="h-full w-full object-cover">`;
+                container.innerHTML = `<img src="${escapeHTML(state.currentUser.avatar)}" class="h-full w-full object-cover">`;
             } else {
                 const initials = state.currentUser.name.split(' ').map(n => n[0]).join('');
                 container.innerHTML = `<span>${initials}</span>`;
@@ -4582,6 +4799,8 @@
             document.getElementById('mobile-profile-create-organization-label').textContent = t('profile_create_organization');
             document.getElementById('header-profile-support-label').textContent = t('profile_support');
             document.getElementById('mobile-profile-support-label').textContent = t('profile_support');
+            document.getElementById('header-profile-groups-label').textContent = t('nav_groups');
+            document.getElementById('mobile-profile-groups-label').textContent = t('nav_groups');
             document.getElementById('header-profile-manage-label').textContent = t('profile_manage_section');
             document.getElementById('mobile-profile-manage-label').textContent = t('profile_manage_section');
             document.getElementById('header-profile-logout-label').textContent = t('profile_log_out');
@@ -6043,6 +6262,8 @@
                 banner: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
                 members: 1,
                 joined: true,
+                createdBy: state.currentUser.id,
+                managerIds: [state.currentUser.id],
                 posts: [],
                 upcomingEvents: [{
                     id: eventId,
@@ -6077,6 +6298,8 @@
                 }]
             };
             state.groups.unshift(group);
+            state.currentUser.groupIds = [...new Set([...(state.currentUser.groupIds || []), groupId])];
+            state.currentUser.managedGroupIds = [...new Set([...(state.currentUser.managedGroupIds || []), groupId])];
             state.activeGroupId = null;
             closeModal();
             renderApp();
@@ -7403,7 +7626,7 @@
                                     <form class="mt-7 border-t border-slate-200 pt-5 dark:border-slate-700" onsubmit="event.preventDefault(); addFieldArticleComment('${update.id}')">
                                         <label for="field-article-comment-input" class="mb-3 block text-sm font-semibold text-slate-800 dark:text-slate-200">Deja un comentario</label>
                                         <div class="flex items-start gap-3">
-                                            <img src="${state.currentUser.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100'}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700">
+                                            <img src="${escapeHTML(state.currentUser.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100')}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700">
                                             <div class="min-w-0 flex-1">
                                                 <textarea id="field-article-comment-input" rows="3" maxlength="1000" placeholder="Comparte una pregunta o reflexión..." class="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-primary-900"></textarea>
                                                 <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
@@ -7591,11 +7814,15 @@
             const initials = user.name.split(' ').map(n => n[0]).join('');
             const isCorporate = user.role === 'corporate';
             const isVisitorView = state.profileViewMode === 'visitor';
+            const profileGroups = (user.groupIds || [])
+                .map(groupId => state.groups.find(group => group.id === groupId))
+                .filter(Boolean);
+            const managedGroupIds = user.managedGroupIds || [];
 
             let coverContentHtml = '';
             if (user.coverImage) {
                 coverContentHtml = `
-                    <img id="profile-cover-img" src="${user.coverImage}" class="w-full h-full object-cover transition-all duration-200" style="object-position: center ${user.coverPositionY}%;">
+                    <img id="profile-cover-img" src="${escapeHTML(user.coverImage)}" class="w-full h-full object-cover transition-all duration-200" style="object-position: center ${user.coverPositionY}%;">
                 `;
             } else {
                 coverContentHtml = `
@@ -7620,7 +7847,7 @@
                 `;
             } else if (user.avatar) {
                 avatarContentHtml = `
-                    <img id="profile-avatar-img" src="${user.avatar}" class="h-full w-full object-cover rounded-full">
+                    <img id="profile-avatar-img" src="${escapeHTML(user.avatar)}" class="h-full w-full object-cover rounded-full">
                 `;
             } else {
                 avatarContentHtml = `
@@ -7717,7 +7944,7 @@
                                 </div>
 
                                 <p class="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
-                                    ${user.bio}
+                                    ${escapeHTML(user.bio || '')}
                                 </p>
 
                                 ${user.id === 'marcus_ngo_301' ? `
@@ -7758,22 +7985,22 @@
                         <section aria-labelledby="profile-following-groups-title" class="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-subtle sm:p-8">
                             <div class="mb-5 flex items-center justify-between border-b border-slate-200 pb-3">
                                 <h2 id="profile-following-groups-title" class="text-lg font-black tracking-tight text-slate-900">${t('profile_following_groups')}</h2>
-                                <span class="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">02</span>
+                                <span class="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400">${String(profileGroups.length).padStart(2, '0')}</span>
                             </div>
                             <div class="space-y-3">
-                                ${[
-                                    { name: 'JW Volunteers - Venezuela', icon: 'fa-hands-holding-circle', color: 'bg-rose-50 text-rose-700' },
-                                    { name: 'JW Volunteers - USA', icon: 'fa-people-group', color: 'bg-sky-50 text-sky-700' }
-                                ].map(group => `
+                                ${profileGroups.length ? profileGroups.map(group => {
+                                    const isManaged = managedGroupIds.includes(group.id);
+                                    return `
                                     <article class="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-100 p-3">
-                                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${group.color}"><i class="fa-solid ${group.icon}" aria-hidden="true"></i></span>
+                                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sky-50 text-sky-700"><i class="fa-solid fa-people-group" aria-hidden="true"></i></span>
                                         <span class="min-w-0 flex-1">
-                                            <span class="block truncate text-sm font-bold text-slate-900">${group.name}</span>
+                                            <span class="block truncate text-sm font-bold text-slate-900">${escapeHTML(group.name)}</span>
                                             <span class="mt-1 inline-flex rounded-full bg-slate-100 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">${t('group_alliance_group')}</span>
                                         </span>
-                                        <span class="inline-flex shrink-0 items-center gap-1 rounded-lg border border-primary-100 bg-primary-50 px-2.5 py-2 text-[10px] font-bold text-primary-700"><i class="fa-solid fa-check" aria-hidden="true"></i>${t('profile_following')}</span>
+                                        <span class="inline-flex shrink-0 items-center gap-1 rounded-lg border border-primary-100 bg-primary-50 px-2.5 py-2 text-[10px] font-bold text-primary-700"><i class="fa-solid ${isManaged ? 'fa-user-gear' : 'fa-check'}" aria-hidden="true"></i>${t(isManaged ? 'profile_managed_group' : 'profile_following')}</span>
                                     </article>
-                                `).join('')}
+                                `;
+                                }).join('') : `<p class="rounded-xl bg-slate-50 px-4 py-6 text-center text-xs text-slate-500">${t('profile_groups_empty')}</p>`}
                             </div>
                         </section>
 
@@ -9063,7 +9290,7 @@
 
                         <div class="space-y-3">
                             <div class="relative h-48 w-full rounded-2xl overflow-hidden border border-slate-200">
-                                <img id="reposition-preview-img" src="${user.coverImage}" class="w-full h-full object-cover" style="object-position: center ${user.coverPositionY}%;">
+                                <img id="reposition-preview-img" src="${escapeHTML(user.coverImage)}" class="w-full h-full object-cover" style="object-position: center ${user.coverPositionY}%;">
                             </div>
                             <div class="space-y-1">
                                 <label class="block text-xs font-mono font-bold text-slate-700">Vertical Alignment (${user.coverPositionY}%)</label>
