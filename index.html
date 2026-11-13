@@ -797,6 +797,17 @@
                 group_leaders_title: "Líderes del Grupo",
                 group_manage: "Administrar",
                 group_manage_leaders_title: "Administrar líderes",
+                group_manage_invite: "Invitar",
+                group_manage_connections_title: "Invitar conexiones",
+                group_manage_connections_description: "Elige a las personas de tus conexiones que quieres invitar a este grupo.",
+                group_manage_groups_title: "Invitar grupos",
+                group_manage_groups_description: "Elige los grupos a los que te has unido para proponer una alianza.",
+                group_manage_connection_invite: "Invitar",
+                group_manage_connection_invited: "Invitado",
+                group_manage_connection_invite_success: "Invitación enviada.",
+                group_manage_invite_message: "Mensaje personal (opcional)",
+                group_manage_invite_message_placeholder: "Escribe un mensaje...",
+                group_manage_invite_send: "Enviar invitación",
                 group_manage_alliances_title: "Administrar alianzas",
                 group_manage_current_leaders: "Líderes actuales",
                 group_manage_pending_leader_requests: "Solicitudes pendientes",
@@ -820,6 +831,13 @@
                 group_manage_alliance_removed: "Se finalizó la alianza.",
                 group_manage_alliance_approved: "Se aprobó la solicitud de alianza.",
                 group_manage_alliance_rejected: "Se rechazó la solicitud de alianza.",
+                group_manage_invite_groups: "Invitar grupos",
+                group_manage_group_invite: "Invitar",
+                group_manage_group_invited: "Invitado",
+                group_manage_group_allied: "Aliado",
+                group_manage_group_pending: "Pendiente",
+                group_manage_empty_invitable_groups: "No sigues ni formas parte de otros grupos que puedas invitar.",
+                group_manage_alliance_invitation_sent: "Invitación de alianza enviada.",
                 group_leader_coordinator_name: "Coordinación de voluntariado",
                 group_leader_coordinator: "Coordinador de Campo",
                 group_leader_facilitator_name: "Equipo de voluntariado regional",
@@ -1421,6 +1439,17 @@
                 group_leaders_title: "GROUP LEADERS",
                 group_manage: "Manage",
                 group_manage_leaders_title: "Manage group leaders",
+                group_manage_invite: "Invite",
+                group_manage_connections_title: "Invite connections",
+                group_manage_connections_description: "Choose people from your connections to invite to this group.",
+                group_manage_groups_title: "Invite groups",
+                group_manage_groups_description: "Choose groups you have joined to propose an alliance.",
+                group_manage_connection_invite: "Invite",
+                group_manage_connection_invited: "Invited",
+                group_manage_connection_invite_success: "Invitation sent.",
+                group_manage_invite_message: "Personal message (optional)",
+                group_manage_invite_message_placeholder: "Write a message...",
+                group_manage_invite_send: "Send invitation",
                 group_manage_alliances_title: "Manage alliances",
                 group_manage_current_leaders: "Current leaders",
                 group_manage_pending_leader_requests: "Pending Requests",
@@ -1444,6 +1473,13 @@
                 group_manage_alliance_removed: "The alliance was removed.",
                 group_manage_alliance_approved: "The alliance request was approved.",
                 group_manage_alliance_rejected: "The alliance request was rejected.",
+                group_manage_invite_groups: "Invite groups",
+                group_manage_group_invite: "Invite",
+                group_manage_group_invited: "Invited",
+                group_manage_group_allied: "Allied",
+                group_manage_group_pending: "Pending",
+                group_manage_empty_invitable_groups: "You are not following or a member of any other groups to invite.",
+                group_manage_alliance_invitation_sent: "Alliance invitation sent.",
                 group_leader_coordinator_name: "Volunteer Coordination",
                 group_leader_coordinator: "Field Coordinator",
                 group_leader_facilitator_name: "Regional Volunteer Team",
@@ -1710,6 +1746,7 @@
                 renderConnectionRequestModal(document.getElementById('connection-note')?.value || '');
             }
             if (state.activeGroupManagementModal) renderGroupManagementModal();
+            if (state.groupAllianceInviteOpen) renderGroupAllianceInviteModal();
             if (state.activeGroupDirectoryModal) renderGroupDirectoryModal();
             if (state.activeGroupAllianceRequestId) renderGroupAllianceRequestModal();
             showToast(lang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English', 'info');
@@ -2712,8 +2749,18 @@
                 { id: 'alliance-request-education', name: 'Global Education Network', type: 'group', icon: '🌍' },
                 { id: 'alliance-request-water', name: 'Water for Every Community', type: 'ngo', icon: '💧' }
             ],
+            groupAllianceInvitations: {},
+            groupAllianceInvitationMessages: {},
             activeGroupManagementModal: null,
             groupManagementTab: 'active',
+            groupInviteOpen: false,
+            groupInviteConnectionId: null,
+            groupInviteMessage: '',
+            groupInvitedConnections: {},
+            groupInvitationMessages: {},
+            groupAllianceInviteOpen: false,
+            groupAllianceInviteGroupId: null,
+            groupAllianceInviteMessage: '',
             expandedGroupPostId: null,
             activeDonationProject: null,
             activeGroupId: null,
@@ -5849,6 +5896,29 @@
             ];
         }
 
+        function getGroupAllianceInviteEntries() {
+            const inviteEntries = new Map();
+            getGroupAllianceDirectoryEntries()
+                .filter(alliance => state.followedGroupAlliances[alliance.id])
+                .forEach(alliance => inviteEntries.set(alliance.id, alliance));
+            state.groups
+                .filter(group => group.joined && group.id !== state.activeGroupId)
+                .forEach(group => {
+                    if (!inviteEntries.has(group.id)) {
+                        inviteEntries.set(group.id, {
+                            id: group.id,
+                            name: groupText(group, 'name'),
+                            type: 'group',
+                            icon: group.icon || '👥',
+                            avatar: group.avatar,
+                            category: groupText(group, 'category'),
+                            description: groupText(group, 'description')
+                        });
+                    }
+                });
+            return [...inviteEntries.values()];
+        }
+
         function getGroupAlliancePreview() {
             const alliances = getGroupAllianceDirectoryEntries();
             const previewIds = [
@@ -5941,6 +6011,7 @@
         function openGroupManagementModal(type) {
             state.activeGroupManagementModal = type;
             state.groupManagementTab = 'active';
+            state.groupInviteOpen = false;
             renderGroupManagementModal();
         }
 
@@ -5951,7 +6022,154 @@
 
         function closeGroupManagementModal() {
             state.activeGroupManagementModal = null;
+            state.groupInviteOpen = false;
+            state.groupAllianceInviteOpen = false;
+            state.groupAllianceInviteGroupId = null;
+            state.groupAllianceInviteMessage = '';
             document.getElementById('modal-container').innerHTML = '';
+            document.getElementById('group-alliance-invite-modal-root')?.remove();
+        }
+
+        function toggleGroupInvitePanel() {
+            state.groupInviteOpen = !state.groupInviteOpen;
+            state.groupInviteConnectionId = null;
+            state.groupInviteMessage = '';
+            renderGroupManagementModal();
+        }
+
+        function openGroupInviteMessage(connectionId) {
+            if (state.groupInviteConnectionId !== connectionId) {
+                state.groupInviteConnectionId = connectionId;
+                state.groupInviteMessage = '';
+            }
+            renderGroupManagementModal();
+        }
+
+        function updateGroupInviteMessage(textarea) {
+            state.groupInviteMessage = textarea.value;
+            const counter = document.getElementById(`group-invite-message-count-${textarea.dataset.connectionId}`);
+            if (counter) counter.textContent = `${textarea.value.length} / 500`;
+        }
+
+        function inviteConnectionToGroup(connectionId) {
+            const person = getProfileNetworkEntries('connections').find(connection => connection.id === connectionId);
+            const inviteKey = `${state.activeGroupId || 'community'}:${connectionId}`;
+            if (!person || state.groupInvitedConnections[inviteKey]) return;
+            const message = document.getElementById(`group-invite-message-${connectionId}`)?.value.slice(0, 500) || '';
+            state.groupInvitationMessages[inviteKey] = message;
+            state.groupInvitedConnections[inviteKey] = true;
+            state.groupInviteConnectionId = null;
+            state.groupInviteMessage = '';
+            renderGroupManagementModal();
+            showToast(t('group_manage_connection_invite_success'), 'success');
+        }
+
+        function inviteGroupAlliance(groupId) {
+            const group = getGroupAllianceInviteEntries().find(entry => entry.id === groupId);
+            const invitationKey = `${state.activeGroupId || 'community'}:${groupId}`;
+            if (!group || state.groupAllianceInvitations[invitationKey]) return;
+            const message = document.getElementById(`group-alliance-invite-message-${groupId}`)?.value.slice(0, 500) || '';
+            state.groupAllianceInvitationMessages[invitationKey] = message;
+            state.groupAllianceInvitations[invitationKey] = true;
+            state.groupAllianceInviteGroupId = null;
+            state.groupAllianceInviteMessage = '';
+            renderGroupAllianceInviteModal();
+            showToast(t('group_manage_alliance_invitation_sent'), 'success');
+        }
+
+        function openGroupAllianceInviteModal() {
+            state.groupAllianceInviteOpen = true;
+            state.groupAllianceInviteGroupId = null;
+            state.groupAllianceInviteMessage = '';
+            renderGroupAllianceInviteModal();
+        }
+
+        function closeGroupAllianceInviteModal() {
+            state.groupAllianceInviteOpen = false;
+            state.groupAllianceInviteGroupId = null;
+            state.groupAllianceInviteMessage = '';
+            document.getElementById('group-alliance-invite-modal-root')?.remove();
+        }
+
+        function openGroupAllianceInviteMessage(groupId) {
+            if (state.groupAllianceInviteGroupId !== groupId) {
+                state.groupAllianceInviteGroupId = groupId;
+                state.groupAllianceInviteMessage = '';
+            }
+            renderGroupAllianceInviteModal();
+        }
+
+        function updateGroupAllianceInviteMessage(textarea) {
+            state.groupAllianceInviteMessage = textarea.value;
+            const counter = document.getElementById(`group-alliance-invite-message-count-${textarea.dataset.groupId}`);
+            if (counter) counter.textContent = `${textarea.value.length} / 500`;
+        }
+
+        function renderGroupAllianceInviteModal() {
+            if (!state.groupAllianceInviteOpen) return;
+            let root = document.getElementById('group-alliance-invite-modal-root');
+            if (!root) {
+                root = document.createElement('div');
+                root.id = 'group-alliance-invite-modal-root';
+                document.body.appendChild(root);
+            }
+
+            const inviteItems = getGroupAllianceInviteEntries();
+            root.innerHTML = `
+                <div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm" onclick="closeGroupAllianceInviteModal()">
+                    <section role="dialog" aria-modal="true" aria-labelledby="group-alliance-invite-title" class="relative flex max-h-[85vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-white shadow-2xl animate-modal-in" onclick="event.stopPropagation()">
+                        <header class="shrink-0 border-b p-6 pb-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-600">ZULIOV · GROUPS</p>
+                                    <h2 id="group-alliance-invite-title" class="mt-2 text-xl font-black text-slate-900">${t('group_manage_groups_title')}</h2>
+                                    <p class="mt-1 text-sm text-slate-500">${t('group_manage_groups_description')}</p>
+                                </div>
+                                <button type="button" onclick="closeGroupAllianceInviteModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                            </div>
+                        </header>
+                        <div class="flex-1 space-y-3 overflow-y-auto p-6">
+                            ${inviteItems.map(group => {
+                                const invitationKey = `${state.activeGroupId || 'community'}:${group.id}`;
+                                const invited = Boolean(state.groupAllianceInvitations[invitationKey]);
+                                const allied = state.groupAlliances.some(alliance => alliance.id === group.id);
+                                const pending = state.groupAllianceRequests.some(request => request.id === group.id);
+                                const editingMessage = state.groupAllianceInviteGroupId === group.id;
+                                const disabled = invited || allied || pending;
+                                const buttonLabel = allied
+                                    ? t('group_manage_group_allied')
+                                    : pending
+                                        ? t('group_manage_group_pending')
+                                        : t(invited ? 'group_manage_group_invited' : 'group_manage_group_invite');
+                                return `
+                                    <article class="rounded-2xl border border-slate-200 bg-white p-3">
+                                        <div class="flex min-w-0 items-center gap-3">
+                                            ${group.id === 'cleanwater-international'
+                                                ? `<img src="${escapeHTML(ngoData.logoUrl)}" alt="" class="h-11 w-11 shrink-0 rounded-xl border border-slate-100 object-cover">`
+                                                : `<span aria-hidden="true" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-xl">${escapeHTML(group.icon || '👥')}</span>`}
+                                            <div class="min-w-0 flex-1">
+                                                <h3 class="truncate text-sm font-bold text-slate-900">${escapeHTML(group.name)}</h3>
+                                                <p class="mt-0.5 truncate text-xs text-slate-500">${escapeHTML(group.category || t(group.type === 'ngo' ? 'group_alliance_ngo' : 'group_alliance_group'))}</p>
+                                            </div>
+                                            <button type="button" aria-expanded="${editingMessage}" ${disabled ? 'disabled' : ''} onclick="openGroupAllianceInviteMessage('${group.id}')" class="shrink-0 rounded-lg px-3 py-2 text-xs font-bold transition-colors ${disabled ? 'border border-slate-200 bg-slate-50 text-slate-500' : 'bg-primary-600 text-white hover:bg-primary-700'}">${buttonLabel}</button>
+                                        </div>
+                                        ${editingMessage ? `
+                                            <div class="mt-3 border-t border-slate-100 pt-3">
+                                                <label for="group-alliance-invite-message-${group.id}" class="block text-xs font-bold text-slate-800">${t('group_manage_invite_message')}</label>
+                                                <textarea id="group-alliance-invite-message-${group.id}" data-group-id="${group.id}" maxlength="500" rows="3" oninput="updateGroupAllianceInviteMessage(this)" placeholder="${t('group_manage_invite_message_placeholder')}" class="mt-2 w-full resize-y rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100">${escapeHTML(state.groupAllianceInviteMessage)}</textarea>
+                                                <div class="mt-2 flex items-center justify-between gap-3">
+                                                    <span id="group-alliance-invite-message-count-${group.id}" class="text-xs text-slate-500">${state.groupAllianceInviteMessage.length} / 500</span>
+                                                    <button type="button" onclick="inviteGroupAlliance('${group.id}')" class="shrink-0 rounded-lg bg-primary-600 px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-primary-700">${t('group_manage_invite_send')}</button>
+                                                </div>
+                                            </div>
+                                        ` : ''}
+                                    </article>
+                                `;
+                            }).join('') || `<p class="rounded-xl border border-dashed border-slate-300 p-6 text-center text-xs text-slate-500">${t('group_manage_empty_invitable_groups')}</p>`}
+                        </div>
+                    </section>
+                </div>
+            `;
         }
 
         function renderGroupManagementModal() {
@@ -5971,14 +6189,17 @@
                 : (tab === 'active' ? t('group_manage_empty_alliances') : t('group_manage_empty_alliance_requests'));
 
             container.innerHTML = `
-                <div class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" onclick="closeGroupManagementModal()">
-                    <section id="group-management-modal" role="dialog" aria-modal="true" aria-labelledby="group-management-title" class="relative z-10 max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-slate-200 bg-white p-5 shadow-floating animate-modal-in sm:p-7" onclick="event.stopPropagation()">
+                <div class="fixed inset-0 z-[50] flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" onclick="closeGroupManagementModal()">
+                    <section id="group-management-modal" role="dialog" aria-modal="true" aria-labelledby="group-management-title" class="relative z-10 max-h-[90vh] w-full max-w-xl ${state.groupInviteOpen ? 'overflow-hidden' : 'overflow-y-auto'} rounded-3xl border border-slate-200 bg-white p-5 shadow-floating animate-modal-in sm:p-7" onclick="event.stopPropagation()">
                         <header class="flex items-start justify-between gap-4">
                             <div>
                                 <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-600">ZULIOV · ${t(isLeaders ? 'group_leaders_title' : 'group_alliances_title')}</p>
                                 <h2 id="group-management-title" class="mt-2 text-xl font-black text-slate-900">${title}</h2>
                             </div>
-                            <button type="button" onclick="closeGroupManagementModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                            <div class="flex shrink-0 items-center gap-2">
+                                <button type="button" onclick="${isLeaders ? 'toggleGroupInvitePanel()' : 'openGroupAllianceInviteModal()'}" aria-expanded="${isLeaders ? state.groupInviteOpen : state.groupAllianceInviteOpen}" aria-controls="${isLeaders ? 'group-connections-modal' : 'group-alliance-invite-modal'}" class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-primary-700"><i class="fa-solid fa-user-plus" aria-hidden="true"></i>${t('group_manage_invite')}</button>
+                                <button type="button" onclick="closeGroupManagementModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                            </div>
                         </header>
                         <div class="mt-5 grid grid-cols-2 rounded-xl bg-slate-100 p-1" role="tablist" aria-label="${title}">
                             <button type="button" role="tab" aria-selected="${tab === 'active'}" onclick="setGroupManagementTab('active')" class="rounded-lg px-3 py-2 text-xs font-bold transition-colors ${tab === 'active' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}">${activeLabel}</button>
@@ -6021,6 +6242,53 @@
                         </div>
                     </section>
                 </div>
+                ${isLeaders && state.groupInviteOpen ? `
+                    <div id="group-connections-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onclick="event.stopPropagation(); toggleGroupInvitePanel()">
+                        <section role="dialog" aria-modal="true" aria-labelledby="group-connections-title" class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden animate-modal-in" onclick="event.stopPropagation()">
+                            <header class="shrink-0 p-6 pb-4 border-b">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-600">ZULIOV · ${t('profile_network_connections_title')}</p>
+                                        <h2 id="group-connections-title" class="mt-2 text-xl font-black text-slate-900">${t('group_manage_connections_title')}</h2>
+                                        <p class="mt-1 text-sm text-slate-500">${t('group_manage_connections_description')}</p>
+                                    </div>
+                                    <button type="button" onclick="toggleGroupInvitePanel()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                                </div>
+                            </header>
+                            <div class="flex-1 overflow-y-auto p-6 space-y-3">
+                                ${getProfileNetworkEntries('connections').map(person => {
+                                    const inviteKey = `${state.activeGroupId || 'community'}:${person.id}`;
+                                    const invited = Boolean(state.groupInvitedConnections[inviteKey]);
+                                    const editingMessage = state.groupInviteConnectionId === person.id;
+                                    return `
+                                        <article class="rounded-2xl border border-slate-200 bg-white p-3">
+                                            <div class="flex min-w-0 items-center gap-3">
+                                                <img src="${escapeHTML(person.avatar)}" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover">
+                                                <div class="min-w-0 flex-1">
+                                                    <h3 class="truncate text-sm font-bold text-slate-900">${escapeHTML(person.name)}</h3>
+                                                    <p class="mt-0.5 truncate text-xs text-slate-500">${t(person.roleKey)}</p>
+                                                </div>
+                                                <button type="button" aria-expanded="${editingMessage}" ${invited ? 'disabled' : ''} onclick="openGroupInviteMessage('${person.id}')" class="shrink-0 rounded-lg px-3 py-2 text-xs font-bold transition-colors ${invited ? 'border border-slate-200 bg-slate-50 text-slate-500' : 'bg-primary-600 text-white hover:bg-primary-700'}">
+                                                    ${t(invited ? 'group_manage_connection_invited' : 'group_manage_connection_invite')}
+                                                </button>
+                                            </div>
+                                            ${editingMessage ? `
+                                                <div class="mt-3 border-t border-slate-100 pt-3">
+                                                    <label for="group-invite-message-${person.id}" class="block text-xs font-bold text-slate-800">${t('group_manage_invite_message')}</label>
+                                                    <textarea id="group-invite-message-${person.id}" data-connection-id="${person.id}" maxlength="500" rows="3" oninput="updateGroupInviteMessage(this)" placeholder="${t('group_manage_invite_message_placeholder')}" class="mt-2 w-full resize-y rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100">${escapeHTML(state.groupInviteMessage)}</textarea>
+                                                    <div class="mt-2 flex items-center justify-between gap-3">
+                                                        <span id="group-invite-message-count-${person.id}" class="text-xs text-slate-500">${state.groupInviteMessage.length} / 500</span>
+                                                        <button type="button" onclick="inviteConnectionToGroup('${person.id}')" class="shrink-0 rounded-lg bg-primary-600 px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-primary-700">${t('group_manage_invite_send')}</button>
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </article>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </section>
+                    </div>
+                ` : ''}
             `;
         }
 
