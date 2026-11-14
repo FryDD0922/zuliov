@@ -375,6 +375,17 @@
                 project_verified_organization: "Organización verificada",
                 home_feed_title: "Feed de la comunidad",
                 home_feed_subtitle: "Historias, avances e iniciativas compartidas por tus comunidades.",
+                home_feed_profile_role: "Donante",
+                home_feed_profile_summary: "Resumen del perfil",
+                home_feed_profile_groups: "Grupos",
+                home_feed_profile_connections: "Conexiones",
+                home_feed_your_groups: "Tus grupos",
+                home_feed_upcoming_events: "Próximos eventos",
+                home_feed_suggestions: "Conexiones y grupos sugeridos",
+                home_feed_follow: "Seguir",
+                home_feed_no_groups: "Aún no formas parte de ningún grupo.",
+                home_feed_no_events: "No hay próximos eventos.",
+                home_feed_no_suggestions: "No hay sugerencias por ahora.",
                 home_feed_support_title: "Apoya el impacto de Zuliov",
                 home_feed_support_description: "Tu apoyo ayuda a que el impacto de las comunidades sea visible y llegue más lejos.",
                 support_close: "Cerrar ventana de apoyo",
@@ -1047,6 +1058,17 @@
                 project_verified_organization: "Verified organization",
                 home_feed_title: "Community Feed",
                 home_feed_subtitle: "Stories, progress, and initiatives shared by your communities.",
+                home_feed_profile_role: "Donor",
+                home_feed_profile_summary: "Profile summary",
+                home_feed_profile_groups: "Groups",
+                home_feed_profile_connections: "Connections",
+                home_feed_your_groups: "Your Groups",
+                home_feed_upcoming_events: "Upcoming Events",
+                home_feed_suggestions: "Suggested Connections & Groups",
+                home_feed_follow: "Follow",
+                home_feed_no_groups: "You haven't joined any groups yet.",
+                home_feed_no_events: "There are no upcoming events.",
+                home_feed_no_suggestions: "No suggestions right now.",
                 home_feed_support_title: "Support Zuliov Impact",
                 home_feed_support_description: "Your support helps make community impact visible and reach even further.",
                 support_close: "Close support window",
@@ -2306,7 +2328,7 @@
                 location: 'San Francisco, CA',
                 joinedDate: 'Member since Jan 2024',
                 bio: 'Impact Investor & Philanthropic Advisor focusing on clean water technology and verifiable ESG compliance in East Africa.',
-                groupIds: ['group_cleanwater_community_network'],
+                groupIds: ['group_cleanwater_community_network', 'group_education', 'group_childhood', 'group_volunteers_latam'],
                 managedGroupIds: ['group_cleanwater_community_network']
             },
 
@@ -2506,7 +2528,7 @@
                     visibility: 'Abierto',
                     banner: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1200',
                     members: 248,
-                    joined: false,
+                    joined: true,
                     posts: [
                         {
                             id: 'post_education_1',
@@ -2531,7 +2553,7 @@
                     visibility: 'Abierto',
                     banner: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200',
                     members: 186,
-                    joined: false,
+                    joined: true,
                     posts: []
                 },
                 {
@@ -2543,7 +2565,7 @@
                     visibility: 'Comunidad',
                     banner: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
                     members: 512,
-                    joined: false,
+                    joined: true,
                     posts: []
                 },
                 {
@@ -5765,21 +5787,62 @@
                     || group.joined
                     || (group.id === 'group_cleanwater_official' && ngoData.isFollowing)))
                 .sort((first, second) => (second.post.createdAt || 0) - (first.post.createdAt || 0));
+            const userGroups = state.groups.filter(group => group.joined).slice(0, 3);
+            const upcomingFeedEvents = state.groups.flatMap(group =>
+                (group.upcomingEvents || []).map(event => ({ group, event }))
+            ).slice(0, 2);
+            const suggestedGroups = state.groups.filter(group => !group.joined).slice(0, 3);
 
             canvas.innerHTML = `
-                <section class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-                    <div class="min-w-0">
-                    <header class="mb-6">
+                <section class="grid w-full max-w-7xl grid-cols-1 gap-6 px-4 py-8 mx-auto sm:px-6 lg:grid-cols-12 lg:px-8">
+                    <aside aria-label="${t('home_feed_profile_summary')}" class="sticky top-24 hidden self-start space-y-6 lg:col-span-3 lg:block">
+                        <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-subtle">
+                            <img src="${escapeHTML(state.currentUser.coverImage || '')}" alt="" class="h-20 w-full object-cover">
+                            <div class="px-4 pb-4">
+                                <div class="-mt-7 flex items-end justify-between">
+                                    <img src="${escapeHTML(state.currentUser.avatar || '')}" alt="${escapeHTML(state.currentUser.name)}" class="h-14 w-14 rounded-full border-4 border-white bg-white object-cover">
+                                    <span class="mb-1 rounded-full bg-primary-50 px-2.5 py-1 text-[10px] font-bold text-primary-700">${t('home_feed_profile_role')}</span>
+                                </div>
+                                <h2 class="mt-3 text-base font-extrabold text-slate-900">${escapeHTML(state.currentUser.name)}</h2>
+                                <div class="mt-4 grid grid-cols-2 divide-x divide-slate-100 border-y border-slate-100 py-3 text-center">
+                                    <div>
+                                        <span class="block text-lg font-black text-slate-900">${state.groups.filter(group => group.joined).length}</span>
+                                        <span class="text-[10px] font-semibold text-slate-500">${t('home_feed_profile_groups')}</span>
+                                    </div>
+                                    <div>
+                                        <span class="block text-lg font-black text-slate-900">28</span>
+                                        <span class="text-[10px] font-semibold text-slate-500">${t('home_feed_profile_connections')}</span>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="navigateTo('profile')" class="mt-3 w-full rounded-lg px-3 py-2 text-xs font-bold text-primary-700 transition-colors hover:bg-primary-50">${t('profile_view')} <i class="fa-solid fa-arrow-right ml-1 text-[10px]" aria-hidden="true"></i></button>
+                            </div>
+                        </article>
+                        <section aria-labelledby="home-feed-groups-title" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle">
+                            <h2 id="home-feed-groups-title" class="mb-3 text-sm font-extrabold text-slate-900">${t('home_feed_your_groups')}</h2>
+                            <ul class="space-y-1">
+                                ${userGroups.length ? userGroups.map(group => `
+                                    <li>
+                                        <button type="button" onclick="openGroup('${escapeHTML(group.id)}')" class="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-xs font-semibold leading-snug text-slate-700 transition-colors hover:bg-slate-50 hover:text-primary-700">
+                                            <i class="fa-solid fa-people-group w-4 shrink-0 text-center text-primary-600" aria-hidden="true"></i>
+                                            <span>${escapeHTML(groupText(group, 'name'))}</span>
+                                        </button>
+                                    </li>
+                                `).join('') : `<li class="px-2 py-2 text-xs text-slate-500">${t('home_feed_no_groups')}</li>`}
+                            </ul>
+                        </section>
+                    </aside>
+                    <main class="min-w-0 space-y-6 lg:col-span-6">
+                    <header>
                         <h1 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">${t('home_feed_title')}</h1>
                         <p class="mt-2 text-sm leading-relaxed text-slate-600">${t('home_feed_subtitle')}</p>
                     </header>
                     ${selectedCommunityCategory ? `
-                        <div class="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary-100 bg-primary-50 px-4 py-3">
+                        <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary-100 bg-primary-50 px-4 py-3">
                             <p class="text-sm font-semibold text-primary-900">${t('home_feed_filter_label')} <span>${t(`community_category_${selectedCommunityCategory}`)}</span></p>
                             <button type="button" onclick="selectCommunityCategory('${selectedCommunityCategory}')" class="rounded-lg px-3 py-1.5 text-xs font-bold text-primary-700 transition-colors hover:bg-white">${t('home_feed_clear_filter')}</button>
                         </div>
                         ${categoryGroups.length ? `
-                            <section aria-label="${t('home_feed_related_communities')}" class="mb-6">
+                            <section aria-label="${t('home_feed_related_communities')}">
                                 <h2 class="mb-3 text-xs font-bold uppercase tracking-wide text-slate-500">${t('home_feed_related_communities')}</h2>
                                 <div class="grid gap-3 sm:grid-cols-2">
                                     ${categoryGroups.map(group => `
@@ -5793,11 +5856,11 @@
                             </section>
                         ` : ''}
                     ` : ''}
-                    <div role="tablist" aria-label="${t('home_feed_title')}" class="mb-5 grid grid-cols-2 border-b border-slate-200">
+                    <div role="tablist" aria-label="${t('home_feed_title')}" class="grid grid-cols-2 border-b border-slate-200">
                         <button type="button" id="home-feed-tab-for-you" role="tab" aria-selected="${state.homeFeedTab === 'for-you'}" aria-controls="home-feed-panel" tabindex="${state.homeFeedTab === 'for-you' ? '0' : '-1'}" onkeydown="handleHomeFeedTabKeydown(event)" onclick="setHomeFeedTab('for-you')" class="border-b-2 px-4 py-3 text-sm font-bold transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${state.homeFeedTab === 'for-you' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500 hover:text-slate-800'}">${t('home_feed_for_you')}</button>
                         <button type="button" id="home-feed-tab-following" role="tab" aria-selected="${state.homeFeedTab === 'following'}" aria-controls="home-feed-panel" tabindex="${state.homeFeedTab === 'following' ? '0' : '-1'}" onkeydown="handleHomeFeedTabKeydown(event)" onclick="setHomeFeedTab('following')" class="border-b-2 px-4 py-3 text-sm font-bold transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${state.homeFeedTab === 'following' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500 hover:text-slate-800'}">${t('home_feed_following')}</button>
                     </div>
-                    <form onsubmit="publishHomeFeedPost(event)" class="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle sm:p-5">
+                    <form onsubmit="publishHomeFeedPost(event)" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle sm:p-5">
                         <div class="flex items-start gap-3">
                             <img src="${escapeHTML(state.currentUser.avatar || '')}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-slate-200">
                             <label class="sr-only" for="home-feed-create-text">${t('home_feed_create_placeholder')}</label>
@@ -5827,7 +5890,47 @@
                                 ? (categoryGroups.length ? t('home_feed_no_category_posts') : t('home_feed_category_empty'))
                                 : (state.homeFeedTab === 'following' ? t('home_feed_following_empty') : t('home_feed_empty'))}</p>`}
                     </div>
-                    </div>
+                    </main>
+                    <aside aria-label="${t('home_feed_suggestions')}" class="sticky top-24 hidden self-start space-y-6 lg:col-span-3 lg:block">
+                        <section aria-labelledby="home-feed-events-title" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle">
+                            <h2 id="home-feed-events-title" class="mb-3 text-sm font-extrabold text-slate-900">${t('home_feed_upcoming_events')}</h2>
+                            <ul class="space-y-3">
+                                ${upcomingFeedEvents.length ? upcomingFeedEvents.map(({ group, event }) => `
+                                    <li class="flex gap-3">
+                                        <div class="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-primary-50 text-center text-[9px] font-extrabold uppercase leading-tight text-primary-700">
+                                            <span>${escapeHTML(groupEventText(event, 'dateShort') || groupEventText(event, 'dateTime'))}</span>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <h3 class="line-clamp-2 text-xs font-bold leading-snug text-slate-800">${escapeHTML(groupEventText(event, 'title'))}</h3>
+                                            <button type="button" onclick="openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this)" class="mt-1 text-[11px] font-bold text-primary-700 hover:text-primary-900">${t('event_details_open')} <i class="fa-solid fa-arrow-right ml-1 text-[9px]" aria-hidden="true"></i></button>
+                                        </div>
+                                    </li>
+                                `).join('') : `<li class="text-xs text-slate-500">${t('home_feed_no_events')}</li>`}
+                            </ul>
+                        </section>
+                        <section aria-labelledby="home-feed-suggestions-title" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle">
+                            <h2 id="home-feed-suggestions-title" class="mb-3 text-sm font-extrabold leading-snug text-slate-900">${t('home_feed_suggestions')}</h2>
+                            <ul class="space-y-3">
+                                ${suggestedGroups.length ? suggestedGroups.map(group => `
+                                    <li class="flex items-center gap-2.5">
+                                        <img src="${escapeHTML(group.banner || '')}" alt="" class="h-9 w-9 shrink-0 rounded-full bg-slate-100 object-cover">
+                                        <div class="min-w-0 flex-1">
+                                            <button type="button" onclick="openGroup('${escapeHTML(group.id)}')" class="block w-full truncate text-left text-xs font-bold text-slate-800 hover:text-primary-700">${escapeHTML(groupText(group, 'name'))}</button>
+                                            <span class="text-[10px] text-slate-500">${escapeHTML(groupText(group, 'category'))}</span>
+                                        </div>
+                                        <button type="button" aria-label="${t('home_feed_follow')} ${escapeHTML(groupText(group, 'name'))}" onclick="toggleGroupMembership('${escapeHTML(group.id)}')" class="shrink-0 rounded-lg border border-primary-100 px-2 py-1.5 text-[10px] font-bold text-primary-700 transition-colors hover:bg-primary-50">${t('home_feed_follow')}</button>
+                                    </li>
+                                `).join('') : `<li class="text-xs text-slate-500">${t('home_feed_no_suggestions')}</li>`}
+                            </ul>
+                        </section>
+                        <section class="rounded-2xl border border-primary-100 bg-primary-50/70 p-4">
+                            <h2 class="text-sm font-extrabold text-slate-900">${t('profile_support')}</h2>
+                            <p class="mt-1 text-xs leading-relaxed text-slate-600">${t('home_feed_support_description')}</p>
+                            <button type="button" onclick="openSupportModal()" aria-haspopup="dialog" aria-controls="support-modal" class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-primary-700">
+                                <i class="fa-solid fa-heart text-[10px]" aria-hidden="true"></i>${t('profile_support')}
+                            </button>
+                        </section>
+                    </aside>
                 </section>
             `;
         }
