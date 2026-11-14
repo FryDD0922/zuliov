@@ -767,6 +767,18 @@
                 group_alliance_request_send: "Enviar Solicitud",
                 group_alliance_request_success: "Solicitud de alianza enviada con éxito",
                 group_upcoming_events_title: "PRÓXIMOS EVENTOS",
+                group_create_event: "+ Crear Evento",
+                group_create_event_title: "Crear evento",
+                group_create_event_title_label: "Título del evento",
+                group_create_event_date_label: "Fecha y hora",
+                group_create_event_location_label: "Modalidad / Ubicación",
+                group_create_event_cover_label: "Imagen de portada del evento",
+                group_create_event_description_label: "Descripción (opcional)",
+                group_create_event_cancel: "Cancelar",
+                group_create_event_submit: "Crear Evento",
+                group_create_event_success: "Evento creado correctamente.",
+                group_create_event_validation: "Completa el título, la fecha y la ubicación del evento.",
+                group_create_event_future_validation: "Selecciona una fecha y hora futuras.",
                 group_event_join: "Confirmar asistencia",
                 group_event_going: "Asistiré",
                 group_event_interested: "Me interesa",
@@ -1409,6 +1421,18 @@
                 group_alliance_request_send: "Send Request",
                 group_alliance_request_success: "Alliance request sent successfully",
                 group_upcoming_events_title: "UPCOMING EVENTS",
+                group_create_event: "+ Create Event",
+                group_create_event_title: "Create event",
+                group_create_event_title_label: "Event Title",
+                group_create_event_date_label: "Date & Time",
+                group_create_event_location_label: "Location / Format",
+                group_create_event_cover_label: "Event cover image",
+                group_create_event_description_label: "Description (optional)",
+                group_create_event_cancel: "Cancel",
+                group_create_event_submit: "Create Event",
+                group_create_event_success: "Event created successfully.",
+                group_create_event_validation: "Enter the event title, date, and location.",
+                group_create_event_future_validation: "Choose a future date and time.",
                 group_event_join: "Join Event",
                 group_event_going: "Going",
                 group_event_interested: "Interested",
@@ -5318,7 +5342,10 @@
                     : t('group_event_join');
             return `
                 <article class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
-                    <div class="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-lg bg-primary-50 text-center text-[9px] font-black uppercase leading-tight text-primary-700">${escapeHTML(groupEventText(event, 'dateShort'))}</div>
+                    <div class="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-primary-50">
+                        <img src="${escapeHTML(event.image || DEFAULT_EVENT_COVER_IMAGE)}" alt="${escapeHTML(groupEventText(event, 'title'))}" class="h-full w-full object-cover">
+                        <span class="absolute inset-x-0 bottom-0 bg-slate-950/75 px-1 py-1 text-center text-[8px] font-black uppercase leading-tight text-white">${escapeHTML(groupEventText(event, 'dateShort'))}</span>
+                    </div>
                     <div class="min-w-0 flex-1">
                         <h3 class="text-xs font-bold leading-snug text-slate-900">${escapeHTML(groupEventText(event, 'title'))}</h3>
                         <p class="mt-1 text-[10px] text-slate-500">${escapeHTML(groupEventText(event, 'location'))}</p>
@@ -5326,6 +5353,169 @@
                     <button type="button" aria-pressed="${event.response === 'going'}" aria-label="${t('group_event_join')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="toggleEventResponse('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', 'going')" class="shrink-0 rounded-lg px-3 py-2 text-[10px] font-bold transition-colors ${event.response === 'going' ? 'bg-emerald-100 text-emerald-800' : 'bg-primary-600 text-white hover:bg-primary-700'}">${responseLabel}</button>
                 </article>
             `;
+        }
+
+        let createEventReturnFocus = null;
+        const DEFAULT_EVENT_COVER_IMAGE = 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200';
+
+        function openCreateGroupEventModal(groupId, trigger) {
+            const group = state.groups.find(item => item.id === groupId);
+            if (!group) return;
+
+            createEventReturnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
+            const modal = document.createElement('div');
+            modal.id = 'create-group-event-modal';
+            modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('aria-labelledby', 'create-group-event-title');
+            modal.innerHTML = `
+                <div class="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl" onclick="event.stopPropagation()">
+                    <div class="flex items-start justify-between gap-4">
+                        <h2 id="create-group-event-title" class="text-xl font-black text-slate-900">${t('group_create_event_title')}</h2>
+                        <button id="create-group-event-close" type="button" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                    </div>
+                    <form id="create-group-event-form" class="mt-5 space-y-4">
+                        <div>
+                            <label for="create-group-event-name" class="block text-xs font-bold text-slate-700">${t('group_create_event_title_label')}</label>
+                            <input id="create-group-event-name" name="title" type="text" required maxlength="120" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <div>
+                            <label for="create-group-event-date" class="block text-xs font-bold text-slate-700">${t('group_create_event_date_label')}</label>
+                            <input id="create-group-event-date" name="dateTime" type="datetime-local" required class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <div>
+                            <label for="create-group-event-location" class="block text-xs font-bold text-slate-700">${t('group_create_event_location_label')}</label>
+                            <input id="create-group-event-location" name="location" type="text" required maxlength="160" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <div>
+                            <label for="create-group-event-cover-file" class="block text-xs font-bold text-slate-700">${t('group_create_event_cover_label')}</label>
+                            <input id="create-group-event-cover-value" type="hidden" name="image">
+                            <label for="create-group-event-cover-file" class="mt-2 block text-xs font-semibold text-slate-600">${t('group_image_upload')}</label>
+                            <input id="create-group-event-cover-file" type="file" accept="image/*" onchange="handleGroupEventCoverImageChange(event)" aria-label="${t('group_create_event_cover_label')}" class="mt-2 w-full text-xs text-slate-500 file:mr-3 file:rounded-lg file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-primary-700">
+                            <img id="create-group-event-cover-preview" src="${DEFAULT_EVENT_COVER_IMAGE}" alt="${t('group_create_event_cover_label')}" class="mt-3 h-16 w-full rounded-xl border border-slate-200 object-cover">
+                        </div>
+                        <div>
+                            <label for="create-group-event-description" class="block text-xs font-bold text-slate-700">${t('group_create_event_description_label')}</label>
+                            <textarea id="create-group-event-description" name="description" rows="3" maxlength="500" class="mt-1.5 w-full resize-y rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"></textarea>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button id="create-group-event-cancel" type="button" class="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-600 transition-colors hover:bg-slate-50">${t('group_create_event_cancel')}</button>
+                            <button type="submit" class="rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-primary-700">${t('group_create_event_submit')}</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            modal.addEventListener('click', event => {
+                if (event.target === modal) closeCreateGroupEventModal();
+            });
+            modal.addEventListener('keydown', handleCreateGroupEventModalKeydown);
+            modal.querySelector('#create-group-event-close').addEventListener('click', closeCreateGroupEventModal);
+            modal.querySelector('#create-group-event-cancel').addEventListener('click', closeCreateGroupEventModal);
+            modal.querySelector('#create-group-event-form').addEventListener('submit', event => createGroupEvent(event, group.id));
+            const dateInput = modal.querySelector('#create-group-event-date');
+            const now = new Date();
+            dateInput.min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+            document.body.appendChild(modal);
+            modal.querySelector('#create-group-event-name').focus({ preventScroll: true });
+        }
+
+        function handleGroupEventCoverImageChange(event) {
+            const input = event.currentTarget;
+            const file = input.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                input.value = '';
+                showToast(t('register_profile_file_type_error'), 'info');
+                return;
+            }
+
+            const form = input.form;
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (typeof reader.result !== 'string') {
+                    showToast(t('register_profile_file_read_error'), 'info');
+                    if (submitButton) submitButton.disabled = false;
+                    return;
+                }
+                if (input.isConnected) {
+                    form.querySelector('#create-group-event-cover-value').value = reader.result;
+                    form.querySelector('#create-group-event-cover-preview').src = reader.result;
+                }
+                if (submitButton) submitButton.disabled = false;
+            };
+            reader.onerror = () => {
+                input.value = '';
+                showToast(t('register_profile_file_read_error'), 'info');
+                if (submitButton) submitButton.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleCreateGroupEventModalKeydown(event) {
+            if (event.key === 'Escape') closeCreateGroupEventModal();
+        }
+
+        function closeCreateGroupEventModal() {
+            const modal = document.getElementById('create-group-event-modal');
+            if (!modal) return;
+            modal.removeEventListener('keydown', handleCreateGroupEventModalKeydown);
+            modal.remove();
+            const returnFocus = createEventReturnFocus;
+            createEventReturnFocus = null;
+            if (returnFocus instanceof HTMLElement && returnFocus.isConnected) {
+                returnFocus.focus({ preventScroll: true });
+            }
+        }
+
+        function createGroupEvent(event, groupId) {
+            event.preventDefault();
+            const group = state.groups.find(item => item.id === groupId);
+            if (!group) return;
+
+            const formData = new FormData(event.currentTarget);
+            const title = String(formData.get('title') || '').trim();
+            const dateValue = String(formData.get('dateTime') || '');
+            const location = String(formData.get('location') || '').trim();
+            const summary = String(formData.get('description') || '').trim();
+            const eventDate = new Date(dateValue);
+            if (!title || !dateValue || !location || Number.isNaN(eventDate.getTime())) {
+                showToast(t('group_create_event_validation'), 'info');
+                return;
+            }
+            if (eventDate <= new Date()) {
+                showToast(t('group_create_event_future_validation'), 'info');
+                return;
+            }
+
+            const locale = currentLang === 'es' ? 'es-ES' : 'en-US';
+            const dateTimeOptions = {
+                weekday: 'long',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit'
+            };
+            const dateShortOptions = { weekday: 'short', month: 'short', day: 'numeric' };
+            group.upcomingEvents = group.upcomingEvents || [];
+            group.upcomingEvents.unshift({
+                id: `event_${Date.now()}`,
+                title,
+                dateShort: new Intl.DateTimeFormat(locale, dateShortOptions).format(eventDate).toLocaleUpperCase(locale),
+                dateTime: new Intl.DateTimeFormat(locale, dateTimeOptions).format(eventDate),
+                location,
+                summary,
+                image: String(formData.get('image') || DEFAULT_EVENT_COVER_IMAGE),
+                going: 0,
+                interested: 0,
+                response: null
+            });
+
+            closeCreateGroupEventModal();
+            renderApp();
+            showToast(t('group_create_event_success'), 'success');
         }
 
         function renderGroupEventPostCard(group, event) {
@@ -5662,14 +5852,17 @@
                         </div>
                         <div class="p-5 sm:p-8">
                             <p class="text-sm leading-relaxed text-slate-600">${escapeHTML(groupText(group, 'description'))}</p>
-                            ${group.upcomingEvents?.length ? `
-                                <section aria-labelledby="group-upcoming-events-title" class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                            <section aria-labelledby="group-upcoming-events-title" class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                                <div class="flex flex-wrap items-center justify-between gap-3">
                                     <h2 id="group-upcoming-events-title" class="text-xs font-black uppercase tracking-widest text-slate-800">${t('group_upcoming_events_title')}</h2>
+                                    <button type="button" onclick="openCreateGroupEventModal('${escapeHTML(group.id)}', this)" class="inline-flex items-center gap-1.5 rounded-lg bg-primary-600 px-3 py-2 text-[11px] font-bold text-white shadow-sm transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('group_create_event')}</button>
+                                </div>
+                                ${group.upcomingEvents?.length ? `
                                     <div class="mt-4 grid gap-3 lg:grid-cols-2">
                                         ${group.upcomingEvents.map(event => renderUpcomingEvent(group, event)).join('')}
                                     </div>
-                                </section>
-                            ` : ''}
+                                ` : ''}
+                            </section>
                             <div class="mt-6 grid items-stretch gap-5 lg:grid-cols-2">
                                 <section aria-labelledby="group-leaders-title" class="flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
                                     <div class="flex items-center justify-between gap-3">
