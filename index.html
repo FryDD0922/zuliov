@@ -311,6 +311,24 @@
                 nav_browse: "PROYECTOS Y EVENTOS",
                 browse_title: "Proyectos y Eventos",
                 browse_subtitle: "Explora iniciativas y proyectos, además de eventos agendados, en un mismo lugar.",
+                create_project_button: "+ Crear Proyecto",
+                create_project_modal_title: "Crear proyecto",
+                create_project_title_label: "Título del proyecto",
+                create_project_location_label: "Ubicación / Región",
+                create_project_location_placeholder: "Kenia - Kitui, América Latina...",
+                create_project_organization_label: "Organización / Grupo responsable",
+                create_project_cover_label: "Imagen de portada",
+                create_project_cover_upload: "Selecciona una imagen para la portada",
+                create_project_description_label: "Descripción detallada",
+                create_project_cancel: "Cancelar",
+                create_project_submit: "Crear Proyecto",
+                create_project_success: "Proyecto creado correctamente.",
+                create_project_validation: "Completa el título, la ubicación, la organización y la descripción del proyecto.",
+                create_project_image_type_error: "Selecciona un archivo de imagen.",
+                create_project_image_read_error: "No se pudo leer la imagen seleccionada.",
+                create_project_category: "Iniciativa comunitaria",
+                create_project_unverified: "Proyecto aún no verificado",
+                project_origin_community: "Proyecto comunitario",
                 activity_tab_all: "Todos",
                 activity_tab_projects: "Proyectos",
                 activity_tab_events: "Eventos",
@@ -965,6 +983,24 @@
                 nav_browse: "PROJECTS & EVENTS",
                 browse_title: "Projects & Events",
                 browse_subtitle: "Explore initiatives and projects, along with scheduled events, in one place.",
+                create_project_button: "+ Create Project",
+                create_project_modal_title: "Create project",
+                create_project_title_label: "Project Title",
+                create_project_location_label: "Location / Region",
+                create_project_location_placeholder: "Kenya - Kitui, Latin America...",
+                create_project_organization_label: "Organization / Group",
+                create_project_cover_label: "Cover image",
+                create_project_cover_upload: "Choose a cover image",
+                create_project_description_label: "Description",
+                create_project_cancel: "Cancel",
+                create_project_submit: "Create Project",
+                create_project_success: "Project created successfully.",
+                create_project_validation: "Enter the project title, location, organization, and description.",
+                create_project_image_type_error: "Select an image file.",
+                create_project_image_read_error: "The selected image could not be read.",
+                create_project_category: "Community initiative",
+                create_project_unverified: "Project not yet verified",
+                project_origin_community: "Community project",
                 activity_tab_all: "All",
                 activity_tab_projects: "Projects",
                 activity_tab_events: "Events",
@@ -1737,18 +1773,25 @@
 
         function projectRegion(project) {
             if (project.region) return project.region;
-            const country = (project.location || '').split(',').pop().trim().toLowerCase();
+            const location = (project.location || '').trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
             const regionsByCountry = {
                 kenya: 'africa',
+                kenia: 'africa',
                 uganda: 'africa',
                 tanzania: 'africa',
+                africa: 'africa',
                 venezuela: 'latin-america',
                 colombia: 'latin-america',
                 guatemala: 'latin-america',
+                'latin america': 'latin-america',
+                'america latina': 'latin-america',
                 usa: 'north-america',
-                'united states': 'north-america'
+                'united states': 'north-america',
+                'north america': 'north-america',
+                'america del norte': 'north-america',
+                asia: 'asia'
             };
-            return regionsByCountry[country] || '';
+            return Object.entries(regionsByCountry).find(([place]) => location.includes(place))?.[1] || '';
         }
 
         function setLanguage(lang) {
@@ -1760,6 +1803,7 @@
             localStorage.setItem('zuliov-language', lang);
             document.documentElement.lang = lang;
             renderApp();
+            if (document.getElementById('create-project-modal')) updateCreateProjectModalCopy();
             updateSupportModalCopy();
             if (!document.getElementById('inbox-modal').classList.contains('hidden')) renderInbox();
             if (document.getElementById('settings-modal')) renderSettingsModal();
@@ -3400,6 +3444,174 @@
                     <button type="button" onclick="setActivityTab('events')" aria-pressed="${activityTab === 'events'}" class="rounded-full px-4 py-2 text-xs font-semibold transition-colors ${activityTab === 'events' ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900'}">${t('activity_tab_events')}</button>
                 </nav>
             `;
+        }
+
+        let createProjectReturnFocus = null;
+        const DEFAULT_PROJECT_COVER_IMAGE = 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200';
+
+        function openCreateProjectModal(trigger) {
+            if (document.getElementById('create-project-modal')) return;
+            createProjectReturnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
+            const modal = document.createElement('div');
+            modal.id = 'create-project-modal';
+            modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('aria-labelledby', 'create-project-modal-title');
+            modal.innerHTML = `
+                <div class="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl" onclick="event.stopPropagation()">
+                    <div class="flex items-start justify-between gap-4">
+                        <h2 id="create-project-modal-title" class="text-xl font-black text-slate-900">${t('create_project_modal_title')}</h2>
+                        <button id="create-project-close" type="button" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                    </div>
+                    <form id="create-project-form" class="mt-5 space-y-4">
+                        <div>
+                            <label id="create-project-title-label" for="create-project-name" class="block text-xs font-bold text-slate-700">${t('create_project_title_label')}</label>
+                            <input id="create-project-name" name="title" type="text" required maxlength="120" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <div>
+                            <label id="create-project-location-label" for="create-project-location" class="block text-xs font-bold text-slate-700">${t('create_project_location_label')}</label>
+                            <input id="create-project-location" name="location" type="text" required maxlength="160" placeholder="${t('create_project_location_placeholder')}" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <div>
+                            <label id="create-project-organization-label" for="create-project-organization" class="block text-xs font-bold text-slate-700">${t('create_project_organization_label')}</label>
+                            <input id="create-project-organization" name="organization" type="text" required maxlength="120" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <div>
+                            <label id="create-project-cover-label" for="create-project-cover-file" class="block text-xs font-bold text-slate-700">${t('create_project_cover_label')}</label>
+                            <input id="create-project-cover-value" type="hidden" name="coverImage" value="${DEFAULT_PROJECT_COVER_IMAGE}">
+                            <label id="create-project-cover-upload-label" for="create-project-cover-file" class="mt-2 block text-xs font-semibold text-slate-600">${t('create_project_cover_upload')}</label>
+                            <input id="create-project-cover-file" type="file" accept="image/*" onchange="handleCreateProjectCoverImageChange(event)" aria-label="${t('create_project_cover_label')}" class="mt-2 w-full text-xs text-slate-500 file:mr-3 file:rounded-lg file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-primary-700">
+                            <img id="create-project-cover-preview" src="${DEFAULT_PROJECT_COVER_IMAGE}" alt="${t('create_project_cover_label')}" class="mt-3 h-24 w-full rounded-xl border border-slate-200 object-cover">
+                        </div>
+                        <div>
+                            <label id="create-project-description-label" for="create-project-description" class="block text-xs font-bold text-slate-700">${t('create_project_description_label')}</label>
+                            <textarea id="create-project-description" name="description" rows="4" required maxlength="2000" class="mt-1.5 w-full resize-y rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"></textarea>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button id="create-project-cancel" type="button" class="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-600 transition-colors hover:bg-slate-50">${t('create_project_cancel')}</button>
+                            <button id="create-project-submit" type="submit" class="rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-primary-700">${t('create_project_submit')}</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            modal.addEventListener('click', event => {
+                if (event.target === modal) closeCreateProjectModal();
+            });
+            modal.addEventListener('keydown', handleCreateProjectModalKeydown);
+            modal.querySelector('#create-project-close').addEventListener('click', closeCreateProjectModal);
+            modal.querySelector('#create-project-cancel').addEventListener('click', closeCreateProjectModal);
+            modal.querySelector('#create-project-form').addEventListener('submit', createProject);
+            document.body.appendChild(modal);
+            modal.querySelector('#create-project-name').focus({ preventScroll: true });
+        }
+
+        function updateCreateProjectModalCopy() {
+            const labels = {
+                'create-project-modal-title': 'create_project_modal_title',
+                'create-project-title-label': 'create_project_title_label',
+                'create-project-location-label': 'create_project_location_label',
+                'create-project-organization-label': 'create_project_organization_label',
+                'create-project-cover-label': 'create_project_cover_label',
+                'create-project-cover-upload-label': 'create_project_cover_upload',
+                'create-project-description-label': 'create_project_description_label',
+                'create-project-cancel': 'create_project_cancel',
+                'create-project-submit': 'create_project_submit'
+            };
+            Object.entries(labels).forEach(([id, key]) => {
+                document.getElementById(id).textContent = t(key);
+            });
+            document.getElementById('create-project-cover-file').setAttribute('aria-label', t('create_project_cover_label'));
+            document.getElementById('create-project-cover-preview').alt = t('create_project_cover_label');
+            document.getElementById('create-project-close').setAttribute('aria-label', t('close'));
+            document.getElementById('create-project-location').placeholder = t('create_project_location_placeholder');
+        }
+
+        function handleCreateProjectCoverImageChange(event) {
+            const input = event.currentTarget;
+            const file = input.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                input.value = '';
+                showToast(t('create_project_image_type_error'), 'info');
+                return;
+            }
+
+            const form = input.form;
+            const submitButton = form.querySelector('#create-project-submit');
+            submitButton.disabled = true;
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (typeof reader.result !== 'string') {
+                    showToast(t('create_project_image_read_error'), 'info');
+                    submitButton.disabled = false;
+                    return;
+                }
+                if (input.isConnected) {
+                    form.querySelector('#create-project-cover-value').value = reader.result;
+                    form.querySelector('#create-project-cover-preview').src = reader.result;
+                }
+                submitButton.disabled = false;
+            };
+            reader.onerror = () => {
+                input.value = '';
+                showToast(t('create_project_image_read_error'), 'info');
+                submitButton.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleCreateProjectModalKeydown(event) {
+            if (event.key === 'Escape') closeCreateProjectModal();
+        }
+
+        function closeCreateProjectModal() {
+            const modal = document.getElementById('create-project-modal');
+            if (!modal) return;
+            modal.removeEventListener('keydown', handleCreateProjectModalKeydown);
+            modal.remove();
+            const returnFocus = createProjectReturnFocus;
+            createProjectReturnFocus = null;
+            if (returnFocus instanceof HTMLElement && returnFocus.isConnected) {
+                returnFocus.focus({ preventScroll: true });
+            }
+        }
+
+        function createProject(event) {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            const title = String(formData.get('title') || '').trim();
+            const location = String(formData.get('location') || '').trim();
+            const organization = String(formData.get('organization') || '').trim();
+            const description = String(formData.get('description') || '').trim();
+            if (!title || !location || !organization || !description) {
+                showToast(t('create_project_validation'), 'info');
+                return;
+            }
+
+            state.projects.unshift({
+                id: `proj_created_${Date.now()}`,
+                title,
+                location,
+                region: projectRegion({ location }),
+                category: locales.en.create_project_category,
+                categoryEs: locales.es.create_project_category,
+                description,
+                coverImage: String(formData.get('coverImage') || DEFAULT_PROJECT_COVER_IMAGE),
+                ngoName: organization,
+                creatorName: organization,
+                userCreated: true,
+                amountRaised: 0,
+                targetGoal: 0
+            });
+
+            closeCreateProjectModal();
+            state.projectContinent = 'all';
+            state.projectSearchTerm = '';
+            state.selectedBrowseProjectId = null;
+            activityTab = 'projects';
+            renderApp();
+            showToast(t('create_project_success'), 'success');
         }
 
         function closeProfileDropdown() {
@@ -9128,7 +9340,7 @@
                                 &times;
                             </button>
                             <div class="absolute inset-x-0 bottom-0 p-6 text-white sm:p-10">
-                                <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-white/75">${escapeHTML(project.ngoName)} · ${escapeHTML(project.verifiedStatus || 'Verified organization')}</p>
+                                <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-white/75">${escapeHTML(project.ngoName || project.creatorName || '')} · ${escapeHTML(project.verifiedStatus || (project.userCreated ? t('create_project_unverified') : 'Verified organization'))}</p>
                                 <h2 id="expanded-project-title" class="mt-2 max-w-4xl text-2xl font-black sm:text-4xl">${t('expanded_project_log')}</h2>
                                 <p class="mt-2 text-[10px] font-mono font-bold uppercase tracking-wider text-white/75">${escapeHTML(localizedProjectText(project, 'category'))}</p>
                                 <p class="mt-2 text-sm font-semibold sm:text-lg">${escapeHTML(projectTitle)}</p>
@@ -9157,9 +9369,9 @@
                                     <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500">${t('funding_status')}</p>
                                     <p class="mt-2 text-xl font-black text-slate-900">${formatCurrency(project.amountRaised)} <span class="text-xs font-medium text-slate-500">of ${formatCurrency(project.targetGoal)}</span></p>
                                     <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
-                                        <div class="h-full rounded-full bg-primary-600" style="width:${Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100)}%"></div>
+                                        <div class="h-full rounded-full bg-primary-600" style="width:${project.targetGoal > 0 ? Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100) : 0}%"></div>
                                     </div>
-                                    <p class="mt-2 text-right text-xs font-bold text-primary-700">${Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100)}%</p>
+                                    <p class="mt-2 text-right text-xs font-bold text-primary-700">${project.targetGoal > 0 ? Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100) : 0}%</p>
                                     <p class="mt-4 text-xs font-semibold text-slate-700">${escapeHTML(project.location || 'Kenya')}</p>
                                 </aside>
                             </section>
@@ -9306,9 +9518,12 @@
                 canvas.innerHTML = `
                     <div class="mx-auto max-w-7xl space-y-8 px-4 py-8 text-left sm:px-6 lg:px-8">
                         ${renderActivityTabs()}
-                        <header class="border-b border-slate-200 pb-4">
-                            <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
-                            <p class="text-xs text-slate-500">${t('browse_subtitle')}</p>
+                        <header class="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
+                                <p class="text-xs text-slate-500">${t('browse_subtitle')}</p>
+                            </div>
+                            <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
                         </header>
                         <section aria-labelledby="browse-events-title">
                             <h2 id="browse-events-title" class="mb-4 text-xs font-black uppercase tracking-widest text-slate-800">${t('group_upcoming_events_title')}</h2>
@@ -9363,6 +9578,9 @@
             const selectedProject = state.projects.find(proj => proj.id === state.selectedBrowseProjectId);
             const renderProjectDetailPanel = (panelId, titleId, volunteerRoleId, className, includeImage) => {
                 const volunteerCommitment = state.projectVolunteers.find(item => item.projectId === selectedProject.id);
+                const fundingProgress = selectedProject.targetGoal > 0
+                    ? Math.min(Math.round((selectedProject.amountRaised / selectedProject.targetGoal) * 100), 100)
+                    : 0;
 
                 return `
                 <aside id="${panelId}" aria-labelledby="${titleId}" onclick="event.stopPropagation()" class="${className} w-full min-w-0 self-start overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
@@ -9383,7 +9601,7 @@
                             <div>
                                 <p class="text-[10px] font-mono uppercase tracking-wider text-slate-400">${t(selectedProject.groupId ? 'project_creator_group' : 'project_creator_ngo')}</p>
                                 <p class="text-xs font-bold text-slate-900">${escapeHTML(selectedProject.groupName || selectedProject.ngoName || '')}</p>
-                                <p class="text-[10px] font-semibold text-emerald-700">${escapeHTML(selectedProject.verifiedStatus || t('project_verified_organization'))}</p>
+                                <p class="text-[10px] font-semibold ${selectedProject.userCreated ? 'text-slate-500' : 'text-emerald-700'}">${escapeHTML(selectedProject.verifiedStatus || (selectedProject.userCreated ? t('create_project_unverified') : t('project_verified_organization')))}</p>
                             </div>
                         </div>
                         <p class="text-xs leading-relaxed text-slate-600">${escapeHTML(localizedProjectText(selectedProject, 'description'))}</p>
@@ -9393,10 +9611,10 @@
                                     <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">${t('project_funding_progress')}</p>
                                     <p class="mt-1 text-base font-black text-slate-900">${formatCurrency(selectedProject.amountRaised)} <span class="text-[10px] font-medium text-slate-500">${t('project_funding_of')} ${formatCurrency(selectedProject.targetGoal)}</span></p>
                                 </div>
-                                <span class="text-xs font-bold text-primary-700">${Math.min(Math.round((selectedProject.amountRaised / selectedProject.targetGoal) * 100), 100)}%</span>
+                                <span class="text-xs font-bold text-primary-700">${fundingProgress}%</span>
                             </div>
                             <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
-                                <div class="h-full rounded-full bg-primary-600" style="width:${Math.min(Math.round((selectedProject.amountRaised / selectedProject.targetGoal) * 100), 100)}%"></div>
+                                <div class="h-full rounded-full bg-primary-600" style="width:${fundingProgress}%"></div>
                             </div>
                         </section>
                         <button type="button" onclick="openExpandedProjectModal('${selectedProject.id}')" class="flex w-full items-center justify-center gap-2 rounded-xl border border-primary-200 bg-primary-50 px-4 py-2.5 text-xs font-bold text-primary-700 transition-colors hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
@@ -9430,7 +9648,9 @@
                             <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
                             <p class="text-xs text-slate-500">${t('browse_subtitle')}</p>
                         </div>
-                        <div id="browse-search-container" class="relative flex w-full items-center space-x-2 sm:w-auto">
+                        <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+                            <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
+                            <div id="browse-search-container" class="relative flex w-full items-center space-x-2 sm:w-auto">
                             <input id="browse-project-search" type="search" value="${state.projectSearchTerm}" placeholder="Search by region or category..." aria-label="Search by region or category" aria-controls="browse-project-search-menu" aria-expanded="${state.projectSearchOpen}" onfocus="setBrowseSearchOpen(true)" oninput="filterBrowseProjects(this.value)" class="w-full rounded-xl border border-slate-200 px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 sm:w-64">
                             <div id="browse-project-search-menu" role="dialog" aria-label="Filtros de proyectos" aria-hidden="${!state.projectSearchOpen}" ${state.projectSearchOpen ? '' : 'inert'} class="absolute right-0 top-full z-30 mt-2 w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-slate-200 bg-white p-4 shadow-floating transition-all duration-150 ease-out ${state.projectSearchOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-1 opacity-0'}">
                                 <div class="space-y-4">
@@ -9452,6 +9672,7 @@
                                             <button type="button" onclick="selectBrowseSearchTag('Colombia')" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-400 hover:bg-slate-50">🇨🇴 Colombia</button>
                                         </div>
                                     </section>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -9494,7 +9715,7 @@
                                     </button>
                                     <span class="mt-auto flex items-center justify-between gap-2 px-4 pb-4 pt-3">
                                         <button type="button" aria-haspopup="dialog" onclick="event.stopPropagation(); openProjectDetail('${escapeHTML(proj.id)}', this)" class="rounded-full bg-primary-600 px-3 py-1 text-[10px] font-bold text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('browse_project_view')}</button>
-                                        <span class="rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider ${isGroupProject ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-sky-200 bg-sky-50 text-sky-700'}">${t(isGroupProject ? 'project_origin_group' : 'project_origin_ngo')}</span>
+                                        <span class="rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider ${isGroupProject ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-sky-200 bg-sky-50 text-sky-700'}">${t(proj.userCreated ? 'project_origin_community' : (isGroupProject ? 'project_origin_group' : 'project_origin_ngo'))}</span>
                                     </span>
                                 </article>
                                 ${state.selectedBrowseProjectId === proj.id ? mobileDetailPanel : ''}
