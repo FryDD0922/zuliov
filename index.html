@@ -334,6 +334,23 @@
                 activity_tab_events: "Eventos",
                 browse_events_empty: "No hay eventos agendados en este momento.",
                 browse_project_view: "Ver Proyecto",
+                browse_share: "Compartir enlace",
+                browse_repost: "Republicar",
+                browse_share_success: "¡Enlace copiado!",
+                browse_share_error: "No se pudo copiar el enlace.",
+                browse_repost_project_text: "Proyecto compartido: {title}",
+                browse_repost_event_text: "Evento compartido: {title}",
+                browse_repost_success: "Compartido en el feed de la comunidad.",
+                browse_repost_error: "No se pudo republicar este elemento.",
+                browse_repost_modal_title: "Republicar iniciativa",
+                browse_repost_modal_description: "Elige cómo quieres compartir esta iniciativa con la comunidad.",
+                browse_repost_instantly: "Republicar ahora",
+                browse_repost_instantly_description: "Comparte esta iniciativa directamente en el feed de la comunidad.",
+                browse_repost_quote: "Añadir opinión o reflexión",
+                browse_repost_thoughts_label: "Tu comentario (opcional)",
+                browse_repost_thoughts_placeholder: "¿Qué te gustaría compartir sobre esta iniciativa?",
+                browse_repost_share_feed: "Compartir en el feed",
+                browse_repost_cancel: "Cancelar",
                 project_details_title: "Detalles del proyecto",
                 project_funding_status: "Estado de financiación",
                 project_funding_raised_of: "recaudados de",
@@ -405,6 +422,10 @@
                 home_feed_like: "Me gusta",
                 home_feed_comment: "Comentar",
                 home_feed_share: "Compartir",
+                home_feed_reposted_post: "Publicación republicada",
+                home_feed_repost_modal_title: "Republicar publicación",
+                home_feed_repost_modal_description: "Elige cómo quieres compartir esta publicación con la comunidad.",
+                home_feed_repost_instantly_description: "Comparte esta publicación directamente en el feed de la comunidad.",
                 home_feed_comment_count: "comentarios",
                 home_feed_post_image: "Foto de la publicación",
                 home_feed_empty: "Todavía no hay publicaciones en el feed.",
@@ -420,11 +441,6 @@
                 project_country_venezuela: "Venezuela",
                 project_country_laos: "Laos",
                 project_location_worldwide: "Global",
-                browse_region_all: "Todos",
-                browse_region_africa: "África",
-                browse_region_latin_america: "América Latina",
-                browse_region_north_america: "USA",
-                browse_region_asia: "Asia",
                 nav_categories: "DESCUBRIR",
                 community_category_civic_movement: "Movimientos cívicos",
                 community_category_nonprofit_organization: "ONGs y fundaciones",
@@ -1017,6 +1033,23 @@
                 activity_tab_events: "Events",
                 browse_events_empty: "There are no scheduled events right now.",
                 browse_project_view: "View Project",
+                browse_share: "Share link",
+                browse_repost: "Repost",
+                browse_share_success: "Link copied!",
+                browse_share_error: "Could not copy the link.",
+                browse_repost_project_text: "Project shared: {title}",
+                browse_repost_event_text: "Event shared: {title}",
+                browse_repost_success: "Shared to the Community Feed.",
+                browse_repost_error: "Could not repost this item.",
+                browse_repost_modal_title: "Repost initiative",
+                browse_repost_modal_description: "Choose how you would like to share this initiative with the community.",
+                browse_repost_instantly: "Repost instantly",
+                browse_repost_instantly_description: "Share this initiative directly to the Community Feed.",
+                browse_repost_quote: "Quote / Add thoughts",
+                browse_repost_thoughts_label: "Your comment (optional)",
+                browse_repost_thoughts_placeholder: "What would you like to share about this initiative?",
+                browse_repost_share_feed: "Share to feed",
+                browse_repost_cancel: "Cancel",
                 project_details_title: "Project Details",
                 project_funding_status: "Funding status",
                 project_funding_raised_of: "raised of",
@@ -1088,6 +1121,10 @@
                 home_feed_like: "Like",
                 home_feed_comment: "Comment",
                 home_feed_share: "Share",
+                home_feed_reposted_post: "Reposted post",
+                home_feed_repost_modal_title: "Repost post",
+                home_feed_repost_modal_description: "Choose how you would like to share this post with the community.",
+                home_feed_repost_instantly_description: "Share this post directly to the Community Feed.",
                 home_feed_comment_count: "comments",
                 home_feed_post_image: "Post photo",
                 home_feed_empty: "There are no posts in the feed yet.",
@@ -1103,11 +1140,6 @@
                 project_country_venezuela: "Venezuela",
                 project_country_laos: "Laos",
                 project_location_worldwide: "Worldwide",
-                browse_region_all: "All",
-                browse_region_africa: "Africa",
-                browse_region_latin_america: "Latin America",
-                browse_region_north_america: "USA",
-                browse_region_asia: "Asia",
                 nav_categories: "DISCOVER",
                 community_category_civic_movement: "Civic Movements",
                 community_category_nonprofit_organization: "Nonprofit Organizations",
@@ -2808,7 +2840,6 @@
             ],
 
             ngoEmptyStateActive: false,
-            projectContinent: 'all',
             projectSearchTerm: '',
             projectSearchOpen: false,
             selectedBrowseProjectId: null,
@@ -3460,10 +3491,10 @@
 
         function renderActivityTabs() {
             return `
-                <nav aria-label="${t('browse_title')}" class="flex flex-wrap gap-2">
-                    <button type="button" onclick="setActivityTab('all')" aria-pressed="${activityTab === 'all'}" class="rounded-full px-4 py-2 text-xs font-semibold transition-colors ${activityTab === 'all' ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900'}">${t('activity_tab_all')}</button>
-                    <button type="button" onclick="setActivityTab('projects')" aria-pressed="${activityTab === 'projects'}" class="rounded-full px-4 py-2 text-xs font-semibold transition-colors ${activityTab === 'projects' ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900'}">${t('activity_tab_projects')}</button>
-                    <button type="button" onclick="setActivityTab('events')" aria-pressed="${activityTab === 'events'}" class="rounded-full px-4 py-2 text-xs font-semibold transition-colors ${activityTab === 'events' ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900'}">${t('activity_tab_events')}</button>
+                <nav aria-label="${t('browse_title')}" class="mt-6 flex flex-wrap gap-2">
+                    <button type="button" onclick="setActivityTab('all')" aria-pressed="${activityTab === 'all'}" class="rounded-full px-5 py-2.5 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${activityTab === 'all' ? 'bg-primary-600 text-white shadow-subtle' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">${t('activity_tab_all')}</button>
+                    <button type="button" onclick="setActivityTab('projects')" aria-pressed="${activityTab === 'projects'}" class="rounded-full px-5 py-2.5 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${activityTab === 'projects' ? 'bg-primary-600 text-white shadow-subtle' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">${t('activity_tab_projects')}</button>
+                    <button type="button" onclick="setActivityTab('events')" aria-pressed="${activityTab === 'events'}" class="rounded-full px-5 py-2.5 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${activityTab === 'events' ? 'bg-primary-600 text-white shadow-subtle' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">${t('activity_tab_events')}</button>
                 </nav>
             `;
         }
@@ -3628,7 +3659,6 @@
             });
 
             closeCreateProjectModal();
-            state.projectContinent = 'all';
             state.projectSearchTerm = '';
             state.selectedBrowseProjectId = null;
             activityTab = 'projects';
@@ -5475,10 +5505,12 @@
         let projectDetailsReturnFocus = null;
 
         function handleEventDetailsModalKeydown(event) {
+            if (document.getElementById('browse-repost-modal')) return;
             if (event.key === 'Escape') closeEventDetailsModal();
         }
 
         function handleProjectDetailsModalKeydown(event) {
+            if (document.getElementById('browse-repost-modal')) return;
             if (event.key === 'Escape') closeModal();
         }
 
@@ -5508,6 +5540,14 @@
                             </button>
                         </div>
                         <div class="space-y-6 p-5 sm:p-8">
+                            <div class="flex flex-wrap gap-3">
+                                <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="shareBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                    <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('browse_share')}
+                                </button>
+                                <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="repostBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                    <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
+                                </button>
+                            </div>
                             <header>
                                 <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-primary-700">${t('event_details_title')}</p>
                                 <h2 id="event-details-title" class="mt-2 text-2xl font-black leading-tight text-slate-900 sm:text-3xl">${escapeHTML(groupEventText(event, 'title'))}</h2>
@@ -5534,7 +5574,7 @@
                                 <h3 id="event-details-objectives-heading" class="text-sm font-bold text-slate-900">${t('event_details_objectives')}</h3>
                                 <p class="mt-2 text-sm leading-relaxed text-slate-600">${escapeHTML(objectives)}</p>
                             </section>
-                            <div class="flex flex-col-reverse gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-end">
+                            <div class="flex flex-col-reverse justify-end gap-3 border-t border-slate-100 pt-5 sm:flex-row">
                                 <button type="button" onclick="closeEventDetailsModal()" class="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">${t('close')}</button>
                                 <button type="button" aria-pressed="${attending}" onclick="toggleEventResponse('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', 'going')" class="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${attending ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-primary-600 hover:bg-primary-700'}">
                                     <i class="fa-solid ${attending ? 'fa-circle-check' : 'fa-calendar-check'}" aria-hidden="true"></i>
@@ -5794,8 +5834,8 @@
             const suggestedGroups = state.groups.filter(group => !group.joined).slice(0, 3);
 
             canvas.innerHTML = `
-                <section class="grid w-full max-w-7xl grid-cols-1 gap-6 px-4 py-8 mx-auto sm:px-6 lg:grid-cols-12 lg:px-8">
-                    <aside aria-label="${t('home_feed_profile_summary')}" class="sticky top-24 hidden self-start space-y-6 lg:col-span-3 lg:block">
+                <section class="grid w-full max-w-7xl grid-cols-1 items-start gap-6 px-4 py-8 mx-auto sm:px-6 lg:grid-cols-12 lg:px-8">
+                    <aside aria-label="${t('home_feed_profile_summary')}" class="hidden space-y-6 lg:col-span-3 lg:block">
                         <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-subtle">
                             <img src="${escapeHTML(state.currentUser.coverImage || '')}" alt="" class="h-20 w-full object-cover">
                             <div class="px-4 pb-4">
@@ -5891,7 +5931,7 @@
                                 : (state.homeFeedTab === 'following' ? t('home_feed_following_empty') : t('home_feed_empty'))}</p>`}
                     </div>
                     </main>
-                    <aside aria-label="${t('home_feed_suggestions')}" class="sticky top-24 hidden self-start space-y-6 lg:col-span-3 lg:block">
+                    <aside aria-label="${t('home_feed_suggestions')}" class="hidden space-y-6 lg:col-span-3 lg:block">
                         <section aria-labelledby="home-feed-events-title" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle">
                             <h2 id="home-feed-events-title" class="mb-3 text-sm font-extrabold text-slate-900">${t('home_feed_upcoming_events')}</h2>
                             <ul class="space-y-3">
@@ -6003,8 +6043,12 @@
             const comments = post.comments || [];
             const commentsVisible = state.expandedGroupPostId === post.id;
             const isLiked = Boolean(post.likedByCurrentUser);
+            const repostedPost = post.repostedPost;
             const likes = Number(post.likes) || 0;
-            const event = group.upcomingEvents?.find(item => item.id === post.eventId);
+            const eventGroup = post.eventGroupId
+                ? state.groups.find(item => item.id === post.eventGroupId)
+                : group;
+            const event = eventGroup?.upcomingEvents?.find(item => item.id === post.eventId);
 
             return `
                 <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-subtle">
@@ -6023,19 +6067,46 @@
                                 <p class="text-[10px] text-slate-500">${escapeHTML(groupPostText(post, 'role') || t('group_role_member'))} · ${escapeHTML(groupPostText(post, 'date') || t('group_now'))}</p>
                             </div>
                         </div>
-                        ${event ? renderGroupEventPostCard(group, event) : `<p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>`}
+                        ${repostedPost ? `
+                            ${post.text ? `<p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>` : ''}
+                            <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                                <p class="mb-2 text-[10px] font-bold uppercase tracking-wide text-slate-500">${t('home_feed_reposted_post')}</p>
+                                <div class="flex items-center gap-2">
+                                    <img src="${escapeHTML(repostedPost.authorPhoto || '')}" alt="" class="h-7 w-7 rounded-full object-cover">
+                                    <div class="min-w-0">
+                                        <p class="truncate text-xs font-bold text-slate-900">${escapeHTML(repostedPost.author)}</p>
+                                        <p class="truncate text-[10px] text-slate-500">${escapeHTML(repostedPost.groupName)}</p>
+                                    </div>
+                                </div>
+                                ${repostedPost.text ? `<p class="mt-3 whitespace-pre-wrap text-xs leading-relaxed text-slate-700">${escapeHTML(repostedPost.text)}</p>` : ''}
+                                ${repostedPost.image ? `<img src="${escapeHTML(repostedPost.image)}" alt="${t('home_feed_post_image')}" class="mt-3 max-h-64 w-full rounded-lg bg-white object-cover">` : ''}
+                            </div>
+                        ` : event ? renderGroupEventPostCard(eventGroup, event) : project ? `
+                            <button type="button" onclick="openProjectDetail('${escapeHTML(project.id)}')" class="mt-4 flex w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-left transition-colors hover:border-primary-300 hover:bg-primary-50/50">
+                                <img src="${escapeHTML(project.coverImage)}" alt="" class="h-24 w-28 flex-shrink-0 object-cover sm:w-36">
+                                <span class="flex min-w-0 flex-1 flex-col justify-center p-3">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-primary-600">${escapeHTML(project.category)}</span>
+                                    <span class="mt-1 text-xs font-bold leading-snug text-slate-900">${escapeHTML(localizedProjectText(project, 'title'))}</span>
+                                    <span class="mt-2 text-[10px] font-semibold text-primary-700">${t('browse_project_view')} <i class="fa-solid fa-arrow-right ml-1" aria-hidden="true"></i></span>
+                                </span>
+                            </button>
+                            <p class="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>
+                        ` : `<p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>`}
                     </div>
-                    ${event ? '' : `<img src="${escapeHTML(image)}" alt="${t('home_feed_post_image')}" class="mt-4 max-h-[28rem] w-full bg-slate-100 object-cover">`}
+                    ${repostedPost || event || project ? '' : `<img src="${escapeHTML(image)}" alt="${t('home_feed_post_image')}" class="mt-4 max-h-[28rem] w-full bg-slate-100 object-cover">`}
                     <div class="mx-4 flex items-center gap-1 border-b border-slate-100 py-2 text-[10px] text-slate-500 sm:mx-5">
                         <i class="fa-solid fa-heart text-rose-500" aria-hidden="true"></i>${likes}
                         <span class="ml-2">${comments.length} ${t('home_feed_comment_count')}</span>
                     </div>
-                    <div class="grid grid-cols-3 gap-1 px-3 py-2 sm:px-4">
+                    <div class="grid grid-cols-4 gap-1 px-3 py-2 sm:px-4">
                         <button type="button" aria-pressed="${isLiked}" onclick="toggleFeedPostLike('${escapeHTML(group.id)}', '${escapeHTML(post.id)}')" class="rounded-lg py-2 text-xs font-semibold ${isLiked ? 'text-primary-700' : 'text-slate-500 hover:bg-slate-50 hover:text-primary-600'}">
                             <i class="fa-${isLiked ? 'solid' : 'regular'} fa-heart mr-1.5" aria-hidden="true"></i>${t('home_feed_like')}
                         </button>
                         <button type="button" aria-expanded="${commentsVisible}" onclick="toggleGroupPostComments('${escapeHTML(post.id)}')" class="rounded-lg py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 hover:text-primary-600">
                             <i class="fa-regular fa-comment mr-1.5" aria-hidden="true"></i>${t('home_feed_comment')}
+                        </button>
+                        <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}" onclick="repostBrowseItem('post', '${escapeHTML(post.id)}', '${escapeHTML(group.id)}')" class="rounded-lg py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                            <i class="fa-solid fa-retweet mr-1.5" aria-hidden="true"></i>${t('browse_repost')}
                         </button>
                         <button type="button" onclick="shareGroupPost('${escapeHTML(group.id)}', '${escapeHTML(post.id)}')" class="rounded-lg py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 hover:text-primary-600">
                             <i class="fa-solid fa-share-nodes mr-1.5" aria-hidden="true"></i>${t('home_feed_share')}
@@ -8000,6 +8071,14 @@
                         </div>
 
                         <div class="space-y-6 p-5 sm:p-8">
+                            <div class="flex flex-wrap gap-3">
+                                <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(projectTitle)}" onclick="shareBrowseItem('project', '${escapeHTML(project.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                    <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('browse_share')}
+                                </button>
+                                <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(projectTitle)}" onclick="repostBrowseItem('project', '${escapeHTML(project.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                    <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
+                                </button>
+                            </div>
                             <header>
                                 <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-primary-700">${t('project_details_title')} · ${escapeHTML(projectCategory)}</p>
                                 <h2 id="project-detail-title" class="mt-2 text-2xl font-black leading-tight text-slate-900 sm:text-3xl">${escapeHTML(projectTitle)}</h2>
@@ -9580,6 +9659,200 @@
             renderProfileActivityFeed();
         }
 
+        async function shareBrowseItem(type, itemId, groupId = '') {
+            const hash = type === 'event'
+                ? `browse-event-card-${encodeURIComponent(groupId)}-${encodeURIComponent(itemId)}`
+                : `browse-project-card-${encodeURIComponent(itemId)}`;
+            const shareUrl = `${window.location.origin}${window.location.pathname}#${hash}`;
+            try {
+                await navigator.clipboard.writeText(shareUrl);
+                showToast(t('browse_share_success'), 'success');
+            } catch (error) {
+                console.error(t('browse_share_error'), error);
+                showToast(t('browse_share_error'), 'info');
+            }
+        }
+
+        let browseRepostReturnFocus = null;
+
+        function handleBrowseRepostModalKeydown(event) {
+            if (event.key === 'Escape') {
+                event.stopPropagation();
+                closeBrowseRepostModal();
+            }
+        }
+
+        function closeBrowseRepostModal() {
+            document.getElementById('browse-repost-modal')?.remove();
+            document.removeEventListener('keydown', handleBrowseRepostModalKeydown);
+            const returnFocus = browseRepostReturnFocus;
+            browseRepostReturnFocus = null;
+            if (returnFocus instanceof HTMLElement && returnFocus.isConnected) {
+                returnFocus.focus({ preventScroll: true });
+            }
+        }
+
+        function showBrowseRepostThoughts() {
+            const composer = document.getElementById('browse-repost-thoughts-composer');
+            if (!composer) return;
+            composer.hidden = false;
+            document.getElementById('browse-repost-quote-button')?.setAttribute('aria-expanded', 'true');
+            document.getElementById('browse-repost-thoughts')?.focus();
+        }
+
+        function repostBrowseItem(type, itemId, groupId = '') {
+            const community = state.groups.find(group => group.id === 'group_zuliov_global_community');
+            if (!community) {
+                showToast(t('home_feed_destination_error'), 'info');
+                return;
+            }
+
+            const isPost = type === 'post';
+            const isEvent = type === 'event';
+            const sourceGroup = isEvent ? state.groups.find(group => group.id === groupId) : null;
+            const event = sourceGroup?.upcomingEvents?.find(item => item.id === itemId);
+            const project = isEvent ? null : state.projects.find(item => item.id === itemId);
+            const postGroup = isPost ? state.groups.find(group => group.id === groupId) : null;
+            const sourcePost = isPost
+                ? [...(postGroup?.posts || []), ...(postGroup?.eventPosts || [])].find(item => item.id === itemId)
+                : null;
+            if (isPost ? !sourcePost || !postGroup : (isEvent ? !event || !sourceGroup : !project)) {
+                showToast(t('browse_repost_error'), 'info');
+                return;
+            }
+
+            const title = isPost
+                ? (groupPostText(sourcePost, 'text') || groupText(postGroup, 'name'))
+                : isEvent
+                ? groupEventText(event, 'title')
+                : localizedProjectText(project, 'title');
+            if (document.getElementById('browse-repost-modal')) return;
+            browseRepostReturnFocus = document.activeElement;
+            const modal = document.createElement('div');
+            modal.id = 'browse-repost-modal';
+            modal.className = 'fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm';
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('aria-labelledby', 'browse-repost-title');
+            modal.innerHTML = `
+                <section class="my-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-floating sm:p-6" onclick="event.stopPropagation()">
+                    <header class="flex items-start justify-between gap-4">
+                        <div>
+                            <h2 id="browse-repost-title" class="text-lg font-black text-slate-900">${t(isPost ? 'home_feed_repost_modal_title' : 'browse_repost_modal_title')}</h2>
+                            <p class="mt-1 text-xs leading-relaxed text-slate-500">${t(isPost ? 'home_feed_repost_modal_description' : 'browse_repost_modal_description')}</p>
+                            <p class="mt-3 line-clamp-2 text-sm font-semibold text-slate-800">${escapeHTML(title)}</p>
+                        </div>
+                        <button type="button" aria-label="${t('close')}" onclick="closeBrowseRepostModal()" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                        </button>
+                    </header>
+                    <div class="mt-5 space-y-3">
+                        <button id="browse-repost-instant-button" type="button" onclick="publishBrowseRepost('${type}', '${escapeHTML(itemId)}', '${escapeHTML(groupId)}')" class="flex w-full items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-left transition-colors hover:border-emerald-400 hover:bg-emerald-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
+                            <i class="fa-solid fa-retweet mt-0.5 text-emerald-700" aria-hidden="true"></i>
+                            <span>
+                                <span class="block text-sm font-bold text-slate-900">${t('browse_repost_instantly')}</span>
+                                <span class="mt-1 block text-xs leading-relaxed text-slate-600">${t(isPost ? 'home_feed_repost_instantly_description' : 'browse_repost_instantly_description')}</span>
+                            </span>
+                        </button>
+                        <div class="rounded-xl border border-slate-200 p-4">
+                            <button id="browse-repost-quote-button" type="button" aria-expanded="false" aria-controls="browse-repost-thoughts-composer" onclick="showBrowseRepostThoughts()" class="flex w-full items-center gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                <i class="fa-regular fa-comment-dots text-primary-700" aria-hidden="true"></i>
+                                <span class="text-sm font-bold text-slate-900">${t('browse_repost_quote')}</span>
+                            </button>
+                            <form id="browse-repost-thoughts-composer" hidden onsubmit="publishBrowseRepost('${type}', '${escapeHTML(itemId)}', '${escapeHTML(groupId)}', event)" class="mt-4">
+                                <label for="browse-repost-thoughts" class="mb-1.5 block text-xs font-semibold text-slate-700">${t('browse_repost_thoughts_label')}</label>
+                                <textarea id="browse-repost-thoughts" name="thoughts" rows="3" maxlength="1000" placeholder="${t('browse_repost_thoughts_placeholder')}" class="w-full resize-y rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-100"></textarea>
+                                <button type="submit" class="mt-3 w-full rounded-xl bg-primary-600 px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('browse_repost_share_feed')}</button>
+                            </form>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeBrowseRepostModal()" class="mt-4 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">${t('browse_repost_cancel')}</button>
+                </section>
+            `;
+            modal.addEventListener('click', event => {
+                if (event.target === modal) closeBrowseRepostModal();
+            });
+            document.getElementById('modal-container').appendChild(modal);
+            document.addEventListener('keydown', handleBrowseRepostModalKeydown);
+            document.getElementById('browse-repost-instant-button').focus({ preventScroll: true });
+        }
+
+        function publishBrowseRepost(type, itemId, groupId = '', formEvent = null) {
+            if (formEvent instanceof Event) formEvent.preventDefault();
+            const community = state.groups.find(group => group.id === 'group_zuliov_global_community');
+            if (!community) {
+                closeBrowseRepostModal();
+                showToast(t('home_feed_destination_error'), 'info');
+                return;
+            }
+
+            const isPost = type === 'post';
+            const isEvent = type === 'event';
+            const sourceGroup = isEvent ? state.groups.find(group => group.id === groupId) : null;
+            const sourceEvent = sourceGroup?.upcomingEvents?.find(item => item.id === itemId);
+            const project = isEvent ? null : state.projects.find(item => item.id === itemId);
+            const postGroup = isPost ? state.groups.find(group => group.id === groupId) : null;
+            const sourcePost = isPost
+                ? [...(postGroup?.posts || []), ...(postGroup?.eventPosts || [])].find(item => item.id === itemId)
+                : null;
+            const sourcePostProject = sourcePost?.projectId
+                ? state.projects.find(item => item.id === sourcePost.projectId)
+                : null;
+            const sourcePostEventGroup = sourcePost?.eventGroupId
+                ? state.groups.find(group => group.id === sourcePost.eventGroupId)
+                : postGroup;
+            const sourcePostEvent = sourcePost?.eventId
+                ? sourcePostEventGroup?.upcomingEvents?.find(item => item.id === sourcePost.eventId)
+                : null;
+            if (isPost ? !sourcePost || !postGroup : (isEvent ? !sourceEvent || !sourceGroup : !project)) {
+                closeBrowseRepostModal();
+                showToast(t('browse_repost_error'), 'info');
+                return;
+            }
+
+            const title = isPost
+                ? (groupPostText(sourcePost, 'text') || groupText(postGroup, 'name'))
+                : isEvent
+                ? groupEventText(sourceEvent, 'title')
+                : localizedProjectText(project, 'title');
+            const thoughts = String(document.getElementById('browse-repost-thoughts')?.value || '').trim();
+            const roleKey = state.currentUser.role === 'ngo' ? 'group_role_ngo' : 'group_role_member';
+            const newPost = {
+                id: `post_browse_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+                author: state.currentUser.name,
+                role: t(roleKey),
+                roleKey,
+                authorPhoto: state.currentUser.avatar,
+                text: isPost ? thoughts : thoughts || t(isEvent ? 'browse_repost_event_text' : 'browse_repost_project_text').replace('{title}', title),
+                image: isPost ? null : project?.coverImage || null,
+                projectId: isPost ? null : project?.id || null,
+                eventId: sourceEvent?.id || null,
+                eventGroupId: sourceGroup?.id || null,
+                comments: [],
+                dateKey: 'group_now',
+                createdAt: Date.now()
+            };
+            if (isPost) {
+                newPost.repostedPost = {
+                    author: groupPostText(sourcePost, 'author') || state.currentUser.name,
+                    authorPhoto: sourcePost.authorPhoto || state.currentUser.avatar,
+                    groupName: groupText(postGroup, 'name'),
+                    text: groupPostText(sourcePost, 'text')
+                        || (sourcePostProject ? localizedProjectText(sourcePostProject, 'title') : '')
+                        || (sourcePostEvent ? groupEventText(sourcePostEvent, 'title') : ''),
+                    image: sourcePost.image || sourcePostProject?.coverImage || sourcePostEvent?.image || null
+                };
+            }
+            community.posts.unshift(newPost);
+            closeBrowseRepostModal();
+            state.homeFeedTab = 'for-you';
+            if (currentScreen === 'home') {
+                selectedCommunityCategory = null;
+                renderApp();
+            }
+            showToast(t('browse_repost_success'), 'success');
+        }
+
         function renderBrowsePage(canvas) {
             if (exploreTab === 'ngos') {
                 renderNGODirectoryPage(canvas);
@@ -9612,6 +9885,14 @@
                                 <button type="button" aria-haspopup="dialog" aria-label="${t('group_event_join')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="event.stopPropagation(); openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this)" class="rounded-full px-3 py-1 text-[10px] font-bold transition-colors ${event.response === 'going' ? 'bg-emerald-100 text-emerald-800' : 'bg-primary-600 text-white hover:bg-primary-700'}">${responseLabel}</button>
                                 <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-slate-600">EVENT</span>
                             </div>
+                            <div class="flex items-center gap-2 border-t border-slate-100 pt-2">
+                                <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="event.stopPropagation(); shareBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                    <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('browse_share')}
+                                </button>
+                                <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="event.stopPropagation(); repostBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                    <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
+                                </button>
+                            </div>
                         </div>
                     </article>
                 `;
@@ -9620,7 +9901,6 @@
             if (activityTab === 'events') {
                 canvas.innerHTML = `
                     <div class="mx-auto max-w-7xl space-y-8 px-4 py-8 text-left sm:px-6 lg:px-8">
-                        ${renderActivityTabs()}
                         <header class="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
@@ -9628,6 +9908,7 @@
                             </div>
                             <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
                         </header>
+                        ${renderActivityTabs()}
                         <section aria-labelledby="browse-events-title">
                             <h2 id="browse-events-title" class="mb-4 text-xs font-black uppercase tracking-widest text-slate-800">${t('group_upcoming_events_title')}</h2>
                             ${scheduledEvents.length ? `
@@ -9662,16 +9943,7 @@
                 return [translatedCountry, ...locationParts].join(' · ');
             }
 
-            const continentFilters = [
-                { id: 'all', label: t('browse_region_all') },
-                { id: 'africa', label: t('browse_region_africa') },
-                { id: 'latin-america', label: t('browse_region_latin_america') },
-                { id: 'north-america', label: t('browse_region_north_america') },
-                { id: 'asia', label: t('browse_region_asia') }
-            ];
-            const visibleProjects = state.projectContinent === 'all'
-                ? state.projects
-                : state.projects.filter(proj => projectRegion(proj) === state.projectContinent);
+            const visibleProjects = state.projects;
             const browseItems = activityTab === 'all'
                 ? Array.from({ length: Math.max(visibleProjects.length, scheduledEvents.length) }, (_, index) => [
                     ...(visibleProjects[index] ? [{ type: 'project', project: visibleProjects[index] }] : []),
@@ -9745,7 +10017,6 @@
 
             canvas.innerHTML = `
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
-                    ${renderActivityTabs()}
                     <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
@@ -9780,14 +10051,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <nav aria-label="Filtrar proyectos por continente" class="flex flex-wrap gap-2">
-                        ${continentFilters.map(filter => `
-                            <button type="button" onclick="setProjectContinent('${filter.id}')" aria-pressed="${state.projectContinent === filter.id}" class="rounded-full px-4 py-2 text-xs font-semibold transition-colors ${state.projectContinent === filter.id ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900'}">
-                                ${filter.label}
-                            </button>
-                        `).join('')}
-                    </nav>
+                    ${renderActivityTabs()}
 
                     <div class="grid grid-cols-1 items-start gap-6 ${selectedProject ? 'md:grid-cols-12' : ''}">
                         <div class="grid min-w-0 items-stretch gap-4 ${selectedProject ? 'grid-cols-1 md:grid-cols-2 md:col-span-7' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'}">
@@ -9803,7 +10067,7 @@
                                     : proj.ngoName || proj.creatorName;
 
                                 return `
-                                <article data-browse-project-id="${escapeHTML(proj.id)}" tabindex="0" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" aria-haspopup="dialog" onclick="openProjectDetail('${escapeHTML(proj.id)}', this)" onkeydown="if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openProjectDetail('${escapeHTML(proj.id)}', this); }" class="group flex h-[22rem] w-full max-w-sm flex-col overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
+                                <article id="browse-project-card-${escapeHTML(proj.id)}" data-browse-project-id="${escapeHTML(proj.id)}" tabindex="0" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" aria-haspopup="dialog" onclick="openProjectDetail('${escapeHTML(proj.id)}', this)" onkeydown="if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openProjectDetail('${escapeHTML(proj.id)}', this); }" class="group flex h-[22rem] w-full max-w-sm flex-col overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
                                     <button type="button" aria-haspopup="dialog" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); openProjectDetail('${escapeHTML(proj.id)}', this)" class="flex min-h-0 w-full flex-1 cursor-pointer flex-col text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500">
                                         <span class="relative block h-40 w-full shrink-0 overflow-hidden bg-slate-100">
                                             <img src="${escapeHTML(proj.coverImage)}" alt="${escapeHTML(localizedProjectText(proj, 'title'))}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
@@ -9819,6 +10083,14 @@
                                     <span class="mt-auto flex items-center justify-between gap-2 px-4 pb-4 pt-3">
                                         <button type="button" aria-haspopup="dialog" onclick="event.stopPropagation(); openProjectDetail('${escapeHTML(proj.id)}', this)" class="rounded-full bg-primary-600 px-3 py-1 text-[10px] font-bold text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('browse_project_view')}</button>
                                         <span class="rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider ${isGroupProject ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-sky-200 bg-sky-50 text-sky-700'}">${t(proj.userCreated ? 'project_origin_community' : (isGroupProject ? 'project_origin_group' : 'project_origin_ngo'))}</span>
+                                    </span>
+                                    <span class="flex items-center gap-2 px-4 pb-3">
+                                        <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); shareBrowseItem('project', '${escapeHTML(proj.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                            <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('browse_share')}
+                                        </button>
+                                        <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); repostBrowseItem('project', '${escapeHTML(proj.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                            <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
+                                        </button>
                                     </span>
                                 </article>
                                 ${state.selectedBrowseProjectId === proj.id ? mobileDetailPanel : ''}
@@ -9844,11 +10116,6 @@
                 </div>
             `;
             filterBrowseProjects(state.projectSearchTerm);
-        }
-
-        function setProjectContinent(continent) {
-            state.projectContinent = continent;
-            renderApp();
         }
 
         function normalizeProjectSearch(value) {
