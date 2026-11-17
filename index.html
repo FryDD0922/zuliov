@@ -679,7 +679,15 @@
                 landing_waitlist_close: "Cerrar ventana de bienvenida",
                 landing_waitlist_name: "Nombre (opcional)",
                 landing_waitlist_email: "Correo electrónico",
+                landing_waitlist_participation: "¿Cómo te gustaría participar en Zuliov?",
+                landing_waitlist_participation_placeholder: "Selecciona una opción (opcional)",
+                landing_waitlist_participation_individual: "Individual",
+                landing_waitlist_participation_nonprofit: "Organización sin fines de lucro",
+                landing_waitlist_participation_community: "Grupo comunitario",
+                landing_waitlist_participation_volunteer: "Voluntario",
+                landing_waitlist_participation_partner: "Aliado / Colaborador",
                 landing_waitlist_submit: "Apuntarme",
+                landing_waitlist_privacy: "Tu correo electrónico solo se utilizará para notificarte cuando Zuliov sea lanzado.",
                 landing_waitlist_prototype: "Explorar el prototipo",
                 landing_waitlist_submitting: "Enviando...",
                 landing_waitlist_success: "¡Gracias! Te avisaremos cuando Zuliov esté disponible.",
@@ -1385,7 +1393,15 @@
                 landing_waitlist_close: "Close welcome dialog",
                 landing_waitlist_name: "Name (optional)",
                 landing_waitlist_email: "Email address",
+                landing_waitlist_participation: "How would you like to participate in Zuliov?",
+                landing_waitlist_participation_placeholder: "Select an option (optional)",
+                landing_waitlist_participation_individual: "Individual",
+                landing_waitlist_participation_nonprofit: "Nonprofit organization",
+                landing_waitlist_participation_community: "Community group",
+                landing_waitlist_participation_volunteer: "Volunteer",
+                landing_waitlist_participation_partner: "Partner / Supporter",
                 landing_waitlist_submit: "Join the waitlist",
+                landing_waitlist_privacy: "Your email will only be used to notify you when Zuliov launches.",
                 landing_waitlist_prototype: "Explore prototype",
                 landing_waitlist_submitting: "Submitting...",
                 landing_waitlist_success: "Thanks! We’ll let you know when Zuliov is available.",
@@ -9444,7 +9460,7 @@
                             <div class="rounded-2xl border border-white/15 bg-white/5 p-6 sm:p-8">
                                 <h3 class="landing-serif text-2xl sm:text-3xl">${t('landing_waitlist_title')}</h3>
                                 <p class="mt-2 text-sm leading-6 text-slate-300">${t('landing_waitlist_copy')}</p>
-                                <form id="landing-waitlist-form" action="${WAITLIST_ENDPOINT}" method="POST" class="mt-6 grid gap-4 sm:grid-cols-[1fr_1.4fr_auto] sm:items-end">
+                                <form id="landing-waitlist-form" action="${WAITLIST_ENDPOINT}" method="POST" class="mt-6 grid gap-4 sm:grid-cols-2 sm:items-end">
                                     <label class="block text-xs font-semibold text-slate-200">
                                         <span>${t('landing_waitlist_name')}</span>
                                         <input type="text" name="name" autocomplete="name" class="mt-2 w-full rounded-lg border border-white/20 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-300/30">
@@ -9453,7 +9469,21 @@
                                         <span>${t('landing_waitlist_email')}</span>
                                         <input type="email" name="email" autocomplete="email" required class="mt-2 w-full rounded-lg border border-white/20 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-300/30">
                                     </label>
-                                    <button type="submit" class="rounded-full bg-[#b7df93] px-5 py-3 text-sm font-bold text-[#17372a] transition hover:bg-emerald-200 disabled:cursor-wait disabled:opacity-60">${t('landing_waitlist_submit')}</button>
+                                    <label class="block text-xs font-semibold text-slate-200 sm:col-span-2">
+                                        <span>${t('landing_waitlist_participation')}</span>
+                                        <select name="participation" class="mt-2 w-full rounded-lg border border-white/20 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-300 focus:ring-2 focus:ring-emerald-300/30">
+                                            <option value="">${t('landing_waitlist_participation_placeholder')}</option>
+                                            <option value="Individual">${t('landing_waitlist_participation_individual')}</option>
+                                            <option value="Nonprofit organization">${t('landing_waitlist_participation_nonprofit')}</option>
+                                            <option value="Community group">${t('landing_waitlist_participation_community')}</option>
+                                            <option value="Volunteer">${t('landing_waitlist_participation_volunteer')}</option>
+                                            <option value="Partner / Supporter">${t('landing_waitlist_participation_partner')}</option>
+                                        </select>
+                                    </label>
+                                    <div class="sm:col-span-2">
+                                        <button type="submit" class="rounded-full bg-[#b7df93] px-5 py-3 text-sm font-bold text-[#17372a] transition hover:bg-emerald-200 disabled:cursor-wait disabled:opacity-60">${t('landing_waitlist_submit')}</button>
+                                        <p class="mt-3 text-xs text-slate-400">${t('landing_waitlist_privacy')}</p>
+                                    </div>
                                 </form>
                                 <p data-waitlist-status role="status" aria-live="polite" class="mt-4 text-sm text-emerald-200"></p>
                             </div>
@@ -9481,7 +9511,7 @@
                         <div class="mx-auto mt-8 max-w-2xl rounded-2xl border border-white/15 bg-white/5 p-6 text-left sm:p-8">
                             <h3 data-i18n-key="landing_waitlist_title" class="landing-serif text-2xl text-white sm:text-3xl">${t('landing_waitlist_title')}</h3>
                             <p data-i18n-key="landing_waitlist_copy" class="mt-2 text-sm leading-6 text-slate-300">${t('landing_waitlist_copy')}</p>
-                            <form id="waitlist-form" action="${WAITLIST_ENDPOINT}" method="POST" class="mt-6 grid gap-4 sm:grid-cols-[1fr_1.4fr_auto] sm:items-end">
+                            <form id="waitlist-form" action="${WAITLIST_ENDPOINT}" method="POST" class="mt-6 grid gap-4 sm:grid-cols-2 sm:items-end">
                                 <label class="block text-xs font-semibold text-slate-200">
                                     <span data-i18n-key="landing_waitlist_name">${t('landing_waitlist_name')}</span>
                                     <input type="text" name="name" autocomplete="name" class="mt-2 w-full rounded-lg border border-white/20 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-300/30">
@@ -9490,7 +9520,21 @@
                                     <span data-i18n-key="landing_waitlist_email">${t('landing_waitlist_email')}</span>
                                     <input type="email" name="email" autocomplete="email" required class="mt-2 w-full rounded-lg border border-white/20 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-300/30">
                                 </label>
-                                <button type="submit" class="rounded-full bg-[#b7df93] px-5 py-3 text-sm font-bold text-[#17372a] transition hover:bg-emerald-200 disabled:cursor-wait disabled:opacity-60"><span data-i18n-key="landing_waitlist_submit">${t('landing_waitlist_submit')}</span></button>
+                                <label class="block text-xs font-semibold text-slate-200 sm:col-span-2">
+                                    <span data-i18n-key="landing_waitlist_participation">${t('landing_waitlist_participation')}</span>
+                                    <select name="participation" class="mt-2 w-full rounded-lg border border-white/20 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-300 focus:ring-2 focus:ring-emerald-300/30">
+                                        <option value="" data-i18n-key="landing_waitlist_participation_placeholder">${t('landing_waitlist_participation_placeholder')}</option>
+                                        <option value="Individual" data-i18n-key="landing_waitlist_participation_individual">${t('landing_waitlist_participation_individual')}</option>
+                                        <option value="Nonprofit organization" data-i18n-key="landing_waitlist_participation_nonprofit">${t('landing_waitlist_participation_nonprofit')}</option>
+                                        <option value="Community group" data-i18n-key="landing_waitlist_participation_community">${t('landing_waitlist_participation_community')}</option>
+                                        <option value="Volunteer" data-i18n-key="landing_waitlist_participation_volunteer">${t('landing_waitlist_participation_volunteer')}</option>
+                                        <option value="Partner / Supporter" data-i18n-key="landing_waitlist_participation_partner">${t('landing_waitlist_participation_partner')}</option>
+                                    </select>
+                                </label>
+                                <div class="sm:col-span-2">
+                                    <button type="submit" class="rounded-full bg-[#b7df93] px-5 py-3 text-sm font-bold text-[#17372a] transition hover:bg-emerald-200 disabled:cursor-wait disabled:opacity-60"><span data-i18n-key="landing_waitlist_submit">${t('landing_waitlist_submit')}</span></button>
+                                    <p data-i18n-key="landing_waitlist_privacy" class="mt-3 text-xs text-slate-400">${t('landing_waitlist_privacy')}</p>
+                                </div>
                             </form>
                             <p data-waitlist-status role="status" aria-live="polite" class="mt-4 text-sm text-emerald-200"></p>
                         </div>
