@@ -9496,7 +9496,6 @@
         }
 
         let landingWaitlistReturnFocus = null;
-        const LANDING_WAITLIST_DISMISSED_KEY = 'zuliov-landing-waitlist-dismissed';
 
         function openLandingWaitlistModal() {
             const container = document.getElementById('landing-waitlist-modal-container');
@@ -9565,7 +9564,6 @@
         function closeLandingWaitlistModal(restoreFocus = true) {
             const modal = document.getElementById('landing-waitlist-modal');
             if (!modal) return;
-            sessionStorage.setItem(LANDING_WAITLIST_DISMISSED_KEY, 'true');
             modal.remove();
             document.body.classList.remove('overflow-hidden');
             document.removeEventListener('keydown', handleLandingWaitlistKeydown);
@@ -10728,8 +10726,7 @@
             syncPrimaryRouteFromHash();
             renderApp();
             const initialRoute = window.location.hash.slice(1).toLowerCase();
-            if (['', 'home', 'landing'].includes(initialRoute)
-                && sessionStorage.getItem(LANDING_WAITLIST_DISMISSED_KEY) !== 'true') {
+            if (['', 'home', 'landing'].includes(initialRoute)) {
                 openLandingWaitlistModal();
             }
         });
