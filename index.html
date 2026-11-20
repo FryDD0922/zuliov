@@ -466,8 +466,28 @@
                 profile_support: "Apoyar a Zuliov",
                 profile_managed_group: "Administrado por ti",
                 profile_groups_empty: "Todavía no hay grupos asociados.",
+                profile_show_all: "Ver todo",
+                profile_show_less: "Ver menos",
                 profile_manage: "Gestionar",
                 profile_manage_section: "Administrar",
+                profile_groups_modal_title: "Tus grupos",
+                profile_groups_modal_description: "Abre tus comunidades y administra sus notificaciones.",
+                profile_groups_discover: "Descubrir o crear grupos",
+                profile_group_open: "Abrir grupo",
+                profile_group_mute: "Silenciar notificaciones",
+                profile_group_unmute: "Activar notificaciones",
+                profile_group_leave: "Salir del grupo",
+                profile_group_muted_toast: "Notificaciones del grupo silenciadas.",
+                profile_group_unmuted_toast: "Notificaciones del grupo activadas.",
+                profile_group_left_toast: "Has salido del grupo.",
+                profile_group_mute_error: "No se pudo actualizar la configuración de notificaciones.",
+                profile_group_leave_error: "No se pudo actualizar la membresía del grupo.",
+                profile_manage_modal_title: "Administrar organizaciones e iniciativas",
+                profile_manage_modal_description: "Accede al panel o a la configuración de tus organizaciones.",
+                profile_manage_dashboard: "Panel de control",
+                profile_manage_settings: "Configuración",
+                profile_manage_create: "Crear una organización",
+                profile_manage_empty: "Todavía no has creado organizaciones.",
                 org_manage_title: "Gestionar organizaciones",
                 org_manage_status: "Estado",
                 org_manage_status_pending: "Pendiente de revisión",
@@ -1180,8 +1200,28 @@
                 profile_support: "Support Zuliov",
                 profile_managed_group: "Managed by you",
                 profile_groups_empty: "No groups are associated yet.",
+                profile_show_all: "See all",
+                profile_show_less: "Show less",
                 profile_manage: "Manage",
                 profile_manage_section: "Manage",
+                profile_groups_modal_title: "Your Groups",
+                profile_groups_modal_description: "Open your communities and manage their notifications.",
+                profile_groups_discover: "Discover or create groups",
+                profile_group_open: "Open group",
+                profile_group_mute: "Mute notifications",
+                profile_group_unmute: "Unmute notifications",
+                profile_group_leave: "Leave group",
+                profile_group_muted_toast: "Group notifications muted.",
+                profile_group_unmuted_toast: "Group notifications enabled.",
+                profile_group_left_toast: "You left the group.",
+                profile_group_mute_error: "Notification preferences could not be updated.",
+                profile_group_leave_error: "Group membership could not be updated.",
+                profile_manage_modal_title: "Manage Organizations & Projects",
+                profile_manage_modal_description: "Access the dashboard or settings for your organizations.",
+                profile_manage_dashboard: "Dashboard",
+                profile_manage_settings: "Settings",
+                profile_manage_create: "Create an organization",
+                profile_manage_empty: "You haven't created any organizations yet.",
                 org_manage_title: "Manage organizations",
                 org_manage_status: "Status",
                 org_manage_status_pending: "Pending review",
@@ -1893,6 +1933,8 @@
             if (!document.getElementById('inbox-modal').classList.contains('hidden')) renderInbox();
             if (document.getElementById('settings-modal')) renderSettingsModal();
             if (organizationProposalDraft) renderOrganizationProposalModal(organizationProposalDraft);
+            if (document.getElementById('profile-groups-modal')) renderProfileGroupsModal();
+            if (document.getElementById('profile-manage-modal')) renderProfileManageModal();
             if (document.getElementById('register-modal')) renderRegisterModal();
             if (document.getElementById('login-modal')) renderLoginModal();
             if (document.getElementById('connection-request-modal')) {
@@ -3152,7 +3194,6 @@
                                 <i class="fa-solid fa-gear w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-profile-settings-label">Settings</span>
                             </button>
-                            <div id="header-managed-organizations" class="hidden border-t border-slate-100"></div>
                             <button type="button" role="menuitem" onclick="openOrganizationProposalModal(event)" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                                 <i class="fa-solid fa-people-group w-4 text-center text-slate-500" aria-hidden="true"></i>
                                 <span id="header-profile-create-organization-label">Create Organization</span>
@@ -3162,15 +3203,18 @@
                                 <span id="header-profile-support-label">Support Zuliov</span>
                             </button>
                             <div role="group" aria-labelledby="header-profile-groups-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
-                                <p id="header-profile-groups-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">GROUPS</p>
+                                <div class="flex items-center justify-between mb-2">
+                                    <p id="header-profile-groups-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">GROUPS</p>
+                                    <button type="button" role="menuitem" onclick="openProfileGroupsModal(event)" aria-haspopup="dialog" aria-controls="profile-groups-modal" class="text-xs font-semibold text-primary-700 hover:text-primary-900"><span id="header-profile-groups-all-label">See all</span></button>
+                                </div>
                                 <div id="header-profile-groups-list" class="mt-2 space-y-1"></div>
                             </div>
                             <div role="group" aria-labelledby="header-profile-manage-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
-                                <p id="header-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
-                                <div class="mt-2 flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
-                                    <img src="assets/logo.png" alt="" class="h-7 w-7 rounded-md object-contain">
-                                    <span class="text-sm font-semibold text-slate-700">Zuliov</span>
+                                <div class="flex items-center justify-between mb-2">
+                                    <p id="header-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
+                                    <button type="button" role="menuitem" onclick="openProfileManageModal(event)" aria-haspopup="dialog" aria-controls="profile-manage-modal" class="text-xs font-semibold text-primary-700 hover:text-primary-900"><span id="header-profile-manage-all-label">See all</span></button>
                                 </div>
+                                <div id="header-profile-manage-list" class="mt-2 space-y-1"></div>
                             </div>
                             <button type="button" role="menuitem" onclick="logOut()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                                 <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
@@ -3243,7 +3287,6 @@
                             <i class="fa-solid fa-gear w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-settings-label">Settings</span>
                         </button>
-                        <div id="mobile-managed-organizations" class="hidden border-t border-slate-100"></div>
                         <button type="button" role="menuitem" onclick="openOrganizationProposalModal(event)" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                             <i class="fa-solid fa-people-group w-4 text-center text-slate-500" aria-hidden="true"></i>
                             <span id="mobile-profile-create-organization-label">Create Organization</span>
@@ -3253,15 +3296,18 @@
                             <span id="mobile-profile-support-label">Support Zuliov</span>
                         </button>
                         <div role="group" aria-labelledby="mobile-profile-groups-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
-                            <p id="mobile-profile-groups-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">GROUPS</p>
+                            <div class="flex items-center justify-between mb-2">
+                                <p id="mobile-profile-groups-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">GROUPS</p>
+                                <button type="button" role="menuitem" onclick="openProfileGroupsModal(event)" aria-haspopup="dialog" aria-controls="profile-groups-modal" class="text-xs font-semibold text-primary-700 hover:text-primary-900"><span id="mobile-profile-groups-all-label">See all</span></button>
+                            </div>
                             <div id="mobile-profile-groups-list" class="mt-2 space-y-1"></div>
                         </div>
                         <div role="group" aria-labelledby="mobile-profile-manage-label" class="border-t border-slate-100 px-4 pb-2 pt-3">
-                            <p id="mobile-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
-                            <div class="mt-2 flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
-                                <img src="assets/logo.png" alt="" class="h-7 w-7 rounded-md object-contain">
-                                <span class="text-sm font-semibold text-slate-700">Zuliov</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <p id="mobile-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Manage</p>
+                                <button type="button" role="menuitem" onclick="openProfileManageModal(event)" aria-haspopup="dialog" aria-controls="profile-manage-modal" class="text-xs font-semibold text-primary-700 hover:text-primary-900"><span id="mobile-profile-manage-all-label">See all</span></button>
                             </div>
+                            <div id="mobile-profile-manage-list" class="mt-2 space-y-1"></div>
                         </div>
                         <button type="button" role="menuitem" onclick="logOut()" class="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
                             <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-500" aria-hidden="true"></i>
@@ -3983,63 +4029,292 @@
             );
         }
 
-        function renderManagedOrganizationsMenu() {
-            if (!isAuthenticated) {
-                ['header-managed-organizations', 'mobile-managed-organizations'].forEach(containerId => {
-                    const container = document.getElementById(containerId);
-                    if (container) {
-                        container.innerHTML = '';
-                        container.classList.add('hidden');
+        let profileAdministrationTrigger = null;
+
+        function getProfileGroups() {
+            const user = state.currentUser;
+            let hasSavedMembership = false;
+            try {
+                const savedMembership = localStorage.getItem(`zuliov-profile-membership-${user.id}`);
+                if (savedMembership) {
+                    const membership = JSON.parse(savedMembership);
+                    if (Array.isArray(membership.groupIds) && Array.isArray(membership.managedGroupIds)) {
+                        user.groupIds = membership.groupIds;
+                        user.managedGroupIds = membership.managedGroupIds;
+                        hasSavedMembership = true;
+                    } else {
+                        console.error('Stored profile group membership has an invalid format.');
                     }
-                });
+                }
+            } catch (error) {
+                console.error('Unable to read profile group membership.', error);
+            }
+            const groupIds = [...new Set([...(user.groupIds || []), ...(user.managedGroupIds || [])])];
+            if (!hasSavedMembership) {
+                state.groups.filter(group => group.joined).forEach(group => groupIds.push(group.id));
+            }
+            return groupIds
+                .filter((groupId, index) => groupIds.indexOf(groupId) === index)
+                .map(groupId => state.groups.find(group => group.id === groupId))
+                .filter(Boolean);
+        }
+
+        function getMutedProfileGroupIds() {
+            try {
+                const mutedIds = JSON.parse(localStorage.getItem(`zuliov-muted-groups-${state.currentUser.id}`) || '[]');
+                if (!Array.isArray(mutedIds)) {
+                    console.error('Stored muted group IDs are not an array.');
+                    return [];
+                }
+                return mutedIds.filter(groupId => typeof groupId === 'string');
+            } catch (error) {
+                console.error('Unable to read muted group IDs.', error);
+                return [];
+            }
+        }
+
+        function openProfileGroupsModal(event) {
+            profileAdministrationTrigger = event.currentTarget.closest('#mobile-profile-menu')
+                ? document.getElementById('mobile-profile-trigger')
+                : document.getElementById('header-profile');
+            closeProfileDropdown();
+            renderProfileGroupsModal();
+            document.addEventListener('keydown', handleProfileAdministrationModalKeydown);
+            document.getElementById('profile-groups-close-button')?.focus();
+        }
+
+        function openProfileManageModal(event) {
+            profileAdministrationTrigger = event.currentTarget.closest('#mobile-profile-menu')
+                ? document.getElementById('mobile-profile-trigger')
+                : document.getElementById('header-profile');
+            closeProfileDropdown();
+            renderProfileManageModal();
+            document.addEventListener('keydown', handleProfileAdministrationModalKeydown);
+            document.getElementById('profile-manage-close-button')?.focus();
+        }
+
+        function handleProfileAdministrationModalKeydown(event) {
+            if (event.key === 'Escape') closeProfileAdministrationModal();
+        }
+
+        function closeProfileAdministrationModal(restoreFocus = true) {
+            document.getElementById('modal-container').innerHTML = '';
+            document.removeEventListener('keydown', handleProfileAdministrationModalKeydown);
+            if (restoreFocus && profileAdministrationTrigger?.isConnected) profileAdministrationTrigger.focus();
+            profileAdministrationTrigger = null;
+        }
+
+        function renderProfileGroupsModal() {
+            const mutedIds = getMutedProfileGroupIds();
+            const groups = getProfileGroups();
+            const groupCards = groups.map(group => {
+                const isMuted = mutedIds.includes(group.id);
+                return `
+                    <article class="rounded-xl border border-slate-200 p-4">
+                        <div class="flex items-start gap-3">
+                            <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary-50 text-primary-700">
+                                ${group.avatar || group.banner
+                                    ? `<img src="${escapeHTML(group.avatar || group.banner)}" alt="" class="h-full w-full object-cover">`
+                                    : '<i class="fa-solid fa-people-group" aria-hidden="true"></i>'}
+                            </span>
+                            <div class="min-w-0 flex-1">
+                                <h3 class="font-semibold text-slate-900">${escapeHTML(group.name)}</h3>
+                                <p class="mt-1 line-clamp-2 text-xs text-slate-500">${escapeHTML(group.description || '')}</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <button type="button" onclick="openGroupFromProfileModal('${escapeHTML(group.id)}')" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white hover:bg-primary-700">${t('profile_group_open')}</button>
+                            <button type="button" onclick="toggleProfileGroupMute('${escapeHTML(group.id)}')" aria-pressed="${isMuted}" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t(isMuted ? 'profile_group_unmute' : 'profile_group_mute')}</button>
+                            <button type="button" onclick="leaveProfileGroup('${escapeHTML(group.id)}')" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-50">${t('profile_group_leave')}</button>
+                        </div>
+                    </article>`;
+            }).join('');
+
+            document.getElementById('modal-container').innerHTML = `
+                <div id="profile-groups-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="profile-groups-modal-title" onclick="if (event.target === event.currentTarget) closeProfileAdministrationModal()">
+                    <section class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl" onclick="event.stopPropagation()">
+                        <header class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-5 sm:px-7">
+                            <div>
+                                <h2 id="profile-groups-modal-title" class="text-xl font-bold text-slate-900">${t('profile_groups_modal_title')}</h2>
+                                <p class="mt-1 text-sm text-slate-500">${t('profile_groups_modal_description')}</p>
+                            </div>
+                            <button type="button" id="profile-groups-close-button" onclick="closeProfileAdministrationModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                        </header>
+                        <div class="space-y-3 p-5 sm:p-7">
+                            ${groupCards || `<p class="rounded-xl bg-slate-50 px-4 py-6 text-center text-sm text-slate-500">${t('profile_groups_empty')}</p>`}
+                        </div>
+                        <footer class="flex flex-wrap justify-between gap-3 border-t border-slate-200 px-5 py-4 sm:px-7">
+                            <button type="button" onclick="openProfileGroupDiscovery()" class="rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700">${t('profile_groups_discover')}</button>
+                            <button type="button" onclick="closeProfileAdministrationModal()" class="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">${t('cancel')}</button>
+                        </footer>
+                    </section>
+                </div>`;
+        }
+
+        function openGroupFromProfileModal(groupId) {
+            closeProfileAdministrationModal(false);
+            openGroup(groupId);
+        }
+
+        function openProfileGroupDiscovery() {
+            closeProfileAdministrationModal(false);
+            navigateTo('groups');
+        }
+
+        function toggleProfileGroupMute(groupId) {
+            if (!getProfileGroups().some(group => group.id === groupId)) return;
+            const mutedIds = getMutedProfileGroupIds();
+            const isMuted = mutedIds.includes(groupId);
+            const updatedIds = isMuted
+                ? mutedIds.filter(id => id !== groupId)
+                : [...mutedIds, groupId];
+            try {
+                localStorage.setItem(`zuliov-muted-groups-${state.currentUser.id}`, JSON.stringify(updatedIds));
+            } catch (error) {
+                console.error('Unable to save muted group IDs.', error);
+                showToast(t('profile_group_mute_error'), 'info');
                 return;
             }
+            renderProfileGroupsModal();
+            showToast(t(isMuted ? 'profile_group_unmuted_toast' : 'profile_group_muted_toast'), 'success');
+        }
+
+        function leaveProfileGroup(groupId) {
+            const profileGroups = getProfileGroups();
+            if (!profileGroups.some(group => group.id === groupId)) return;
+            const groupIds = [...new Set([
+                ...(state.currentUser.groupIds || []),
+                ...profileGroups.map(group => group.id)
+            ])].filter(id => id !== groupId);
+            const managedGroupIds = (state.currentUser.managedGroupIds || []).filter(id => id !== groupId);
+            try {
+                localStorage.setItem(`zuliov-profile-membership-${state.currentUser.id}`, JSON.stringify({ groupIds, managedGroupIds }));
+            } catch (error) {
+                console.error('Unable to save profile group membership.', error);
+                showToast(t('profile_group_leave_error'), 'info');
+                return;
+            }
+            state.currentUser.groupIds = groupIds;
+            state.currentUser.managedGroupIds = managedGroupIds;
+            const group = state.groups.find(item => item.id === groupId);
+            if (group) group.joined = false;
+            renderProfileGroupsMenu();
+            renderProfileGroupsModal();
+            showToast(t('profile_group_left_toast'), 'success');
+        }
+
+        function openManagedOrganizationDashboard() {
+            closeProfileAdministrationModal(false);
+            navigateTo('home');
+        }
+
+        function openManagedOrganizationSettings(proposalId) {
+            closeProfileAdministrationModal(false);
+            if (proposalId) {
+                openOrganizationManagementPanel(proposalId);
+            } else {
+                openSettingsModal();
+            }
+        }
+
+        function openProfileManageCreateOrganization(event) {
+            closeProfileAdministrationModal(false);
+            openOrganizationProposalModal(event);
+        }
+
+        function renderProfileManageModal() {
             const proposals = getManagedOrganizationProposals();
-            ['header-managed-organizations', 'mobile-managed-organizations'].forEach(containerId => {
-                const container = document.getElementById(containerId);
-                if (!container) return;
-                container.classList.toggle('hidden', !proposals || proposals.length === 0);
-                if (!proposals) {
-                    container.innerHTML = `<p role="alert" class="px-4 py-3 text-xs text-rose-600">${t('org_manage_load_error')}</p>`;
-                    container.classList.remove('hidden');
-                    return;
-                }
-                container.innerHTML = proposals.length
-                    ? `<div role="group" aria-label="${t('profile_manage')}" class="py-1">
-                        <p class="px-4 pb-1 pt-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">${t('profile_manage')}</p>
-                        ${proposals.map(proposal => `
-                            <button type="button" role="menuitem" onclick="openOrganizationManagementPanel(${escapeHTML(JSON.stringify(proposal.id))})" aria-label="${escapeHTML(proposal.name)}" class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50">
-                                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-primary-700"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
-                                <span class="min-w-0 truncate">${escapeHTML(proposal.name)}</span>
-                            </button>
-                        `).join('')}
-                    </div>`
-                    : '';
+            const proposalCards = proposals?.map(proposal => `
+                <article class="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 p-4">
+                    <div class="flex min-w-0 items-center gap-3">
+                        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-700"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
+                        <div class="min-w-0">
+                            <h3 class="truncate font-semibold text-slate-900">${escapeHTML(proposal.name)}</h3>
+                            <p class="mt-1 text-xs text-slate-500">${getOrganizationProposalStatusLabel(proposal.status)}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="openManagedOrganizationDashboard()" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white hover:bg-primary-700">${t('profile_manage_dashboard')}</button>
+                        <button type="button" onclick="openManagedOrganizationSettings(${escapeHTML(JSON.stringify(proposal.id))})" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t('profile_manage_settings')}</button>
+                    </div>
+                </article>`).join('');
+            const proposalContent = proposals === null
+                ? `<p role="alert" class="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">${t('org_manage_load_error')}</p>`
+                : (proposalCards || `<p class="text-sm text-slate-500">${t('profile_manage_empty')}</p>`);
+
+            document.getElementById('modal-container').innerHTML = `
+                <div id="profile-manage-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="profile-manage-modal-title" onclick="if (event.target === event.currentTarget) closeProfileAdministrationModal()">
+                    <section class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl" onclick="event.stopPropagation()">
+                        <header class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-5 sm:px-7">
+                            <div>
+                                <h2 id="profile-manage-modal-title" class="text-xl font-bold text-slate-900">${t('profile_manage_modal_title')}</h2>
+                                <p class="mt-1 text-sm text-slate-500">${t('profile_manage_modal_description')}</p>
+                            </div>
+                            <button type="button" id="profile-manage-close-button" onclick="closeProfileAdministrationModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                        </header>
+                        <div class="space-y-3 p-5 sm:p-7">
+                            <article class="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 p-4">
+                                <div class="flex min-w-0 items-center gap-3">
+                                    <img src="assets/logo.png" alt="" class="h-11 w-11 rounded-lg object-contain">
+                                    <div><h3 class="font-semibold text-slate-900">Zuliov</h3></div>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <button type="button" onclick="openManagedOrganizationDashboard()" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white hover:bg-primary-700">${t('profile_manage_dashboard')}</button>
+                                    <button type="button" onclick="openManagedOrganizationSettings()" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t('profile_manage_settings')}</button>
+                                </div>
+                            </article>
+                            ${proposalContent}
+                        </div>
+                        <footer class="flex flex-wrap justify-between gap-3 border-t border-slate-200 px-5 py-4 sm:px-7">
+                            <button type="button" onclick="openProfileManageCreateOrganization(event)" class="rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700">${t('profile_manage_create')}</button>
+                            <button type="button" onclick="closeProfileAdministrationModal()" class="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">${t('cancel')}</button>
+                        </footer>
+                    </section>
+                </div>`;
+        }
+
+        function renderManagedOrganizationsMenu() {
+            const containers = ['header-profile-manage-list', 'mobile-profile-manage-list']
+                .map(containerId => document.getElementById(containerId))
+                .filter(Boolean);
+            if (!containers.length) return;
+
+            if (!isAuthenticated) {
+                containers.forEach(container => { container.innerHTML = ''; });
+                return;
+            }
+
+            containers.forEach(container => {
+                container.innerHTML = `
+                    <div class="flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
+                        <img src="assets/logo.png" alt="" class="h-7 w-7 rounded-md object-contain">
+                        <span class="text-sm font-semibold text-slate-700">Zuliov</span>
+                    </div>
+                `;
             });
         }
 
         function renderProfileGroupsMenu() {
-            const user = state.currentUser;
-            const groupIds = [...new Set([...(user.groupIds || []), ...(user.managedGroupIds || [])])];
-            const groups = groupIds
-                .map(groupId => state.groups.find(group => group.id === groupId))
-                .filter(Boolean);
+            const groups = getProfileGroups();
 
             ['header-profile-groups-list', 'mobile-profile-groups-list'].forEach(containerId => {
                 const container = document.getElementById(containerId);
                 if (!container) return;
-                container.innerHTML = groups.length
-                    ? groups.map(group => `
-                        <button type="button" role="menuitem" onclick="openGroup('${escapeHTML(group.id)}')" aria-label="${escapeHTML(group.name)}" class="flex w-full items-center gap-3 rounded-lg bg-slate-50 px-3 py-2 text-left transition-colors hover:bg-slate-100">
-                            <span class="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md">
-                                ${group.avatar || group.banner
-                                    ? `<img src="${escapeHTML(group.avatar || group.banner)}" alt="" class="h-full w-full object-cover">`
-                                    : '<i class="fa-solid fa-people-group text-sm text-primary-700" aria-hidden="true"></i>'}
-                            </span>
-                            <span class="min-w-0 truncate text-sm font-semibold text-slate-700">${escapeHTML(group.name)}</span>
-                        </button>
-                    `).join('')
-                    : `<p class="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500">${t('profile_groups_empty')}</p>`;
+                if (!groups.length) {
+                    container.innerHTML = `<p class="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500">${t('profile_groups_empty')}</p>`;
+                    return;
+                }
+
+                const group = groups[0];
+                container.innerHTML = `
+                    <button type="button" role="menuitem" onclick="openGroup('${escapeHTML(group.id)}')" aria-label="${escapeHTML(group.name)}" class="flex w-full items-center gap-3 rounded-lg bg-slate-50 px-3 py-2 text-left transition-colors hover:bg-slate-100">
+                        <span class="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md">
+                            ${group.avatar || group.banner
+                                ? `<img src="${escapeHTML(group.avatar || group.banner)}" alt="" class="h-full w-full object-cover">`
+                                : '<i class="fa-solid fa-people-group text-sm text-primary-700" aria-hidden="true"></i>'}
+                        </span>
+                        <span class="min-w-0 truncate text-sm font-semibold text-slate-700">${escapeHTML(group.name)}</span>
+                    </button>`;
             });
         }
 
@@ -5182,8 +5457,12 @@
             document.getElementById('mobile-profile-support-label').textContent = t('profile_support');
             document.getElementById('header-profile-groups-label').textContent = t('nav_groups');
             document.getElementById('mobile-profile-groups-label').textContent = t('nav_groups');
+            document.getElementById('header-profile-groups-all-label').textContent = t('profile_show_all');
+            document.getElementById('mobile-profile-groups-all-label').textContent = t('profile_show_all');
             document.getElementById('header-profile-manage-label').textContent = t('profile_manage_section');
             document.getElementById('mobile-profile-manage-label').textContent = t('profile_manage_section');
+            document.getElementById('header-profile-manage-all-label').textContent = t('profile_show_all');
+            document.getElementById('mobile-profile-manage-all-label').textContent = t('profile_show_all');
             document.getElementById('header-profile-logout-label').textContent = t('profile_log_out');
             document.getElementById('mobile-profile-logout-label').textContent = t('profile_log_out');
             document.getElementById('sim-title').textContent = t('sim_controller');
