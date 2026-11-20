@@ -6208,7 +6208,8 @@
                     || group.joined
                     || (group.id === 'group_cleanwater_official' && ngoData.isFollowing)))
                 .sort((first, second) => (second.post.createdAt || 0) - (first.post.createdAt || 0));
-            const userGroups = state.groups.filter(group => group.joined).slice(0, 3);
+            const sidebarGroup = state.groups.find(group => group.id === 'group_cleanwater_community_network')
+                || state.groups.find(group => group.joined);
             const upcomingFeedEvents = state.groups.flatMap(group =>
                 (group.upcomingEvents || []).map(event => ({ group, event }))
             ).slice(0, 2);
@@ -6240,16 +6241,34 @@
                         </article>
                         <section aria-labelledby="home-feed-groups-title" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle">
                             <h2 id="home-feed-groups-title" class="mb-3 text-sm font-extrabold text-slate-900">${t('home_feed_your_groups')}</h2>
-                            <ul class="space-y-1">
-                                ${userGroups.length ? userGroups.map(group => `
-                                    <li>
-                                        <button type="button" onclick="openGroup('${escapeHTML(group.id)}')" class="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-xs font-semibold leading-snug text-slate-700 transition-colors hover:bg-slate-50 hover:text-primary-700">
-                                            <i class="fa-solid fa-people-group w-4 shrink-0 text-center text-primary-600" aria-hidden="true"></i>
-                                            <span>${escapeHTML(groupText(group, 'name'))}</span>
-                                        </button>
-                                    </li>
-                                `).join('') : `<li class="px-2 py-2 text-xs text-slate-500">${t('home_feed_no_groups')}</li>`}
-                            </ul>
+                            <div role="group" aria-labelledby="home-feed-profile-groups-label" class="border-t border-slate-100 pb-2 pt-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <p id="home-feed-profile-groups-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">${t('nav_groups')}</p>
+                                    <button type="button" onclick="openProfileGroupsModal(event)" aria-haspopup="dialog" aria-controls="profile-groups-modal" class="text-xs font-semibold text-primary-700 hover:text-primary-900">${t('profile_show_all')}</button>
+                                </div>
+                                ${sidebarGroup ? `
+                                    <button type="button" onclick="openGroup('${escapeHTML(sidebarGroup.id)}')" aria-label="${escapeHTML(sidebarGroup.name)}" class="flex w-full items-center gap-3 rounded-lg bg-slate-50 px-3 py-2 text-left transition-colors hover:bg-slate-100">
+                                        <span class="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md">
+                                            ${sidebarGroup.avatar || sidebarGroup.banner
+                                                ? `<img src="${escapeHTML(sidebarGroup.avatar || sidebarGroup.banner)}" alt="" class="h-full w-full object-cover">`
+                                                : '<i class="fa-solid fa-people-group text-sm text-primary-700" aria-hidden="true"></i>'}
+                                        </span>
+                                        <span class="min-w-0 truncate text-sm font-semibold text-slate-700">${escapeHTML(sidebarGroup.name)}</span>
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <div role="group" aria-labelledby="home-feed-profile-manage-label" class="border-t border-slate-100 pb-2 pt-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <p id="home-feed-profile-manage-label" class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">${t('profile_manage_section')}</p>
+                                    <button type="button" onclick="openProfileManageModal(event)" aria-haspopup="dialog" aria-controls="profile-manage-modal" class="text-xs font-semibold text-primary-700 hover:text-primary-900">${t('profile_show_all')}</button>
+                                </div>
+                                <button type="button" onclick="openProfileManageModal(event)" class="flex w-full items-center gap-3 rounded-lg bg-slate-50 px-3 py-2 text-left transition-colors hover:bg-slate-100">
+                                    <span class="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md">
+                                        <img src="assets/logo.png" alt="" class="h-full w-full object-contain">
+                                    </span>
+                                    <span class="min-w-0 truncate text-sm font-semibold text-slate-700">Zuliov</span>
+                                </button>
+                            </div>
                         </section>
                     </aside>
                     <main class="min-w-0 space-y-6 lg:col-span-6">
