@@ -472,8 +472,15 @@
                 profile_manage_section: "Administrar",
                 profile_groups_modal_title: "Tus grupos",
                 profile_groups_modal_description: "Abre tus comunidades y administra sus notificaciones.",
+                profile_groups_managed: "Grupos creados o administrados",
+                profile_groups_joined: "Grupos a los que te uniste",
+                profile_groups_tab_managed: "Creados y administrados",
+                profile_groups_tab_joined: "Grupos unidos",
                 profile_groups_discover: "Descubrir o crear grupos",
+                profile_groups_section_empty: "No hay grupos en esta sección todavía.",
+                profile_group_admin: "Admin",
                 profile_group_open: "Abrir grupo",
+                profile_group_manage: "Administrar grupo",
                 profile_group_mute: "Silenciar notificaciones",
                 profile_group_unmute: "Activar notificaciones",
                 profile_group_leave: "Salir del grupo",
@@ -1206,8 +1213,15 @@
                 profile_manage_section: "Manage",
                 profile_groups_modal_title: "Your Groups",
                 profile_groups_modal_description: "Open your communities and manage their notifications.",
+                profile_groups_managed: "Created & Managed Groups",
+                profile_groups_joined: "Joined Groups",
+                profile_groups_tab_managed: "Created & Managed",
+                profile_groups_tab_joined: "Joined Groups",
                 profile_groups_discover: "Discover or create groups",
+                profile_groups_section_empty: "There are no groups in this section yet.",
+                profile_group_admin: "Admin",
                 profile_group_open: "Open group",
+                profile_group_manage: "Manage group",
                 profile_group_mute: "Mute notifications",
                 profile_group_unmute: "Unmute notifications",
                 profile_group_leave: "Leave group",
@@ -4104,10 +4118,42 @@
             profileAdministrationTrigger = null;
         }
 
+        function switchProfileGroupsTab(tab) {
+            const modal = document.getElementById('profile-groups-modal');
+            if (!modal || !['managed', 'joined'].includes(tab)) return;
+
+            modal.querySelectorAll('[data-profile-groups-tab]').forEach(button => {
+                const isSelected = button.dataset.profileGroupsTab === tab;
+                button.setAttribute('aria-selected', String(isSelected));
+                button.tabIndex = isSelected ? 0 : -1;
+                button.classList.toggle('border-primary-600', isSelected);
+                button.classList.toggle('text-primary-700', isSelected);
+                button.classList.toggle('border-transparent', !isSelected);
+                button.classList.toggle('text-slate-500', !isSelected);
+            });
+            modal.querySelectorAll('[data-profile-groups-panel]').forEach(panel => {
+                panel.hidden = panel.dataset.profileGroupsPanel !== tab;
+            });
+        }
+
+        function handleProfileGroupsTabKeydown(event) {
+            if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            event.preventDefault();
+            const tabs = [...document.querySelectorAll('#profile-groups-modal [data-profile-groups-tab]')];
+            const index = tabs.indexOf(event.currentTarget);
+            const nextIndex = event.key === 'Home' ? 0
+                : event.key === 'End' ? tabs.length - 1
+                : (index + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+            tabs[nextIndex].focus();
+            switchProfileGroupsTab(tabs[nextIndex].dataset.profileGroupsTab);
+        }
+
         function renderProfileGroupsModal() {
             const mutedIds = getMutedProfileGroupIds();
             const groups = getProfileGroups();
-            const groupCards = groups.map(group => {
+            const managedGroupIds = state.currentUser.managedGroupIds || [];
+            const activeTab = document.querySelector('#profile-groups-modal [aria-selected="true"]')?.dataset.profileGroupsTab || 'managed';
+            const renderGroupCards = (sectionGroups, isManaged) => sectionGroups.map(group => {
                 const isMuted = mutedIds.includes(group.id);
                 return `
                     <article class="rounded-xl border border-slate-200 p-4">
@@ -4118,17 +4164,30 @@
                                     : '<i class="fa-solid fa-people-group" aria-hidden="true"></i>'}
                             </span>
                             <div class="min-w-0 flex-1">
-                                <h3 class="font-semibold text-slate-900">${escapeHTML(group.name)}</h3>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h3 class="font-semibold text-slate-900">${escapeHTML(group.name)}</h3>
+                                    ${isManaged ? `<span class="rounded-full bg-primary-50 px-2 py-0.5 text-[10px] font-semibold text-primary-700">${t('profile_group_admin')}</span>` : ''}
+                                </div>
                                 <p class="mt-1 line-clamp-2 text-xs text-slate-500">${escapeHTML(group.description || '')}</p>
                             </div>
                         </div>
                         <div class="mt-4 flex flex-wrap gap-2">
                             <button type="button" onclick="openGroupFromProfileModal('${escapeHTML(group.id)}')" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white hover:bg-primary-700">${t('profile_group_open')}</button>
-                            <button type="button" onclick="toggleProfileGroupMute('${escapeHTML(group.id)}')" aria-pressed="${isMuted}" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t(isMuted ? 'profile_group_unmute' : 'profile_group_mute')}</button>
-                            <button type="button" onclick="leaveProfileGroup('${escapeHTML(group.id)}')" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-50">${t('profile_group_leave')}</button>
+                            ${isManaged
+                                ? `<button type="button" onclick="manageGroupFromProfileModal('${escapeHTML(group.id)}')" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t('profile_group_manage')}</button>`
+                                : `<button type="button" onclick="toggleProfileGroupMute('${escapeHTML(group.id)}')" aria-pressed="${isMuted}" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t(isMuted ? 'profile_group_unmute' : 'profile_group_mute')}</button>
+                            <button type="button" onclick="leaveProfileGroup('${escapeHTML(group.id)}')" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-50">${t('profile_group_leave')}</button>`}
                         </div>
                     </article>`;
             }).join('');
+            const renderSection = (sectionGroups, tab, isManaged) => `
+                <section id="profile-groups-${tab}-panel" role="tabpanel" aria-labelledby="profile-groups-${tab}-tab" data-profile-groups-panel="${tab}" class="space-y-3" ${activeTab !== tab ? 'hidden' : ''}>
+                    ${sectionGroups.length
+                        ? renderGroupCards(sectionGroups, isManaged)
+                        : `<p class="rounded-xl bg-slate-50 px-4 py-5 text-center text-sm text-slate-500">${t('profile_groups_section_empty')}</p>`}
+                </section>`;
+            const managedGroups = groups.filter(group => managedGroupIds.includes(group.id));
+            const joinedGroups = groups.filter(group => !managedGroupIds.includes(group.id));
 
             document.getElementById('modal-container').innerHTML = `
                 <div id="profile-groups-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="profile-groups-modal-title" onclick="if (event.target === event.currentTarget) closeProfileAdministrationModal()">
@@ -4137,11 +4196,16 @@
                             <div>
                                 <h2 id="profile-groups-modal-title" class="text-xl font-bold text-slate-900">${t('profile_groups_modal_title')}</h2>
                                 <p class="mt-1 text-sm text-slate-500">${t('profile_groups_modal_description')}</p>
+                                <div role="tablist" aria-label="${t('profile_groups_modal_title')}" class="mt-4 flex gap-5">
+                                    <button type="button" id="profile-groups-managed-tab" role="tab" aria-controls="profile-groups-managed-panel" aria-selected="${activeTab === 'managed'}" tabindex="${activeTab === 'managed' ? '0' : '-1'}" data-profile-groups-tab="managed" onclick="switchProfileGroupsTab('managed')" onkeydown="handleProfileGroupsTabKeydown(event)" class="border-b-2 px-1 pb-2 text-sm font-semibold ${activeTab === 'managed' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500'}">${t('profile_groups_tab_managed')}</button>
+                                    <button type="button" id="profile-groups-joined-tab" role="tab" aria-controls="profile-groups-joined-panel" aria-selected="${activeTab === 'joined'}" tabindex="${activeTab === 'joined' ? '0' : '-1'}" data-profile-groups-tab="joined" onclick="switchProfileGroupsTab('joined')" onkeydown="handleProfileGroupsTabKeydown(event)" class="border-b-2 px-1 pb-2 text-sm font-semibold ${activeTab === 'joined' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500'}">${t('profile_groups_tab_joined')}</button>
+                                </div>
                             </div>
                             <button type="button" id="profile-groups-close-button" onclick="closeProfileAdministrationModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
                         </header>
-                        <div class="space-y-3 p-5 sm:p-7">
-                            ${groupCards || `<p class="rounded-xl bg-slate-50 px-4 py-6 text-center text-sm text-slate-500">${t('profile_groups_empty')}</p>`}
+                        <div class="p-5 sm:p-7">
+                            ${renderSection(managedGroups, 'managed', true)}
+                            ${renderSection(joinedGroups, 'joined', false)}
                         </div>
                         <footer class="flex flex-wrap justify-between gap-3 border-t border-slate-200 px-5 py-4 sm:px-7">
                             <button type="button" onclick="openProfileGroupDiscovery()" class="rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700">${t('profile_groups_discover')}</button>
@@ -4154,6 +4218,12 @@
         function openGroupFromProfileModal(groupId) {
             closeProfileAdministrationModal(false);
             openGroup(groupId);
+        }
+
+        function manageGroupFromProfileModal(groupId) {
+            closeProfileAdministrationModal(false);
+            openGroup(groupId);
+            openGroupManagementModal('leaders');
         }
 
         function openProfileGroupDiscovery() {
