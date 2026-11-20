@@ -611,7 +611,7 @@
                 register_profile_image_url: "URL de la imagen",
                 register_profile_upload: "O selecciona un archivo",
                 register_profile_bio: "Descripción / Biografía",
-                register_profile_bio_hint: "Máximo 1000 caracteres.",
+                register_profile_bio_hint: "Máximo 160 caracteres.",
                 register_profile_back: "Volver",
                 register_profile_finish: "Finalizar configuración",
                 register_profile_file_type_error: "Selecciona un archivo de imagen válido.",
@@ -1352,7 +1352,7 @@
                 register_profile_image_url: "Image URL",
                 register_profile_upload: "Or choose a file",
                 register_profile_bio: "Description / Bio",
-                register_profile_bio_hint: "Maximum 1000 characters.",
+                register_profile_bio_hint: "Maximum 160 characters.",
                 register_profile_back: "Back",
                 register_profile_finish: "Finish Setup",
                 register_profile_file_type_error: "Choose a valid image file.",
@@ -5000,10 +5000,10 @@
                                 </div>
                             </div>
                             <label for="register-profile-bio" class="block text-xs font-semibold text-slate-700">${t('register_profile_bio')}
-                                <textarea id="register-profile-bio" class="${fieldClass} min-h-28 resize-y" name="bio" maxlength="1000" oninput="updateRegistrationProfileDraft(event)">${value('bio')}</textarea>
+                                <textarea id="register-profile-bio" class="${fieldClass} min-h-28 resize-y" name="bio" maxlength="160" oninput="updateRegistrationProfileDraft(event)">${value('bio')}</textarea>
                                 <span class="mt-1 flex justify-between text-[11px] font-normal text-slate-500">
                                     <span>${t('register_profile_bio_hint')}</span>
-                                    <span id="register-profile-bio-count" aria-live="polite">${registrationProfileDraft.bio.length} / 1000</span>
+                                    <span id="register-profile-bio-count" aria-live="polite">${registrationProfileDraft.bio.length} / 160</span>
                                 </span>
                             </label>
                             <div class="flex flex-col-reverse gap-3 sm:flex-row">
@@ -5022,10 +5022,10 @@
             const input = event.currentTarget;
             const field = input.name;
             if (field === 'bio') {
-                registrationProfileDraft.bio = input.value.slice(0, 1000);
+                registrationProfileDraft.bio = input.value.slice(0, 160);
                 input.value = registrationProfileDraft.bio;
                 const counter = document.getElementById('register-profile-bio-count');
-                if (counter) counter.textContent = `${registrationProfileDraft.bio.length} / 1000`;
+                if (counter) counter.textContent = `${registrationProfileDraft.bio.length} / 160`;
                 return;
             }
             registrationProfileDraft[field] = input.value;
@@ -5077,7 +5077,7 @@
 
         function finishRegistration(event) {
             event.preventDefault();
-            const bio = String(registrationProfileDraft.bio || '').slice(0, 1000);
+            const bio = String(registrationProfileDraft.bio || '').slice(0, 160);
             const email = String(registrationDraft.email || '').trim();
             const firstName = String(registrationDraft.firstName || '').trim();
             const lastName = String(registrationDraft.lastName || '').trim();
