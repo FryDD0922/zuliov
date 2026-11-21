@@ -826,6 +826,8 @@
                 group_create_modal_title: "Crear un grupo",
                 group_name_label: "Nombre del grupo",
                 group_description_label: "Descripción",
+                group_country_label: "País (opcional)",
+                group_country_default: "Ninguno / Global (Icono por defecto)",
                 group_avatar_label: "Imagen de perfil del grupo",
                 group_banner_label: "Imagen de portada del grupo",
                 group_image_upload: "Selecciona un archivo de imagen",
@@ -1567,6 +1569,8 @@
                 group_create_modal_title: "Create a group",
                 group_name_label: "Group name",
                 group_description_label: "Description",
+                group_country_label: "Country (optional)",
+                group_country_default: "None / Global (Default icon)",
                 group_avatar_label: "Group profile image",
                 group_banner_label: "Group cover image",
                 group_image_upload: "Choose an image file",
@@ -1844,6 +1848,93 @@
         let currentLang = ['en', 'es'].includes(localStorage.getItem('zuliov-language'))
             ? localStorage.getItem('zuliov-language')
             : 'en';
+        const COUNTRY_CODES = [
+            'AD','AE','AF','AG','AI','AL','AM','AO','AQ','AR','AS','AT','AU','AW','AX','AZ',
+            'BA','BB','BD','BE','BF','BG','BH','BI','BJ','BL','BM','BN','BO','BQ','BR','BS','BT','BV','BW','BY','BZ',
+            'CA','CC','CD','CF','CG','CH','CI','CK','CL','CM','CN','CO','CR','CU','CV','CW','CX','CY','CZ',
+            'DE','DJ','DK','DM','DO','DZ','EC','EE','EG','EH','ER','ES','ET','FI','FJ','FK','FM','FO','FR',
+            'GA','GB','GD','GE','GF','GG','GH','GI','GL','GM','GN','GP','GQ','GR','GS','GT','GU','GW','GY',
+            'HK','HM','HN','HR','HT','HU','ID','IE','IL','IM','IN','IO','IQ','IR','IS','IT','JE','JM','JO','JP',
+            'KE','KG','KH','KI','KM','KN','KP','KR','KW','KY','KZ','LA','LB','LC','LI','LK','LR','LS','LT','LU','LV','LY',
+            'MA','MC','MD','ME','MF','MG','MH','MK','ML','MM','MN','MO','MP','MQ','MR','MS','MT','MU','MV','MW','MX','MY','MZ',
+            'NA','NC','NE','NF','NG','NI','NL','NO','NP','NR','NU','NZ','OM','PA','PE','PF','PG','PH','PK','PL','PM','PN','PR','PS','PT','PW','PY',
+            'QA','RE','RO','RS','RU','RW','SA','SB','SC','SD','SE','SG','SH','SI','SJ','SK','SL','SM','SN','SO','SR','SS','ST','SV','SX','SY','SZ',
+            'TC','TD','TF','TG','TH','TJ','TK','TL','TM','TN','TO','TR','TT','TV','TW','TZ','UA','UG','UM','US','UY','UZ',
+            'VA','VC','VE','VG','VI','VN','VU','WF','WS','XK','YE','YT','ZA','ZM','ZW'
+        ];
+
+        function countryName(code) {
+            if (!code) return '';
+            try {
+                return new Intl.DisplayNames([currentLang === 'es' ? 'es' : 'en'], { type: 'region' }).of(code.toUpperCase()) || code;
+            } catch {
+                return code;
+            }
+        }
+
+        function countryFlagImage(code, className) {
+            const normalizedCode = String(code || '').toUpperCase();
+            if (!COUNTRY_CODES.includes(normalizedCode)) return '';
+            return `<img src="https://flagcdn.com/${normalizedCode.toLowerCase()}.svg" alt="${escapeHTML(countryName(normalizedCode))}" loading="lazy" class="${className}">`;
+        }
+
+        function getCountryDropdownHtml(selectedCode = '') {
+            const options = COUNTRY_CODES.map(code => ({ code, name: countryName(code) }))
+                .sort((a, b) => a.name.localeCompare(b.name, currentLang === 'es' ? 'es' : 'en'));
+            const selectedName = selectedCode ? countryName(selectedCode) : t('group_country_default');
+            return `
+                <button id="new-group-country-button" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="new-group-country-options" onclick="toggleGroupCountryMenu()" class="flex w-full items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                    <span class="flex min-w-0 items-center gap-2">
+                        ${selectedCode ? countryFlagImage(selectedCode, 'h-5 w-7 shrink-0 rounded-sm object-cover') : '<i aria-hidden="true" class="fa-solid fa-people-group text-primary-600"></i>'}
+                        <span id="new-group-country-label" class="truncate">${escapeHTML(selectedName)}</span>
+                    </span>
+                    <i aria-hidden="true" class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
+                </button>
+                <ul id="new-group-country-options" role="listbox" class="absolute z-20 mt-1 hidden max-h-60 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-1 shadow-lg">
+                    <li role="presentation">
+                        <button type="button" role="option" aria-selected="${!selectedCode}" onclick="selectGroupCountry('')" class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-slate-50">
+                            <i aria-hidden="true" class="fa-solid fa-people-group w-7 text-center text-primary-600"></i>
+                            <span>${escapeHTML(t('group_country_default'))}</span>
+                        </button>
+                    </li>
+                    ${options.map(({ code, name }) => `
+                        <li role="presentation">
+                            <button type="button" role="option" aria-selected="${selectedCode === code}" onclick="selectGroupCountry('${code}')" class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-slate-50">
+                                ${countryFlagImage(code, 'h-5 w-7 shrink-0 rounded-sm object-cover')}
+                                <span>${escapeHTML(name)}</span>
+                            </button>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+        }
+
+        function toggleGroupCountryMenu() {
+            const button = document.getElementById('new-group-country-button');
+            const options = document.getElementById('new-group-country-options');
+            if (!button || !options) return;
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            button.setAttribute('aria-expanded', String(!isExpanded));
+            options.classList.toggle('hidden', isExpanded);
+        }
+
+        function selectGroupCountry(code) {
+            const countryInput = document.getElementById('new-group-country');
+            const dropdown = document.getElementById('new-group-country-dropdown');
+            const normalizedCode = String(code || '').toUpperCase();
+            if (!countryInput || !dropdown || (normalizedCode && !COUNTRY_CODES.includes(normalizedCode))) return;
+            countryInput.value = normalizedCode;
+            dropdown.innerHTML = getCountryDropdownHtml(normalizedCode);
+        }
+
+        function updateGroupCountryDropdown(selectedCode = '') {
+            const dropdown = document.getElementById('new-group-country-dropdown');
+            if (dropdown) dropdown.innerHTML = getCountryDropdownHtml(selectedCode);
+        }
+
+        function getGroupCountryIcon(group) {
+            return countryFlagImage(group?.country, 'w-full h-full object-cover rounded-full');
+        }
         const communityCategoryKeys = [
             'civic_movement',
             'nonprofit_organization',
@@ -1941,6 +2032,11 @@
             localStorage.setItem('zuliov-language', lang);
             document.documentElement.lang = lang;
             renderApp();
+            const groupCountryInput = document.getElementById('new-group-country');
+            if (groupCountryInput) {
+                updateGroupCountryDropdown(groupCountryInput.value);
+                document.querySelector('label[for="new-group-country-button"]').textContent = t('group_country_label');
+            }
             updateLandingWaitlistModalCopy();
             if (document.getElementById('create-project-modal')) updateCreateProjectModalCopy();
             updateSupportModalCopy();
@@ -2628,6 +2724,7 @@
                     id: 'group_cleanwater_community_network',
                     name: 'CleanWater Community Network',
                     description: 'A community led by Sarah Miller to connect supporters and share verified clean water impact across East Africa.',
+                    country: 'KE',
                     category: 'Clean Water',
                     type: 'community',
                     visibility: 'Open',
@@ -2679,6 +2776,7 @@
                     id: 'group_volunteers_latam',
                     name: 'Voluntarios Cristianos Latam',
                     description: 'Personas voluntarias de Latinoamérica colaborando en iniciativas solidarias y de impacto.',
+                    country: 'AR',
                     category: 'Voluntariado',
                     type: 'community',
                     visibility: 'Comunidad',
@@ -2782,6 +2880,7 @@
                     id: 'group_university_volunteers',
                     name: 'Voluntariado Universitario',
                     description: 'Estudiantes y jóvenes universitarios colaborando en iniciativas de impacto social, tutorías y proyectos comunitarios.',
+                    country: 'VE',
                     category: 'Educación',
                     type: 'community',
                     visibility: 'Abierto',
@@ -2805,6 +2904,7 @@
                     id: 'group_animal_rescue',
                     name: 'Rescate y Protección Animal',
                     description: 'Comunidad dedicada al bienestar animal, rescate de mascotas, campañas de esterilización y apoyo a refugios locales.',
+                    country: 'VE',
                     category: 'Animales',
                     type: 'community',
                     visibility: 'Abierto',
@@ -4159,7 +4259,9 @@
                     <article class="rounded-xl border border-slate-200 p-4">
                         <div class="flex items-start gap-3">
                             <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary-50 text-primary-700">
-                                ${group.avatar || group.banner
+                                ${getGroupCountryIcon(group)
+                                    ? getGroupCountryIcon(group)
+                                    : group.avatar || group.banner
                                     ? `<img src="${escapeHTML(group.avatar || group.banner)}" alt="" class="h-full w-full object-cover">`
                                     : '<i class="fa-solid fa-people-group" aria-hidden="true"></i>'}
                             </span>
@@ -6581,9 +6683,11 @@
                                     </div>
                                     <div class="p-5">
                                         <div class="flex items-center gap-3">
-                                            ${item.avatar
-                                                ? `<img src="${escapeHTML(item.avatar)}" alt="" aria-hidden="true" class="h-12 w-12 shrink-0 rounded-full border border-slate-200 bg-white object-cover">`
-                                                : '<span aria-hidden="true" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-primary-700"><i class="fa-solid fa-people-group"></i></span>'}
+                                            ${getGroupCountryIcon(item)
+                                                ? `<span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-50 text-primary-700 ring-1 ring-slate-200 dark:ring-slate-700 overflow-hidden">${getGroupCountryIcon(item)}</span>`
+                                                : item.avatar
+                                                    ? `<img src="${escapeHTML(item.avatar)}" alt="" aria-hidden="true" class="h-12 w-12 shrink-0 rounded-full border border-slate-200 bg-white object-cover">`
+                                                    : '<span aria-hidden="true" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-primary-700"><i class="fa-solid fa-people-group"></i></span>'}
                                             <div class="min-w-0">
                                                 ${item.category ? `<p class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-600">${escapeHTML(groupText(item, 'category'))}</p>` : ''}
                                                 <div class="flex flex-wrap items-center gap-2">
@@ -7522,6 +7626,13 @@
                                 <label for="new-group-description" class="mb-1 block text-xs font-bold text-slate-700">${t('group_description_label')}</label>
                                 <textarea id="new-group-description" name="description" required maxlength="300" rows="3" class="w-full resize-y rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"></textarea>
                             </div>
+                            <div>
+                                <label for="new-group-country-button" class="mb-1 block text-xs font-bold text-slate-700">${t('group_country_label')}</label>
+                                <input id="new-group-country" type="hidden" name="country" value="">
+                                <div id="new-group-country-dropdown" class="relative">
+                                    ${getCountryDropdownHtml()}
+                                </div>
+                            </div>
                             <div class="grid gap-4 sm:grid-cols-2">
                                 <div>
                                     <label for="new-group-avatar-file" class="block text-xs font-bold text-slate-700">${t('group_avatar_label')}</label>
@@ -7555,6 +7666,7 @@
             const formData = new FormData(form);
             const name = String(formData.get('name')).trim();
             const description = String(formData.get('description')).trim();
+            const country = String(formData.get('country') || '').toUpperCase();
             if (!name || !description) {
                 showToast(t('group_create_validation_error'), 'info');
                 return;
@@ -7565,6 +7677,7 @@
                 id: groupId,
                 name,
                 description,
+                country: COUNTRY_CODES.includes(country) ? country : null,
                 avatar: String(formData.get('avatar') || DEFAULT_GROUP_AVATAR),
                 banner: String(formData.get('banner') || DEFAULT_GROUP_BANNER),
                 members: 1,
