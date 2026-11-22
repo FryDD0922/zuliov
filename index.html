@@ -316,6 +316,8 @@
                 create_project_title_label: "Título del proyecto",
                 create_project_location_label: "Ubicación / Región",
                 create_project_location_placeholder: "Kenia - Kitui, América Latina...",
+                create_country_label: "País (opcional)",
+                create_country_default: "Ninguno / Global (Sin bandera)",
                 create_project_organization_label: "Organización / Grupo responsable",
                 create_project_cover_label: "Imagen de portada",
                 create_project_cover_upload: "Selecciona una imagen para la portada",
@@ -398,6 +400,7 @@
                 home_feed_profile_connections: "Conexiones",
                 home_feed_your_groups: "Tus grupos",
                 home_feed_upcoming_events: "Próximos eventos",
+                home_feed_see_all_events: "Ver todo",
                 home_feed_suggestions: "Conexiones y grupos sugeridos",
                 home_feed_follow: "Seguir",
                 home_feed_no_groups: "Aún no formas parte de ningún grupo.",
@@ -457,6 +460,9 @@
                 ngo_filter_volunteer_networks: "Redes de voluntariado",
                 ngo_filter_social_enterprises: "Empresas sociales",
                 ngo_directory_filters: "Filtrar organizaciones por tipo",
+                country_filter_label: "Filtrar por país",
+                country_filter_all: "Todos los países",
+                country_filter_search: "Buscar país...",
                 ngo_directory_empty: "No hay organizaciones en esta categoría todavía.",
                 nav_groups: "GRUPOS",
                 profile_view: "Ver perfil",
@@ -1059,6 +1065,8 @@
                 create_project_title_label: "Project Title",
                 create_project_location_label: "Location / Region",
                 create_project_location_placeholder: "Kenya - Kitui, Latin America...",
+                create_country_label: "Country (optional)",
+                create_country_default: "None / Global (No flag)",
                 create_project_organization_label: "Organization / Group",
                 create_project_cover_label: "Cover image",
                 create_project_cover_upload: "Choose a cover image",
@@ -1141,6 +1149,7 @@
                 home_feed_profile_connections: "Connections",
                 home_feed_your_groups: "Your Groups",
                 home_feed_upcoming_events: "Upcoming Events",
+                home_feed_see_all_events: "See all",
                 home_feed_suggestions: "Suggested Connections & Groups",
                 home_feed_follow: "Follow",
                 home_feed_no_groups: "You haven't joined any groups yet.",
@@ -1200,6 +1209,9 @@
                 ngo_filter_volunteer_networks: "Volunteer Networks",
                 ngo_filter_social_enterprises: "Social Enterprises",
                 ngo_directory_filters: "Filter organizations by type",
+                country_filter_label: "Filter by country",
+                country_filter_all: "All countries / Global",
+                country_filter_search: "Search country...",
                 ngo_directory_empty: "There are no organizations in this category yet.",
                 nav_groups: "GROUPS",
                 profile_view: "View Profile",
@@ -1872,8 +1884,22 @@
             }
         }
 
+        function getCountryCode(value, location = '') {
+            const candidate = String(value || '').trim().toUpperCase();
+            if (COUNTRY_CODES.includes(candidate)) return candidate.toLowerCase();
+            const searchable = `${value || ''} ${location || ''}`.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
+            return COUNTRY_CODES.find(code => ['en', 'es'].some(language => {
+                try {
+                    const name = new Intl.DisplayNames([language], { type: 'region' }).of(code);
+                    return name && searchable.includes(name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase());
+                } catch {
+                    return false;
+                }
+            }))?.toLowerCase() || '';
+        }
+
         function countryFlagImage(code, className) {
-            const normalizedCode = String(code || '').toUpperCase();
+            const normalizedCode = getCountryCode(code).toUpperCase();
             if (!COUNTRY_CODES.includes(normalizedCode)) return '';
             return `<img src="https://flagcdn.com/${normalizedCode.toLowerCase()}.svg" alt="${escapeHTML(countryName(normalizedCode))}" loading="lazy" class="${className}">`;
         }
@@ -1907,6 +1933,55 @@
                     `).join('')}
                 </ul>
             `;
+        }
+
+        function getOptionalCountryDropdownHtml(id, selectedCode = '') {
+            const options = COUNTRY_CODES.map(code => ({ code, name: countryName(code) }))
+                .sort((a, b) => a.name.localeCompare(b.name, currentLang === 'es' ? 'es' : 'en'));
+            const selectedName = selectedCode ? countryName(selectedCode) : t('create_country_default');
+            return `
+                <button id="${id}-button" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="${id}-options" onclick="toggleOptionalCountryMenu('${id}')" class="flex w-full items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                    <span class="flex min-w-0 items-center gap-2">
+                        ${selectedCode ? countryFlagImage(selectedCode, 'h-5 w-7 shrink-0 rounded-sm object-cover') : '<i aria-hidden="true" class="fa-solid fa-globe w-7 text-center text-slate-400"></i>'}
+                        <span id="${id}-label" class="truncate">${escapeHTML(selectedName)}</span>
+                    </span>
+                    <i aria-hidden="true" class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
+                </button>
+                <ul id="${id}-options" role="listbox" class="absolute z-20 mt-1 hidden max-h-60 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-1 shadow-lg">
+                    <li role="presentation">
+                        <button type="button" role="option" aria-selected="${!selectedCode}" onclick="selectOptionalCountry('${id}', '')" class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-slate-50">
+                            <i aria-hidden="true" class="fa-solid fa-globe w-7 text-center text-slate-400"></i>
+                            <span>${escapeHTML(t('create_country_default'))}</span>
+                        </button>
+                    </li>
+                    ${options.map(({ code, name }) => `
+                        <li role="presentation">
+                            <button type="button" role="option" aria-selected="${selectedCode === code}" onclick="selectOptionalCountry('${id}', '${code}')" class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-slate-50">
+                                ${countryFlagImage(code, 'h-5 w-7 shrink-0 rounded-sm object-cover')}
+                                <span>${escapeHTML(name)}</span>
+                            </button>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+        }
+
+        function toggleOptionalCountryMenu(id) {
+            const button = document.getElementById(`${id}-button`);
+            const options = document.getElementById(`${id}-options`);
+            if (!button || !options) return;
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            button.setAttribute('aria-expanded', String(!isExpanded));
+            options.classList.toggle('hidden', isExpanded);
+        }
+
+        function selectOptionalCountry(id, code) {
+            const container = document.getElementById(`${id}-dropdown`);
+            const input = document.getElementById(`${id}-value`);
+            const normalizedCode = String(code || '').toUpperCase();
+            if (!container || !input || (normalizedCode && !COUNTRY_CODES.includes(normalizedCode))) return;
+            input.value = normalizedCode;
+            container.innerHTML = getOptionalCountryDropdownHtml(id, normalizedCode);
         }
 
         function toggleGroupCountryMenu() {
@@ -1954,6 +2029,8 @@
             'social_enterprise'
         ];
         let selectedNGODirectoryCategory = null;
+        const selectedCountryFilters = { groups: '', projects: '', discover: '' };
+        let openCountryFilter = null;
         const communityCategoryGroupIds = {
             civic_movement: ['group_zuliov_global_community'],
             nonprofit_organization: ['group_cleanwater_official'],
@@ -1972,6 +2049,90 @@
         function t(key) {
             return (locales[currentLang] && locales[currentLang][key]) ? locales[currentLang][key] : (locales['en'][key] || key);
         }
+
+        function normalizeCountryCode(code) {
+            return String(code || '').trim().toUpperCase();
+        }
+
+        function renderCountryFilterOptions(key, searchTerm = '') {
+            const query = normalizeProjectSearch(searchTerm);
+            const options = COUNTRY_CODES.map(code => ({ code, name: countryName(code) }))
+                .filter(country => normalizeProjectSearch(country.name).includes(query))
+                .sort((first, second) => first.name.localeCompare(second.name, currentLang === 'es' ? 'es' : 'en'));
+            const selectedCode = selectedCountryFilters[key];
+
+            return `
+                <button type="button" role="option" aria-selected="${!selectedCode}" onclick="selectCountryFilter('${key}', '')" class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-xs font-semibold text-slate-700 hover:bg-primary-50 hover:text-primary-700">
+                    <span class="flex h-5 w-7 shrink-0 items-center justify-center rounded border border-slate-200 bg-white text-[10px] text-slate-400" aria-hidden="true"><i class="fa-solid fa-globe"></i></span>
+                    ${t('country_filter_all')}
+                </button>
+                ${options.map(country => `
+                    <button type="button" role="option" aria-selected="${selectedCode === country.code}" onclick="selectCountryFilter('${key}', '${country.code.toLowerCase()}')" class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-xs font-semibold text-slate-700 hover:bg-primary-50 hover:text-primary-700">
+                        <img src="https://flagcdn.com/${country.code.toLowerCase()}.svg" alt="" loading="lazy" class="h-4 w-6 shrink-0 rounded-sm object-cover shadow-sm">
+                        ${escapeHTML(country.name)}
+                    </button>
+                `).join('')}
+            `;
+        }
+
+        function renderCountryFilter(key) {
+            const selectedCode = selectedCountryFilters[key];
+            const buttonLabel = selectedCode
+                ? `${t('country_filter_label')}: ${countryName(selectedCode)}`
+                : t('country_filter_label');
+
+            return `
+                <div id="country-filter-${key}" class="relative shrink-0">
+                    <button type="button" id="country-filter-button-${key}" aria-label="${escapeHTML(buttonLabel)}" aria-expanded="${openCountryFilter === key}" aria-controls="country-filter-menu-${key}" onclick="toggleCountryFilterMenu('${key}')" class="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-300 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                        ${selectedCode ? `<img src="https://flagcdn.com/${selectedCode}.svg" alt="" class="h-4 w-6 rounded-sm object-cover shadow-sm">` : '<i class="fa-solid fa-globe text-slate-400" aria-hidden="true"></i>'}
+                        <span>${escapeHTML(buttonLabel)}</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400" aria-hidden="true"></i>
+                    </button>
+                    <div id="country-filter-menu-${key}" role="dialog" aria-label="${escapeHTML(t('country_filter_label'))}" ${openCountryFilter === key ? '' : 'hidden'} class="absolute right-0 top-full z-40 mt-2 w-72 rounded-xl border border-slate-200 bg-white p-2 shadow-floating">
+                        <label class="sr-only" for="country-filter-search-${key}">${t('country_filter_search')}</label>
+                        <input id="country-filter-search-${key}" type="search" placeholder="${t('country_filter_search')}" oninput="updateCountryFilterOptions('${key}', this.value)" class="mb-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                        <div id="country-filter-options-${key}" role="listbox" class="max-h-64 overflow-y-auto">
+                            ${renderCountryFilterOptions(key)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleCountryFilterMenu(key) {
+            openCountryFilter = openCountryFilter === key ? null : key;
+            ['groups', 'projects', 'discover'].forEach(filterKey => {
+                const menu = document.getElementById(`country-filter-menu-${filterKey}`);
+                const button = document.getElementById(`country-filter-button-${filterKey}`);
+                if (!menu || !button) return;
+                const isOpen = openCountryFilter === filterKey;
+                menu.hidden = !isOpen;
+                button.setAttribute('aria-expanded', String(isOpen));
+                if (isOpen) document.getElementById(`country-filter-search-${filterKey}`)?.focus();
+            });
+        }
+
+        function updateCountryFilterOptions(key, searchTerm) {
+            const options = document.getElementById(`country-filter-options-${key}`);
+            if (options) options.innerHTML = renderCountryFilterOptions(key, searchTerm);
+        }
+
+        function selectCountryFilter(key, code) {
+            if (!Object.prototype.hasOwnProperty.call(selectedCountryFilters, key)) return;
+            selectedCountryFilters[key] = normalizeCountryCode(code).toLowerCase();
+            openCountryFilter = null;
+            renderApp();
+        }
+
+        document.addEventListener('click', event => {
+            if (!openCountryFilter) return;
+            const container = document.getElementById(`country-filter-${openCountryFilter}`);
+            if (container && !container.contains(event.target)) toggleCountryFilterMenu(openCountryFilter);
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && openCountryFilter) toggleCountryFilterMenu(openCountryFilter);
+        });
 
         function openSupportModal() {
             const modal = document.getElementById('support-modal');
@@ -2320,6 +2481,7 @@
                     targetGoal: 12000,
                     amountRaised: 9400,
                     coverImage: 'assets/ong3',
+                    country: 'ke',
                     status: 'Active'
                 },
                 {
@@ -2329,6 +2491,7 @@
                     targetGoal: 28000,
                     amountRaised: 28000,
                     coverImage: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800',
+                    country: 'ke',
                     status: 'Completed'
                 },
                 {
@@ -2338,6 +2501,7 @@
                     targetGoal: 15000,
                     amountRaised: 6200,
                     coverImage: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800',
+                    country: 'ke',
                     status: 'Active'
                 }
             ],
@@ -2597,6 +2761,7 @@
                     targetGoal: 12000,
                     amountRaised: 9400,
                     location: 'Kitui, Kenya',
+                    country: 'ke',
                     averageOverhead: 6,
                     verifiedStatus: 'Audited & Verified',
                     coverImage: 'assets/ong3',
@@ -2613,6 +2778,7 @@
                     targetGoal: 28000,
                     amountRaised: 28000,
                     location: 'Garissa, Kenya',
+                    country: 'ke',
                     averageOverhead: 6,
                     verifiedStatus: 'Audited & Verified',
                     coverImage: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800',
@@ -2629,6 +2795,7 @@
                     targetGoal: 8500,
                     amountRaised: 4100,
                     location: 'Malindi, Kenya',
+                    country: 'ke',
                     averageOverhead: 8,
                     verifiedStatus: 'Audited & Verified',
                     coverImage: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800',
@@ -2800,6 +2967,7 @@
                         {
                             id: 'cleanwater_event_cleanup',
                             image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=1200',
+                            country: 'ke',
                             going: 42,
                             interested: 18,
                             response: null
@@ -3096,6 +3264,7 @@
                 objective: 'Help educators use accessible digital tools to strengthen learning in rural classrooms.',
                 objectiveEs: 'Ayudar a los educadores a usar herramientas digitales accesibles para fortalecer el aprendizaje en aulas rurales.',
                 image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200',
+                country: 'ke',
                 going: 31,
                 interested: 12
             }],
@@ -3512,7 +3681,7 @@
                     <section class="inbox-conversation-panel flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-subtle dark:border-slate-800 dark:bg-slate-900" aria-label="Conversation list">
                         <div id="inbox-conversation-list" class="min-h-0 flex-1 overflow-y-auto"></div>
                     </section>
-                    <section class="inbox-chat-panel flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-subtle dark:border-slate-800 dark:bg-slate-900" aria-label="Chat">
+                    <section class="inbox-chat-panel flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-subtle dark:border-slate-800 dark:bg-slate-900" aria-label="Conversation area">
                         <div id="inbox-chat-content" class="flex min-h-0 flex-1 flex-col"></div>
                     </section>
                     <aside class="inbox-profile-panel min-h-0 overflow-y-auto rounded-xl border border-slate-200 bg-white p-5 shadow-subtle dark:border-slate-800 dark:bg-slate-900" aria-label="Contact profile">
@@ -3602,6 +3771,7 @@
             feed: 'home',
             groups: 'groups',
             projects: 'browse',
+            'projects-events': 'browse',
             discover: 'browse'
         });
 
@@ -3624,6 +3794,7 @@
                 || (screen === 'browse' && exploreTab !== nextExploreTab);
             currentScreen = screen;
             if (screen === 'browse') exploreTab = nextExploreTab;
+            if (route === 'projects-events') activityTab = 'events';
             if (routeChanged) renderApp();
         }
 
@@ -3681,6 +3852,16 @@
             renderApp();
         }
 
+        function openUpcomingEvents(event) {
+            if (event) event.preventDefault();
+            navigateTo('browse');
+            setActivityTab('events');
+            window.location.hash = 'projects-events';
+            window.setTimeout(() => {
+                document.getElementById('app-canvas')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 0);
+        }
+
         function renderActivityTabs() {
             return `
                 <nav aria-label="${t('browse_title')}" class="mt-6 flex flex-wrap gap-2">
@@ -3717,6 +3898,11 @@
                         <div>
                             <label id="create-project-location-label" for="create-project-location" class="block text-xs font-bold text-slate-700">${t('create_project_location_label')}</label>
                             <input id="create-project-location" name="location" type="text" required maxlength="160" placeholder="${t('create_project_location_placeholder')}" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <div>
+                            <label id="create-project-country-label" class="block text-xs font-bold text-slate-700">${t('create_country_label')}</label>
+                            <input id="create-project-country-value" type="hidden" name="country">
+                            <div id="create-project-country-dropdown" class="relative mt-1.5">${getOptionalCountryDropdownHtml('create-project-country')}</div>
                         </div>
                         <div>
                             <label id="create-project-organization-label" for="create-project-organization" class="block text-xs font-bold text-slate-700">${t('create_project_organization_label')}</label>
@@ -3756,6 +3942,7 @@
                 'create-project-modal-title': 'create_project_modal_title',
                 'create-project-title-label': 'create_project_title_label',
                 'create-project-location-label': 'create_project_location_label',
+                'create-project-country-label': 'create_country_label',
                 'create-project-organization-label': 'create_project_organization_label',
                 'create-project-cover-label': 'create_project_cover_label',
                 'create-project-cover-upload-label': 'create_project_cover_upload',
@@ -3766,6 +3953,11 @@
             Object.entries(labels).forEach(([id, key]) => {
                 document.getElementById(id).textContent = t(key);
             });
+            const countryDropdown = document.getElementById('create-project-country-dropdown');
+            if (countryDropdown) {
+                const countryCode = document.getElementById('create-project-country-value').value;
+                countryDropdown.innerHTML = getOptionalCountryDropdownHtml('create-project-country', countryCode);
+            }
             document.getElementById('create-project-cover-file').setAttribute('aria-label', t('create_project_cover_label'));
             document.getElementById('create-project-cover-preview').alt = t('create_project_cover_label');
             document.getElementById('create-project-close').setAttribute('aria-label', t('close'));
@@ -3838,6 +4030,7 @@
                 id: `proj_created_${Date.now()}`,
                 title,
                 location,
+                country: String(formData.get('country') || '').toLowerCase(),
                 region: projectRegion({ location }),
                 category: locales.en.create_project_category,
                 categoryEs: locales.es.create_project_category,
@@ -4258,10 +4451,8 @@
                 return `
                     <article class="rounded-xl border border-slate-200 p-4">
                         <div class="flex items-start gap-3">
-                            <span class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary-50 text-primary-700">
-                                ${getGroupCountryIcon(group)
-                                    ? getGroupCountryIcon(group)
-                                    : group.avatar || group.banner
+                            <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-primary-50 text-primary-700">
+                                ${group.avatar || group.banner
                                     ? `<img src="${escapeHTML(group.avatar || group.banner)}" alt="" class="h-full w-full object-cover">`
                                     : '<i class="fa-solid fa-people-group" aria-hidden="true"></i>'}
                             </span>
@@ -5766,7 +5957,7 @@
             document.getElementById('inbox-active-tab').textContent = t('inbox_active');
             document.getElementById('inbox-pending-tab').textContent = t('inbox_pending');
             document.querySelector('.inbox-conversation-panel').setAttribute('aria-label', currentLang === 'es' ? 'Lista de conversaciones' : 'Conversation list');
-            document.querySelector('.inbox-chat-panel').setAttribute('aria-label', currentLang === 'es' ? 'Chat' : 'Chat');
+            document.querySelector('.inbox-chat-panel').setAttribute('aria-label', currentLang === 'es' ? 'Área de conversación' : 'Conversation area');
             document.querySelector('.inbox-profile-panel').setAttribute('aria-label', currentLang === 'es' ? 'Perfil del contacto' : 'Contact profile');
             ['active', 'pending'].forEach(filter => {
                 const tab = document.getElementById(`inbox-${filter}-tab`);
@@ -6146,6 +6337,11 @@
                             <input id="create-group-event-location" name="location" type="text" required maxlength="160" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
                         </div>
                         <div>
+                            <label for="create-group-event-country-value" class="block text-xs font-bold text-slate-700">${t('create_country_label')}</label>
+                            <input id="create-group-event-country-value" type="hidden" name="country">
+                            <div id="create-group-event-country-dropdown" class="relative mt-1.5">${getOptionalCountryDropdownHtml('create-group-event-country')}</div>
+                        </div>
+                        <div>
                             <label for="create-group-event-cover-file" class="block text-xs font-bold text-slate-700">${t('group_create_event_cover_label')}</label>
                             <input id="create-group-event-cover-value" type="hidden" name="image">
                             <label for="create-group-event-cover-file" class="mt-2 block text-xs font-semibold text-slate-600">${t('group_image_upload')}</label>
@@ -6264,6 +6460,7 @@
                 dateTime: new Intl.DateTimeFormat(locale, dateTimeOptions).format(eventDate),
                 location,
                 summary,
+                country: String(formData.get('country') || '').toLowerCase(),
                 image: String(formData.get('image') || DEFAULT_EVENT_COVER_IMAGE),
                 going: 0,
                 interested: 0,
@@ -6432,7 +6629,10 @@
                     </main>
                     <aside aria-label="${t('home_feed_suggestions')}" class="hidden space-y-6 lg:col-span-3 lg:block">
                         <section aria-labelledby="home-feed-events-title" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle">
-                            <h2 id="home-feed-events-title" class="mb-3 text-sm font-extrabold text-slate-900">${t('home_feed_upcoming_events')}</h2>
+                            <div class="mb-3 flex items-center justify-between gap-3">
+                                <h2 id="home-feed-events-title" class="text-sm font-extrabold text-slate-900">${t('home_feed_upcoming_events')}</h2>
+                                <button type="button" onclick="openUpcomingEvents(event)" class="shrink-0 text-xs font-bold text-primary-700 hover:text-primary-900">${t('home_feed_see_all_events')}</button>
+                            </div>
                             <ul class="space-y-3">
                                 ${upcomingFeedEvents.length ? upcomingFeedEvents.map(({ group, event }) => `
                                     <li class="flex gap-3">
@@ -6648,7 +6848,10 @@
                 { id: 'community', label: t('group_filter_community') },
                 { id: 'project', label: t('group_filter_project') }
             ];
-            const visibleGroups = state.groups.filter(item => state.groupFilter === 'all' || item.type === state.groupFilter);
+            const visibleGroups = state.groups.filter(item =>
+                (state.groupFilter === 'all' || item.type === state.groupFilter)
+                && (!selectedCountryFilters.groups || getCountryCode(item.country, item.location) === selectedCountryFilters.groups)
+            );
 
             canvas.innerHTML = `
                 <section class="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
@@ -6658,9 +6861,12 @@
                             <h1 class="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">${t('group_page_title')}</h1>
                             <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">${t('group_page_description')}</p>
                         </div>
-                        <button type="button" onclick="openCreateGroupModal()" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-bold text-white shadow-card transition-colors hover:bg-primary-700">
-                            <i class="fa-solid fa-plus"></i> ${t('group_create')}
-                        </button>
+                        <div class="flex flex-wrap items-center gap-2">
+                            ${renderCountryFilter('groups')}
+                            <button type="button" onclick="openCreateGroupModal()" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-bold text-white shadow-card transition-colors hover:bg-primary-700">
+                                <i class="fa-solid fa-plus"></i> ${t('group_create')}
+                            </button>
+                        </div>
                     </div>
 
                     <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="${currentLang === 'es' ? 'Filtrar grupos' : 'Filter groups'}">
@@ -6675,6 +6881,7 @@
                                 <article role="button" tabindex="0" aria-label="${currentLang === 'es' ? 'Abrir grupo' : 'Open group'} ${escapeHTML(groupText(item, 'name'))}" onclick="openGroup('${item.id}')" onkeydown="if(event.key === 'Enter' || event.key === ' '){event.preventDefault();openGroup('${item.id}');}" class="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card text-left transition-all hover:-translate-y-1 hover:shadow-glass">
                                     <div class="relative ${['group_cleanwater_official', 'group_senior_care'].includes(item.id) ? 'h-48' : 'h-40'} bg-slate-200">
                                         <img src="${escapeHTML(item.banner)}" alt="${item.id === 'group_cleanwater_official' ? 'Solar Panels CleanWater' : item.id === 'group_senior_care' ? (currentLang === 'es' ? 'Cuidado de Abuelitos' : 'Senior Care') : ''}" ${item.id === 'group_senior_care' ? `onerror="this.onerror=null; this.src='https://picsum.photos/id/1025/800/500';"` : ''} class="${['group_cleanwater_official', 'group_senior_care'].includes(item.id) ? 'w-full h-48 object-cover rounded-t-xl' : 'h-full w-full object-cover'}">
+                                        ${getGroupCountryIcon(item) ? `<span class="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-2 ring-white shadow-md">${getGroupCountryIcon(item)}</span>` : ''}
                                         ${item.type && item.visibility ? `
                                             <div class="absolute right-3 top-3 flex flex-col items-end gap-2">
                                                 <span class="rounded-full border border-white/30 bg-slate-950/70 px-3 py-1 text-[10px] font-bold text-white backdrop-blur">${t(item.visibility === 'Comunidad' ? 'group_visibility_community' : 'group_visibility_open')} · ${t(`group_type_${item.type}`)}</span>
@@ -6683,11 +6890,9 @@
                                     </div>
                                     <div class="p-5">
                                         <div class="flex items-center gap-3">
-                                            ${getGroupCountryIcon(item)
-                                                ? `<span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-50 text-primary-700 ring-1 ring-slate-200 dark:ring-slate-700 overflow-hidden">${getGroupCountryIcon(item)}</span>`
-                                                : item.avatar
-                                                    ? `<img src="${escapeHTML(item.avatar)}" alt="" aria-hidden="true" class="h-12 w-12 shrink-0 rounded-full border border-slate-200 bg-white object-cover">`
-                                                    : '<span aria-hidden="true" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-primary-700"><i class="fa-solid fa-people-group"></i></span>'}
+                                            ${item.avatar || item.banner
+                                                ? `<img src="${escapeHTML(item.avatar || item.banner)}" alt="" aria-hidden="true" class="h-12 w-12 shrink-0 rounded-xl border border-slate-200 bg-white object-cover">`
+                                                : '<span aria-hidden="true" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-primary-700"><i class="fa-solid fa-people-group"></i></span>'}
                                             <div class="min-w-0">
                                                 ${item.category ? `<p class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-600">${escapeHTML(groupText(item, 'category'))}</p>` : ''}
                                                 <div class="flex flex-wrap items-center gap-2">
@@ -7806,10 +8011,23 @@
     <script>
         function getNGODirectoryEntries() {
             const organizations = new Map();
+            const countryCodesByLocation = {
+                'Kenya': 'ke',
+                'Ghana': 'gh',
+                'Uganda': 'ug',
+                'Guatemala': 'gt',
+                'Texas': 'us',
+                'Venezuela': 've',
+                'Laos': 'la',
+                'Malindi': 'ke'
+            };
 
             state.projects.forEach(project => {
                 if (!project.ngoId || !project.ngoName) return;
                 if (!organizations.has(project.ngoId)) {
+                    const locationCountry = Object.keys(countryCodesByLocation).find(country =>
+                        String(project.location || '').toLowerCase().includes(country.toLowerCase())
+                    );
                     organizations.set(project.ngoId, {
                         id: project.ngoId,
                         name: project.ngoName,
@@ -7817,6 +8035,8 @@
                         coverImage: project.coverImage,
                         categoryKey: 'nonprofit_organization',
                         location: project.location || '',
+                        country: getCountryCode(project.country, project.location)
+                            || (locationCountry ? countryCodesByLocation[locationCountry] : ''),
                         description: localizedProjectText(project, 'description'),
                         verified: project.verifiedStatus === 'Audited & Verified',
                         projects: []
@@ -7830,6 +8050,7 @@
                 cleanWater.logo = ngoData.logoUrl;
                 cleanWater.coverImage = ngoData.coverImage;
                 cleanWater.location = `${ngoData.city}, ${ngoData.country}`;
+                cleanWater.country = 'ke';
                 cleanWater.description = currentLang === 'es'
                     ? 'Impulsa a las comunidades rurales de África Oriental con redes de agua solar y seguimiento financiero verificable.'
                     : ngoData.tagline;
@@ -7843,6 +8064,7 @@
                     logo: '💧',
                     coverImage: 'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1200',
                     location: currentLang === 'es' ? 'Kitui, Kenia' : 'Kitui, Kenya',
+                    country: 'ke',
                     description: currentLang === 'es'
                         ? 'Apoya a las comunidades rurales con acceso sostenible al agua potable y soluciones lideradas localmente.'
                         : 'Supports rural communities with sustainable access to clean water and locally led solutions.'
@@ -7854,6 +8076,7 @@
                     logo: '🏠',
                     coverImage: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200',
                     location: currentLang === 'es' ? 'Nairobi, Kenia' : 'Nairobi, Kenya',
+                    country: 'ke',
                     description: currentLang === 'es'
                         ? 'Crea entornos seguros y brinda atención integral a niños y familias.'
                         : 'Creates safe environments and provides comprehensive care for children and families.'
@@ -7865,6 +8088,7 @@
                     logo: '✊',
                     coverImage: 'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=1200',
                     location: currentLang === 'es' ? 'Ciudad de Guatemala, Guatemala' : 'Guatemala City, Guatemala',
+                    country: 'gt',
                     description: currentLang === 'es'
                         ? 'Moviliza a jóvenes para impulsar la participación cívica y el liderazgo comunitario.'
                         : 'Mobilizes young people to advance civic participation and community leadership.'
@@ -7876,6 +8100,7 @@
                     logo: '🤝',
                     coverImage: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200',
                     location: currentLang === 'es' ? 'Global' : 'Worldwide',
+                    country: '',
                     description: currentLang === 'es'
                         ? 'Conecta a personas voluntarias con iniciativas locales de impacto social.'
                         : 'Connects volunteers with local initiatives making a social impact.'
@@ -7887,6 +8112,7 @@
                     logo: '🌱',
                     coverImage: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200',
                     location: currentLang === 'es' ? 'Kampala, Uganda' : 'Kampala, Uganda',
+                    country: 'ug',
                     description: currentLang === 'es'
                         ? 'Desarrolla soluciones sostenibles que combinan innovación ambiental e inclusión económica.'
                         : 'Develops sustainable solutions combining environmental innovation and economic inclusion.'
@@ -7898,6 +8124,7 @@
                     logo: '📚',
                     coverImage: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200',
                     location: currentLang === 'es' ? 'Accra, Ghana' : 'Accra, Ghana',
+                    country: 'gh',
                     description: currentLang === 'es'
                         ? 'Amplía el acceso a una educación de calidad con programas de aprendizaje comunitarios.'
                         : 'Expands access to quality education through community-led learning programs.'
@@ -7953,9 +8180,10 @@
                 volunteer_network: 'bg-amber-50 text-amber-700 ring-amber-200',
                 social_enterprise: 'bg-teal-50 text-teal-700 ring-teal-200'
             };
-            const visibleOrganizations = selectedNGODirectoryCategory
-                ? organizations.filter(organization => organization.categoryKey === selectedNGODirectoryCategory)
-                : organizations;
+            const visibleOrganizations = organizations.filter(organization =>
+                (!selectedNGODirectoryCategory || organization.categoryKey === selectedNGODirectoryCategory)
+                && (!selectedCountryFilters.discover || getCountryCode(organization.country, organization.location) === selectedCountryFilters.discover)
+            );
             canvas.innerHTML = `
                 <div class="mx-auto max-w-7xl space-y-7 px-4 py-8 sm:px-6 lg:px-8">
                     <section>
@@ -7964,12 +8192,15 @@
                             <h1 class="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">${t('ngo_directory_title')}</h1>
                             <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">${t('ngo_directory_description')}</p>
                         </header>
-                        <nav aria-label="${t('ngo_directory_filters')}" class="mb-5 flex gap-2 overflow-x-auto pb-2">
-                            ${filters.map(filter => {
-                                const isActive = selectedNGODirectoryCategory === filter.key;
-                                return `<button type="button" aria-pressed="${isActive}" onclick="selectNGODirectoryCategory(${filter.key === null ? 'null' : `'${filter.key}'`})" class="shrink-0 rounded-full border px-4 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${isActive ? 'border-primary-600 bg-primary-600 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700'}">${t(filter.labelKey)}</button>`;
-                            }).join('')}
-                        </nav>
+                        <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
+                            <nav aria-label="${t('ngo_directory_filters')}" class="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-2">
+                                ${filters.map(filter => {
+                                    const isActive = selectedNGODirectoryCategory === filter.key;
+                                    return `<button type="button" aria-pressed="${isActive}" onclick="selectNGODirectoryCategory(${filter.key === null ? 'null' : `'${filter.key}'`})" class="shrink-0 rounded-full border px-4 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${isActive ? 'border-primary-600 bg-primary-600 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700'}">${t(filter.labelKey)}</button>`;
+                                }).join('')}
+                            </nav>
+                            ${renderCountryFilter('discover')}
+                        </div>
                         <p class="mb-4 text-xs font-mono font-semibold text-slate-500">${visibleOrganizations.length} ${currentLang === 'es' ? 'organización' : (visibleOrganizations.length === 1 ? 'organization' : 'organizations')}</p>
                         ${visibleOrganizations.length ? `
                             <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -7980,6 +8211,7 @@
                                             <div class="relative h-28 shrink-0 overflow-hidden bg-slate-100">
                                                 <img src="${escapeHTML(organization.coverImage || '')}" alt="" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
                                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950/25 to-transparent"></div>
+                                                ${organization.country ? `<img src="https://flagcdn.com/${organization.country.toLowerCase()}.svg" alt="${escapeHTML(countryName(organization.country.toUpperCase()))}" loading="lazy" class="absolute bottom-2.5 right-2.5 z-10 w-7 h-7 rounded-full object-cover shadow-md ring-2 ring-white">` : ''}
                                             </div>
                                             <div class="flex flex-1 flex-col p-5 pt-0">
                                                 <div class="relative z-10 -mt-8 mb-3 flex items-end justify-between gap-3">
@@ -9457,18 +9689,6 @@
                             <h3 id="profile-activity-title" class="text-lg font-black tracking-tight text-slate-900">${t('profile_activity_title')}</h3>
                             <p class="mt-1 text-xs text-slate-500">${t('profile_activity_subtitle')}</p>
                         </div>
-                        <form onsubmit="publishProfilePost(event)" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/60">
-                            <div class="flex items-start gap-3">
-                                <img src="${escapeHTML(user.avatar || '')}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover">
-                                <textarea id="profile-post-content" name="post" rows="2" maxlength="1000" placeholder="${t('profile_post_placeholder')}" class="min-h-[5rem] w-full resize-y rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-primary-400 focus:ring-2 focus:ring-primary-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:focus:ring-primary-900"></textarea>
-                            </div>
-                            <div class="mt-3 flex items-center justify-between gap-3 pl-0 sm:pl-[3.25rem]">
-                                <p id="profile-post-status" class="text-xs text-slate-500" aria-live="polite"></p>
-                                <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-primary-600 px-4 py-2 text-xs font-bold text-white transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
-                                    <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>${t('profile_post_publish')}
-                                </button>
-                            </div>
-                        </form>
                         <div id="profile-activity-feed" class="space-y-4" role="feed" aria-label="${t('profile_activity_title')}"></div>
                     </section>`}
 
@@ -10529,6 +10749,9 @@
             const scheduledEvents = state.groups.flatMap(group =>
                 (group.upcomingEvents || []).map(event => ({ group, event }))
             );
+            const visibleScheduledEvents = scheduledEvents.filter(({ event }) =>
+                !selectedCountryFilters.projects || getCountryCode(event.country, event.location) === selectedCountryFilters.projects
+            );
             const renderBrowseEventCard = ({ group, event }) => {
                 const responseLabel = event.response === 'going'
                     ? t('group_event_going')
@@ -10537,17 +10760,21 @@
                         : t('group_event_join');
 
                 return `
-                    <article id="browse-event-card-${escapeHTML(group.id)}-${escapeHTML(event.id)}" tabindex="0" aria-label="${t('event_details_open')}: ${escapeHTML(groupEventText(event, 'title'))}" aria-haspopup="dialog" onclick="openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this)" onkeydown="if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this); }" class="group flex h-[22rem] w-full max-w-sm cursor-pointer flex-col overflow-hidden rounded-2xl border-2 border-slate-200/80 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:border-primary-300 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
-                        <span class="relative block h-40 shrink-0 overflow-hidden bg-slate-100">
-                            <img src="${escapeHTML(event.image)}" alt="${escapeHTML(groupEventText(event, 'title'))}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                    <article id="browse-event-card-${escapeHTML(group.id)}-${escapeHTML(event.id)}" tabindex="0" aria-label="${t('event_details_open')}: ${escapeHTML(groupEventText(event, 'title'))}" aria-haspopup="dialog" onclick="openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this)" onkeydown="if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this); }" class="group flex h-full w-full max-w-sm cursor-pointer flex-col rounded-2xl border-2 border-slate-200/80 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:border-primary-300 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                        <span class="relative block h-44 w-full shrink-0 overflow-hidden bg-slate-100">
+                            <img src="${escapeHTML(event.image)}" alt="${escapeHTML(groupEventText(event, 'title'))}" class="h-44 w-full shrink-0 object-cover transition-transform duration-300 group-hover:scale-105">
                             <span class="absolute left-3 top-3 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-subtle backdrop-blur-sm">
                                 ${escapeHTML(groupEventText(event, 'dateShort'))}
                             </span>
+                            ${event.country ? countryFlagImage(event.country, 'absolute bottom-2.5 left-2.5 z-10 w-7 h-7 rounded-full object-cover shadow-md ring-2 ring-white') : ''}
                         </span>
-                        <div class="flex min-h-0 flex-1 flex-col p-4">
-                            <h3 class="line-clamp-2 text-sm font-bold leading-snug text-slate-900">${escapeHTML(groupEventText(event, 'title'))}</h3>
-                            <p class="mt-1 truncate text-xs font-medium leading-normal text-slate-500">${t('project_by')} ${escapeHTML(groupText(group, 'name'))}</p>
-                            <p class="mt-3 line-clamp-2 text-[11px] leading-relaxed text-slate-500">${escapeHTML(groupEventText(event, 'dateTime'))} · ${escapeHTML(groupEventText(event, 'location'))}</p>
+                        <div class="flex flex-1 flex-col justify-between p-5">
+                            <h3 class="mb-3 text-sm font-bold leading-snug text-slate-900">${escapeHTML(groupEventText(event, 'title'))}</h3>
+                            <div class="space-y-1.5">
+                                <p class="text-xs font-medium leading-normal text-slate-500">${t('project_by')} ${escapeHTML(groupText(group, 'name'))}</p>
+                                <p class="text-[11px] leading-relaxed text-slate-500">${escapeHTML(groupEventText(event, 'dateTime'))}</p>
+                                <p class="text-[11px] leading-relaxed text-slate-500">${escapeHTML(groupEventText(event, 'location'))}</p>
+                            </div>
                             <div class="mt-auto flex items-center justify-between gap-2 pt-3">
                                 <button type="button" aria-haspopup="dialog" aria-label="${t('group_event_join')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="event.stopPropagation(); openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this)" class="rounded-full px-3 py-1 text-[10px] font-bold transition-colors ${event.response === 'going' ? 'bg-emerald-100 text-emerald-800' : 'bg-primary-600 text-white hover:bg-primary-700'}">${responseLabel}</button>
                                 <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-slate-600">EVENT</span>
@@ -10573,14 +10800,17 @@
                                 <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
                                 <p class="text-xs text-slate-500">${t('browse_subtitle')}</p>
                             </div>
-                            <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
+                            <div class="flex flex-wrap items-center gap-2">
+                                ${renderCountryFilter('projects')}
+                                <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
+                            </div>
                         </header>
                         ${renderActivityTabs()}
                         <section aria-labelledby="browse-events-title">
                             <h2 id="browse-events-title" class="mb-4 text-xs font-black uppercase tracking-widest text-slate-800">${t('group_upcoming_events_title')}</h2>
-                            ${scheduledEvents.length ? `
+                            ${visibleScheduledEvents.length ? `
                                 <div class="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-                                    ${scheduledEvents.map(renderBrowseEventCard).join('')}
+                                    ${visibleScheduledEvents.map(renderBrowseEventCard).join('')}
                                 </div>
                             ` : `<p class="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">${t('browse_events_empty')}</p>`}
                         </section>
@@ -10610,14 +10840,16 @@
                 return [translatedCountry, ...locationParts].join(' · ');
             }
 
-            const visibleProjects = state.projects;
+            const visibleProjects = state.projects.filter(project =>
+                !selectedCountryFilters.projects || getCountryCode(project.country, project.location) === selectedCountryFilters.projects
+            );
             const browseItems = activityTab === 'all'
-                ? Array.from({ length: Math.max(visibleProjects.length, scheduledEvents.length) }, (_, index) => [
+                ? Array.from({ length: Math.max(visibleProjects.length, visibleScheduledEvents.length) }, (_, index) => [
                     ...(visibleProjects[index] ? [{ type: 'project', project: visibleProjects[index] }] : []),
-                    ...(scheduledEvents[index] ? [{ type: 'event', event: scheduledEvents[index] }] : [])
+                    ...(visibleScheduledEvents[index] ? [{ type: 'event', event: visibleScheduledEvents[index] }] : [])
                 ]).flat()
                 : visibleProjects.map(project => ({ type: 'project', project }));
-            const selectedProject = state.projects.find(proj => proj.id === state.selectedBrowseProjectId);
+            const selectedProject = visibleProjects.find(proj => proj.id === state.selectedBrowseProjectId);
             const renderProjectDetailPanel = (panelId, titleId, volunteerRoleId, className, includeImage) => {
                 const volunteerCommitment = state.projectVolunteers.find(item => item.projectId === selectedProject.id);
                 const fundingProgress = selectedProject.targetGoal > 0
@@ -10690,6 +10922,7 @@
                             <p class="text-xs text-slate-500">${t('browse_subtitle')}</p>
                         </div>
                         <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+                            ${renderCountryFilter('projects')}
                             <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
                             <div id="browse-search-container" class="relative flex w-full items-center space-x-2 sm:w-auto">
                             <input id="browse-project-search" type="search" value="${state.projectSearchTerm}" placeholder="Search by region or category..." aria-label="Search by region or category" aria-controls="browse-project-search-menu" aria-expanded="${state.projectSearchOpen}" onfocus="setBrowseSearchOpen(true)" oninput="filterBrowseProjects(this.value)" class="w-full rounded-xl border border-slate-200 px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 sm:w-64">
@@ -10734,15 +10967,16 @@
                                     : proj.ngoName || proj.creatorName;
 
                                 return `
-                                <article id="browse-project-card-${escapeHTML(proj.id)}" data-browse-project-id="${escapeHTML(proj.id)}" tabindex="0" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" aria-haspopup="dialog" onclick="openProjectDetail('${escapeHTML(proj.id)}', this)" onkeydown="if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openProjectDetail('${escapeHTML(proj.id)}', this); }" class="group flex h-[22rem] w-full max-w-sm flex-col overflow-hidden rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
-                                    <button type="button" aria-haspopup="dialog" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); openProjectDetail('${escapeHTML(proj.id)}', this)" class="flex min-h-0 w-full flex-1 cursor-pointer flex-col text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500">
-                                        <span class="relative block h-40 w-full shrink-0 overflow-hidden bg-slate-100">
-                                            <img src="${escapeHTML(proj.coverImage)}" alt="${escapeHTML(localizedProjectText(proj, 'title'))}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                <article id="browse-project-card-${escapeHTML(proj.id)}" data-browse-project-id="${escapeHTML(proj.id)}" tabindex="0" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" aria-haspopup="dialog" onclick="openProjectDetail('${escapeHTML(proj.id)}', this)" onkeydown="if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openProjectDetail('${escapeHTML(proj.id)}', this); }" class="group flex h-full w-full max-w-sm flex-col rounded-2xl border-2 bg-white text-left shadow-subtle transition-all hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${state.selectedBrowseProjectId === proj.id ? 'border-primary-600 ring-2 ring-primary-100' : 'border-slate-200/80 hover:border-primary-300'}">
+                                    <button type="button" aria-haspopup="dialog" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); openProjectDetail('${escapeHTML(proj.id)}', this)" class="flex w-full flex-1 cursor-pointer flex-col text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500">
+                                        <span class="relative block h-44 w-full shrink-0 overflow-hidden bg-slate-100">
+                                            <img src="${escapeHTML(proj.coverImage)}" alt="${escapeHTML(localizedProjectText(proj, 'title'))}" class="h-44 w-full shrink-0 object-cover transition-transform duration-300 group-hover:scale-105">
                                             <span class="absolute left-3 top-3 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-subtle backdrop-blur-sm">
                                                 ${escapeHTML(formatProjectLocation(proj))}
                                             </span>
+                                            ${proj.country ? countryFlagImage(proj.country, 'absolute bottom-2.5 left-2.5 z-10 w-7 h-7 rounded-full object-cover shadow-md ring-2 ring-white') : ''}
                                         </span>
-                                        <span class="block min-h-0 flex-1 p-4 text-sm font-bold leading-snug text-slate-900">
+                                        <span class="block p-5 text-sm font-bold leading-snug text-slate-900">
                                             ${escapeHTML(localizedProjectText(proj, 'title'))}
                                             ${creatorName ? `<span class="mt-1 block text-xs font-medium leading-normal text-slate-500">${t('project_by')} ${escapeHTML(creatorName)}</span>` : ''}
                                         </span>
