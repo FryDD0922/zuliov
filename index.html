@@ -338,6 +338,11 @@
                 browse_project_view: "Ver Proyecto",
                 browse_share: "Compartir enlace",
                 browse_repost: "Republicar",
+                browse_created_by: "Creado por",
+                browse_organized_by: "Organizado por",
+                create_project_publish_under_label: "Publicar bajo un Grupo u ONG (opcional)",
+                create_project_publish_under_placeholder: "Sin selección / Organización escrita arriba",
+                group_create_event_publish_under_label: "Publicar bajo un Grupo u ONG (opcional)",
                 browse_share_success: "¡Enlace copiado!",
                 browse_share_error: "No se pudo copiar el enlace.",
                 browse_repost_project_text: "Proyecto compartido: {title}",
@@ -398,6 +403,21 @@
                 home_feed_profile_summary: "Resumen del perfil",
                 home_feed_profile_groups: "Grupos",
                 home_feed_profile_connections: "Conexiones",
+                home_feed_your_events: "Tus eventos",
+                home_feed_registered: "Registrado",
+                home_feed_saved: "Guardado",
+                home_feed_no_user_events: "Aún no tienes eventos",
+                home_feed_view_all_events: "Ver todo",
+                home_feed_events_modal_title: "Tus eventos",
+                home_feed_events_modal_description: "Consulta y administra tus eventos registrados y guardados.",
+                home_feed_event_registered_tab: "Registrados",
+                home_feed_event_saved_tab: "Guardados",
+                home_feed_view_event: "Ver evento",
+                home_feed_cancel_registration: "Cancelar registro",
+                home_feed_remove_saved_event: "Quitar",
+                home_feed_save_event: "Guardar",
+                home_feed_event_saved_action: "Guardado",
+                home_feed_event_save_error: "No se pudo actualizar tu evento. Inténtalo de nuevo.",
                 home_feed_your_groups: "Tus grupos",
                 home_feed_upcoming_events: "Próximos eventos",
                 home_feed_see_all_events: "Ver todo",
@@ -1087,6 +1107,11 @@
                 browse_project_view: "View Project",
                 browse_share: "Share link",
                 browse_repost: "Repost",
+                browse_created_by: "Created by",
+                browse_organized_by: "Organized by",
+                create_project_publish_under_label: "Publish under a Group or NGO (optional)",
+                create_project_publish_under_placeholder: "No selection / Organization entered above",
+                group_create_event_publish_under_label: "Publish under a Group or NGO (optional)",
                 browse_share_success: "Link copied!",
                 browse_share_error: "Could not copy the link.",
                 browse_repost_project_text: "Project shared: {title}",
@@ -1147,6 +1172,21 @@
                 home_feed_profile_summary: "Profile summary",
                 home_feed_profile_groups: "Groups",
                 home_feed_profile_connections: "Connections",
+                home_feed_your_events: "Your Events",
+                home_feed_registered: "Registered",
+                home_feed_saved: "Saved",
+                home_feed_no_user_events: "No events yet",
+                home_feed_view_all_events: "See all",
+                home_feed_events_modal_title: "Your Events",
+                home_feed_events_modal_description: "View and manage your registered and saved events.",
+                home_feed_event_registered_tab: "Registered",
+                home_feed_event_saved_tab: "Saved",
+                home_feed_view_event: "View event",
+                home_feed_cancel_registration: "Cancel registration",
+                home_feed_remove_saved_event: "Remove",
+                home_feed_save_event: "Save",
+                home_feed_event_saved_action: "Saved",
+                home_feed_event_save_error: "Your event could not be updated. Please try again.",
                 home_feed_your_groups: "Your Groups",
                 home_feed_upcoming_events: "Upcoming Events",
                 home_feed_see_all_events: "See all",
@@ -2083,7 +2123,7 @@
 
             return `
                 <div id="country-filter-${key}" class="relative shrink-0">
-                    <button type="button" id="country-filter-button-${key}" aria-label="${escapeHTML(buttonLabel)}" aria-expanded="${openCountryFilter === key}" aria-controls="country-filter-menu-${key}" onclick="toggleCountryFilterMenu('${key}')" class="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-300 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                    <button type="button" id="country-filter-button-${key}" aria-label="${escapeHTML(buttonLabel)}" aria-expanded="${openCountryFilter === key}" aria-controls="country-filter-menu-${key}" onclick="toggleCountryFilterMenu('${key}')" class="inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-300 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                         ${selectedCode ? `<img src="https://flagcdn.com/${selectedCode}.svg" alt="" class="h-4 w-6 rounded-sm object-cover shadow-sm">` : '<i class="fa-solid fa-globe text-slate-400" aria-hidden="true"></i>'}
                         <span>${escapeHTML(buttonLabel)}</span>
                         <i class="fa-solid fa-chevron-down text-[10px] text-slate-400" aria-hidden="true"></i>
@@ -2200,13 +2240,21 @@
             }
             updateLandingWaitlistModalCopy();
             if (document.getElementById('create-project-modal')) updateCreateProjectModalCopy();
+            if (document.getElementById('create-group-event-modal')) updateCreateGroupEventModalCopy();
             updateSupportModalCopy();
             if (!document.getElementById('inbox-modal').classList.contains('hidden')) renderInbox();
             if (document.getElementById('settings-modal')) renderSettingsModal();
             if (organizationProposalDraft) renderOrganizationProposalModal(organizationProposalDraft);
             if (document.getElementById('profile-groups-modal')) renderProfileGroupsModal();
             if (document.getElementById('profile-manage-modal')) renderProfileManageModal();
+            if (document.getElementById('user-events-modal')) renderUserEventsModal();
             if (document.getElementById('register-modal')) renderRegisterModal();
+            document.querySelectorAll('[data-created-by-label]').forEach(label => {
+                label.textContent = t('browse_created_by');
+            });
+            document.querySelectorAll('[data-organized-by-label]').forEach(label => {
+                label.textContent = t('browse_organized_by');
+            });
             if (document.getElementById('login-modal')) renderLoginModal();
             if (document.getElementById('connection-request-modal')) {
                 renderConnectionRequestModal(document.getElementById('connection-note')?.value || '');
@@ -2482,7 +2530,10 @@
                     amountRaised: 9400,
                     coverImage: 'assets/ong3',
                     country: 'ke',
-                    status: 'Active'
+                    status: 'Active',
+                    creatorId: 'sarah-donor',
+                    creatorName: 'Sarah Miller',
+                    creatorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400'
                 },
                 {
                     id: 'proj_solar_pump',
@@ -2492,7 +2543,10 @@
                     amountRaised: 28000,
                     coverImage: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800',
                     country: 'ke',
-                    status: 'Completed'
+                    status: 'Completed',
+                    creatorId: 'daniel-okafor',
+                    creatorName: 'Daniel Okafor',
+                    creatorAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120'
                 },
                 {
                     id: 'proj_school_sanitation',
@@ -2502,7 +2556,10 @@
                     amountRaised: 6200,
                     coverImage: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800',
                     country: 'ke',
-                    status: 'Active'
+                    status: 'Active',
+                    creatorId: 'elena-gomez',
+                    creatorName: 'Elena Gómez',
+                    creatorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120'
                 }
             ],
 
@@ -3378,11 +3435,56 @@
             }]
         };
 
+        function loadUserEventLists() {
+            const key = `zuliov-user-events-${state.currentUser.id}`;
+            try {
+                const storedLists = localStorage.getItem(key);
+                if (!storedLists) {
+                    return { registeredEventIds: [], savedEventIds: ['education_learning_workshop'] };
+                }
+                const parsedLists = JSON.parse(storedLists);
+                if (!Array.isArray(parsedLists.registeredEventIds) || !Array.isArray(parsedLists.savedEventIds)) {
+                    console.error('Stored user event lists have an invalid format.');
+                    return { registeredEventIds: [], savedEventIds: ['education_learning_workshop'] };
+                }
+                return {
+                    registeredEventIds: [...new Set(parsedLists.registeredEventIds.filter(id => typeof id === 'string'))],
+                    savedEventIds: [...new Set(parsedLists.savedEventIds.filter(id => typeof id === 'string'))]
+                };
+            } catch (error) {
+                console.error('Unable to read user event lists.', error);
+                return { registeredEventIds: [], savedEventIds: ['education_learning_workshop'] };
+            }
+        }
+
+        const storedUserEventLists = loadUserEventLists();
+        let savedUserEventIds = storedUserEventLists.savedEventIds;
+
+        function persistUserEventLists() {
+            const registeredEventIds = state.groups.flatMap(group => group.upcomingEvents || [])
+                .filter(event => event.response === 'going')
+                .map(event => event.id);
+            try {
+                localStorage.setItem(`zuliov-user-events-${state.currentUser.id}`, JSON.stringify({
+                    registeredEventIds: [...new Set(registeredEventIds)],
+                    savedEventIds: [...new Set(savedUserEventIds)]
+                }));
+                return true;
+            } catch (error) {
+                console.error('Unable to save user event lists.', error);
+                showToast(t('home_feed_event_save_error'), 'error');
+                return false;
+            }
+        }
+
         state.groups.forEach(group => {
             group.upcomingEvents = [
                 ...(group.upcomingEvents || []),
                 ...(groupUpcomingEventData[group.id] || []).map(event => ({ ...event, response: null }))
             ];
+            group.upcomingEvents.forEach(event => {
+                if (storedUserEventLists.registeredEventIds.includes(event.id)) event.response = 'going';
+            });
             group.eventPosts = (group.posts || []).filter(post => post.eventId);
             group.posts = (group.posts || []).filter(post => !post.eventId);
             group.upcomingEvents.forEach((event, index) => {
@@ -3862,9 +3964,9 @@
             }, 0);
         }
 
-        function renderActivityTabs() {
+        function renderActivityTabs(className = 'mt-6 flex flex-wrap gap-2') {
             return `
-                <nav aria-label="${t('browse_title')}" class="mt-6 flex flex-wrap gap-2">
+                <nav aria-label="${t('browse_title')}" class="${className}">
                     <button type="button" onclick="setActivityTab('all')" aria-pressed="${activityTab === 'all'}" class="rounded-full px-5 py-2.5 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${activityTab === 'all' ? 'bg-primary-600 text-white shadow-subtle' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">${t('activity_tab_all')}</button>
                     <button type="button" onclick="setActivityTab('projects')" aria-pressed="${activityTab === 'projects'}" class="rounded-full px-5 py-2.5 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${activityTab === 'projects' ? 'bg-primary-600 text-white shadow-subtle' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">${t('activity_tab_projects')}</button>
                     <button type="button" onclick="setActivityTab('events')" aria-pressed="${activityTab === 'events'}" class="rounded-full px-5 py-2.5 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${activityTab === 'events' ? 'bg-primary-600 text-white shadow-subtle' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">${t('activity_tab_events')}</button>
@@ -3874,6 +3976,17 @@
 
         let createProjectReturnFocus = null;
         const DEFAULT_PROJECT_COVER_IMAGE = 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200';
+
+        function getPublishOrganizationOptions(selectedValue = '') {
+            const options = state.groups.map(group => ({ value: `group:${group.id}`, label: group.name }))
+                .concat(Array.from(new Map(state.projects
+                    .filter(project => project.ngoId && project.ngoName)
+                    .map(project => [project.ngoId, { value: `ngo:${project.ngoId}`, label: project.ngoName }]))
+                    .values()));
+            return [`<option value="">${escapeHTML(t('create_project_publish_under_placeholder'))}</option>`]
+                .concat(options.map(option => `<option value="${escapeHTML(option.value)}"${selectedValue === option.value ? ' selected' : ''}>${escapeHTML(option.label)}</option>`))
+                .join('');
+        }
 
         function openCreateProjectModal(trigger) {
             if (document.getElementById('create-project-modal')) return;
@@ -3907,6 +4020,12 @@
                         <div>
                             <label id="create-project-organization-label" for="create-project-organization" class="block text-xs font-bold text-slate-700">${t('create_project_organization_label')}</label>
                             <input id="create-project-organization" name="organization" type="text" required maxlength="120" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <div>
+                            <label id="create-project-publish-under-label" for="create-project-publish-under" class="block text-xs font-bold text-slate-700">${t('create_project_publish_under_label')}</label>
+                            <select id="create-project-publish-under" name="publishUnder" class="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                                ${getPublishOrganizationOptions()}
+                            </select>
                         </div>
                         <div>
                             <label id="create-project-cover-label" for="create-project-cover-file" class="block text-xs font-bold text-slate-700">${t('create_project_cover_label')}</label>
@@ -3944,6 +4063,7 @@
                 'create-project-location-label': 'create_project_location_label',
                 'create-project-country-label': 'create_country_label',
                 'create-project-organization-label': 'create_project_organization_label',
+                'create-project-publish-under-label': 'create_project_publish_under_label',
                 'create-project-cover-label': 'create_project_cover_label',
                 'create-project-cover-upload-label': 'create_project_cover_upload',
                 'create-project-description-label': 'create_project_description_label',
@@ -3962,6 +4082,10 @@
             document.getElementById('create-project-cover-preview').alt = t('create_project_cover_label');
             document.getElementById('create-project-close').setAttribute('aria-label', t('close'));
             document.getElementById('create-project-location').placeholder = t('create_project_location_placeholder');
+            const publishUnder = document.getElementById('create-project-publish-under');
+            if (publishUnder) {
+                publishUnder.innerHTML = getPublishOrganizationOptions(publishUnder.value);
+            }
         }
 
         function handleCreateProjectCoverImageChange(event) {
@@ -4026,6 +4150,11 @@
                 return;
             }
 
+            const publishUnder = String(formData.get('publishUnder') || '');
+            const [publishType, publishId] = publishUnder.split(':');
+            const selectedGroup = publishType === 'group' ? state.groups.find(group => group.id === publishId) : null;
+            const selectedNgo = publishType === 'ngo' ? state.projects.find(project => project.ngoId === publishId) : null;
+
             state.projects.unshift({
                 id: `proj_created_${Date.now()}`,
                 title,
@@ -4036,8 +4165,20 @@
                 categoryEs: locales.es.create_project_category,
                 description,
                 coverImage: String(formData.get('coverImage') || DEFAULT_PROJECT_COVER_IMAGE),
-                ngoName: organization,
-                creatorName: organization,
+                ...(publishType === 'group' ? {
+                    groupId: publishId,
+                    groupName: selectedGroup?.name || organization,
+                    creatorType: 'group'
+                } : publishType === 'ngo' ? {
+                    ngoId: publishId,
+                    ngoName: selectedNgo?.ngoName || organization,
+                    ngoLogo: selectedNgo?.ngoLogo || '🏢'
+                } : {
+                    ngoName: organization
+                }),
+                creatorName: state.currentUser.name,
+                creatorId: state.currentUser.id,
+                creatorAvatar: state.currentUser.avatar,
                 userCreated: true,
                 amountRaised: 0,
                 targetGoal: 0
@@ -5459,12 +5600,14 @@
                 followers: [
                     { id: 'david-chen', name: 'David Chen', roleKey: 'network_role_donor', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120' },
                     { id: 'miriam-njoroge', name: 'Miriam Njoroge', roleKey: 'network_role_volunteer', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120' },
-                    { id: 'marcus-vance', name: 'Marcus Vance', roleKey: 'network_role_advocate', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120' }
+                    { id: 'marcus-vance', name: 'Marcus Vance', roleKey: 'network_role_advocate', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120' },
+                    { id: 'daniel-okafor', name: 'Daniel Okafor', roleKey: 'network_role_advocate', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120' }
                 ],
                 connections: [
                     { id: 'amara-okezie', name: 'Dr. Amara Okezie', roleKey: 'network_job_engineer', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120' },
                     { id: 'elena-martinez', name: 'Elena Martinez', roleKey: 'network_job_organizer', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120' },
-                    { id: 'sophia-martinez', name: 'Sophia Martinez', roleKey: 'network_job_advisor', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120' }
+                    { id: 'sophia-martinez', name: 'Sophia Martinez', roleKey: 'network_job_advisor', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120' },
+                    { id: 'elena-gomez', name: 'Elena Gómez', roleKey: 'network_job_organizer', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120' }
                 ]
             };
             return entries[type] || [];
@@ -6174,6 +6317,162 @@
                 || '';
         }
 
+        let userEventsActiveTab = 'registered';
+        let userEventsReturnFocus = null;
+
+        function getUserEventEntries(type = 'all') {
+            return state.groups.flatMap(group =>
+                (group.upcomingEvents || []).map(event => ({ group, event }))
+            ).filter(({ event }) => {
+                const isRegistered = event.response === 'going';
+                const isSaved = savedUserEventIds.includes(event.id);
+                return type === 'registered' ? isRegistered
+                    : type === 'saved' ? isSaved
+                    : isRegistered || isSaved;
+            });
+        }
+
+        function openUserEventsModal(trigger) {
+            userEventsReturnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
+            userEventsActiveTab = getUserEventEntries('registered').length ? 'registered' : 'saved';
+            renderUserEventsModal();
+            document.addEventListener('keydown', handleUserEventsModalKeydown);
+            document.getElementById('user-events-close-button')?.focus();
+        }
+
+        function closeUserEventsModal(restoreFocus = true) {
+            document.getElementById('modal-container').innerHTML = '';
+            document.removeEventListener('keydown', handleUserEventsModalKeydown);
+            const returnFocus = userEventsReturnFocus;
+            userEventsReturnFocus = null;
+            if (restoreFocus && returnFocus instanceof HTMLElement && returnFocus.isConnected) {
+                returnFocus.focus({ preventScroll: true });
+            }
+        }
+
+        function handleUserEventsModalKeydown(event) {
+            if (event.key === 'Escape') closeUserEventsModal();
+        }
+
+        function switchUserEventsTab(tab) {
+            if (!['registered', 'saved'].includes(tab)) return;
+            userEventsActiveTab = tab;
+            const modal = document.getElementById('user-events-modal');
+            if (!modal) return;
+            modal.querySelectorAll('[data-user-events-tab]').forEach(button => {
+                const isSelected = button.dataset.userEventsTab === tab;
+                button.setAttribute('aria-selected', String(isSelected));
+                button.tabIndex = isSelected ? 0 : -1;
+                button.classList.toggle('border-primary-600', isSelected);
+                button.classList.toggle('text-primary-700', isSelected);
+                button.classList.toggle('border-transparent', !isSelected);
+                button.classList.toggle('text-slate-500', !isSelected);
+            });
+            modal.querySelectorAll('[data-user-events-panel]').forEach(panel => {
+                panel.hidden = panel.dataset.userEventsPanel !== tab;
+            });
+        }
+
+        function handleUserEventsTabKeydown(event) {
+            if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            event.preventDefault();
+            const tabs = [...document.querySelectorAll('#user-events-modal [data-user-events-tab]')];
+            const index = tabs.indexOf(event.currentTarget);
+            const nextIndex = event.key === 'Home' ? 0
+                : event.key === 'End' ? tabs.length - 1
+                : (index + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+            tabs[nextIndex].focus();
+            switchUserEventsTab(tabs[nextIndex].dataset.userEventsTab);
+        }
+
+        function renderUserEventsModal() {
+            const activeTab = userEventsActiveTab;
+            const renderEventList = type => {
+                const entries = getUserEventEntries(type);
+                return entries.length ? `
+                    <ul class="space-y-3">
+                        ${entries.map(({ group, event }) => `
+                            <li class="rounded-xl border border-slate-200 p-4">
+                                <div class="flex items-start gap-3">
+                                    <img src="${escapeHTML(event.image || DEFAULT_EVENT_COVER_IMAGE)}" alt="" class="h-14 w-14 shrink-0 rounded-lg object-cover">
+                                    <div class="min-w-0 flex-1">
+                                        <h3 class="truncate text-sm font-bold text-slate-900">${escapeHTML(groupEventText(event, 'title'))}</h3>
+                                        <p class="mt-1 text-xs text-slate-500"><i class="fa-regular fa-calendar mr-1.5" aria-hidden="true"></i>${escapeHTML(groupEventText(event, 'dateTime') || groupEventText(event, 'dateShort'))}</p>
+                                        <p class="mt-1 text-xs text-slate-500"><i class="fa-solid fa-location-dot mr-1.5" aria-hidden="true"></i>${escapeHTML(groupEventText(event, 'location'))}</p>
+                                        <div class="mt-3 flex flex-wrap gap-2">
+                                            <button type="button" onclick="openUserEventDetails('${escapeHTML(group.id)}', '${escapeHTML(event.id)}')" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white hover:bg-primary-700">${t('home_feed_view_event')}</button>
+                                            <button type="button" onclick="removeUserEvent('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', '${type}')" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t(type === 'registered' ? 'home_feed_cancel_registration' : 'home_feed_remove_saved_event')}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                ` : `<p class="rounded-xl bg-slate-50 px-4 py-8 text-center text-sm text-slate-500">${t('home_feed_no_user_events')}</p>`;
+            };
+
+            document.getElementById('modal-container').innerHTML = `
+                <div id="user-events-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="user-events-modal-title" onclick="if (event.target === event.currentTarget) closeUserEventsModal()">
+                    <section class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl" onclick="event.stopPropagation()">
+                        <header class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-5 sm:px-7">
+                            <div>
+                                <h2 id="user-events-modal-title" class="text-xl font-bold text-slate-900">${t('home_feed_events_modal_title')}</h2>
+                                <p class="mt-1 text-sm text-slate-500">${t('home_feed_events_modal_description')}</p>
+                                <div role="tablist" aria-label="${t('home_feed_events_modal_title')}" class="mt-4 flex gap-5">
+                                    <button type="button" id="user-events-registered-tab" role="tab" aria-controls="user-events-registered-panel" aria-selected="${activeTab === 'registered'}" tabindex="${activeTab === 'registered' ? '0' : '-1'}" data-user-events-tab="registered" onclick="switchUserEventsTab('registered')" onkeydown="handleUserEventsTabKeydown(event)" class="border-b-2 px-1 pb-2 text-sm font-semibold ${activeTab === 'registered' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500'}">${t('home_feed_event_registered_tab')}</button>
+                                    <button type="button" id="user-events-saved-tab" role="tab" aria-controls="user-events-saved-panel" aria-selected="${activeTab === 'saved'}" tabindex="${activeTab === 'saved' ? '0' : '-1'}" data-user-events-tab="saved" onclick="switchUserEventsTab('saved')" onkeydown="handleUserEventsTabKeydown(event)" class="border-b-2 px-1 pb-2 text-sm font-semibold ${activeTab === 'saved' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500'}">${t('home_feed_event_saved_tab')}</button>
+                                </div>
+                            </div>
+                            <button type="button" id="user-events-close-button" onclick="closeUserEventsModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                        </header>
+                        <div class="p-5 sm:p-7">
+                            <section id="user-events-registered-panel" role="tabpanel" aria-labelledby="user-events-registered-tab" data-user-events-panel="registered" ${activeTab !== 'registered' ? 'hidden' : ''}>
+                                ${renderEventList('registered')}
+                            </section>
+                            <section id="user-events-saved-panel" role="tabpanel" aria-labelledby="user-events-saved-tab" data-user-events-panel="saved" ${activeTab !== 'saved' ? 'hidden' : ''}>
+                                ${renderEventList('saved')}
+                            </section>
+                        </div>
+                        <footer class="flex justify-end border-t border-slate-200 px-5 py-4 sm:px-7">
+                            <button type="button" onclick="closeUserEventsModal()" class="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">${t('close')}</button>
+                        </footer>
+                    </section>
+                </div>`;
+        }
+
+        function openUserEventDetails(groupId, eventId) {
+            closeUserEventsModal(false);
+            openEventDetailsModal(groupId, eventId);
+        }
+
+        function removeUserEvent(groupId, eventId, type) {
+            const event = state.groups.find(group => group.id === groupId)?.upcomingEvents?.find(item => item.id === eventId);
+            if (!event || !['registered', 'saved'].includes(type)) return;
+            if (type === 'registered' && event.response === 'going') {
+                event.going = Math.max(0, event.going - 1);
+                event.response = null;
+            } else if (type === 'saved') {
+                savedUserEventIds = savedUserEventIds.filter(id => id !== eventId);
+            }
+            persistUserEventLists();
+            renderApp();
+            renderUserEventsModal();
+            document.querySelector(`#user-events-modal [data-user-events-tab="${userEventsActiveTab}"]`)?.focus();
+        }
+
+        function toggleUserEventSaved(groupId, eventId) {
+            const event = state.groups.find(group => group.id === groupId)?.upcomingEvents?.find(item => item.id === eventId);
+            if (!event) return;
+            savedUserEventIds = savedUserEventIds.includes(eventId)
+                ? savedUserEventIds.filter(id => id !== eventId)
+                : [...savedUserEventIds, eventId];
+            persistUserEventLists();
+            const shouldRefreshEventModal = Boolean(document.getElementById('event-details-modal'));
+            renderApp();
+            if (shouldRefreshEventModal) openEventDetailsModal(groupId, eventId);
+            if (document.getElementById('user-events-modal')) renderUserEventsModal();
+        }
+
         let eventDetailsReturnFocus = null;
         let eventDetailsReturnFocusId = null;
         let projectDetailsReturnFocus = null;
@@ -6186,6 +6485,113 @@
         function handleProjectDetailsModalKeydown(event) {
             if (document.getElementById('browse-repost-modal')) return;
             if (event.key === 'Escape') closeModal();
+        }
+
+        function getItemCreator(item, type) {
+            if (item?.creatorId && item?.creatorName) {
+                return {
+                    id: item.creatorId,
+                    name: item.creatorName,
+                    avatar: item.creatorAvatar || state.currentUser.avatar
+                };
+            }
+
+            const projectCreators = {
+                proj_water_well: { id: 'sarah-donor', name: 'Sarah Miller', avatar: state.currentUser.avatar },
+                proj_solar_pump: { id: 'daniel-okafor', name: 'Daniel Okafor', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120' },
+                proj_school_sanitation: { id: 'elena-gomez', name: 'Elena Gómez', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120' }
+            };
+            const eventCreators = {
+                education_learning_workshop: { id: 'elena-gomez', name: 'Elena Gómez', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120' },
+                childhood_family_health_fair: { id: 'miriam-njoroge', name: 'Miriam Njoroge', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120' },
+                latam_community_outreach_day: { id: 'daniel-okafor', name: 'Daniel Okafor', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120' },
+                relief_preparedness_training: { id: 'marcus-vance', name: 'Marcus Vance', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120' },
+                university_peer_tutoring_day: { id: 'amara-okezie', name: 'Dr. Amara Okezie', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120' },
+                animal_rescue_adoption_day: { id: 'david-chen', name: 'David Chen', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120' },
+                senior_wellness_afternoon: { id: 'sophia-martinez', name: 'Sophia Martinez', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120' }
+            };
+            return type === 'project'
+                ? (projectCreators[item?.id] || projectCreators.proj_water_well)
+                : (eventCreators[item?.id] || { id: 'sarah-donor', name: 'Sarah Miller', avatar: state.currentUser.avatar });
+        }
+
+        function renderCreatorBadge(item, type, eventGroup = null) {
+            const creator = getItemCreator(item, type);
+            let organizer;
+            if (type === 'event') {
+                organizer = {
+                    id: eventGroup?.id || '',
+                    name: eventGroup?.name || t('project_creator_group'),
+                    image: eventGroup?.banner || '',
+                    kind: 'group'
+                };
+            } else if (item?.groupId || item?.groupName) {
+                const group = state.groups.find(groupItem => groupItem.id === item.groupId);
+                organizer = {
+                    id: item.groupId || group?.id || '',
+                    name: item.groupName || group?.name || t('project_creator_group'),
+                    image: group?.banner || '',
+                    kind: 'group'
+                };
+            } else {
+                organizer = {
+                    id: item?.ngoId || '',
+                    name: item?.ngoName || t('project_creator_ngo'),
+                    image: '',
+                    logo: item?.ngoLogo || '',
+                    kind: 'ngo'
+                };
+            }
+
+            const organizerImage = organizer.image
+                ? `<img src="${escapeHTML(organizer.image)}" alt="${escapeHTML(organizer.name)}" class="w-8 h-8 rounded-lg object-cover ring-1 ring-slate-200">`
+                : `<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-base ring-1 ring-slate-200" aria-hidden="true">${escapeHTML(organizer.logo || '🏢')}</span>`;
+            const organizerClick = organizer.kind === 'group' && organizer.id
+                ? `openGroup('${escapeHTML(organizer.id)}')`
+                : organizer.kind === 'ngo' && organizer.id
+                    ? `openNGOProfile('${escapeHTML(organizer.id)}')`
+                    : `showGroupDirectory()`;
+
+            return `
+                <div class="ml-auto flex flex-wrap items-center gap-4" aria-label="${escapeHTML(t('browse_created_by'))} / ${escapeHTML(t('browse_organized_by'))}">
+                    <button type="button" onclick="openCreatorProfile('${escapeHTML(creator.id)}')" class="flex items-center gap-2.5 rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500" aria-label="${escapeHTML(creator.name)}">
+                        <img src="${escapeHTML(creator.avatar)}" alt="${escapeHTML(creator.name)}" class="w-8 h-8 rounded-full object-cover ring-1 ring-slate-200">
+                        <span class="min-w-0">
+                            <span data-created-by-label class="block text-[11px] text-slate-400 leading-none">${t('browse_created_by')}</span>
+                            <span class="mt-1 block text-xs font-semibold text-slate-800 dark:text-slate-100">${escapeHTML(creator.name)}</span>
+                        </span>
+                    </button>
+                    <span class="h-7 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block" aria-hidden="true"></span>
+                    <button type="button" onclick="${organizerClick}" class="flex items-center gap-2.5 rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500" aria-label="${escapeHTML(organizer.name)}">
+                        ${organizerImage}
+                        <span class="min-w-0">
+                            <span data-organized-by-label class="block text-[11px] text-slate-400 leading-none">${t('browse_organized_by')}</span>
+                            <span class="mt-1 block text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">${escapeHTML(organizer.name)}</span>
+                        </span>
+                    </button>
+                </div>
+            `;
+        }
+
+        function openCreatorProfile(creatorId) {
+            if (creatorId === 'sarah-donor' || creatorId === state.currentUser.id) {
+                closeModal();
+                closeEventDetailsModal(false);
+                state.profileViewMode = 'owner';
+                navigateTo('profile');
+                return;
+            }
+            const entry = ['followers', 'connections']
+                .flatMap(type => getProfileNetworkEntries(type).map(person => ({ ...person, type })))
+                .find(person => person.id === creatorId);
+            if (!entry) {
+                showToast(t('leader_profile_unavailable'), 'info');
+                return;
+            }
+            closeModal();
+            closeEventDetailsModal(false);
+            openProfileNetworkModal(entry.type);
+            showProfileNetworkPerson(entry.id);
         }
 
         function openEventDetailsModal(groupId, eventId, trigger) {
@@ -6214,13 +6620,19 @@
                             </button>
                         </div>
                         <div class="space-y-6 p-5 sm:p-8">
-                            <div class="flex flex-wrap gap-3">
-                                <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="shareBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
-                                    <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('browse_share')}
-                                </button>
-                                <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="repostBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
-                                    <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
-                                </button>
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex flex-wrap items-center gap-2.5">
+                                    <button type="button" aria-pressed="${savedUserEventIds.includes(event.id)}" aria-label="${t(savedUserEventIds.includes(event.id) ? 'home_feed_event_saved_action' : 'home_feed_save_event')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="toggleUserEventSaved('${escapeHTML(group.id)}', '${escapeHTML(event.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                        <i class="fa-${savedUserEventIds.includes(event.id) ? 'solid' : 'regular'} fa-bookmark" aria-hidden="true"></i>${t(savedUserEventIds.includes(event.id) ? 'home_feed_event_saved_action' : 'home_feed_save_event')}
+                                    </button>
+                                    <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="shareBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                        <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('browse_share')}
+                                    </button>
+                                    <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="repostBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                        <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
+                                    </button>
+                                </div>
+                                ${renderCreatorBadge(event, 'event', group)}
                             </div>
                             <header>
                                 <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-primary-700">${t('event_details_title')}</p>
@@ -6337,6 +6749,12 @@
                             <input id="create-group-event-location" name="location" type="text" required maxlength="160" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
                         </div>
                         <div>
+                            <label id="create-group-event-publish-under-label" for="create-group-event-publish-under" class="block text-xs font-bold text-slate-700">${t('group_create_event_publish_under_label')}</label>
+                            <select id="create-group-event-publish-under" name="publishUnder" class="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                                ${state.groups.map(option => `<option value="${escapeHTML(option.id)}"${option.id === groupId ? ' selected' : ''}>${escapeHTML(option.name)}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
                             <label for="create-group-event-country-value" class="block text-xs font-bold text-slate-700">${t('create_country_label')}</label>
                             <input id="create-group-event-country-value" type="hidden" name="country">
                             <div id="create-group-event-country-dropdown" class="relative mt-1.5">${getOptionalCountryDropdownHtml('create-group-event-country')}</div>
@@ -6407,6 +6825,11 @@
             reader.readAsDataURL(file);
         }
 
+        function updateCreateGroupEventModalCopy() {
+            const label = document.getElementById('create-group-event-publish-under-label');
+            if (label) label.textContent = t('group_create_event_publish_under_label');
+        }
+
         function handleCreateGroupEventModalKeydown(event) {
             if (event.key === 'Escape') closeCreateGroupEventModal();
         }
@@ -6425,10 +6848,11 @@
 
         function createGroupEvent(event, groupId) {
             event.preventDefault();
-            const group = state.groups.find(item => item.id === groupId);
+            const formData = new FormData(event.currentTarget);
+            const publishUnderId = String(formData.get('publishUnder') || groupId);
+            const group = state.groups.find(item => item.id === publishUnderId);
             if (!group) return;
 
-            const formData = new FormData(event.currentTarget);
             const title = String(formData.get('title') || '').trim();
             const dateValue = String(formData.get('dateTime') || '');
             const location = String(formData.get('location') || '').trim();
@@ -6462,6 +6886,9 @@
                 summary,
                 country: String(formData.get('country') || '').toLowerCase(),
                 image: String(formData.get('image') || DEFAULT_EVENT_COVER_IMAGE),
+                creatorId: state.currentUser.id,
+                creatorName: state.currentUser.name,
+                creatorAvatar: state.currentUser.avatar,
                 going: 0,
                 interested: 0,
                 response: null
@@ -6512,6 +6939,7 @@
             const upcomingFeedEvents = state.groups.flatMap(group =>
                 (group.upcomingEvents || []).map(event => ({ group, event }))
             ).slice(0, 2);
+            const yourFeedEvents = getUserEventEntries('all').slice(0, 3);
             const suggestedGroups = state.groups.filter(group => !group.joined).slice(0, 3);
 
             canvas.innerHTML = `
@@ -6538,6 +6966,28 @@
                                 <button type="button" onclick="navigateTo('profile')" class="mt-3 w-full rounded-lg px-3 py-2 text-xs font-bold text-primary-700 transition-colors hover:bg-primary-50">${t('profile_view')} <i class="fa-solid fa-arrow-right ml-1 text-[10px]" aria-hidden="true"></i></button>
                             </div>
                         </article>
+                        <section aria-labelledby="home-feed-your-events-title" class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+                            <div class="mb-4 flex items-center justify-between gap-3">
+                                <h2 id="home-feed-your-events-title" class="text-sm font-extrabold text-slate-900">${t('home_feed_your_events')}</h2>
+                                <button type="button" onclick="openUserEventsModal(this)" aria-haspopup="dialog" aria-controls="user-events-modal" class="shrink-0 text-xs font-semibold text-primary-700 hover:text-primary-900">${t('home_feed_view_all_events')}</button>
+                            </div>
+                            <ul class="space-y-3">
+                                ${yourFeedEvents.length ? yourFeedEvents.map(({ group, event }) => `
+                                    <li>
+                                        <button type="button" onclick="openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this)" class="flex w-full min-w-0 items-center gap-3 rounded-lg text-left transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                            <span class="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-primary-50">
+                                                <img src="${escapeHTML(event.image || DEFAULT_EVENT_COVER_IMAGE)}" alt="" class="h-full w-full object-cover">
+                                                <span class="absolute inset-x-0 bottom-0 bg-slate-950/75 px-0.5 py-0.5 text-center text-[7px] font-black uppercase leading-tight text-white">${escapeHTML(groupEventText(event, 'dateShort'))}</span>
+                                            </span>
+                                            <span class="min-w-0 flex-1">
+                                                <span class="block truncate text-xs font-bold text-slate-800">${escapeHTML(groupEventText(event, 'title'))}</span>
+                                                <span class="mt-1 block text-[10px] font-semibold ${event.response === 'going' ? 'text-emerald-700' : 'text-primary-700'}">${t(event.response === 'going' ? 'home_feed_registered' : 'home_feed_saved')}</span>
+                                            </span>
+                                        </button>
+                                    </li>
+                                `).join('') : `<li class="text-xs text-slate-500">${t('home_feed_no_user_events')}</li>`}
+                            </ul>
+                        </section>
                         <section aria-labelledby="home-feed-groups-title" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle">
                             <h2 id="home-feed-groups-title" class="mb-3 text-sm font-extrabold text-slate-900">${t('home_feed_your_groups')}</h2>
                             <div role="group" aria-labelledby="home-feed-profile-groups-label" class="border-t border-slate-100 pb-2 pt-3">
@@ -7638,6 +8088,7 @@
             } else {
                 event.response = null;
             }
+            persistUserEventLists();
             renderApp();
             if (shouldRefreshEventModal) openEventDetailsModal(groupId, eventId);
         }
@@ -8813,13 +9264,16 @@
                         </div>
 
                         <div class="space-y-6 p-5 sm:p-8">
-                            <div class="flex flex-wrap gap-3">
-                                <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(projectTitle)}" onclick="shareBrowseItem('project', '${escapeHTML(project.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
-                                    <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('browse_share')}
-                                </button>
-                                <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(projectTitle)}" onclick="repostBrowseItem('project', '${escapeHTML(project.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
-                                    <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
-                                </button>
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex flex-wrap items-center gap-2.5">
+                                    <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(projectTitle)}" onclick="shareBrowseItem('project', '${escapeHTML(project.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                        <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('browse_share')}
+                                    </button>
+                                    <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(projectTitle)}" onclick="repostBrowseItem('project', '${escapeHTML(project.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                        <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
+                                    </button>
+                                </div>
+                                ${renderCreatorBadge(project, 'project')}
                             </div>
                             <header>
                                 <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-primary-700">${t('project_details_title')} · ${escapeHTML(projectCategory)}</p>
@@ -10779,7 +11233,10 @@
                                 <button type="button" aria-haspopup="dialog" aria-label="${t('group_event_join')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="event.stopPropagation(); openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this)" class="rounded-full px-3 py-1 text-[10px] font-bold transition-colors ${event.response === 'going' ? 'bg-emerald-100 text-emerald-800' : 'bg-primary-600 text-white hover:bg-primary-700'}">${responseLabel}</button>
                                 <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-slate-600">EVENT</span>
                             </div>
-                            <div class="flex items-center gap-2 border-t border-slate-100 pt-2">
+                            <div class="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-2">
+                                <button type="button" title="${t(savedUserEventIds.includes(event.id) ? 'home_feed_event_saved_action' : 'home_feed_save_event')}" aria-label="${t(savedUserEventIds.includes(event.id) ? 'home_feed_event_saved_action' : 'home_feed_save_event')}: ${escapeHTML(groupEventText(event, 'title'))}" aria-pressed="${savedUserEventIds.includes(event.id)}" onclick="event.stopPropagation(); toggleUserEventSaved('${escapeHTML(group.id)}', '${escapeHTML(event.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                    <i class="fa-${savedUserEventIds.includes(event.id) ? 'solid' : 'regular'} fa-bookmark" aria-hidden="true"></i>${t(savedUserEventIds.includes(event.id) ? 'home_feed_event_saved_action' : 'home_feed_save_event')}
+                                </button>
                                 <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="event.stopPropagation(); shareBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                                     <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('browse_share')}
                                 </button>
@@ -10797,14 +11254,14 @@
                     <div class="mx-auto max-w-7xl space-y-8 px-4 py-8 text-left sm:px-6 lg:px-8">
                         <header class="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
-                                <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
-                                <p class="text-xs text-slate-500">${t('browse_subtitle')}</p>
-                            </div>
-                            <div class="flex flex-wrap items-center gap-2">
-                                ${renderCountryFilter('projects')}
-                                <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
+                                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">${t('browse_title')}</h1>
+                                <p class="text-base text-slate-600 dark:text-slate-300 mt-1.5">${t('browse_subtitle')}</p>
                             </div>
                         </header>
+                        <div class="flex flex-wrap items-center gap-2">
+                            ${renderCountryFilter('projects')}
+                            <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
+                        </div>
                         ${renderActivityTabs()}
                         <section aria-labelledby="browse-events-title">
                             <h2 id="browse-events-title" class="mb-4 text-xs font-black uppercase tracking-widest text-slate-800">${t('group_upcoming_events_title')}</h2>
@@ -10916,16 +11373,13 @@
 
             canvas.innerHTML = `
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-left">
-                    <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="border-b border-slate-200 pb-4 flex flex-col gap-4">
                         <div>
-                            <h1 class="text-2xl font-black text-slate-900">${t('browse_title')}</h1>
-                            <p class="text-xs text-slate-500">${t('browse_subtitle')}</p>
+                            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">${t('browse_title')}</h1>
+                            <p class="text-base text-slate-600 dark:text-slate-300 mt-1.5">${t('browse_subtitle')}</p>
                         </div>
-                        <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
-                            ${renderCountryFilter('projects')}
-                            <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
-                            <div id="browse-search-container" class="relative flex w-full items-center space-x-2 sm:w-auto">
-                            <input id="browse-project-search" type="search" value="${state.projectSearchTerm}" placeholder="Search by region or category..." aria-label="Search by region or category" aria-controls="browse-project-search-menu" aria-expanded="${state.projectSearchOpen}" onfocus="setBrowseSearchOpen(true)" oninput="filterBrowseProjects(this.value)" class="w-full rounded-xl border border-slate-200 px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600 sm:w-64">
+                        <div id="browse-search-container" class="relative flex w-full items-center space-x-2">
+                            <input id="browse-project-search" type="search" value="${state.projectSearchTerm}" placeholder="Search by region or category..." aria-label="Search by region or category" aria-controls="browse-project-search-menu" aria-expanded="${state.projectSearchOpen}" onfocus="setBrowseSearchOpen(true)" oninput="filterBrowseProjects(this.value)" class="w-full rounded-xl border border-slate-200 px-4 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary-600">
                             <div id="browse-project-search-menu" role="dialog" aria-label="Filtros de proyectos" aria-hidden="${!state.projectSearchOpen}" ${state.projectSearchOpen ? '' : 'inert'} class="absolute right-0 top-full z-30 mt-2 w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-slate-200 bg-white p-4 shadow-floating transition-all duration-150 ease-out ${state.projectSearchOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-1 opacity-0'}">
                                 <div class="space-y-4">
                                     <section>
@@ -10951,7 +11405,13 @@
                             </div>
                         </div>
                     </div>
-                    ${renderActivityTabs()}
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        ${renderActivityTabs('flex flex-wrap items-center gap-2 py-1')}
+                        <div class="flex items-center gap-3 ml-auto">
+                            ${renderCountryFilter('projects')}
+                            <button type="button" onclick="openCreateProjectModal(this)" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-subtle transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('create_project_button')}</button>
+                        </div>
+                    </div>
 
                     <div class="grid grid-cols-1 items-start gap-6 ${selectedProject ? 'md:grid-cols-12' : ''}">
                         <div class="grid min-w-0 items-stretch gap-4 ${selectedProject ? 'grid-cols-1 md:grid-cols-2 md:col-span-7' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'}">
