@@ -314,8 +314,6 @@
                 create_project_button: "+ Crear Proyecto",
                 create_project_modal_title: "Crear proyecto",
                 create_project_title_label: "Título del proyecto",
-                create_project_location_label: "Ubicación / Región",
-                create_project_location_placeholder: "Kenia - Kitui, América Latina...",
                 create_country_label: "País (opcional)",
                 create_country_default: "Ninguno / Global (Sin bandera)",
                 create_project_organization_label: "Organización / Grupo responsable",
@@ -325,7 +323,7 @@
                 create_project_cancel: "Cancelar",
                 create_project_submit: "Crear Proyecto",
                 create_project_success: "Proyecto creado correctamente.",
-                create_project_validation: "Completa el título, la ubicación, la organización y la descripción del proyecto.",
+                create_project_validation: "Completa el título, la organización y la descripción del proyecto.",
                 create_project_image_type_error: "Selecciona un archivo de imagen.",
                 create_project_image_read_error: "No se pudo leer la imagen seleccionada.",
                 create_project_category: "Iniciativa comunitaria",
@@ -409,9 +407,13 @@
                 home_feed_no_user_events: "Aún no tienes eventos",
                 home_feed_view_all_events: "Ver todo",
                 home_feed_events_modal_title: "Tus eventos",
-                home_feed_events_modal_description: "Consulta y administra tus eventos registrados y guardados.",
+                home_feed_events_modal_description: "Consulta y gestiona tus eventos registrados, guardados y creados.",
                 home_feed_event_registered_tab: "Registrados",
                 home_feed_event_saved_tab: "Guardados",
+                home_feed_event_created_tab: "Creados",
+                home_feed_manage_event: "Administrar",
+                home_feed_delete_event: "Eliminar",
+                home_feed_created_count: "creados",
                 home_feed_view_event: "Ver evento",
                 home_feed_cancel_registration: "Cancelar registro",
                 home_feed_remove_saved_event: "Quitar",
@@ -1083,8 +1085,6 @@
                 create_project_button: "+ Create Project",
                 create_project_modal_title: "Create project",
                 create_project_title_label: "Project Title",
-                create_project_location_label: "Location / Region",
-                create_project_location_placeholder: "Kenya - Kitui, Latin America...",
                 create_country_label: "Country (optional)",
                 create_country_default: "None / Global (No flag)",
                 create_project_organization_label: "Organization / Group",
@@ -1094,7 +1094,7 @@
                 create_project_cancel: "Cancel",
                 create_project_submit: "Create Project",
                 create_project_success: "Project created successfully.",
-                create_project_validation: "Enter the project title, location, organization, and description.",
+                create_project_validation: "Enter the project title, organization, and description.",
                 create_project_image_type_error: "Select an image file.",
                 create_project_image_read_error: "The selected image could not be read.",
                 create_project_category: "Community initiative",
@@ -1178,9 +1178,13 @@
                 home_feed_no_user_events: "No events yet",
                 home_feed_view_all_events: "See all",
                 home_feed_events_modal_title: "Your Events",
-                home_feed_events_modal_description: "View and manage your registered and saved events.",
+                home_feed_events_modal_description: "View and manage your registered, saved, and created events.",
                 home_feed_event_registered_tab: "Registered",
                 home_feed_event_saved_tab: "Saved",
+                home_feed_event_created_tab: "Created",
+                home_feed_manage_event: "Manage",
+                home_feed_delete_event: "Delete",
+                home_feed_created_count: "created",
                 home_feed_view_event: "View event",
                 home_feed_cancel_registration: "Cancel registration",
                 home_feed_remove_saved_event: "Remove",
@@ -4009,10 +4013,6 @@
                             <input id="create-project-name" name="title" type="text" required maxlength="120" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
                         </div>
                         <div>
-                            <label id="create-project-location-label" for="create-project-location" class="block text-xs font-bold text-slate-700">${t('create_project_location_label')}</label>
-                            <input id="create-project-location" name="location" type="text" required maxlength="160" placeholder="${t('create_project_location_placeholder')}" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
-                        </div>
-                        <div>
                             <label id="create-project-country-label" class="block text-xs font-bold text-slate-700">${t('create_country_label')}</label>
                             <input id="create-project-country-value" type="hidden" name="country">
                             <div id="create-project-country-dropdown" class="relative mt-1.5">${getOptionalCountryDropdownHtml('create-project-country')}</div>
@@ -4060,7 +4060,6 @@
             const labels = {
                 'create-project-modal-title': 'create_project_modal_title',
                 'create-project-title-label': 'create_project_title_label',
-                'create-project-location-label': 'create_project_location_label',
                 'create-project-country-label': 'create_country_label',
                 'create-project-organization-label': 'create_project_organization_label',
                 'create-project-publish-under-label': 'create_project_publish_under_label',
@@ -4081,7 +4080,6 @@
             document.getElementById('create-project-cover-file').setAttribute('aria-label', t('create_project_cover_label'));
             document.getElementById('create-project-cover-preview').alt = t('create_project_cover_label');
             document.getElementById('create-project-close').setAttribute('aria-label', t('close'));
-            document.getElementById('create-project-location').placeholder = t('create_project_location_placeholder');
             const publishUnder = document.getElementById('create-project-publish-under');
             if (publishUnder) {
                 publishUnder.innerHTML = getPublishOrganizationOptions(publishUnder.value);
@@ -4142,10 +4140,9 @@
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const title = String(formData.get('title') || '').trim();
-            const location = String(formData.get('location') || '').trim();
             const organization = String(formData.get('organization') || '').trim();
             const description = String(formData.get('description') || '').trim();
-            if (!title || !location || !organization || !description) {
+            if (!title || !organization || !description) {
                 showToast(t('create_project_validation'), 'info');
                 return;
             }
@@ -4154,6 +4151,10 @@
             const [publishType, publishId] = publishUnder.split(':');
             const selectedGroup = publishType === 'group' ? state.groups.find(group => group.id === publishId) : null;
             const selectedNgo = publishType === 'ngo' ? state.projects.find(project => project.ngoId === publishId) : null;
+            const countryCode = String(formData.get('country') || '').trim();
+            const location = countryCode
+                ? countryName(countryCode)
+                : organization;
 
             state.projects.unshift({
                 id: `proj_created_${Date.now()}`,
@@ -6323,18 +6324,33 @@
         function getUserEventEntries(type = 'all') {
             return state.groups.flatMap(group =>
                 (group.upcomingEvents || []).map(event => ({ group, event }))
-            ).filter(({ event }) => {
+            ).filter(({ group, event }) => {
                 const isRegistered = event.response === 'going';
                 const isSaved = savedUserEventIds.includes(event.id);
+                const isCreated = Boolean(
+                    event.creatorId === state.currentUser.id
+                    || event.creatorId === 'sarah-donor'
+                    || event.creatorName === state.currentUser.name
+                    || event.userCreated
+                    || group.createdBy === state.currentUser.id
+                    || (group.managerIds || []).includes(state.currentUser.id)
+                );
                 return type === 'registered' ? isRegistered
                     : type === 'saved' ? isSaved
-                    : isRegistered || isSaved;
+                    : type === 'created' ? isCreated
+                    : isRegistered || isSaved || isCreated;
             });
         }
 
         function openUserEventsModal(trigger) {
             userEventsReturnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
-            userEventsActiveTab = getUserEventEntries('registered').length ? 'registered' : 'saved';
+            userEventsActiveTab = getUserEventEntries('registered').length
+                ? 'registered'
+                : getUserEventEntries('saved').length
+                    ? 'saved'
+                    : getUserEventEntries('created').length
+                        ? 'created'
+                        : 'registered';
             renderUserEventsModal();
             document.addEventListener('keydown', handleUserEventsModalKeydown);
             document.getElementById('user-events-close-button')?.focus();
@@ -6355,7 +6371,7 @@
         }
 
         function switchUserEventsTab(tab) {
-            if (!['registered', 'saved'].includes(tab)) return;
+            if (!['registered', 'saved', 'created'].includes(tab)) return;
             userEventsActiveTab = tab;
             const modal = document.getElementById('user-events-modal');
             if (!modal) return;
@@ -6401,7 +6417,13 @@
                                         <p class="mt-1 text-xs text-slate-500"><i class="fa-solid fa-location-dot mr-1.5" aria-hidden="true"></i>${escapeHTML(groupEventText(event, 'location'))}</p>
                                         <div class="mt-3 flex flex-wrap gap-2">
                                             <button type="button" onclick="openUserEventDetails('${escapeHTML(group.id)}', '${escapeHTML(event.id)}')" class="rounded-lg bg-primary-600 px-3 py-2 text-xs font-semibold text-white hover:bg-primary-700">${t('home_feed_view_event')}</button>
-                                            <button type="button" onclick="removeUserEvent('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', '${type}')" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t(type === 'registered' ? 'home_feed_cancel_registration' : 'home_feed_remove_saved_event')}</button>
+                                            ${type === 'created'
+                                                ? `
+                                                    <button type="button" onclick="openUserEventDetails('${escapeHTML(group.id)}', '${escapeHTML(event.id)}')" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t('home_feed_manage_event')}</button>
+                                                    <button type="button" onclick="deleteCreatedUserEvent('${escapeHTML(group.id)}', '${escapeHTML(event.id)}')" class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-50">${t('home_feed_delete_event')}</button>
+                                                `
+                                                : `<button type="button" onclick="removeUserEvent('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', '${type}')" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">${t(type === 'registered' ? 'home_feed_cancel_registration' : 'home_feed_remove_saved_event')}</button>`
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -6421,6 +6443,7 @@
                                 <div role="tablist" aria-label="${t('home_feed_events_modal_title')}" class="mt-4 flex gap-5">
                                     <button type="button" id="user-events-registered-tab" role="tab" aria-controls="user-events-registered-panel" aria-selected="${activeTab === 'registered'}" tabindex="${activeTab === 'registered' ? '0' : '-1'}" data-user-events-tab="registered" onclick="switchUserEventsTab('registered')" onkeydown="handleUserEventsTabKeydown(event)" class="border-b-2 px-1 pb-2 text-sm font-semibold ${activeTab === 'registered' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500'}">${t('home_feed_event_registered_tab')}</button>
                                     <button type="button" id="user-events-saved-tab" role="tab" aria-controls="user-events-saved-panel" aria-selected="${activeTab === 'saved'}" tabindex="${activeTab === 'saved' ? '0' : '-1'}" data-user-events-tab="saved" onclick="switchUserEventsTab('saved')" onkeydown="handleUserEventsTabKeydown(event)" class="border-b-2 px-1 pb-2 text-sm font-semibold ${activeTab === 'saved' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500'}">${t('home_feed_event_saved_tab')}</button>
+                                    <button type="button" id="user-events-created-tab" role="tab" aria-controls="user-events-created-panel" aria-selected="${activeTab === 'created'}" tabindex="${activeTab === 'created' ? '0' : '-1'}" data-user-events-tab="created" onclick="switchUserEventsTab('created')" onkeydown="handleUserEventsTabKeydown(event)" class="border-b-2 px-1 pb-2 text-sm font-semibold ${activeTab === 'created' ? 'border-primary-600 text-primary-700' : 'border-transparent text-slate-500'}">${t('home_feed_event_created_tab')}</button>
                                 </div>
                             </div>
                             <button type="button" id="user-events-close-button" onclick="closeUserEventsModal()" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
@@ -6431,6 +6454,9 @@
                             </section>
                             <section id="user-events-saved-panel" role="tabpanel" aria-labelledby="user-events-saved-tab" data-user-events-panel="saved" ${activeTab !== 'saved' ? 'hidden' : ''}>
                                 ${renderEventList('saved')}
+                            </section>
+                            <section id="user-events-created-panel" role="tabpanel" aria-labelledby="user-events-created-tab" data-user-events-panel="created" ${activeTab !== 'created' ? 'hidden' : ''}>
+                                ${renderEventList('created')}
                             </section>
                         </div>
                         <footer class="flex justify-end border-t border-slate-200 px-5 py-4 sm:px-7">
@@ -6458,6 +6484,17 @@
             renderApp();
             renderUserEventsModal();
             document.querySelector(`#user-events-modal [data-user-events-tab="${userEventsActiveTab}"]`)?.focus();
+        }
+
+        function deleteCreatedUserEvent(groupId, eventId) {
+            const group = state.groups.find(item => item.id === groupId);
+            if (!group?.upcomingEvents) return;
+            group.upcomingEvents = group.upcomingEvents.filter(event => event.id !== eventId);
+            savedUserEventIds = savedUserEventIds.filter(id => id !== eventId);
+            persistUserEventLists();
+            renderApp();
+            renderUserEventsModal();
+            document.querySelector('#user-events-modal [data-user-events-tab="created"]')?.focus();
         }
 
         function toggleUserEventSaved(groupId, eventId) {
@@ -6940,6 +6977,7 @@
                 (group.upcomingEvents || []).map(event => ({ group, event }))
             ).slice(0, 2);
             const yourFeedEvents = getUserEventEntries('all').slice(0, 3);
+            const createdFeedEventsCount = getUserEventEntries('created').length;
             const suggestedGroups = state.groups.filter(group => !group.joined).slice(0, 3);
 
             canvas.innerHTML = `
@@ -6969,7 +7007,10 @@
                         <section aria-labelledby="home-feed-your-events-title" class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
                             <div class="mb-4 flex items-center justify-between gap-3">
                                 <h2 id="home-feed-your-events-title" class="text-sm font-extrabold text-slate-900">${t('home_feed_your_events')}</h2>
-                                <button type="button" onclick="openUserEventsModal(this)" aria-haspopup="dialog" aria-controls="user-events-modal" class="shrink-0 text-xs font-semibold text-primary-700 hover:text-primary-900">${t('home_feed_view_all_events')}</button>
+                                <div class="flex items-center gap-2">
+                                    ${createdFeedEventsCount ? `<span class="rounded-full bg-primary-50 px-2 py-1 text-[9px] font-bold text-primary-700">${createdFeedEventsCount} ${t('home_feed_created_count')}</span>` : ''}
+                                    <button type="button" onclick="openUserEventsModal(this)" aria-haspopup="dialog" aria-controls="user-events-modal" class="shrink-0 text-xs font-semibold text-primary-700 hover:text-primary-900">${t('home_feed_view_all_events')}</button>
+                                </div>
                             </div>
                             <ul class="space-y-3">
                                 ${yourFeedEvents.length ? yourFeedEvents.map(({ group, event }) => `
@@ -6981,7 +7022,7 @@
                                             </span>
                                             <span class="min-w-0 flex-1">
                                                 <span class="block truncate text-xs font-bold text-slate-800">${escapeHTML(groupEventText(event, 'title'))}</span>
-                                                <span class="mt-1 block text-[10px] font-semibold ${event.response === 'going' ? 'text-emerald-700' : 'text-primary-700'}">${t(event.response === 'going' ? 'home_feed_registered' : 'home_feed_saved')}</span>
+                                                <span class="mt-1 block text-[10px] font-semibold ${event.response === 'going' ? 'text-emerald-700' : 'text-primary-700'}">${t(event.creatorId === state.currentUser.id || event.creatorId === 'sarah-donor' || event.creatorName === state.currentUser.name || event.userCreated || group.createdBy === state.currentUser.id || (group.managerIds || []).includes(state.currentUser.id) ? 'home_feed_event_created_tab' : event.response === 'going' ? 'home_feed_registered' : 'home_feed_saved')}</span>
                                             </span>
                                         </button>
                                     </li>
