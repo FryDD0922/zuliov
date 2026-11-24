@@ -334,6 +334,32 @@
                 create_project_cover_label: "Imagen de portada",
                 create_project_cover_upload: "Selecciona una imagen para la portada",
                 create_project_description_label: "Descripción detallada",
+                create_project_type_label: "Tipo de proyecto",
+                create_project_type_funding: "Recaudación / Fundraising",
+                create_project_type_volunteer: "Búsqueda de voluntarios",
+                create_project_roles_title: "Roles de voluntariado",
+                create_project_roles_configure: "Configurar roles de voluntariado...",
+                create_project_roles_summary: "{count} roles configurados ({roles})",
+                create_project_roles_modal_title: "Configurar roles de voluntariado",
+                create_project_roles_add: "+ Agregar rol",
+                create_project_roles_save: "Guardar roles",
+                create_project_roles_remove: "Eliminar rol",
+                create_project_role_image_url: "URL de la imagen",
+                create_project_role_image_file: "Selecciona una imagen",
+                create_project_role_title_placeholder: "Título del rol",
+                create_project_role_description_placeholder: "Descripción breve del rol",
+                create_project_role_photo_placeholder: "URL de foto o ilustración",
+                project_volunteer_badge: "PROYECTO VOLUNTARIO",
+                project_volunteer_status: "Buscando Voluntarios",
+                project_volunteer_section_title: "Buscamos Voluntarios",
+                project_volunteer_view_roles: "Ver roles de voluntariado disponibles",
+                project_volunteer_apply: "Enviar postulación",
+                project_volunteer_applied: "Postulado",
+                project_volunteer_application_title: "Postulación de voluntariado",
+                project_volunteer_application_placeholder: "Cuéntanos por qué eres el indicado, tu experiencia o cómo puedes aportar...",
+                project_volunteer_application_required: "Escribe un mensaje antes de enviar tu postulación.",
+                project_volunteer_application_sent: "Solicitud enviada correctamente.",
+                project_volunteer_application_limit: "máximo",
                 create_project_cancel: "Cancelar",
                 create_project_submit: "Crear Proyecto",
                 create_project_success: "Proyecto creado correctamente.",
@@ -343,9 +369,11 @@
                 create_project_category: "Iniciativa comunitaria",
                 create_project_unverified: "Proyecto aún no verificado",
                 project_origin_community: "Proyecto comunitario",
+                project_donation_badge: "PROYECTO DE DONACIÓN",
                 activity_tab_all: "Todos",
                 activity_tab_projects: "Proyectos",
                 activity_tab_events: "Eventos",
+                project_event_badge: "EVENTO",
                 browse_events_empty: "No hay eventos agendados en este momento.",
                 browse_project_view: "Ver Proyecto",
                 browse_share: "Compartir enlace",
@@ -1137,6 +1165,32 @@
                 create_project_cover_label: "Cover image",
                 create_project_cover_upload: "Choose a cover image",
                 create_project_description_label: "Description",
+                create_project_type_label: "Project type",
+                create_project_type_funding: "Fundraising",
+                create_project_type_volunteer: "Volunteer Recruitment",
+                create_project_roles_title: "Volunteer roles",
+                create_project_roles_configure: "Configure volunteer roles...",
+                create_project_roles_summary: "{count} roles configured ({roles})",
+                create_project_roles_modal_title: "Configure volunteer roles",
+                create_project_roles_add: "+ Add role",
+                create_project_roles_save: "Save roles",
+                create_project_roles_remove: "Remove role",
+                create_project_role_image_url: "Image URL",
+                create_project_role_image_file: "Choose an image",
+                create_project_role_title_placeholder: "Role title",
+                create_project_role_description_placeholder: "Short role description",
+                create_project_role_photo_placeholder: "Photo or illustration URL",
+                project_volunteer_badge: "VOLUNTEER PROJECT",
+                project_volunteer_status: "Open for Volunteers",
+                project_volunteer_section_title: "Looking for Volunteers",
+                project_volunteer_view_roles: "View Open Volunteer Roles",
+                project_volunteer_apply: "Apply as Volunteer",
+                project_volunteer_applied: "Applied",
+                project_volunteer_application_title: "Volunteer Application",
+                project_volunteer_application_placeholder: "Tell us why you are a good fit, your experience, or how you would contribute...",
+                project_volunteer_application_required: "Write a message before submitting your application.",
+                project_volunteer_application_sent: "Your application was sent successfully.",
+                project_volunteer_application_limit: "maximum",
                 create_project_cancel: "Cancel",
                 create_project_submit: "Create Project",
                 create_project_success: "Project created successfully.",
@@ -1146,9 +1200,11 @@
                 create_project_category: "Community initiative",
                 create_project_unverified: "Project not yet verified",
                 project_origin_community: "Community project",
+                project_donation_badge: "DONATION PROJECT",
                 activity_tab_all: "All",
                 activity_tab_projects: "Projects",
                 activity_tab_events: "Events",
+                project_event_badge: "EVENT",
                 browse_events_empty: "There are no scheduled events right now.",
                 browse_project_view: "View Project",
                 browse_share: "Share link",
@@ -3052,6 +3108,33 @@
                     descriptionEs: 'Desarrolla tecnología cívica de código abierto para ayudar a las comunidades a colaborar, compartir recursos y visibilizar su impacto local en todo el mundo.',
                     category: 'Civic Technology',
                     categoryEs: 'Tecnología cívica',
+                    projectType: 'volunteer',
+                    volunteerRoles: [
+                        {
+                            id: 'developers',
+                            title: 'Programadores / Developers',
+                            titleEs: 'Programadores / Desarrolladores',
+                            description: 'Frontend and backend development, open APIs, and resilient civic-tech architecture.',
+                            descriptionEs: 'Desarrollo frontend y backend, APIs abiertas y arquitectura civic-tech resiliente.',
+                            image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800'
+                        },
+                        {
+                            id: 'designers',
+                            title: 'Designers',
+                            titleEs: 'Diseñadores',
+                            description: 'Accessible UI/UX design, design systems, and community-centered prototyping.',
+                            descriptionEs: 'Diseño UI/UX accesible, sistemas de diseño y prototipado centrado en la comunidad.',
+                            image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800'
+                        },
+                        {
+                            id: 'artists',
+                            title: 'Artists',
+                            titleEs: 'Artistas',
+                            description: 'Digital illustration, visual identity, and graphic resources for the community.',
+                            descriptionEs: 'Ilustración digital, identidad visual y recursos gráficos para la comunidad.',
+                            image: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=800'
+                        }
+                    ],
                     targetGoal: 50000,
                     amountRaised: 12500,
                     donationPageUrl: 'https://opencollective.com/',
@@ -4096,7 +4179,47 @@
         }
 
         let createProjectReturnFocus = null;
+        let createProjectVolunteerRoles = [];
+        let createProjectVolunteerRolesDraft = [];
         const DEFAULT_PROJECT_COVER_IMAGE = 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200';
+
+        function getDefaultCreateProjectVolunteerRoles() {
+            return [
+                {
+                    id: 'developers',
+                    title: 'Developers',
+                    titleEs: 'Desarrolladores',
+                    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800'
+                },
+                {
+                    id: 'designers',
+                    title: 'Designers',
+                    titleEs: 'Diseñadores',
+                    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800'
+                },
+                {
+                    id: 'artists',
+                    title: 'Artists',
+                    titleEs: 'Artistas',
+                    image: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=800'
+                }
+            ];
+        }
+
+        function updateCreateProjectVolunteerRolesSummary() {
+            const summary = document.getElementById('create-project-roles-summary');
+            if (!summary) return;
+            if (!createProjectVolunteerRoles.length) {
+                summary.textContent = t('create_project_roles_configure');
+                return;
+            }
+            const names = createProjectVolunteerRoles
+                .map(role => (currentLang === 'es' ? role.titleEs : role.title) || role.title || role.titleEs)
+                .filter(Boolean);
+            summary.textContent = t('create_project_roles_summary')
+                .replace('{count}', String(createProjectVolunteerRoles.length))
+                .replace('{roles}', names.join(', '));
+        }
 
         function parseDonationPageUrl(value) {
             const rawUrl = String(value || '').trim();
@@ -4314,6 +4437,7 @@
         function openCreateProjectModal(trigger) {
             if (document.getElementById('create-project-modal')) return;
             createProjectReturnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
+            createProjectVolunteerRoles = getDefaultCreateProjectVolunteerRoles();
             const modal = document.createElement('div');
             modal.id = 'create-project-modal';
             modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
@@ -4342,9 +4466,28 @@
                                 ${getOrganizationGroupSelectorHtml('create-project-organization-selector', 'organization')}
                             </div>
                         </div>
-                        <div>
+                        <fieldset>
+                            <legend id="create-project-type-label" class="block text-xs font-bold text-slate-700">${t('create_project_type_label')}</legend>
+                            <div class="mt-2 grid grid-cols-2 gap-2">
+                                <label class="cursor-pointer rounded-xl border border-slate-200 p-3 text-xs font-bold text-slate-700">
+                                    <input type="radio" name="projectType" value="funding" checked onchange="toggleCreateProjectType()" class="mr-2"><span id="create-project-type-funding-label">${t('create_project_type_funding')}</span>
+                                </label>
+                                <label class="cursor-pointer rounded-xl border border-slate-200 p-3 text-xs font-bold text-slate-700">
+                                    <input type="radio" name="projectType" value="volunteer" onchange="toggleCreateProjectType()" class="mr-2"><span id="create-project-type-volunteer-label">${t('create_project_type_volunteer')}</span>
+                                </label>
+                            </div>
+                        </fieldset>
+                        <div id="create-project-donation-section">
                             <label id="create-project-donation-url-label" for="create-project-donation-url" class="block text-xs font-bold text-slate-700">${t('create_project_donation_url_label')}</label>
                             <input id="create-project-donation-url" name="donationPageUrl" type="url" inputmode="url" autocomplete="url" maxlength="2048" placeholder="${t('create_project_donation_url_placeholder')}" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <div id="create-project-volunteer-roles" class="hidden">
+                            <label id="create-project-roles-title" for="create-project-roles-button" class="block text-xs font-bold text-slate-700">${t('create_project_roles_title')}</label>
+                            <button id="create-project-roles-button" type="button" aria-haspopup="dialog" aria-expanded="false" onclick="openCreateProjectVolunteerRolesModal()"
+                                class="mt-1.5 flex min-h-11 w-full items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100">
+                                <span id="create-project-roles-summary" class="min-w-0 flex-1 truncate text-slate-500">${t('create_project_roles_configure')}</span>
+                                <i class="fa-solid fa-chevron-right shrink-0 text-[10px] text-slate-400" aria-hidden="true"></i>
+                            </button>
                         </div>
                         <div>
                             <label id="create-project-cover-label" for="create-project-cover-file" class="block text-xs font-bold text-slate-700">${t('create_project_cover_label')}</label>
@@ -4372,6 +4515,7 @@
             modal.querySelector('#create-project-cancel').addEventListener('click', closeCreateProjectModal);
             modal.querySelector('#create-project-form').addEventListener('submit', createProject);
             document.body.appendChild(modal);
+            updateCreateProjectVolunteerRolesSummary();
             modal.querySelector('#create-project-name').focus({ preventScroll: true });
         }
 
@@ -4382,6 +4526,10 @@
                 'create-project-country-label': 'create_country_label',
                 'create-project-organization-label': 'create_project_organization_label',
                 'create-project-donation-url-label': 'create_project_donation_url_label',
+                'create-project-type-label': 'create_project_type_label',
+                'create-project-type-funding-label': 'create_project_type_funding',
+                'create-project-type-volunteer-label': 'create_project_type_volunteer',
+                'create-project-roles-title': 'create_project_roles_title',
                 'create-project-cover-label': 'create_project_cover_label',
                 'create-project-cover-upload-label': 'create_project_cover_upload',
                 'create-project-description-label': 'create_project_description_label',
@@ -4399,9 +4547,203 @@
             document.getElementById('create-project-cover-file').setAttribute('aria-label', t('create_project_cover_label'));
             document.getElementById('create-project-cover-preview').alt = t('create_project_cover_label');
             document.getElementById('create-project-close').setAttribute('aria-label', t('close'));
+            const rolesModal = document.getElementById('create-project-volunteer-roles-modal');
+            if (rolesModal) {
+                rolesModal.querySelector('#create-project-roles-modal-title').textContent = t('create_project_roles_modal_title');
+                rolesModal.querySelector('#create-project-roles-close').setAttribute('aria-label', t('close'));
+                rolesModal.querySelector('#create-project-roles-add').textContent = t('create_project_roles_add');
+                rolesModal.querySelector('#create-project-roles-save').textContent = t('create_project_roles_save');
+            }
             refreshOrganizationGroupSelector('create-project-organization-selector', 'mixed');
             const donationUrl = document.getElementById('create-project-donation-url');
             if (donationUrl) donationUrl.placeholder = t('create_project_donation_url_placeholder');
+            updateCreateProjectVolunteerRolesSummary();
+            if (document.getElementById('create-project-volunteer-roles-modal')) {
+                renderCreateProjectVolunteerRoles();
+            }
+            toggleCreateProjectType();
+        }
+
+        function toggleCreateProjectType() {
+            const modal = document.getElementById('create-project-modal');
+            if (!modal) return;
+            const projectType = modal.querySelector('input[name="projectType"]:checked')?.value || 'funding';
+            document.getElementById('create-project-donation-section')?.classList.toggle('hidden', projectType === 'volunteer');
+            document.getElementById('create-project-volunteer-roles')?.classList.toggle('hidden', projectType !== 'volunteer');
+            const donationInput = document.getElementById('create-project-donation-url');
+            if (donationInput) donationInput.disabled = projectType === 'volunteer';
+        }
+
+        function openCreateProjectVolunteerRolesModal() {
+            if (document.getElementById('create-project-volunteer-roles-modal')) return;
+            createProjectVolunteerRolesDraft = createProjectVolunteerRoles.map(role => ({ ...role }));
+            const modal = document.createElement('div');
+            modal.id = 'create-project-volunteer-roles-modal';
+            modal.className = 'fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm';
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('aria-labelledby', 'create-project-roles-modal-title');
+            modal.innerHTML = `
+                <div class="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl" onclick="event.stopPropagation()">
+                    <div class="flex items-start justify-between gap-4">
+                        <h2 id="create-project-roles-modal-title" class="text-xl font-black text-slate-900">${t('create_project_roles_modal_title')}</h2>
+                        <button id="create-project-roles-close" type="button" aria-label="${t('close')}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                    </div>
+                    <div id="create-project-roles-list" class="mt-5 space-y-3"></div>
+                    <div class="mt-5 flex flex-wrap justify-between gap-2">
+                        <button id="create-project-roles-add" type="button" class="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50">${t('create_project_roles_add')}</button>
+                        <button id="create-project-roles-save" type="button" class="rounded-xl bg-primary-600 px-4 py-2.5 text-xs font-bold text-white transition-colors hover:bg-primary-700">${t('create_project_roles_save')}</button>
+                    </div>
+                </div>
+            `;
+            modal.addEventListener('click', event => {
+                if (event.target === modal) closeCreateProjectVolunteerRolesModal();
+            });
+            modal.addEventListener('keydown', handleCreateProjectVolunteerRolesModalKeydown);
+            modal.querySelector('#create-project-roles-close').addEventListener('click', closeCreateProjectVolunteerRolesModal);
+            modal.querySelector('#create-project-roles-add').addEventListener('click', addCreateProjectVolunteerRole);
+            modal.querySelector('#create-project-roles-save').addEventListener('click', saveCreateProjectVolunteerRoles);
+            modal.querySelector('#create-project-roles-list').addEventListener('input', handleCreateProjectVolunteerRoleInput);
+            modal.querySelector('#create-project-roles-list').addEventListener('change', handleCreateProjectVolunteerRoleImageFile);
+            modal.querySelector('#create-project-roles-list').addEventListener('click', event => {
+                const button = event.target.closest('[data-remove-role]');
+                if (!button) return;
+                createProjectVolunteerRolesDraft.splice(Number(button.dataset.removeRole), 1);
+                renderCreateProjectVolunteerRoles();
+            });
+            document.body.appendChild(modal);
+            document.getElementById('create-project-roles-button')?.setAttribute('aria-expanded', 'true');
+            renderCreateProjectVolunteerRoles();
+            modal.querySelector('#create-project-roles-list input[data-role-field="title"]')?.focus({ preventScroll: true });
+        }
+
+        function renderCreateProjectVolunteerRoles() {
+            const list = document.getElementById('create-project-roles-list');
+            if (!list) return;
+            list.replaceChildren();
+            createProjectVolunteerRolesDraft.forEach((role, index) => {
+                const card = document.createElement('div');
+                card.className = 'rounded-xl border border-slate-200 p-4';
+                card.dataset.roleCard = '';
+                card.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <img data-role-preview class="h-12 w-12 shrink-0 rounded-lg bg-slate-100 object-cover" alt="">
+                        <div class="min-w-0 flex-1 space-y-2">
+                            <input data-role-field="title" type="text" maxlength="80" placeholder="${escapeHTML(t('create_project_role_title_placeholder'))}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900">
+                            <input data-role-field="image" type="url" maxlength="2048" placeholder="${escapeHTML(t('create_project_role_photo_placeholder'))}" aria-label="${escapeHTML(t('create_project_role_image_url'))}" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs text-slate-900">
+                        </div>
+                        <button type="button" data-remove-role="${index}" aria-label="${escapeHTML(t('create_project_roles_remove'))}" title="${escapeHTML(t('create_project_roles_remove'))}" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-red-50 hover:text-red-600"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
+                    </div>
+                    <input data-role-field="file" type="file" accept="image/*" aria-label="${escapeHTML(t('create_project_role_image_file'))}" class="mt-3 w-full text-xs text-slate-500 file:mr-3 file:rounded-lg file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-primary-700">
+                    <textarea data-role-field="description" rows="2" maxlength="300" placeholder="${escapeHTML(t('create_project_role_description_placeholder'))}" class="mt-3 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs text-slate-900"></textarea>
+                `;
+                const titleInput = card.querySelector('[data-role-field="title"]');
+                titleInput.value = currentLang === 'es' ? role.titleEs || role.title || '' : role.title || role.titleEs || '';
+                card.querySelector('[data-role-field="image"]').value = role.image && !role.image.startsWith('data:') ? role.image : '';
+                card.querySelector('[data-role-field="description"]').value = currentLang === 'es' ? role.descriptionEs || role.description || '' : role.description || role.descriptionEs || '';
+                const preview = card.querySelector('[data-role-preview]');
+                if (role.image) preview.src = role.image;
+                preview.alt = titleInput.value;
+                preview.onerror = () => { preview.removeAttribute('src'); };
+                list.appendChild(card);
+            });
+        }
+
+        function handleCreateProjectVolunteerRoleInput(event) {
+            const field = event.target.dataset.roleField;
+            const index = Number(event.target.closest('[data-role-card]')?.querySelector('[data-remove-role]')?.dataset.removeRole);
+            const role = createProjectVolunteerRolesDraft[index];
+            if (!role) return;
+            if (field === 'title') {
+                role.title = event.target.value;
+                role.titleEs = event.target.value;
+                const preview = event.target.closest('[data-role-card]').querySelector('[data-role-preview]');
+                preview.alt = event.target.value;
+            } else if (field === 'image') {
+                role.image = event.target.value.trim();
+                const preview = event.target.closest('[data-role-card]').querySelector('[data-role-preview]');
+                if (role.image) preview.src = role.image;
+                else preview.removeAttribute('src');
+            } else if (field === 'description') {
+                role.description = event.target.value;
+                role.descriptionEs = event.target.value;
+            }
+        }
+
+        function handleCreateProjectVolunteerRoleImageFile(event) {
+            const input = event.target;
+            if (input.dataset.roleField !== 'file' || !input.files[0]) return;
+            const file = input.files[0];
+            if (!file.type.startsWith('image/')) {
+                input.value = '';
+                showToast(t('create_project_image_type_error'), 'info');
+                return;
+            }
+            const card = input.closest('[data-role-card]');
+            const index = Number(card.querySelector('[data-remove-role]').dataset.removeRole);
+            const role = createProjectVolunteerRolesDraft[index];
+            if (!role) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (typeof reader.result !== 'string') {
+                    showToast(t('create_project_image_read_error'), 'info');
+                    return;
+                }
+                if (!createProjectVolunteerRolesDraft.includes(role) || !input.isConnected) return;
+                role.image = reader.result;
+                const preview = card.querySelector('[data-role-preview]');
+                preview.src = reader.result;
+                card.querySelector('[data-role-field="image"]').value = '';
+            };
+            reader.onerror = () => {
+                input.value = '';
+                showToast(t('create_project_image_read_error'), 'info');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function addCreateProjectVolunteerRole() {
+            createProjectVolunteerRolesDraft.push({
+                id: `role_${Date.now()}_${createProjectVolunteerRolesDraft.length + 1}`,
+                title: '',
+                titleEs: '',
+                description: '',
+                descriptionEs: '',
+                image: ''
+            });
+            renderCreateProjectVolunteerRoles();
+            const inputs = document.querySelectorAll('#create-project-roles-list input[data-role-field="title"]');
+            inputs[inputs.length - 1]?.focus({ preventScroll: true });
+        }
+
+        function saveCreateProjectVolunteerRoles() {
+            createProjectVolunteerRoles = createProjectVolunteerRolesDraft.map((role, index) => ({
+                ...role,
+                id: role.id || `role_${Date.now()}_${index + 1}`,
+                title: String(role.title || role.titleEs || '').trim(),
+                titleEs: String(role.titleEs || role.title || '').trim(),
+                description: String(role.description || role.descriptionEs || '').trim(),
+                descriptionEs: String(role.descriptionEs || role.description || '').trim()
+            })).filter(role => role.title || role.titleEs);
+            updateCreateProjectVolunteerRolesSummary();
+            closeCreateProjectVolunteerRolesModal();
+        }
+
+        function handleCreateProjectVolunteerRolesModalKeydown(event) {
+            if (event.key === 'Escape') {
+                event.stopPropagation();
+                closeCreateProjectVolunteerRolesModal();
+            }
+        }
+
+        function closeCreateProjectVolunteerRolesModal() {
+            const modal = document.getElementById('create-project-volunteer-roles-modal');
+            if (!modal) return;
+            modal.removeEventListener('keydown', handleCreateProjectVolunteerRolesModalKeydown);
+            modal.remove();
+            createProjectVolunteerRolesDraft = [];
+            document.getElementById('create-project-roles-button')?.setAttribute('aria-expanded', 'false');
+            document.getElementById('create-project-roles-button')?.focus({ preventScroll: true });
         }
 
         function handleCreateProjectCoverImageChange(event) {
@@ -4445,8 +4787,15 @@
         function closeCreateProjectModal() {
             const modal = document.getElementById('create-project-modal');
             if (!modal) return;
+            const rolesModal = document.getElementById('create-project-volunteer-roles-modal');
+            if (rolesModal) {
+                rolesModal.removeEventListener('keydown', handleCreateProjectVolunteerRolesModalKeydown);
+                rolesModal.remove();
+                createProjectVolunteerRolesDraft = [];
+            }
             modal.removeEventListener('keydown', handleCreateProjectModalKeydown);
             modal.remove();
+            createProjectVolunteerRoles = [];
             const returnFocus = createProjectReturnFocus;
             createProjectReturnFocus = null;
             if (returnFocus instanceof HTMLElement && returnFocus.isConnected) {
@@ -4460,16 +4809,20 @@
             const title = String(formData.get('title') || '').trim();
             const organization = String(formData.get('organization') || '').trim();
             const description = String(formData.get('description') || '').trim();
+            const projectType = String(formData.get('projectType') || 'funding');
             if (!title || !organization || !description) {
                 showToast(t('create_project_validation'), 'info');
                 return;
             }
             const donationPageUrlInput = String(formData.get('donationPageUrl') || '').trim();
             const donationPageUrl = parseDonationPageUrl(donationPageUrlInput);
-            if (donationPageUrlInput && !donationPageUrl) {
+            if (projectType === 'funding' && donationPageUrlInput && !donationPageUrl) {
                 showToast(t('create_project_donation_url_invalid'), 'info');
                 return;
             }
+            const volunteerRoles = projectType === 'volunteer'
+                ? createProjectVolunteerRoles.map(role => ({ ...role }))
+                : [];
 
             const [publishType, publishId] = organization.split(':');
             const selectedGroup = publishType === 'group' ? state.groups.find(group => group.id === publishId) : null;
@@ -4489,7 +4842,9 @@
                 category: locales.en.create_project_category,
                 categoryEs: locales.es.create_project_category,
                 description,
-                donationPageUrl: donationPageUrl?.href || '',
+                projectType,
+                volunteerRoles,
+                donationPageUrl: projectType === 'funding' ? (donationPageUrl?.href || '') : '',
                 coverImage: String(formData.get('coverImage') || DEFAULT_PROJECT_COVER_IMAGE),
                 ...(publishType === 'group' ? {
                     groupId: publishId,
@@ -9703,6 +10058,40 @@
             showToast("NGO Profile link copied to clipboard!", "success");
         }
 
+        function isVolunteerProject(project) {
+            return String(project?.projectType || '').toLowerCase() === 'volunteer';
+        }
+
+        function getVolunteerRoles(project) {
+            if (Array.isArray(project?.volunteerRoles) && project.volunteerRoles.length) return project.volunteerRoles;
+            return [
+                {
+                    id: 'developers',
+                    title: 'Developers',
+                    titleEs: 'Programadores',
+                    description: 'Frontend and backend development, open APIs, and civic-tech architecture.',
+                    descriptionEs: 'Desarrollo frontend y backend, APIs abiertas y arquitectura civic-tech.',
+                    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800'
+                },
+                {
+                    id: 'designers',
+                    title: 'Designers',
+                    titleEs: 'Diseñadores',
+                    description: 'Accessible UI/UX design, design systems, and prototyping.',
+                    descriptionEs: 'Diseño UI/UX accesible, sistemas de diseño y prototipado.',
+                    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800'
+                },
+                {
+                    id: 'artists',
+                    title: 'Artists',
+                    titleEs: 'Artistas',
+                    description: 'Digital illustration, visual identity, and community graphics.',
+                    descriptionEs: 'Ilustración digital, identidad visual y recursos gráficos comunitarios.',
+                    image: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=800'
+                }
+            ];
+        }
+
         function openProjectDetail(projectId, trigger) {
             const projectAliases = {
                 proj_schools: 'proj_school_sanitation'
@@ -9731,6 +10120,7 @@
             const projectDescription = localizedProjectText(project, 'description');
             const projectKpi = localizedProjectText(project, 'kpi');
             const donationPageUrl = parseDonationPageUrl(project.donationPageUrl);
+            const volunteerProject = isVolunteerProject(project);
             state.activeProjectDetailId = projectId;
             projectDetailsReturnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
             const container = document.getElementById('modal-container');
@@ -9758,6 +10148,7 @@
                             </div>
                             <header>
                                 <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-primary-700">${t('project_details_title')} · ${escapeHTML(projectCategory)}</p>
+                                ${volunteerProject ? `<div class="mt-3 flex flex-wrap gap-2"><span class="rounded-full bg-violet-100 px-3 py-1 text-[10px] font-black tracking-wider text-violet-700">${t('project_volunteer_badge')}</span><span class="rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-black tracking-wider text-emerald-700">${t('project_volunteer_status')}</span></div>` : ''}
                                 <h2 id="project-detail-title" class="mt-2 text-2xl font-black leading-tight text-slate-900 sm:text-3xl">${escapeHTML(projectTitle)}</h2>
                             </header>
                             <dl class="rounded-2xl bg-slate-50 p-4 sm:p-5">
@@ -9766,6 +10157,12 @@
                                     <dd class="mt-1 text-sm font-semibold text-slate-800">${escapeHTML(location)}</dd>
                                 </div>
                             </dl>
+                            ${volunteerProject ? `
+                            <section aria-label="${t('project_volunteer_status')}" class="rounded-2xl border border-violet-200 bg-violet-50 p-5">
+                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-violet-600">${t('project_volunteer_badge')}</span>
+                                <p class="mt-1 text-lg font-black text-slate-900">${t('project_volunteer_status')}</p>
+                            </section>
+                            ` : `
                             <section aria-label="Estado de financiación" class="rounded-2xl border border-slate-200 bg-white p-5">
                                 <div class="flex flex-wrap items-end justify-between gap-2">
                                     <div>
@@ -9776,6 +10173,7 @@
                                 </div>
                                 <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-emerald-600" style="width:${progress}%"></div></div>
                             </section>
+                            `}
 
                             <section aria-labelledby="project-detail-description" class="space-y-5">
                                 <div>
@@ -9818,6 +10216,21 @@
                                 `}
                             </section>
 
+                            ${volunteerProject ? `
+                            <section class="rounded-2xl border border-violet-200 bg-violet-50 p-5 sm:p-6">
+                                <div class="flex items-start gap-3">
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-700"><i class="fa-solid fa-handshake-angle"></i></span>
+                                    <div>
+                                        <h3 class="text-sm font-black text-slate-900">${t('project_volunteer_section_title')}</h3>
+                                        <p class="mt-1 text-xs leading-relaxed text-slate-600">${t('project_volunteer_status')}</p>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="openVolunteerRolesModal('${escapeHTML(project.id)}')" class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-violet-700 py-3 text-xs font-bold text-white transition-colors hover:bg-violet-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-offset-2">
+                                    <i class="fa-solid fa-users" aria-hidden="true"></i>
+                                    ${t('project_volunteer_view_roles')}
+                                </button>
+                            </section>
+                            ` : `
                             <section class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 sm:p-6">
                                 <div class="flex items-start gap-3">
                                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700"><i class="fa-solid fa-hand-holding-heart"></i></span>
@@ -9843,12 +10256,110 @@
                                     <p class="mt-2 text-xs leading-relaxed text-amber-800">${t('project_donate_unavailable')}</p>
                                 `}
                             </section>
+                            `}
                         </div>
                     </div>
                 </div>
             `;
             document.addEventListener('keydown', handleProjectDetailsModalKeydown);
             document.getElementById('project-details-close').focus({ preventScroll: true });
+        }
+
+        function openVolunteerRolesModal(projectId) {
+            const project = state.projects.find(item => item.id === projectId) || ngoData.projects?.find(item => item.id === projectId);
+            if (!project) return;
+            const roles = getVolunteerRoles(project);
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="fixed inset-0 z-[110] flex items-center justify-center overflow-y-auto bg-slate-950/70 p-4 backdrop-blur-sm" onclick="closeModal()">
+                    <div role="dialog" aria-modal="true" aria-labelledby="volunteer-roles-title" class="relative max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-3xl bg-white shadow-floating animate-modal-in" onclick="event.stopPropagation()">
+                        <div class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-5 py-4">
+                            <div>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-violet-700">${t('project_volunteer_badge')}</p>
+                                <h2 id="volunteer-roles-title" class="mt-1 text-xl font-black text-slate-900">${t('project_volunteer_section_title')}</h2>
+                            </div>
+                            <button type="button" onclick="closeModal()" aria-label="${t('close')}" class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700">&times;</button>
+                        </div>
+                        <div id="volunteer-roles-view" class="grid gap-4 p-5 sm:grid-cols-3">
+                            ${roles.map(role => {
+                                const title = currentLang === 'es' ? (role.titleEs || role.title) : role.title;
+                                const description = currentLang === 'es' ? (role.descriptionEs || role.description) : role.description;
+                                const applied = state.projectVolunteers.some(item => item.projectId === projectId && item.role === role.id);
+                                return `
+                                <button type="button" onclick="openVolunteerApplication('${escapeHTML(projectId)}', '${escapeHTML(role.id)}')" ${applied ? 'disabled' : ''} class="overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-subtle transition hover:border-violet-300 hover:shadow-card disabled:cursor-default">
+                                    <img src="${escapeHTML(role.image || 'assets/Logo2.jpg')}" alt="${escapeHTML(title)}" class="h-40 w-full rounded-lg object-cover">
+                                    <span class="block p-4">
+                                        <span class="block text-sm font-black text-slate-900">${escapeHTML(title)}</span>
+                                        <span class="mt-2 block text-xs leading-relaxed text-slate-600">${escapeHTML(description)}</span>
+                                        ${applied ? `<span class="mt-3 inline-flex rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-black text-emerald-700"><i class="fa-solid fa-circle-check mr-1"></i>${t('project_volunteer_applied')}</span>` : ''}
+                                    </span>
+                                </button>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openVolunteerApplication(projectId, roleId) {
+            if (state.projectVolunteers.some(item => item.projectId === projectId && item.role === roleId)) return;
+            const project = state.projects.find(item => item.id === projectId) || ngoData.projects?.find(item => item.id === projectId);
+            const role = getVolunteerRoles(project).find(item => item.id === roleId);
+            if (!project || !role) return;
+            const title = currentLang === 'es' ? (role.titleEs || role.title) : role.title;
+            const view = document.getElementById('volunteer-roles-view');
+            if (!view) return;
+            view.innerHTML = `
+                <div class="sm:col-span-3">
+                    <button type="button" onclick="openVolunteerRolesModal('${escapeHTML(projectId)}')" class="mb-4 text-xs font-bold text-violet-700"><i class="fa-solid fa-arrow-left mr-1"></i>${t('project_volunteer_view_roles')}</button>
+                    <div class="grid gap-5 rounded-2xl border border-slate-200 p-4 sm:grid-cols-[180px_1fr]">
+                        <img src="${escapeHTML(role.image || 'assets/Logo2.jpg')}" alt="${escapeHTML(title)}" class="h-40 w-full rounded-lg object-cover">
+                        <div>
+                            <h3 class="text-lg font-black text-slate-900">${escapeHTML(title)}</h3>
+                            <p class="mt-1 text-xs leading-relaxed text-slate-600">${escapeHTML(currentLang === 'es' ? (role.descriptionEs || role.description) : role.description)}</p>
+                            <form id="volunteer-application-form" onsubmit="submitVolunteerApplication(event, '${escapeHTML(projectId)}', '${escapeHTML(roleId)}')" class="mt-4">
+                                <label for="volunteer-application-message" class="block text-xs font-bold text-slate-700">${t('project_volunteer_application_title')}</label>
+                                <textarea id="volunteer-application-message" maxlength="600" rows="5" required placeholder="${t('project_volunteer_application_placeholder')}" oninput="updateVolunteerApplicationCounter()" class="mt-2 w-full resize-y rounded-xl border border-slate-200 px-3 py-3 text-sm text-slate-900 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"></textarea>
+                                <div class="mt-2 flex items-center justify-between gap-3">
+                                    <span id="volunteer-application-count" class="text-xs font-mono text-slate-500">0 / 600</span>
+                                    <button type="submit" class="rounded-xl bg-violet-700 px-4 py-2.5 text-xs font-bold text-white hover:bg-violet-800">${t('project_volunteer_apply')}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('volunteer-application-message')?.focus();
+        }
+
+        function updateVolunteerApplicationCounter() {
+            const textarea = document.getElementById('volunteer-application-message');
+            const counter = document.getElementById('volunteer-application-count');
+            if (textarea && counter) counter.textContent = `${textarea.value.length} / 600`;
+        }
+
+        function submitVolunteerApplication(event, projectId, roleId) {
+            event.preventDefault();
+            const textarea = document.getElementById('volunteer-application-message');
+            const message = textarea?.value.trim() || '';
+            if (!message) {
+                textarea?.focus();
+                showToast(t('project_volunteer_application_required'), 'info');
+                return;
+            }
+            if (state.projectVolunteers.some(item => item.projectId === projectId && item.role === roleId)) return;
+            state.projectVolunteers.push({ projectId, role: roleId, message });
+            const view = document.getElementById('volunteer-roles-view');
+            if (view) {
+                view.innerHTML = `
+                    <div class="sm:col-span-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
+                        <i class="fa-solid fa-circle-check text-3xl text-emerald-600"></i>
+                        <h3 class="mt-3 text-lg font-black text-slate-900">${t('project_volunteer_application_sent')}</h3>
+                        <button type="button" onclick="openVolunteerRolesModal('${escapeHTML(projectId)}')" class="mt-5 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-700">${t('close')}</button>
+                    </div>
+                `;
+            }
+            showToast(t('project_volunteer_application_sent'), 'success');
         }
 
         function openDonateModal() {
@@ -11338,12 +11849,18 @@
                                     ` : `<p class="mt-5 rounded-xl bg-slate-50 p-4 text-xs text-slate-500">${t('no_field_updates')}</p>`}
                                 </div>
                                 <aside class="h-fit rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                                    ${isVolunteerProject(project) ? `
+                                    <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-violet-600">${t('project_volunteer_badge')}</p>
+                                    <p class="mt-2 text-lg font-black text-slate-900">${t('project_volunteer_status')}</p>
+                                    <button type="button" onclick="openVolunteerRolesModal('${escapeHTML(project.id)}')" class="mt-4 flex w-full items-center justify-center rounded-xl bg-violet-700 px-3 py-2.5 text-xs font-bold text-white">${t('project_volunteer_view_roles')}</button>
+                                    ` : `
                                     <p class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500">${t('funding_status')}</p>
                                     <p class="mt-2 text-xl font-black text-slate-900">${formatCurrency(project.amountRaised)} <span class="text-xs font-medium text-slate-500">of ${formatCurrency(project.targetGoal)}</span></p>
                                     <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
                                         <div class="h-full rounded-full bg-primary-600" style="width:${project.targetGoal > 0 ? Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100) : 0}%"></div>
                                     </div>
                                     <p class="mt-2 text-right text-xs font-bold text-primary-700">${project.targetGoal > 0 ? Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100) : 0}%</p>
+                                    `}
                                     <p class="mt-4 text-xs font-semibold text-slate-700">${escapeHTML(project.location || 'Kenya')}</p>
                                 </aside>
                             </section>
@@ -11669,6 +12186,7 @@
                             <span class="absolute left-3 top-3 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-subtle backdrop-blur-sm">
                                 ${escapeHTML(groupEventText(event, 'dateShort'))}
                             </span>
+                            <span class="absolute right-3 top-3 rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-sm">${t('project_event_badge')}</span>
                             ${event.country ? countryFlagImage(event.country, 'absolute bottom-2.5 left-2.5 z-10 w-7 h-7 rounded-full object-cover shadow-md ring-2 ring-white') : ''}
                         </span>
                         <div class="flex flex-1 flex-col justify-between p-5">
@@ -11680,7 +12198,7 @@
                             </div>
                             <div class="mt-auto flex items-center justify-between gap-2 pt-3">
                                 <button type="button" aria-haspopup="dialog" aria-label="${t('group_event_join')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="event.stopPropagation(); openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this)" class="rounded-full px-3 py-1 text-[10px] font-bold transition-colors ${event.response === 'going' ? 'bg-emerald-100 text-emerald-800' : 'bg-primary-600 text-white hover:bg-primary-700'}">${responseLabel}</button>
-                                <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-slate-600">EVENT</span>
+                                <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-slate-600">${t('project_event_badge')}</span>
                             </div>
                             <div class="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-2">
                                 <button type="button" title="${t(savedUserEventIds.includes(event.id) ? 'home_feed_event_saved_action' : 'home_feed_save_event')}" aria-label="${t(savedUserEventIds.includes(event.id) ? 'home_feed_event_saved_action' : 'home_feed_save_event')}: ${escapeHTML(groupEventText(event, 'title'))}" aria-pressed="${savedUserEventIds.includes(event.id)}" onclick="event.stopPropagation(); toggleUserEventSaved('${escapeHTML(group.id)}', '${escapeHTML(event.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
@@ -11774,6 +12292,7 @@
                         <div>
                             <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-primary-700">${escapeHTML(localizedProjectText(selectedProject, 'category'))}</span>
                             <h2 id="${titleId}" class="mt-1 text-lg font-black leading-tight text-slate-900">${escapeHTML(localizedProjectText(selectedProject, 'title'))}</h2>
+                            ${isVolunteerProject(selectedProject) ? `<div class="mt-2 flex flex-wrap gap-2"><span class="rounded-full bg-violet-100 px-2.5 py-1 text-[9px] font-black text-violet-700">${t('project_volunteer_badge')}</span><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[9px] font-black text-emerald-700">${t('project_volunteer_status')}</span></div>` : ''}
                             <p class="mt-2 text-xs font-mono text-slate-500">${escapeHTML(formatProjectLocation(selectedProject))}</p>
                         </div>
                         <div class="flex items-center gap-3 rounded-xl bg-slate-50 p-3">
@@ -11785,6 +12304,12 @@
                             </div>
                         </div>
                         <p class="text-xs leading-relaxed text-slate-600">${escapeHTML(localizedProjectText(selectedProject, 'description'))}</p>
+                        ${isVolunteerProject(selectedProject) ? `
+                        <section class="rounded-xl border border-violet-200 bg-violet-50 p-4">
+                            <p class="text-xs font-black text-slate-900">${t('project_volunteer_section_title')}</p>
+                            <button type="button" onclick="openVolunteerRolesModal('${escapeHTML(selectedProject.id)}')" class="mt-3 flex w-full items-center justify-center rounded-xl bg-violet-700 px-3 py-2.5 text-xs font-bold text-white">${t('project_volunteer_view_roles')}</button>
+                        </section>
+                        ` : `
                         <section aria-label="Funding progress">
                             <div class="flex items-end justify-between gap-2">
                                 <div>
@@ -11797,10 +12322,11 @@
                                 <div class="h-full rounded-full bg-primary-600" style="width:${fundingProgress}%"></div>
                             </div>
                         </section>
+                        `}
                         <button type="button" onclick="openExpandedProjectModal('${selectedProject.id}')" class="flex w-full items-center justify-center gap-2 rounded-xl border border-primary-200 bg-primary-50 px-4 py-2.5 text-xs font-bold text-primary-700 transition-colors hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                             <i class="fa-solid fa-expand" aria-hidden="true"></i> ${t('project_expand_view')}
                         </button>
-                        <div>
+                        ${isVolunteerProject(selectedProject) ? '' : `<div>
                             <label for="${volunteerRoleId}" class="block text-[10px] font-mono font-bold uppercase text-slate-500">${t('project_volunteer_role')}</label>
                             <select id="${volunteerRoleId}" ${volunteerCommitment ? 'disabled' : ''} class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-slate-50">
                                 <option value="">${t('project_volunteer_select_role')}</option>
@@ -11811,7 +12337,7 @@
                             <button type="button" onclick="volunteerForBrowseProject('${selectedProject.id}', '${volunteerRoleId}')" ${volunteerCommitment ? 'disabled' : ''} class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 disabled:cursor-default disabled:bg-emerald-700">
                                 <i class="fa-solid ${volunteerCommitment ? 'fa-circle-check' : 'fa-handshake-angle'}" aria-hidden="true"></i> ${t(volunteerCommitment ? 'project_volunteer_joined' : 'project_volunteer_join')}
                             </button>
-                        </div>
+                        </div>`}
                     </div>
                 </aside>
             `;
@@ -11880,6 +12406,7 @@
                                     <button type="button" aria-haspopup="dialog" aria-label="${t('browse_project_view')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); openProjectDetail('${escapeHTML(proj.id)}', this)" class="flex w-full flex-1 cursor-pointer flex-col text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500">
                                         <span class="relative block h-44 w-full shrink-0 overflow-hidden bg-slate-100">
                                             <img src="${escapeHTML(proj.coverImage)}" alt="${escapeHTML(localizedProjectText(proj, 'title'))}" class="h-44 w-full shrink-0 object-cover transition-transform duration-300 group-hover:scale-105">
+                                            <span class="absolute right-3 top-3 rounded-full ${isVolunteerProject(proj) ? 'bg-violet-700' : 'bg-sky-600'} px-3 py-1 text-[9px] font-black uppercase tracking-wider text-white shadow-subtle">${t(isVolunteerProject(proj) ? 'project_volunteer_badge' : 'project_donation_badge')}</span>
                                             <span class="absolute left-3 top-3 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-subtle backdrop-blur-sm">
                                                 ${escapeHTML(formatProjectLocation(proj))}
                                             </span>
@@ -11892,7 +12419,7 @@
                                     </button>
                                     <span class="mt-auto flex items-center justify-between gap-2 px-4 pb-4 pt-3">
                                         <button type="button" aria-haspopup="dialog" onclick="event.stopPropagation(); openProjectDetail('${escapeHTML(proj.id)}', this)" class="rounded-full bg-primary-600 px-3 py-1 text-[10px] font-bold text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">${t('browse_project_view')}</button>
-                                        <span class="rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider ${isGroupProject ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-sky-200 bg-sky-50 text-sky-700'}">${t(proj.userCreated ? 'project_origin_community' : (isGroupProject ? 'project_origin_group' : 'project_origin_ngo'))}</span>
+                                        <span class="rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider ${isVolunteerProject(proj) ? 'border-violet-200 bg-violet-50 text-violet-700' : 'border-sky-200 bg-sky-50 text-sky-700'}">${t(isVolunteerProject(proj) ? 'project_volunteer_badge' : 'project_donation_badge')}</span>
                                     </span>
                                     <span class="flex items-center gap-2 px-4 pb-3">
                                         <button type="button" title="${t('browse_share')}" aria-label="${t('browse_share')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); shareBrowseItem('project', '${escapeHTML(proj.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
