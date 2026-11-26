@@ -658,6 +658,15 @@
                 leader_profile_projects: "Proyectos gestionados",
                 leader_profile_activity: "Actividad reciente en campo",
                 leader_profile_unavailable: "No se pudo encontrar este perfil.",
+                profile_socials_title: "Redes Sociales",
+                profile_socials_add: "+ Agregar redes",
+                profile_socials_edit: "Editar redes",
+                profile_socials_save: "Guardar redes",
+                profile_socials_clear: "Quitar",
+                profile_socials_link_or_username: "Enlace o usuario",
+                profile_socials_hint: "Añade solo los perfiles que quieras compartir.",
+                profile_socials_invalid: "Introduce un enlace o usuario válido para {platform}.",
+                profile_socials_save_error: "No se pudieron guardar las redes sociales en este dispositivo.",
                 profile_log_out: "Cerrar sesión",
                 profile_menu_toggle: "Abrir menú de perfil",
                 settings_title: "Configuración",
@@ -1550,6 +1559,15 @@
                 leader_profile_projects: "Managed Projects",
                 leader_profile_activity: "Recent Field Activity",
                 leader_profile_unavailable: "This profile could not be found.",
+                profile_socials_title: "Social Networks",
+                profile_socials_add: "+ Add Social Networks",
+                profile_socials_edit: "Edit Socials",
+                profile_socials_save: "Save Socials",
+                profile_socials_clear: "Clear",
+                profile_socials_link_or_username: "Link or username",
+                profile_socials_hint: "Add only the profiles you want to share.",
+                profile_socials_invalid: "Enter a valid link or username for {platform}.",
+                profile_socials_save_error: "Social networks could not be saved on this device.",
                 profile_log_out: "Log Out",
                 profile_menu_toggle: "Open profile menu",
                 settings_title: "Settings",
@@ -2515,6 +2533,7 @@
             if (document.getElementById('user-events-modal')) renderUserEventsModal();
             if (document.getElementById('home-feed-activity-modal')) renderHomeFeedActivityModal();
             if (document.getElementById('register-modal')) renderRegisterModal();
+            if (state.socialLinksDraft) renderSocialLinksModal();
             document.querySelectorAll('[data-created-by-label]').forEach(label => {
                 label.textContent = t('browse_created_by');
             });
@@ -3046,6 +3065,7 @@
             activeProfileNetworkModal: null,
             activeProfileNetworkPerson: null,
             profileNetworkFollowing: {},
+            socialLinksDraft: null,
             currentUser: {
                 id: 'sarah_donor_102',
                 name: 'Sarah Miller',
@@ -7380,6 +7400,213 @@
             })[character]);
         }
 
+        const socialPlatforms = [
+            { id: 'twitter', name: 'Twitter / X', icon: 'fa-x-twitter', color: 'text-slate-900 hover:bg-slate-100', baseUrl: 'https://x.com/', hosts: ['x.com', 'www.x.com', 'twitter.com', 'www.twitter.com'], placeholder: 'https://x.com/username' },
+            { id: 'linkedin', name: 'LinkedIn', icon: 'fa-linkedin', color: 'text-[#0a66c2] hover:bg-sky-50', baseUrl: 'https://linkedin.com/in/', hosts: ['linkedin.com', 'www.linkedin.com'], placeholder: 'https://linkedin.com/in/username' },
+            { id: 'instagram', name: 'Instagram', icon: 'fa-instagram', color: 'text-[#c13584] hover:bg-pink-50', baseUrl: 'https://instagram.com/', hosts: ['instagram.com', 'www.instagram.com'], placeholder: 'https://instagram.com/username' },
+            { id: 'facebook', name: 'Facebook', icon: 'fa-facebook', color: 'text-[#1877f2] hover:bg-blue-50', baseUrl: 'https://facebook.com/', hosts: ['facebook.com', 'www.facebook.com'], placeholder: 'https://facebook.com/username' },
+            { id: 'youtube', name: 'YouTube', icon: 'fa-youtube', color: 'text-[#ff0000] hover:bg-red-50', baseUrl: 'https://youtube.com/@', hosts: ['youtube.com', 'www.youtube.com'], placeholder: 'https://youtube.com/@username' }
+        ];
+        let socialLinksModalTrigger = null;
+
+        function normalizeSocialUrl(platform, value) {
+            const trimmed = String(value || '').trim();
+            if (!trimmed) return '';
+            if (trimmed.length > 500) return null;
+
+            const platformConfig = socialPlatforms.find(item => item.id === platform);
+            if (!platformConfig) return null;
+
+            const looksLikeUrl = /^https?:\/\//i.test(trimmed)
+                || /^(www\.)?(x\.com|twitter\.com|linkedin\.com|instagram\.com|facebook\.com|youtube\.com)(\/|$)/i.test(trimmed);
+            let candidate = trimmed;
+            if (looksLikeUrl && !/^https?:\/\//i.test(candidate)) candidate = `https://${candidate}`;
+
+            if (!looksLikeUrl) {
+                const username = trimmed.replace(/^@/, '').trim();
+                if (!username || /[\s<>]/.test(username)) return null;
+                candidate = platformConfig.baseUrl + username.split('/').map(encodeURIComponent).join('/');
+            }
+
+            try {
+                const url = new URL(candidate);
+                if (!['http:', 'https:'].includes(url.protocol)
+                    || url.username
+                    || url.password
+                    || !platformConfig.hosts.includes(url.hostname.toLowerCase())) return null;
+                url.protocol = 'https:';
+                return url.toString();
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function getProfileSocialContext() {
+            if (currentScreen === 'ngo-profile') {
+                const id = selectedNGOId || 'ngo_clean_water';
+                const profile = id === 'ngo_clean_water'
+                    ? ngoData
+                    : getNGODirectoryEntries().find(organization => organization.id === id);
+                return { type: 'organization', id, profile };
+            }
+            return { type: 'user', id: state.currentUser.id, profile: state.currentUser };
+        }
+
+        function getProfileSocialLinks(context = getProfileSocialContext()) {
+            const storageKey = `zuliov-social-links:${context.type}:${context.id}`;
+            let saved = null;
+            try {
+                const stored = localStorage.getItem(storageKey);
+                if (stored) {
+                    saved = JSON.parse(stored);
+                    if (!saved || typeof saved !== 'object' || Array.isArray(saved)) {
+                        throw new TypeError('Stored social links must be an object.');
+                    }
+                }
+            } catch (error) {
+                console.error('Unable to read saved social links.', error);
+            }
+
+            const source = saved || context.profile?.socialLinks || {};
+            return socialPlatforms.reduce((links, platform) => {
+                const value = source[platform.id];
+                if (!value) return links;
+                const url = normalizeSocialUrl(platform.id, value);
+                if (url) links[platform.id] = url;
+                return links;
+            }, {});
+        }
+
+        function renderProfileSocialSection(context, canEdit = false) {
+            const links = getProfileSocialLinks(context);
+            if (!Object.keys(links).length && !canEdit) return '';
+
+            return `
+                <section aria-label="${t('profile_socials_title')}" class="flex flex-wrap items-center gap-3 border-t border-slate-100 pt-4">
+                    <h2 class="text-xs font-bold uppercase tracking-wide text-slate-500">${t('profile_socials_title')}</h2>
+                    <div class="flex items-center gap-1">
+                        ${socialPlatforms.filter(platform => links[platform.id]).map(platform => `
+                            <a href="${escapeHTML(links[platform.id])}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(platform.name)}" title="${escapeHTML(platform.name)}" class="inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${platform.color}">
+                                <i class="fa-brands ${platform.icon} text-lg" aria-hidden="true"></i>
+                            </a>
+                        `).join('')}
+                    </div>
+                    ${canEdit ? `
+                        <button type="button" onclick="openSocialLinksModal()" aria-haspopup="dialog" class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                            <i class="fa-solid fa-link" aria-hidden="true"></i>
+                            ${t(Object.keys(links).length ? 'profile_socials_edit' : 'profile_socials_add')}
+                        </button>
+                    ` : ''}
+                </section>
+            `;
+        }
+
+        function openSocialLinksModal(event) {
+            const context = getProfileSocialContext();
+            socialLinksModalTrigger = event?.currentTarget || document.activeElement;
+            state.socialLinksDraft = { ...getProfileSocialLinks(context) };
+            renderSocialLinksModal();
+            document.addEventListener('keydown', handleSocialLinksModalKeydown);
+            document.getElementById('social-links-modal-close')?.focus();
+        }
+
+        function handleSocialLinksModalKeydown(event) {
+            if (event.key === 'Escape') closeSocialLinksModal();
+        }
+
+        function closeSocialLinksModal(restoreFocus = true) {
+            document.getElementById('social-links-modal')?.remove();
+            document.removeEventListener('keydown', handleSocialLinksModalKeydown);
+            state.socialLinksDraft = null;
+            if (restoreFocus && socialLinksModalTrigger?.isConnected) {
+                socialLinksModalTrigger.focus({ preventScroll: true });
+            }
+            socialLinksModalTrigger = null;
+        }
+
+        function updateSocialLinksDraft(platform, value) {
+            if (!state.socialLinksDraft) return;
+            state.socialLinksDraft[platform] = value;
+        }
+
+        function clearSocialLinksDraft(platform) {
+            if (!state.socialLinksDraft) return;
+            state.socialLinksDraft[platform] = '';
+            renderSocialLinksModal();
+            document.getElementById(`social-link-${platform}`)?.focus();
+        }
+
+        function saveSocialLinks(event) {
+            event.preventDefault();
+            const context = getProfileSocialContext();
+            const links = {};
+            for (const platform of socialPlatforms) {
+                const value = state.socialLinksDraft?.[platform.id] || '';
+                if (!value.trim()) continue;
+                const url = normalizeSocialUrl(platform.id, value);
+                if (!url) {
+                    showToast(t('profile_socials_invalid').replace('{platform}', platform.name), 'info');
+                    document.getElementById(`social-link-${platform.id}`)?.focus();
+                    return;
+                }
+                links[platform.id] = url;
+            }
+
+            try {
+                localStorage.setItem(`zuliov-social-links:${context.type}:${context.id}`, JSON.stringify(links));
+            } catch (error) {
+                console.error('Unable to save social links.', error);
+                showToast(t('profile_socials_save_error'), 'info');
+                return;
+            }
+
+            if (context.profile) context.profile.socialLinks = links;
+            if (context.type === 'user') state.currentUser.socialLinks = links;
+            closeSocialLinksModal(false);
+            renderApp();
+        }
+
+        function renderSocialLinksModal() {
+            const container = document.getElementById('modal-container');
+            if (!container || !state.socialLinksDraft) return;
+            container.innerHTML = `
+                <div id="social-links-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="social-links-modal-title" onclick="if (event.target === event.currentTarget) closeSocialLinksModal()">
+                    <section class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-2xl" onclick="event.stopPropagation()">
+                        <header class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4">
+                            <div>
+                                <h2 id="social-links-modal-title" class="text-lg font-bold text-slate-900">${t('profile_socials_title')}</h2>
+                                <p class="mt-1 text-xs text-slate-500">${t('profile_socials_hint')}</p>
+                            </div>
+                            <button type="button" id="social-links-modal-close" onclick="closeSocialLinksModal()" aria-label="${t('close')}" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                        </header>
+                        <form onsubmit="saveSocialLinks(event)" class="space-y-4 p-5">
+                            ${socialPlatforms.map(platform => `
+                                <div>
+                                    <label for="social-link-${platform.id}" class="mb-1.5 flex items-center gap-2 text-xs font-semibold text-slate-700">
+                                        <i class="fa-brands ${platform.icon} ${platform.color.split(' ')[0]}" aria-hidden="true"></i>
+                                        ${escapeHTML(platform.name)}
+                                    </label>
+                                    <div class="flex gap-2">
+                                        <input id="social-link-${platform.id}" type="text" inputmode="url" autocomplete="url" value="${escapeHTML(state.socialLinksDraft[platform.id] || '')}" oninput="updateSocialLinksDraft('${platform.id}', this.value)" placeholder="${escapeHTML(platform.placeholder)}" aria-label="${escapeHTML(platform.name)} ${t('profile_socials_link_or_username')}" class="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                                        <button type="button" onclick="clearSocialLinksDraft('${platform.id}')" aria-label="${t('profile_socials_clear')} ${escapeHTML(platform.name)}" title="${t('profile_socials_clear')}" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                            <div class="flex justify-end border-t border-slate-100 pt-4">
+                                <button type="submit" class="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+                                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>${t('profile_socials_save')}
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            `;
+        }
+
         function groupText(group, field) {
             const groupTranslations = locales[currentLang].group_data;
             return groupTranslations?.[group.id]?.[field] || group[field];
@@ -10244,6 +10471,7 @@
                                 <h1 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">${escapeHTML(organization.name)}</h1>
                                 <p class="mt-2 text-xs font-mono text-slate-500"><i class="fa-solid fa-location-dot mr-1.5" aria-hidden="true"></i>${escapeHTML(location)}</p>
                                 <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">${escapeHTML(organization.description)}</p>
+                                ${renderProfileSocialSection({ type: 'organization', id: organization.id, profile: organization })}
                             </div>
                             <button type="button" onclick="openDonateModal()" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-xs font-bold text-white transition-colors hover:bg-emerald-700">
                                 <i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i> ${t('ngo_donate')}
@@ -10292,6 +10520,8 @@
             }
             const ngo = ngoData;
             const isEmp = state.ngoEmptyStateActive;
+            const ngoSocialContext = { type: 'organization', id: selectedNGOId || 'ngo_clean_water', profile: ngo };
+            const canEditNGOSocials = state.currentUser.role === 'ngo' && state.currentUser.id === 'ngo_clean_water';
 
             canvas.innerHTML = `
                 <!-- Main Container -->
@@ -10371,6 +10601,7 @@
                                 <p class="text-xs sm:text-sm text-slate-600 max-w-4xl leading-relaxed">
                                     ${ngo.tagline}
                                 </p>
+                                ${renderProfileSocialSection(ngoSocialContext, canEditNGOSocials)}
 
                                 <!-- CONTACT & LOCATION -->
                                 <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left space-y-6">
@@ -10379,7 +10610,7 @@
                                         <span class="text-xs font-mono text-emerald-600 font-bold"><i class="fa-solid fa-location-dot"></i> Verified Headquarters</span>
                                     </div>
 
-                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                         <div class="space-y-1">
                                             <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Headquarters</span>
                                             <p class="text-xs font-bold text-slate-800">CleanWater Tower, Kilimani</p>
@@ -10394,15 +10625,6 @@
                                             <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Phone Hotline</span>
                                             <p class="text-xs font-bold text-slate-800">+254 (0) 20 800 9000</p>
                                             <p class="text-xs text-slate-500">Mon - Fri, 08:00 - 18:00 EAT</p>
-                                        </div>
-                                        <div class="space-y-1">
-                                            <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Social Channels</span>
-                                            <div class="flex items-center space-x-3 text-slate-500 text-base pt-1">
-                                                <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-x-twitter"></i></a>
-                                                <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-linkedin"></i></a>
-                                                <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-facebook"></i></a>
-                                                <a href="#" class="hover:text-primary-600"><i class="fa-brands fa-instagram"></i></a>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -11668,6 +11890,7 @@
             const profileGroups = getProfileGroups();
             const managedGroupIds = user.managedGroupIds || [];
             const followingNGOs = ngoData.isFollowing ? [ngoData] : [];
+            const userSocialContext = { type: 'user', id: user.id, profile: user };
 
             let coverContentHtml = '';
             if (user.coverImage) {
@@ -11796,6 +12019,7 @@
                                 <p class="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
                                     ${escapeHTML(user.bio || '')}
                                 </p>
+                                ${renderProfileSocialSection(userSocialContext, !isVisitorView)}
 
                                 ${user.id === 'marcus_ngo_301' ? `
                                     <button type="button" onclick="navigateTo('ngo-profile')" aria-label="Ver perfil de CleanWater International" class="group mt-2 flex w-full max-w-sm items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-subtle transition-all hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
