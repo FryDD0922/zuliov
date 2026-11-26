@@ -626,12 +626,11 @@
                 org_manage_open_error: "No se pudo abrir la organización seleccionada.",
                 org_proposal_eyebrow: "ZULIOV / COMUNIDAD",
                 org_proposal_title: "Crear una organización",
-                org_proposal_subtitle: "Crea tu ONG, grupo informal o movimiento cívico en Zuliov.",
+                org_proposal_subtitle: "Configura tu ONG o movimiento cívico en Zuliov.",
                 org_proposal_name: "Nombre de la organización",
                 org_proposal_name_placeholder: "Ej. Red de Acción Comunitaria",
                 org_proposal_type: "Tipo de organización",
                 org_proposal_type_ngo: "ONG",
-                org_proposal_type_informal_group: "Grupo informal",
                 org_proposal_type_movement: "Movimiento cívico",
                 org_proposal_registration_label: "Código de Registro Oficial / Tax ID",
                 org_proposal_registration_placeholder: "p. ej., EIN, RIF, RUT o número de registro de ONG",
@@ -659,7 +658,23 @@
                 leader_profile_activity: "Actividad reciente en campo",
                 leader_profile_unavailable: "No se pudo encontrar este perfil.",
                 profile_socials_title: "Redes Sociales",
-                profile_socials_add: "+ Agregar redes",
+                profile_socials_add: "+ Agregar redes sociales",
+                profile_leaders_add: "+ Agregar líderes",
+                leader_invite_title: "Invitar líderes",
+                leader_invite_subtitle: "Invita a personas clave para la dirección de tu organización.",
+                leader_invite_select: "Seleccionar de tus conexiones",
+                leader_connections_title: "Tus conexiones",
+                leader_connections_search: "Buscar en tus conexiones...",
+                leader_connections_empty: "No se encontraron conexiones.",
+                leader_invite_role: "Cargo / Rol",
+                leader_invite_role_placeholder: "Ej. Directora Ejecutiva",
+                leader_invite_send: "Enviar invitación",
+                leader_invite_sent: "Invitación enviada.",
+                leader_invite_accept: "Simular aceptación",
+                leader_invite_pending: "Pendiente de aceptación",
+                leader_invite_accepted: "Aceptado",
+                leader_invite_empty: "Aún no hay líderes invitados.",
+                leader_invite_validation: "Selecciona una conexión e introduce su cargo o rol.",
                 profile_socials_edit: "Editar redes",
                 profile_socials_save: "Guardar redes",
                 profile_socials_clear: "Quitar",
@@ -1527,12 +1542,11 @@
                 org_manage_open_error: "The selected organization could not be opened.",
                 org_proposal_eyebrow: "ZULIOV / COMMUNITY",
                 org_proposal_title: "Create an organization",
-                org_proposal_subtitle: "Set up your NGO, informal group, or civic movement on Zuliov.",
+                org_proposal_subtitle: "Set up your NGO or civic movement on Zuliov.",
                 org_proposal_name: "Organization name",
                 org_proposal_name_placeholder: "e.g. Community Action Network",
                 org_proposal_type: "Organization type",
                 org_proposal_type_ngo: "NGO",
-                org_proposal_type_informal_group: "Informal group",
                 org_proposal_type_movement: "Civic movement",
                 org_proposal_registration_label: "Official Registration / Tax ID",
                 org_proposal_registration_placeholder: "e.g., EIN, RIF, RUT, or NGO registration number",
@@ -1561,6 +1575,22 @@
                 leader_profile_unavailable: "This profile could not be found.",
                 profile_socials_title: "Social Networks",
                 profile_socials_add: "+ Add Social Networks",
+                profile_leaders_add: "+ Add Leaders",
+                leader_invite_title: "Invite Leaders",
+                leader_invite_subtitle: "Invite key people to lead your organization.",
+                leader_invite_select: "Select from your connections",
+                leader_connections_title: "Your Connections",
+                leader_connections_search: "Search your connections...",
+                leader_connections_empty: "No connections found.",
+                leader_invite_role: "Position / Role",
+                leader_invite_role_placeholder: "e.g. Executive Director",
+                leader_invite_send: "Send Invitation",
+                leader_invite_sent: "Invitation sent.",
+                leader_invite_accept: "Accept Invite",
+                leader_invite_pending: "Pending Acceptance",
+                leader_invite_accepted: "Accepted",
+                leader_invite_empty: "No leaders have been invited yet.",
+                leader_invite_validation: "Select a connection and enter their position or role.",
                 profile_socials_edit: "Edit Socials",
                 profile_socials_save: "Save Socials",
                 profile_socials_clear: "Clear",
@@ -2527,6 +2557,8 @@
             if (!document.getElementById('inbox-modal').classList.contains('hidden')) renderInbox();
             if (document.getElementById('settings-modal')) renderSettingsModal();
             if (organizationProposalDraft) renderOrganizationProposalModal(organizationProposalDraft);
+            if (leaderInviteModalOpen) renderOrganizationLeadersModal();
+            if (organizationLeaderConnectionsModalOpen) renderOrganizationLeaderConnectionsModal();
             if (document.getElementById('profile-switcher-modal')) renderProfileSwitcherModal();
             if (document.getElementById('profile-groups-modal')) renderProfileGroupsModal();
             if (document.getElementById('profile-manage-modal')) renderProfileManageModal();
@@ -2607,21 +2639,6 @@
             launcher.classList.toggle('flex', !expanded);
             launcher.setAttribute('aria-expanded', String(expanded));
             document.getElementById(expanded ? 'sim-controller-close' : 'sim-controller-launcher').focus();
-        }
-
-        function toggleNGOMissionDetails() {
-            const button = document.getElementById('ngo-mission-toggle');
-            const content = document.getElementById('ngo-mission-content');
-            const expanded = button.getAttribute('aria-expanded') !== 'true';
-
-            button.setAttribute('aria-expanded', String(expanded));
-            content.setAttribute('aria-hidden', String(!expanded));
-            content.style.maxHeight = expanded ? `${content.scrollHeight}px` : '0px';
-            content.classList.toggle('opacity-0', !expanded);
-            content.classList.toggle('opacity-100', expanded);
-            document.getElementById('ngo-mission-toggle-label').textContent =
-                t(expanded ? 'ngo_mission_toggle_close' : 'ngo_mission_toggle');
-            document.getElementById('ngo-mission-chevron').classList.toggle('rotate-180', expanded);
         }
 
         function toggleNGOLeadershipDetails() {
@@ -3760,7 +3777,8 @@
             };
             state.personalUser = null;
             closeProfileSwitcherModal(false);
-            navigateTo('profile');
+            updateHomeFeedDestinationForActiveProfile();
+            renderApp();
         }
 
         function selectManagedProfile(profileId) {
@@ -3790,7 +3808,23 @@
             };
             selectedNGOId = organization.id;
             closeProfileSwitcherModal(false);
-            navigateTo('ngo-profile');
+            updateHomeFeedDestinationForActiveProfile();
+            renderApp();
+        }
+
+        function updateHomeFeedDestinationForActiveProfile() {
+            if (currentScreen !== 'home') return;
+            const destinations = getHomeFeedDestinations();
+            const preferredId = state.currentUser.role === 'ngo'
+                ? 'group_cleanwater_official'
+                : (state.currentUser.groupIds || []).find(id => id !== 'group_cleanwater_official');
+            const destination = destinations.find(group => group.id === preferredId)
+                || (state.currentUser.role === 'ngo'
+                    ? destinations[0]
+                    : destinations.find(group => group.id !== 'group_cleanwater_official'));
+            state.homeFeedDestinationId = destination?.id || null;
+            state.homeFeedDestinationMenuOpen = false;
+            state.homeFeedDestinationSearch = '';
         }
 
         const groupUpcomingEventData = {
@@ -5935,9 +5969,9 @@
             closeProfileDropdown();
             const typeKey = {
                 ngo: 'org_proposal_type_ngo',
-                informal_group: 'org_proposal_type_informal_group',
                 movement: 'org_proposal_type_movement'
             }[proposal.type];
+            const typeLabel = typeKey ? t(typeKey) : String(proposal.type || '').replace(/_/g, ' ');
             const statusClass = {
                 pending_review: 'bg-amber-50 text-amber-800',
                 approved: 'bg-emerald-50 text-emerald-800',
@@ -5976,7 +6010,7 @@
                                 <span>${t('org_manage_status')}: ${getOrganizationProposalStatusLabel(proposal.status)}</span>
                             </p>
                             <dl class="mt-4">
-                                ${detailRow(t('org_manage_type'), typeKey ? t(typeKey) : '')}
+                                ${detailRow(t('org_manage_type'), typeLabel)}
                                 ${detailRow(t('org_manage_country'), proposal.country)}
                                 ${detailRow(t('org_manage_mission'), proposal.mission)}
                                 ${detailRow(t('org_manage_website'), proposal.website)}
@@ -6003,15 +6037,32 @@
         }
 
         let organizationProposalTrigger = null;
+        let organizationProposalDraft = {};
+        let organizationProposalSocialLinks = {};
+        let organizationProposalLeaders = [];
+        let leaderInviteModalOpen = false;
+        let organizationLeaderConnectionsModalOpen = false;
+        let organizationLeaderConnectionsQuery = '';
+        let organizationLeaderSelectedPerson = null;
+        let organizationLeaderRoleDraft = '';
 
         function handleOrganizationProposalModalKeydown(event) {
-            if (event.key === 'Escape') closeOrganizationProposalModal();
+            if (event.key !== 'Escape') return;
+            if (organizationLeaderConnectionsModalOpen) {
+                closeOrganizationLeaderConnectionsModal();
+                return;
+            }
+            closeOrganizationProposalModal();
         }
 
         function getOrganizationProposalDraft() {
             const form = document.getElementById('organization-proposal-form');
             if (!form) return {};
-            return Object.fromEntries(new FormData(form).entries());
+            return {
+                ...Object.fromEntries(new FormData(form).entries()),
+                socialLinks: { ...organizationProposalSocialLinks },
+                leaders: organizationProposalLeaders.map(leader => ({ ...leader }))
+            };
         }
 
         function updateOrganizationRegistrationRequirement() {
@@ -6034,6 +6085,13 @@
                 ? document.getElementById('mobile-profile-trigger')
                 : document.getElementById('header-profile');
             closeProfileDropdown();
+            organizationProposalSocialLinks = {};
+            organizationProposalDraft = {};
+            organizationProposalLeaders = [];
+            leaderInviteModalOpen = false;
+            organizationLeaderConnectionsModalOpen = false;
+            organizationLeaderSelectedPerson = null;
+            organizationLeaderRoleDraft = '';
             renderOrganizationProposalModal();
             document.addEventListener('keydown', handleOrganizationProposalModalKeydown);
             document.getElementById('organization-proposal-close-button')?.focus();
@@ -6044,10 +6102,22 @@
             document.removeEventListener('keydown', handleOrganizationProposalModalKeydown);
             if (organizationProposalTrigger?.isConnected) organizationProposalTrigger.focus();
             organizationProposalTrigger = null;
+            organizationProposalDraft = {};
+            organizationProposalSocialLinks = {};
+            organizationProposalLeaders = [];
+            leaderInviteModalOpen = false;
+            organizationLeaderConnectionsModalOpen = false;
+            organizationLeaderConnectionsQuery = '';
+            organizationLeaderSelectedPerson = null;
+            organizationLeaderRoleDraft = '';
         }
 
         function renderOrganizationProposalModal(draft = {}) {
-            const selectedType = ['movement', 'informal_group'].includes(draft.type) ? draft.type : 'ngo';
+            organizationProposalSocialLinks = { ...(draft.socialLinks || organizationProposalSocialLinks) };
+            organizationProposalLeaders = draft.leaders
+                ? draft.leaders.map(leader => ({ ...leader }))
+                : organizationProposalLeaders;
+            const selectedType = draft.type === 'movement' ? draft.type : 'ngo';
             const name = escapeHTML(draft.name || '');
             const selectedCountry = organizationProposalCountries.find(option => option.name === String(draft.country || ''));
             const country = selectedCountry?.name || '';
@@ -6055,6 +6125,7 @@
             const website = escapeHTML(draft.website || '');
             const contact = escapeHTML(draft.contact || state.currentUser.email || '');
             const registration = escapeHTML(draft.registration || '');
+            const socialPlatformsConfigured = socialPlatforms.filter(platform => organizationProposalSocialLinks[platform.id]);
             document.getElementById('modal-container').innerHTML = `
                 <div id="organization-proposal-modal" class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm animate-modal-in" role="dialog" aria-modal="true" aria-labelledby="organization-proposal-title" onclick="if (event.target === event.currentTarget) closeOrganizationProposalModal()">
                     <section class="my-auto max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-floating">
@@ -6078,7 +6149,6 @@
                                     <label for="organization-proposal-type" class="mb-1.5 block text-xs font-semibold text-slate-700">${t('org_proposal_type')}</label>
                                     <select id="organization-proposal-type" name="type" onchange="updateOrganizationRegistrationRequirement()" class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
                                         <option value="ngo" ${selectedType === 'ngo' ? 'selected' : ''}>${t('org_proposal_type_ngo')}</option>
-                                        <option value="informal_group" ${selectedType === 'informal_group' ? 'selected' : ''}>${t('org_proposal_type_informal_group')}</option>
                                         <option value="movement" ${selectedType === 'movement' ? 'selected' : ''}>${t('org_proposal_type_movement')}</option>
                                     </select>
                                 </div>
@@ -6110,6 +6180,12 @@
                                 <label for="organization-proposal-contact" class="mb-1.5 block text-xs font-semibold text-slate-700">${t('org_proposal_contact')}</label>
                                 <input id="organization-proposal-contact" name="contact" type="email" required maxlength="254" autocomplete="email" value="${contact}" class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
                             </div>
+                            <div class="flex flex-wrap items-center gap-3 rounded-lg border border-slate-200 px-3 py-3">
+                                <button type="button" id="organization-proposal-socials-button" onclick="openOrganizationProposalSocialLinks(event)" aria-haspopup="dialog" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">${t(socialPlatformsConfigured.length ? 'profile_socials_edit' : 'profile_socials_add')}</button>
+                                <button type="button" id="organization-proposal-leaders-button" onclick="openOrganizationLeadersModal(event)" aria-haspopup="dialog" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">${t('profile_leaders_add')}</button>
+                                ${socialPlatformsConfigured.length ? `<div class="flex flex-wrap items-center gap-2" aria-label="${t('profile_socials_title')}">${socialPlatformsConfigured.map(platform => `<span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-semibold text-slate-600"><i class="fa-brands ${platform.icon}" aria-hidden="true"></i>${escapeHTML(platform.name)}</span>`).join('')}</div>` : ''}
+                                ${organizationProposalLeaders.length ? `<span class="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-1 text-[10px] font-semibold text-primary-700">${organizationProposalLeaders.length} ${organizationProposalLeaders.length === 1 ? (currentLang === 'es' ? 'líder' : 'leader') : (currentLang === 'es' ? 'líderes' : 'leaders')}</span>` : ''}
+                            </div>
                             <p class="flex items-start gap-2 rounded-lg bg-slate-50 px-3 py-2.5 text-xs leading-relaxed text-slate-500">
                                 <i class="fa-solid fa-circle-info mt-0.5 shrink-0 text-primary-600" aria-hidden="true"></i>
                                 <span>${t('org_proposal_review_note')}</span>
@@ -6127,6 +6203,225 @@
             updateOrganizationRegistrationRequirement();
         }
 
+        function openOrganizationProposalSocialLinks(event) {
+            organizationProposalDraft = getOrganizationProposalDraft();
+            document.removeEventListener('keydown', handleOrganizationProposalModalKeydown);
+            openSocialLinksModal(event, { type: 'organization-proposal' });
+        }
+
+        function openOrganizationLeadersModal(event) {
+            organizationProposalDraft = getOrganizationProposalDraft();
+            leaderInviteModalOpen = true;
+            organizationLeaderSelectedPerson = null;
+            organizationLeaderRoleDraft = '';
+            renderOrganizationLeadersModal();
+            document.getElementById('organization-leader-select-button')?.focus();
+        }
+
+        function closeOrganizationLeadersModal() {
+            const overlay = document.getElementById('organization-leaders-modal');
+            if (overlay) overlay.remove();
+            document.getElementById('organization-leader-connections-modal')?.remove();
+            leaderInviteModalOpen = false;
+            organizationLeaderConnectionsModalOpen = false;
+            organizationLeaderConnectionsQuery = '';
+            organizationLeaderSelectedPerson = null;
+            organizationLeaderRoleDraft = '';
+            document.getElementById('organization-proposal-leaders-button')?.focus();
+        }
+
+        function renderOrganizationLeadersModal() {
+            const existing = document.getElementById('organization-leaders-modal');
+            if (existing) existing.remove();
+            const container = document.getElementById('modal-container');
+            if (!container) return;
+
+            const list = organizationProposalLeaders.map(leader => {
+                const accepted = leader.status === 'accepted';
+                return `
+                    <li class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 px-3 py-3">
+                        <img src="${escapeHTML(leader.avatar || '')}" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover">
+                        <div class="min-w-0 flex-1">
+                            <p class="truncate text-sm font-bold text-slate-900">${escapeHTML(leader.name)}</p>
+                            <p class="truncate text-xs text-slate-500">${escapeHTML(leader.role)}</p>
+                        </div>
+                        ${accepted
+                            ? `<span class="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700"><i class="fa-solid fa-circle-check mr-1"></i>${t('leader_invite_accepted')}</span>`
+                            : `<div class="flex shrink-0 items-center gap-2">
+                                <span class="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-700">${t('leader_invite_pending')}</span>
+                                <button type="button" onclick="acceptOrganizationLeaderInvitation('${escapeHTML(leader.id)}')" class="rounded-lg border border-emerald-200 px-2.5 py-1.5 text-[10px] font-bold text-emerald-700 transition hover:bg-emerald-50">${t('leader_invite_accept')}</button>
+                            </div>`}
+                    </li>`;
+            }).join('');
+
+            container.insertAdjacentHTML('beforeend', `
+                <div id="organization-leaders-modal" class="fixed inset-0 z-[110] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="organization-leaders-title" onclick="if(event.target === event.currentTarget) closeOrganizationLeadersModal()">
+                    <section class="my-auto w-full max-w-xl rounded-xl border border-slate-200 bg-white shadow-floating">
+                        <header class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4">
+                            <div>
+                                <h2 id="organization-leaders-title" class="text-lg font-black text-slate-900">${t('leader_invite_title')}</h2>
+                                <p class="mt-1 text-xs text-slate-500">${t('leader_invite_subtitle')}</p>
+                            </div>
+                            <button type="button" onclick="closeOrganizationLeadersModal()" aria-label="${t('cancel')}" class="inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </header>
+                        <div class="space-y-5 px-5 py-5">
+                            <form id="organization-leader-form" onsubmit="sendOrganizationLeaderInvitation(event)" class="space-y-3">
+                                <div>
+                                    <label for="organization-leader-select-button" class="mb-1.5 block text-xs font-semibold text-slate-700">${t('leader_invite_select')}</label>
+                                    <button id="organization-leader-select-button" type="button" onclick="openOrganizationLeaderConnectionsModal()" aria-haspopup="dialog" aria-expanded="${organizationLeaderConnectionsModalOpen}" class="flex w-full items-center gap-3 rounded-lg border border-slate-200 px-3 py-2.5 text-left text-sm text-slate-700 outline-none transition hover:border-primary-300 focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                                        ${organizationLeaderSelectedPerson
+                                            ? `<img src="${escapeHTML(organizationLeaderSelectedPerson.avatar)}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover"><span class="min-w-0 flex-1 truncate font-semibold">${escapeHTML(organizationLeaderSelectedPerson.name)}</span><i class="fa-solid fa-chevron-down text-xs text-slate-400" aria-hidden="true"></i>`
+                                            : `<i class="fa-solid fa-user-plus text-primary-600" aria-hidden="true"></i><span class="flex-1">${t('leader_invite_select')}</span><i class="fa-solid fa-chevron-down text-xs text-slate-400" aria-hidden="true"></i>`}
+                                    </button>
+                                </div>
+                                <div>
+                                    <label for="organization-leader-role" class="mb-1.5 block text-xs font-semibold text-slate-700">${t('leader_invite_role')}</label>
+                                    <input id="organization-leader-role" name="role" required maxlength="100" value="${escapeHTML(organizationLeaderRoleDraft)}" oninput="organizationLeaderRoleDraft = this.value" placeholder="${t('leader_invite_role_placeholder')}" class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                                </div>
+                                <button type="submit" class="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-primary-700">
+                                    <i class="fa-solid fa-paper-plane text-[10px]"></i>${t('leader_invite_send')}
+                                </button>
+                            </form>
+                            <div>
+                                <h3 class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">${t('leader_invite_title')}</h3>
+                                ${organizationProposalLeaders.length
+                                    ? `<ul class="max-h-60 space-y-2 overflow-y-auto">${list}</ul>`
+                                    : `<p class="rounded-xl border border-dashed border-slate-200 px-3 py-5 text-center text-xs text-slate-500">${t('leader_invite_empty')}</p>`}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `);
+        }
+
+        function openOrganizationLeaderConnectionsModal() {
+            organizationLeaderConnectionsModalOpen = true;
+            organizationLeaderConnectionsQuery = '';
+            document.getElementById('organization-leader-select-button')?.setAttribute('aria-expanded', 'true');
+            renderOrganizationLeaderConnectionsModal();
+            document.getElementById('organization-leader-connections-search')?.focus();
+        }
+
+        function closeOrganizationLeaderConnectionsModal() {
+            document.getElementById('organization-leader-connections-modal')?.remove();
+            organizationLeaderConnectionsModalOpen = false;
+            document.getElementById('organization-leader-select-button')?.setAttribute('aria-expanded', 'false');
+            document.getElementById('organization-leader-select-button')?.focus();
+        }
+
+        function renderOrganizationLeaderConnectionsModal() {
+            document.getElementById('organization-leader-connections-modal')?.remove();
+            const container = document.getElementById('modal-container');
+            if (!container) return;
+            container.insertAdjacentHTML('beforeend', `
+                <div id="organization-leader-connections-modal" class="fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="organization-leader-connections-title" onclick="if(event.target === event.currentTarget) closeOrganizationLeaderConnectionsModal()">
+                    <section class="my-auto flex max-h-[85vh] w-full max-w-lg flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-floating">
+                        <header class="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-4">
+                            <h2 id="organization-leader-connections-title" class="text-lg font-black text-slate-900">${t('leader_connections_title')}</h2>
+                            <button type="button" onclick="closeOrganizationLeaderConnectionsModal()" aria-label="${t('cancel')}" class="inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                        </header>
+                        <div class="border-b border-slate-100 p-4">
+                            <input id="organization-leader-connections-search" type="search" autocomplete="off" value="${escapeHTML(organizationLeaderConnectionsQuery)}" oninput="renderOrganizationLeaderConnectionOptions(this.value)" aria-label="${t('leader_connections_search')}" placeholder="${t('leader_connections_search')}" class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100">
+                        </div>
+                        <ul id="organization-leader-connection-options" class="space-y-2 overflow-y-auto p-4"></ul>
+                    </section>
+                </div>
+            `);
+            renderOrganizationLeaderConnectionOptions(organizationLeaderConnectionsQuery);
+        }
+
+        function renderOrganizationLeaderConnectionOptions(query = '') {
+            organizationLeaderConnectionsQuery = query;
+            const options = document.getElementById('organization-leader-connection-options');
+            if (!options) return;
+            const normalizedQuery = query.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            const connections = getProfileNetworkEntries('connections').filter(person => {
+                const searchableText = `${person.name} ${t(person.roleKey)}`.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+                return searchableText.includes(normalizedQuery);
+            });
+            options.innerHTML = connections.length ? connections.map(person => `
+                <li>
+                    <button type="button" onclick="selectOrganizationLeaderConnection('${escapeHTML(person.id)}')" class="flex w-full items-center gap-3 rounded-xl border border-slate-200 p-3 text-left transition hover:border-primary-300 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                        <img src="${escapeHTML(person.avatar)}" alt="" class="h-11 w-11 shrink-0 rounded-full object-cover">
+                        <span class="min-w-0 flex-1">
+                            <span class="block truncate text-sm font-bold text-slate-900">${escapeHTML(person.name)}</span>
+                            <span class="mt-0.5 block truncate text-xs text-slate-500">${t(person.roleKey)}</span>
+                        </span>
+                        <span class="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700">${t('inbox_connected')}</span>
+                    </button>
+                </li>
+            `).join('') : `<li class="rounded-xl border border-dashed border-slate-200 px-3 py-6 text-center text-sm text-slate-500">${t('leader_connections_empty')}</li>`;
+        }
+
+        function selectOrganizationLeaderConnection(personId) {
+            const person = getProfileNetworkEntries('connections').find(connection => connection.id === personId);
+            if (!person) return;
+            organizationLeaderSelectedPerson = person;
+            closeOrganizationLeaderConnectionsModal();
+            renderOrganizationLeadersModal();
+            document.getElementById('organization-leader-role')?.focus();
+        }
+
+        function sendOrganizationLeaderInvitation(event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const role = String(form.elements.role.value || '').trim();
+            if (!organizationLeaderSelectedPerson || !role) {
+                showToast(t('leader_invite_validation'), 'info');
+                return;
+            }
+            organizationProposalLeaders.push({
+                id: `invited_leader_${Date.now()}`,
+                personId: organizationLeaderSelectedPerson.id,
+                name: organizationLeaderSelectedPerson.name,
+                avatar: organizationLeaderSelectedPerson.avatar,
+                role,
+                status: 'pending'
+            });
+            organizationLeaderSelectedPerson = null;
+            organizationLeaderRoleDraft = '';
+            organizationProposalDraft = getOrganizationProposalDraft();
+            renderOrganizationLeadersModal();
+            showToast(t('leader_invite_sent'), 'success');
+        }
+
+        function acceptOrganizationLeaderInvitation(leaderId) {
+            const leader = organizationProposalLeaders.find(item => item.id === leaderId);
+            if (!leader) return;
+            leader.status = 'accepted';
+
+            if (typeof ngoData !== 'undefined' && ngoData.leadership) {
+                if (!ngoData.leadership.some(item => item.inviteId === leader.id)) {
+                    ngoData.leadership.push({
+                        id: `accepted_${leader.id}`,
+                        inviteId: leader.id,
+                        name: leader.name,
+                        position: leader.role,
+                        photo: leader.avatar || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400',
+                        coverImage: 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=1200',
+                        bio: currentLang === 'es'
+                            ? 'Líder invitado a la dirección de la organización.'
+                            : 'Invited leader serving in the organization’s leadership team.',
+                        yearsInOrg: currentLang === 'es' ? 'Nuevo miembro' : 'New member',
+                        verifiedIdentity: true,
+                        email: '',
+                        phone: '',
+                        memberSince: currentLang === 'es' ? 'Hoy' : 'Today',
+                        linkedinUrl: 'https://linkedin.com',
+                        projectsManaged: [],
+                        recentUpdates: [],
+                        communityCommentsCount: 0
+                    });
+                }
+            }
+            renderOrganizationLeadersModal();
+            if (document.getElementById('ngo-profile')) renderApp();
+        }
+
         function submitOrganizationProposal(event) {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
@@ -6136,7 +6431,7 @@
             const country = String(formData.get('country') || '').trim();
             const mission = String(formData.get('mission') || '').trim();
             const contact = String(formData.get('contact') || '').trim();
-            if (!name || !organizationProposalCountries.some(option => option.name === country) || !mission || !contact || !['ngo', 'informal_group', 'movement'].includes(type) || (type === 'ngo' && !registration)) {
+            if (!name || !organizationProposalCountries.some(option => option.name === country) || !mission || !contact || !['ngo', 'movement'].includes(type) || (type === 'ngo' && !registration)) {
                 showToast(t('org_proposal_error'), 'info');
                 return;
             }
@@ -6153,6 +6448,8 @@
                     mission,
                     website: String(formData.get('website') || '').trim(),
                     contact,
+                    socialLinks: { ...organizationProposalSocialLinks },
+                    leaders: organizationProposalLeaders.map(leader => ({ ...leader })),
                     submittedBy: state.currentUser.id,
                     status: 'pending_review',
                     createdAt: new Date().toISOString()
@@ -6694,6 +6991,9 @@
                 ],
                 connections: [
                     { id: 'amara-okezie', name: 'Dr. Amara Okezie', roleKey: 'network_job_engineer', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120' },
+                    { id: 'elena-rostova', name: 'Elena Rostova', roleKey: 'network_job_organizer', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120' },
+                    { id: 'david-chen', name: 'David Chen', roleKey: 'network_role_donor', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120' },
+                    { id: 'marcus-vance', name: 'Marcus Vance', roleKey: 'network_role_advocate', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120' },
                     { id: 'elena-martinez', name: 'Elena Martinez', roleKey: 'network_job_organizer', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120' },
                     { id: 'sophia-martinez', name: 'Sophia Martinez', roleKey: 'network_job_advisor', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120' },
                     { id: 'elena-gomez', name: 'Elena Gómez', roleKey: 'network_job_organizer', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120' }
@@ -7408,6 +7708,7 @@
             { id: 'youtube', name: 'YouTube', icon: 'fa-youtube', color: 'text-[#ff0000] hover:bg-red-50', baseUrl: 'https://youtube.com/@', hosts: ['youtube.com', 'www.youtube.com'], placeholder: 'https://youtube.com/@username' }
         ];
         let socialLinksModalTrigger = null;
+        let socialLinksModalContext = null;
 
         function normalizeSocialUrl(platform, value) {
             const trimmed = String(value || '').trim();
@@ -7501,10 +7802,12 @@
             `;
         }
 
-        function openSocialLinksModal(event) {
-            const context = getProfileSocialContext();
+        function openSocialLinksModal(event, context = getProfileSocialContext()) {
+            socialLinksModalContext = context;
             socialLinksModalTrigger = event?.currentTarget || document.activeElement;
-            state.socialLinksDraft = { ...getProfileSocialLinks(context) };
+            state.socialLinksDraft = context.type === 'organization-proposal'
+                ? { ...organizationProposalSocialLinks }
+                : { ...getProfileSocialLinks(context) };
             renderSocialLinksModal();
             document.addEventListener('keydown', handleSocialLinksModalKeydown);
             document.getElementById('social-links-modal-close')?.focus();
@@ -7517,7 +7820,16 @@
         function closeSocialLinksModal(restoreFocus = true) {
             document.getElementById('social-links-modal')?.remove();
             document.removeEventListener('keydown', handleSocialLinksModalKeydown);
+            const context = socialLinksModalContext;
             state.socialLinksDraft = null;
+            socialLinksModalContext = null;
+            if (context?.type === 'organization-proposal') {
+                renderOrganizationProposalModal(organizationProposalDraft);
+                document.addEventListener('keydown', handleOrganizationProposalModalKeydown);
+                document.getElementById('organization-proposal-socials-button')?.focus({ preventScroll: true });
+                socialLinksModalTrigger = null;
+                return;
+            }
             if (restoreFocus && socialLinksModalTrigger?.isConnected) {
                 socialLinksModalTrigger.focus({ preventScroll: true });
             }
@@ -7538,7 +7850,7 @@
 
         function saveSocialLinks(event) {
             event.preventDefault();
-            const context = getProfileSocialContext();
+            const context = socialLinksModalContext || getProfileSocialContext();
             const links = {};
             for (const platform of socialPlatforms) {
                 const value = state.socialLinksDraft?.[platform.id] || '';
@@ -7552,18 +7864,23 @@
                 links[platform.id] = url;
             }
 
-            try {
-                localStorage.setItem(`zuliov-social-links:${context.type}:${context.id}`, JSON.stringify(links));
-            } catch (error) {
-                console.error('Unable to save social links.', error);
-                showToast(t('profile_socials_save_error'), 'info');
-                return;
-            }
+            if (context.type === 'organization-proposal') {
+                organizationProposalSocialLinks = links;
+                organizationProposalDraft.socialLinks = { ...links };
+            } else {
+                try {
+                    localStorage.setItem(`zuliov-social-links:${context.type}:${context.id}`, JSON.stringify(links));
+                } catch (error) {
+                    console.error('Unable to save social links.', error);
+                    showToast(t('profile_socials_save_error'), 'info');
+                    return;
+                }
 
-            if (context.profile) context.profile.socialLinks = links;
-            if (context.type === 'user') state.currentUser.socialLinks = links;
+                if (context.profile) context.profile.socialLinks = links;
+                if (context.type === 'user') state.currentUser.socialLinks = links;
+            }
             closeSocialLinksModal(false);
-            renderApp();
+            if (context.type !== 'organization-proposal') renderApp();
         }
 
         function renderSocialLinksModal() {
@@ -10625,44 +10942,6 @@
                                             <span class="text-[10px] font-mono font-bold uppercase text-slate-400">Phone Hotline</span>
                                             <p class="text-xs font-bold text-slate-800">+254 (0) 20 800 9000</p>
                                             <p class="text-xs text-slate-500">Mon - Fri, 08:00 - 18:00 EAT</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- MISSION & VISION -->
-                                <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-subtle text-left">
-                                    <h2 class="w-full">
-                                        <button type="button" id="ngo-mission-toggle" onclick="toggleNGOMissionDetails()" aria-expanded="false" aria-controls="ngo-mission-content" class="w-full border-b border-slate-200 pb-3 flex items-center justify-between gap-4 text-left">
-                                            <span class="text-xl font-black text-slate-900 tracking-tight">${t('ngo_mission_title')}</span>
-                                            <span class="flex shrink-0 items-center gap-2 text-xs font-mono text-slate-500">
-                                                <span id="ngo-mission-toggle-label">${t('ngo_mission_toggle')}</span>
-                                                <i id="ngo-mission-chevron" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                                            </span>
-                                        </button>
-                                    </h2>
-
-                                    <div id="ngo-mission-content" aria-hidden="true" class="max-h-0 overflow-hidden opacity-0 transition-[max-height,opacity] duration-300 ease-in-out">
-                                        <div class="space-y-6 pt-6">
-                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-2">
-                                                    <div class="flex items-center space-x-2 text-primary-600 font-bold text-xs font-mono uppercase tracking-wider">
-                                                        <i class="fa-solid fa-bullseye text-sm"></i> <span>Mission</span>
-                                                    </div>
-                                                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                                        ${ngo.mission}
-                                                    </p>
-                                                </div>
-
-                                                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-2">
-                                                    <div class="flex items-center space-x-2 text-indigo-600 font-bold text-xs font-mono uppercase tracking-wider">
-                                                        <i class="fa-solid fa-eye text-sm"></i> <span>Vision</span>
-                                                    </div>
-                                                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                                                        ${ngo.vision}
-                                                    </p>
-                                                </div>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
