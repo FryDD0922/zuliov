@@ -391,6 +391,12 @@
                 browse_repost_error: "No se pudo republicar este elemento.",
                 browse_repost_modal_title: "Republicar iniciativa",
                 browse_repost_modal_description: "Elige cómo quieres compartir esta iniciativa con la comunidad.",
+                ngo_repost: "Repostear",
+                ngo_share_success: "Enlace copiado al portapapeles",
+                ngo_repost_text: "Organización compartida: {title}",
+                ngo_repost_success: "Reposteado en tu feed",
+                ngo_repost_modal_title: "Republicar organización",
+                ngo_repost_modal_description: "Comparte esta organización directamente en el feed de la comunidad.",
                 browse_repost_instantly: "Republicar ahora",
                 browse_repost_instantly_description: "Comparte esta iniciativa directamente en el feed de la comunidad.",
                 browse_repost_quote: "Añadir opinión o reflexión",
@@ -975,15 +981,29 @@
                 ngo_review_write: "Escribir reseña",
                 comment_like: "Me gusta",
                 comment_report: "Reportar",
-                comment_report_title: "Reportar comentario",
-                comment_report_reason: "¿Por qué reportas este comentario?",
-                comment_report_spam: "Spam",
-                comment_report_abuse: "Acoso o abuso",
-                comment_report_misinformation: "Información engañosa",
-                comment_report_other: "Otro",
-                comment_report_submit: "Enviar reporte",
+                content_report_title: "Reportar contenido",
+                content_report_post: "Estás reportando una publicación.",
+                content_report_comment: "Estás reportando un comentario.",
+                content_report_entity: "Estás reportando este contenido: {type} «{name}».",
+                content_report_type_group: "grupo",
+                content_report_type_project: "proyecto",
+                content_report_type_event: "evento",
+                content_report_type_organization: "organización",
+                content_report_step_one: "Paso 1: Elige un motivo",
+                content_report_step_two: "Paso 2: Añade detalles",
+                content_report_spam: "Spam o engañoso",
+                content_report_sexual: "Contenido sexual o desnudos",
+                content_report_harassment: "Acoso o discurso de odio",
+                content_report_fraud: "Fraude o información falsa",
+                content_report_other: "Otro",
+                content_report_details_label: "Detalles (opcional, excepto para Otro)",
+                content_report_details_required: "Cuéntanos por qué reportas este contenido.",
+                content_report_reason_required: "Elige un motivo para continuar.",
+                content_report_details_placeholder: "Añade detalles para ayudar a nuestro equipo de moderación.",
+                content_report_character_count: "{count} / 1000",
+                content_report_submit: "Enviar reporte",
                 comment_report_cancel: "Cancelar",
-                comment_report_success: "Gracias. El comentario se envió para revisión.",
+                comment_report_success: "Reporte enviado. Nuestro equipo de moderación lo revisará.",
                 comment_reported: "Reportado",
                 comment_write_title: "Escribir un comentario",
                 comment_placeholder: "Comparte tu opinión...",
@@ -1307,6 +1327,12 @@
                 browse_repost_error: "Could not repost this item.",
                 browse_repost_modal_title: "Repost initiative",
                 browse_repost_modal_description: "Choose how you would like to share this initiative with the community.",
+                ngo_repost: "Repost",
+                ngo_share_success: "Link copied to clipboard",
+                ngo_repost_text: "Organization shared: {title}",
+                ngo_repost_success: "Reposted to your feed",
+                ngo_repost_modal_title: "Repost organization",
+                ngo_repost_modal_description: "Share this organization directly to the Community Feed.",
                 browse_repost_instantly: "Repost instantly",
                 browse_repost_instantly_description: "Share this initiative directly to the Community Feed.",
                 browse_repost_quote: "Quote / Add thoughts",
@@ -1891,15 +1917,29 @@
                 ngo_review_write: "Write Review",
                 comment_like: "Like",
                 comment_report: "Report",
-                comment_report_title: "Report comment",
-                comment_report_reason: "Why are you reporting this comment?",
-                comment_report_spam: "Spam",
-                comment_report_abuse: "Harassment or abuse",
-                comment_report_misinformation: "Misleading information",
-                comment_report_other: "Other",
-                comment_report_submit: "Submit report",
+                content_report_title: "Report Content",
+                content_report_post: "You are reporting a post.",
+                content_report_comment: "You are reporting a comment.",
+                content_report_entity: "You are reporting this {type}: “{name}”.",
+                content_report_type_group: "Group",
+                content_report_type_project: "Project",
+                content_report_type_event: "Event",
+                content_report_type_organization: "Organization",
+                content_report_step_one: "Step 1: Choose a reason",
+                content_report_step_two: "Step 2: Add details",
+                content_report_spam: "Spam or misleading",
+                content_report_sexual: "Sexual content or nudity",
+                content_report_harassment: "Harassment or hate speech",
+                content_report_fraud: "Fraud or false information",
+                content_report_other: "Other",
+                content_report_details_label: "Details (optional, except for Other)",
+                content_report_details_required: "Please tell us why you are reporting this content.",
+                content_report_reason_required: "Choose a reason to continue.",
+                content_report_details_placeholder: "Add details to help our moderation team.",
+                content_report_character_count: "{count} / 1000",
+                content_report_submit: "Submit Report",
                 comment_report_cancel: "Cancel",
-                comment_report_success: "Thanks. The comment was submitted for review.",
+                comment_report_success: "Report submitted. Our moderation team will review it.",
                 comment_reported: "Reported",
                 comment_write_title: "Write a comment",
                 comment_placeholder: "Share your thoughts...",
@@ -3076,6 +3116,7 @@
             homeFeedTab: 'for-you',
             homeFeedDraft: '',
             homeFeedImagePreviewUrl: null,
+            reportedOrganizationIds: [],
             profileViewMode: 'owner',
             profileFollowing: false,
             profileConnectionPending: false,
@@ -4407,6 +4448,16 @@
 
         function syncPrimaryRouteFromHash() {
             const route = window.location.hash.slice(1).toLowerCase();
+            const organizationRoute = route.match(/^org\/([a-z0-9_-]+)$/);
+            if (organizationRoute) {
+                const organization = getNGODirectoryEntries().find(item => item.id === organizationRoute[1]);
+                if (!organization) return;
+                const routeChanged = currentScreen !== 'ngo-profile' || selectedNGOId !== organization.id;
+                currentScreen = 'ngo-profile';
+                selectedNGOId = organization.id;
+                if (routeChanged) renderApp();
+                return;
+            }
             if (!route) {
                 if (currentScreen !== 'landing') {
                     currentScreen = 'landing';
@@ -8478,6 +8529,7 @@
                                     <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="repostBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                                         <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
                                     </button>
+                                    ${renderEntityReportButton('event', event, group.id)}
                                 </div>
                                 ${renderCreatorBadge(event, 'event', group)}
                             </div>
@@ -8557,7 +8609,10 @@
                         <h3 class="text-xs font-bold leading-snug text-slate-900">${escapeHTML(groupEventText(event, 'title'))}</h3>
                         <p class="mt-1 text-[10px] text-slate-500">${escapeHTML(groupEventText(event, 'location'))}</p>
                     </div>
-                    <button type="button" aria-pressed="${event.response === 'going'}" aria-label="${t('group_event_join')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="toggleEventResponse('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', 'going')" class="shrink-0 rounded-lg px-3 py-2 text-[10px] font-bold transition-colors ${event.response === 'going' ? 'bg-emerald-100 text-emerald-800' : 'bg-primary-600 text-white hover:bg-primary-700'}">${responseLabel}</button>
+                    <div class="flex shrink-0 flex-col items-end gap-1">
+                        ${renderEntityReportButton('event', event, group.id)}
+                        <button type="button" aria-pressed="${event.response === 'going'}" aria-label="${t('group_event_join')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="toggleEventResponse('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', 'going')" class="rounded-lg px-3 py-2 text-[10px] font-bold transition-colors ${event.response === 'going' ? 'bg-emerald-100 text-emerald-800' : 'bg-primary-600 text-white hover:bg-primary-700'}">${responseLabel}</button>
+                    </div>
                 </article>
             `;
         }
@@ -9024,6 +9079,7 @@
                                         <div class="min-w-0 flex-1">
                                             <h3 class="line-clamp-2 text-xs font-bold leading-snug text-slate-800">${escapeHTML(groupEventText(event, 'title'))}</h3>
                                             <button type="button" onclick="openEventDetailsModal('${escapeHTML(group.id)}', '${escapeHTML(event.id)}', this)" class="mt-1 text-[11px] font-bold text-primary-700 hover:text-primary-900">${t('event_details_open')} <i class="fa-solid fa-arrow-right ml-1 text-[9px]" aria-hidden="true"></i></button>
+                                            ${renderEntityReportButton('event', event, group.id, 'mt-1')}
                                         </div>
                                     </li>
                                 `).join('') : `<li class="text-xs text-slate-500">${t('home_feed_no_events')}</li>`}
@@ -9123,12 +9179,39 @@
             document.getElementById(`home-feed-tab-${nextTab}`).focus();
         }
 
+        function renderHomeFeedOrganizationCard(organization) {
+            if (!organization) return '';
+            const logo = organization.id === 'ngo_clean_water'
+                ? `<img src="${escapeHTML(organization.logo)}" alt="" class="h-full w-full object-cover">`
+                : `<span role="img" aria-label="${escapeHTML(organization.name)} logo">${escapeHTML(organization.logo)}</span>`;
+            return `
+                <button type="button" onclick="openNGOProfile('${escapeHTML(organization.id)}')" class="mt-4 flex w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-left transition-colors hover:border-primary-300 hover:bg-primary-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                    <img src="${escapeHTML(organization.coverImage || '')}" alt="" class="h-24 w-28 flex-shrink-0 object-cover sm:w-36">
+                    <span class="flex min-w-0 flex-1 items-center gap-3 p-3">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white text-xl">${logo}</span>
+                        <span class="min-w-0">
+                            <span class="block text-[10px] font-bold uppercase tracking-wider text-primary-600">${t('content_report_type_organization')}</span>
+                            <span class="mt-1 block truncate text-xs font-bold leading-snug text-slate-900">${escapeHTML(organization.name)}</span>
+                            <span class="mt-2 block text-[10px] font-semibold text-primary-700">${t('ngo_view_profile')} <i class="fa-solid fa-arrow-right ml-1" aria-hidden="true"></i></span>
+                        </span>
+                    </span>
+                </button>`;
+        }
+
         function renderHomeFeedPost(group, post) {
             const project = state.projects.find(item => item.id === post.projectId);
-            const image = post.image || project?.coverImage || group.banner;
+            const organization = post.organizationId
+                ? getNGODirectoryEntries().find(item => item.id === post.organizationId)
+                : null;
+            const image = post.image || project?.coverImage || organization?.coverImage || group.banner;
             const comments = post.comments || [];
             const commentsVisible = state.expandedGroupPostId === post.id;
             const isLiked = Boolean(post.likedByCurrentUser);
+            const canReportPost = !isCurrentAccountContent({
+                authorId: post.authorId || post.creatorId,
+                author: groupPostText(post, 'author')
+            });
+            const postReported = Boolean(post.reportedByCurrentUser || post.reported);
             const repostedPost = post.repostedPost;
             const likes = Number(post.likes) || 0;
             const eventGroup = post.eventGroupId
@@ -9167,6 +9250,9 @@
                                 ${repostedPost.text ? `<p class="mt-3 break-words whitespace-pre-wrap text-xs leading-relaxed text-slate-700">${escapeHTML(repostedPost.text)}</p>` : ''}
                                 ${repostedPost.image ? `<img src="${escapeHTML(repostedPost.image)}" alt="${t('home_feed_post_image')}" class="mt-3 max-h-64 w-full overflow-hidden rounded-lg bg-white object-cover">` : ''}
                             </div>
+                        ` : organization ? `
+                            ${renderHomeFeedOrganizationCard(organization)}
+                            <p class="mt-3 break-words whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>
                         ` : event ? renderGroupEventPostCard(eventGroup, event) : project ? `
                             <button type="button" onclick="openProjectDetail('${escapeHTML(project.id)}')" class="mt-4 flex w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-left transition-colors hover:border-primary-300 hover:bg-primary-50/50">
                                 <img src="${escapeHTML(project.coverImage)}" alt="" class="h-24 w-28 flex-shrink-0 object-cover sm:w-36">
@@ -9179,12 +9265,12 @@
                             <p class="mt-3 break-words whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>
                         ` : `<p class="mt-4 break-words whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>`}
                     </div>
-                    ${repostedPost || event || project ? '' : `<img src="${escapeHTML(image)}" alt="${t('home_feed_post_image')}" class="mt-4 max-h-[28rem] w-full overflow-hidden bg-slate-100 object-cover">`}
+                    ${repostedPost || event || project || organization ? '' : `<img src="${escapeHTML(image)}" alt="${t('home_feed_post_image')}" class="mt-4 max-h-[28rem] w-full overflow-hidden bg-slate-100 object-cover">`}
                     <div class="mx-4 flex items-center gap-1 border-b border-slate-100 py-2 text-[10px] text-slate-500 sm:mx-5">
                         <i class="fa-solid fa-heart text-rose-500" aria-hidden="true"></i>${likes}
                         <span class="ml-2">${comments.length} ${t('home_feed_comment_count')}</span>
                     </div>
-                    <div class="grid grid-cols-4 gap-1 px-3 py-2 sm:px-4">
+                    <div class="grid grid-cols-5 gap-1 px-3 py-2 sm:px-4">
                         <button type="button" aria-pressed="${isLiked}" onclick="toggleFeedPostLike('${escapeHTML(group.id)}', '${escapeHTML(post.id)}')" class="rounded-lg py-2 text-xs font-semibold ${isLiked ? 'text-primary-700' : 'text-slate-500 hover:bg-slate-50 hover:text-primary-600'}">
                             <i class="fa-${isLiked ? 'solid' : 'regular'} fa-heart mr-1.5" aria-hidden="true"></i>${t('home_feed_like')}
                         </button>
@@ -9197,6 +9283,9 @@
                         <button type="button" onclick="shareGroupPost('${escapeHTML(group.id)}', '${escapeHTML(post.id)}')" class="rounded-lg py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 hover:text-primary-600">
                             <i class="fa-solid fa-share-nodes mr-1.5" aria-hidden="true"></i>${t('home_feed_share')}
                         </button>
+                        ${canReportPost ? `<button type="button" ${postReported ? 'disabled' : `onclick="openContentReportModal('feedPost', '${escapeHTML(group.id)}', '${escapeHTML(post.id)}')"`} class="rounded-lg py-2 text-xs font-semibold ${postReported ? 'cursor-default text-rose-600' : 'text-slate-500 hover:bg-rose-50 hover:text-rose-600'}">
+                            <i class="fa-regular fa-flag mr-1.5" aria-hidden="true"></i>${postReported ? t('comment_reported') : t('comment_report')}
+                        </button>` : ''}
                     </div>
                     ${commentsVisible ? `
                         <div class="space-y-3 border-t border-slate-100 px-4 py-4 sm:px-5">
@@ -9204,6 +9293,9 @@
                                 <div class="rounded-xl bg-slate-50 px-3 py-2">
                                     <span class="text-[11px] font-bold text-slate-800">${escapeHTML(comment.author)}</span>
                                     <p class="mt-1 break-words whitespace-pre-wrap text-xs text-slate-600">${escapeHTML(comment.text)}</p>
+                                    ${!isCurrentAccountContent(comment) ? `<button type="button" ${comment.reportedByCurrentUser ? 'disabled' : `onclick="openContentReportModal('feedComment', '${escapeHTML(post.id)}', '${escapeHTML(comment.id)}')"`} class="mt-1 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold ${comment.reportedByCurrentUser ? 'cursor-default text-rose-600' : 'text-slate-500 hover:text-rose-600'}">
+                                        <i class="fa-regular fa-flag" aria-hidden="true"></i>${comment.reportedByCurrentUser ? t('comment_reported') : t('comment_report')}
+                                    </button>` : ''}
                                 </div>
                             `).join('')}
                             <form onsubmit="addGroupComment(event, '${escapeHTML(group.id)}', '${escapeHTML(post.id)}')" class="flex gap-2">
@@ -9396,7 +9488,10 @@
                                         <p class="mt-2 min-h-10 text-xs leading-relaxed text-slate-500">${escapeHTML(groupText(item, 'description'))}</p>
                                         <div class="mt-5 flex items-center justify-between gap-3">
                                             <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-users mr-1.5 text-slate-400"></i>${item.members.toLocaleString('es-ES')} ${t('group_members')}</span>
-                                            <button type="button" onclick="event.stopPropagation();${item.id === 'group_jehovah_volunteer_relief' ? `joinGroupAndOpen('${item.id}')` : `toggleGroupMembership('${item.id}')`}" class="rounded-lg px-3 py-2 text-[11px] font-bold transition-colors ${item.joined ? 'border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100' : 'bg-primary-50 text-primary-700 hover:bg-primary-100'}">${item.joined ? t('group_joined') : t('group_join')}</button>
+                                            <div class="flex items-center gap-2">
+                                                ${renderEntityReportButton('group', item)}
+                                                <button type="button" onclick="event.stopPropagation();${item.id === 'group_jehovah_volunteer_relief' ? `joinGroupAndOpen('${item.id}')` : `toggleGroupMembership('${item.id}')`}" class="rounded-lg px-3 py-2 text-[11px] font-bold transition-colors ${item.joined ? 'border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100' : 'bg-primary-50 text-primary-700 hover:bg-primary-100'}">${item.joined ? t('group_joined') : t('group_join')}</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </article>
@@ -9429,6 +9524,7 @@
                                     <p class="mt-2 text-xs text-white/80"><i class="fa-solid fa-users mr-1.5"></i>${group.members.toLocaleString(currentLang === 'es' ? 'es-ES' : 'en-US')} ${t('group_members')}</p>
                                 </div>
                                 <div class="flex shrink-0 flex-col items-end gap-2">
+                                    ${renderEntityReportButton('group', group, '', 'border-white/40 bg-slate-950/45 text-white hover:bg-slate-950/65')}
                                     <button type="button" onclick="openGroupAllianceRequestModal('${escapeHTML(group.id)}')" class="w-44 max-w-full rounded-xl border border-white/50 bg-slate-950/45 px-4 py-2.5 text-center text-xs font-bold text-white backdrop-blur-sm transition-colors hover:bg-slate-950/65">${t('group_request_alliance')}</button>
                                     <button type="button" onclick="toggleGroupMembership('${group.id}')" class="w-44 max-w-full rounded-xl px-4 py-2.5 text-center text-xs font-bold ${group.joined ? 'bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25' : 'bg-white text-primary-700 hover:bg-primary-50'}">${group.joined ? t('group_joined') : t('group_join')}</button>
                                 </div>
@@ -9554,8 +9650,16 @@
 
         function renderGroupPost(group, post) {
             const project = state.projects.find(item => item.id === post.projectId);
+            const organization = post.organizationId
+                ? getNGODirectoryEntries().find(item => item.id === post.organizationId)
+                : null;
             const commentsVisible = state.expandedGroupPostId === post.id;
             const event = group.upcomingEvents?.find(item => item.id === post.eventId);
+            const canReportPost = !isCurrentAccountContent({
+                authorId: post.authorId || post.creatorId,
+                author: groupPostText(post, 'author')
+            });
+            const postReported = Boolean(post.reportedByCurrentUser || post.reported);
             return `
                 <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-subtle sm:p-5">
                     <div class="flex items-start justify-between gap-3">
@@ -9566,14 +9670,15 @@
                                 <p class="text-[10px] text-slate-500">${escapeHTML(groupPostText(post, 'role'))} · ${escapeHTML(groupPostText(post, 'date') || t('group_now'))}</p>
                             </div>
                         </div>
-                        <details class="relative flex-shrink-0">
+                        ${canReportPost ? `<details class="relative flex-shrink-0">
                             <summary aria-label="${t('group_post_options')}" class="cursor-pointer list-none rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"><i class="fa-solid fa-ellipsis"></i></summary>
                             <div class="absolute right-0 z-10 mt-1 w-56 rounded-xl border border-slate-200 bg-white p-1 shadow-floating">
-                                <button type="button" onclick="reportGroupPost('${group.id}', '${post.id}')" class="w-full rounded-lg px-3 py-2 text-left text-xs font-semibold text-red-600 hover:bg-red-50"><i class="fa-regular fa-flag mr-2"></i>${t('group_post_report')}</button>
+                                <button type="button" ${postReported ? 'disabled' : `onclick="reportGroupPost('${escapeHTML(group.id)}', '${escapeHTML(post.id)}')"`} class="w-full rounded-lg px-3 py-2 text-left text-xs font-semibold ${postReported ? 'cursor-default text-rose-600' : 'text-red-600 hover:bg-red-50'}"><i class="fa-regular fa-flag mr-2"></i>${postReported ? t('comment_reported') : t('group_post_report')}</button>
                             </div>
-                        </details>
+                        </details>` : ''}
                     </div>
                     ${event ? renderGroupEventPostCard(group, event) : `<p class="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-slate-700">${escapeHTML(groupPostText(post, 'text'))}</p>`}
+                    ${organization ? renderHomeFeedOrganizationCard(organization) : ''}
                     ${project ? `
                         <button type="button" onclick="openProjectDetail('${project.id}')" class="mt-4 flex w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50 text-left transition-colors hover:border-primary-300 hover:bg-primary-50/50">
                             <img src="${escapeHTML(project.coverImage)}" alt="" class="h-24 w-28 flex-shrink-0 object-cover sm:w-36">
@@ -10658,12 +10763,28 @@
                 }
             });
 
-            return Array.from(organizations.values()).sort((first, second) => first.name.localeCompare(second.name));
+            return Array.from(organizations.values())
+                .map(organization => ({
+                    ...organization,
+                    reportedByCurrentUser: state.reportedOrganizationIds.includes(organization.id)
+                }))
+                .sort((first, second) => first.name.localeCompare(second.name));
         }
 
         function openNGOProfile(ngoId) {
             selectedNGOId = ngoId;
             navigateTo('ngo-profile');
+        }
+
+        async function shareOrganization(organizationId) {
+            const shareUrl = `https://zuliov.com/#org/${encodeURIComponent(organizationId)}`;
+            try {
+                await navigator.clipboard.writeText(shareUrl);
+                showToast(t('ngo_share_success'), 'success');
+            } catch (error) {
+                console.error(t('browse_share_error'), error);
+                showToast(t('browse_share_error'), 'info');
+            }
         }
 
         function selectNGODirectoryCategory(category) {
@@ -10744,6 +10865,15 @@
                                                 <h2 class="text-base font-bold leading-snug text-slate-900">${escapeHTML(organization.name)}</h2>
                                                 <p class="mt-1 text-xs text-slate-500">${escapeHTML(organization.location)}</p>
                                                 <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">${escapeHTML(organization.description)}</p>
+                                                <div class="mt-5 flex items-center gap-2">
+                                                    <button type="button" title="${t('ngo_repost')}" aria-label="${t('ngo_repost')}: ${escapeHTML(organization.name)}" onclick="event.stopPropagation(); repostBrowseItem('organization', '${escapeHTML(organization.id)}')" class="inline-flex min-h-9 flex-1 items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2 py-2 text-[10px] font-semibold text-slate-600 transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                                        <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('ngo_repost')}
+                                                    </button>
+                                                    <button type="button" title="${t('ngo_share')}" aria-label="${t('ngo_share')}: ${escapeHTML(organization.name)}" onclick="event.stopPropagation(); shareOrganization('${escapeHTML(organization.id)}')" class="inline-flex min-h-9 flex-1 items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2 py-2 text-[10px] font-semibold text-slate-600 transition-colors hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                                        <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>${t('ngo_share')}
+                                                    </button>
+                                                    ${renderEntityReportButton('organization', organization, '', 'flex-1 justify-center')}
+                                                </div>
                                                 <button type="button" onclick="openNGOProfile('${escapeHTML(organization.id)}')" class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 transition-colors hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                                                     ${t('ngo_view_profile')} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                                 </button>
@@ -11132,9 +11262,9 @@
                         <button type="button" aria-pressed="${Boolean(review.likedByCurrentUser)}" onclick="toggleNGOReviewLike('${escapeHTML(review.id)}')" class="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold ${review.likedByCurrentUser ? 'text-primary-700' : 'text-slate-500 hover:text-primary-700'}">
                             <i class="fa-${review.likedByCurrentUser ? 'solid' : 'regular'} fa-thumbs-up" aria-hidden="true"></i>${t('comment_like')} <span>${Number(review.likes) || 0}</span>
                         </button>
-                        <button type="button" onclick="openCommentReportModal('review', '', '${escapeHTML(review.id)}')" class="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold ${review.reportedByCurrentUser ? 'text-rose-600' : 'text-slate-500 hover:text-rose-600'}">
+                        ${!isCurrentAccountContent(review) ? `<button type="button" ${review.reportedByCurrentUser ? 'disabled' : `onclick="openCommentReportModal('review', '', '${escapeHTML(review.id)}')"`} class="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold ${review.reportedByCurrentUser ? 'cursor-default text-rose-600' : 'text-slate-500 hover:text-rose-600'}">
                             <i class="fa-regular fa-flag" aria-hidden="true"></i>${review.reportedByCurrentUser ? t('comment_reported') : t('comment_report')}
-                        </button>
+                        </button>` : ''}
                     </div>
                 </article>`;
         }
@@ -11220,50 +11350,257 @@
             else renderApp();
         }
 
+        function isCurrentAccountContent(content) {
+            if (!content) return false;
+            const authorId = content.authorId || content.creatorId;
+            if (authorId && authorId === state.currentUser.id) return true;
+            const author = String(content.author || '').trim().toLocaleLowerCase();
+            return Boolean(author && author === String(state.currentUser.name || '').trim().toLocaleLowerCase());
+        }
+
+        function isActiveAccountCreator(content) {
+            if (!content) return false;
+            const creatorId = content.creatorId || content.authorId || content.id;
+            const creatorName = String(content.creatorName || content.author || content.name || '').trim().toLocaleLowerCase();
+            return creatorId === state.currentUser.id
+                || Boolean(creatorName && creatorName === String(state.currentUser.name || '').trim().toLocaleLowerCase())
+                || (creatorId === 'sarah-donor' && state.currentUser.name === 'Sarah Miller');
+        }
+
+        function isCurrentAccountGroup(group) {
+            if (!group) return false;
+            const activeOrganizationId = state.currentUser.role === 'ngo' ? selectedNGOId : null;
+            return isActiveAccountCreator(group)
+                || group.createdBy === state.currentUser.id
+                || (group.managerIds || []).includes(state.currentUser.id)
+                || (state.currentUser.role !== 'ngo' && (state.currentUser.managedGroupIds || []).includes(group.id))
+                || Boolean(activeOrganizationId && group.ngoId === activeOrganizationId);
+        }
+
+        function isCurrentAccountEntity(type, entity, ownerId = '') {
+            if (!entity) return false;
+            if (type === 'group') return isCurrentAccountGroup(entity);
+            if (type === 'organization') {
+                const activeOrganizationId = state.currentUser.role === 'ngo'
+                    && getManagedProfileOrganizations().some(item => item.id === selectedNGOId)
+                    ? selectedNGOId
+                    : null;
+                return isActiveAccountCreator(entity)
+                    || Boolean(activeOrganizationId && entity.id === activeOrganizationId);
+            }
+            if (type === 'project') {
+                const group = entity.groupId ? state.groups.find(item => item.id === entity.groupId) : null;
+                const activeOrganizationId = state.currentUser.role === 'ngo' ? selectedNGOId : null;
+                return isActiveAccountCreator(entity)
+                    || Boolean(activeOrganizationId && entity.ngoId === activeOrganizationId)
+                    || isCurrentAccountGroup(group);
+            }
+            if (type === 'event') {
+                const group = state.groups.find(item => item.id === ownerId);
+                return isActiveAccountCreator(entity) || isCurrentAccountGroup(group);
+            }
+            return false;
+        }
+
+        function renderEntityReportButton(type, entity, ownerId = '', className = '') {
+            if (!entity || isCurrentAccountEntity(type, entity, ownerId)) return '';
+            const reported = Boolean(entity.reportedByCurrentUser || entity.reported);
+            const reportType = `entity${type.charAt(0).toUpperCase()}${type.slice(1)}`;
+            const escapedName = escapeHTML(type === 'group'
+                ? groupText(entity, 'name')
+                : type === 'organization'
+                    ? entity.name
+                : type === 'project'
+                    ? localizedProjectText(entity, 'title')
+                    : groupEventText(entity, 'title'));
+            return `
+                <button type="button" ${reported ? 'disabled' : `onclick="event.stopPropagation(); openContentReportModal('${reportType}', '${escapeHTML(ownerId)}', '${escapeHTML(entity.id)}')"`} title="${t(reported ? 'comment_reported' : 'comment_report')}" aria-label="${t(reported ? 'comment_reported' : 'comment_report')}: ${escapedName}" class="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-[10px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${reported ? 'cursor-default text-rose-600' : 'text-slate-500 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600'} ${className}">
+                    <i class="fa-regular fa-flag" aria-hidden="true"></i>${t(reported ? 'comment_reported' : 'comment_report')}
+                </button>`;
+        }
+
+        function findReportTarget(type, ownerId, contentId) {
+            if (type === 'entityGroup') return state.groups.find(item => item.id === contentId);
+            if (type === 'entityOrganization') return getNGODirectoryEntries().find(item => item.id === contentId);
+            if (type === 'entityProject') return state.projects.find(item => item.id === contentId);
+            if (type === 'entityEvent') {
+                const group = state.groups.find(item => item.id === ownerId);
+                return group?.upcomingEvents?.find(item => item.id === contentId);
+            }
+            if (type === 'feedPost') {
+                const group = state.groups.find(item => item.id === ownerId);
+                return findGroupPost(group, contentId);
+            }
+            if (type === 'feedComment') {
+                const group = state.groups.find(item => (item.posts || []).concat(item.eventPosts || []).some(post => post.id === ownerId));
+                const post = findGroupPost(group, ownerId);
+                return (post?.comments || []).find(item => item.id === contentId);
+            }
+            if (type === 'review') return ngoData.reviews.find(item => item.id === contentId);
+            if (type === 'field') return ngoData.updates.find(item => item.id === ownerId)?.comments.find(item => item.id === contentId);
+            if (type === 'project') return getExpandedProjectComments(ownerId).find(item => item.id === contentId);
+            if (type === 'profilePost') {
+                const source = findProfileActivitySource(ownerId);
+                return (source?.comments || source?.replies || []).find(item => item.id === contentId);
+            }
+            return null;
+        }
+
         function openCommentReportModal(type, ownerId, commentId) {
+            openContentReportModal(type, ownerId, commentId);
+        }
+
+        let contentReportReturnContext = null;
+
+        function openContentReportModal(type, ownerId, contentId) {
+            const content = findReportTarget(type, ownerId, contentId);
+            const entityType = type.startsWith('entity') ? type.slice(6).toLowerCase() : null;
+            const isOwnedContent = entityType
+                ? isCurrentAccountEntity(entityType, content, ownerId)
+                : isCurrentAccountContent(content);
+            if (!content || content.reportedByCurrentUser || content.reported || isOwnedContent) return;
+            contentReportReturnContext = null;
+            if (entityType === 'event' && document.getElementById('event-details-modal')) {
+                contentReportReturnContext = { type: 'event', groupId: ownerId, eventId: contentId };
+                closeEventDetailsModal();
+            } else if (entityType === 'project' && document.getElementById('expanded-project-title')) {
+                contentReportReturnContext = { type: 'project', projectId: contentId };
+            }
+            const isPost = type === 'feedPost';
+            const entityName = entityType === 'group'
+                ? groupText(content, 'name')
+                : entityType === 'organization'
+                    ? content.name
+                : entityType === 'project'
+                    ? localizedProjectText(content, 'title')
+                    : entityType === 'event'
+                        ? groupEventText(content, 'title')
+                        : '';
+            const description = entityType
+                ? t('content_report_entity')
+                    .replace('{type}', t(`content_report_type_${entityType}`))
+                    .replace('{name}', escapeHTML(entityName))
+                : t(isPost ? 'content_report_post' : 'content_report_comment');
             const container = document.getElementById('modal-container');
             container.innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="comment-report-title">
+                <div class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-3 sm:p-5" role="dialog" aria-modal="true" aria-labelledby="content-report-title">
                     <button type="button" onclick="closeModal()" aria-label="${t('close')}" class="fixed inset-0 bg-slate-950/60"></button>
-                    <form onsubmit="submitCommentReport(event, '${escapeHTML(type)}', '${escapeHTML(ownerId)}', '${escapeHTML(commentId)}')" class="relative z-10 w-full max-w-md rounded-2xl bg-white p-6 shadow-floating">
-                        <h2 id="comment-report-title" class="text-lg font-black text-slate-900">${t('comment_report_title')}</h2>
-                        <label for="comment-report-reason" class="mt-4 block text-sm font-medium text-slate-700">${t('comment_report_reason')}</label>
-                        <select id="comment-report-reason" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800">
-                            <option>${t('comment_report_spam')}</option>
-                            <option>${t('comment_report_abuse')}</option>
-                            <option>${t('comment_report_misinformation')}</option>
-                            <option>${t('comment_report_other')}</option>
-                        </select>
-                        <div class="mt-5 flex justify-end gap-2">
+                    <form onsubmit="submitContentReport(event, '${escapeHTML(type)}', '${escapeHTML(ownerId)}', '${escapeHTML(contentId)}')" class="relative z-10 my-auto max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-5 shadow-floating sm:p-7">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <h2 id="content-report-title" class="text-xl font-black text-slate-900">${t('content_report_title')}</h2>
+                                <p class="mt-1 text-sm text-slate-500">${description}</p>
+                            </div>
+                            <button type="button" onclick="closeModal()" aria-label="${t('close')}" class="rounded-lg px-3 py-2 text-slate-500 hover:bg-slate-100">&times;</button>
+                        </div>
+                        <fieldset class="mt-5">
+                            <legend class="text-sm font-bold text-slate-800">${t('content_report_step_one')}</legend>
+                            <div class="mt-3 grid gap-2 sm:grid-cols-2">
+                                ${[
+                                    ['spam', 'content_report_spam'],
+                                    ['sexual', 'content_report_sexual'],
+                                    ['harassment', 'content_report_harassment'],
+                                    ['fraud', 'content_report_fraud'],
+                                    ['other', 'content_report_other']
+                                ].map(([value, key]) => `
+                                    <button type="button" data-report-category="${value}" aria-pressed="false" onclick="selectContentReportCategory('${value}')" class="rounded-xl border border-slate-200 bg-white px-3 py-3 text-left text-sm font-semibold text-slate-700 transition hover:border-primary-300 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+                                        ${t(key)}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <input id="content-report-category" type="hidden" value="">
+                        </fieldset>
+                        <section id="content-report-details-step" class="mt-5 hidden">
+                            <label for="content-report-details" class="block text-sm font-bold text-slate-800">${t('content_report_step_two')}</label>
+                            <span class="mt-2 block text-xs font-medium text-slate-600">${t('content_report_details_label')}</span>
+                            <textarea id="content-report-details" maxlength="1000" rows="4" oninput="updateContentReportDetails(this)" placeholder="${t('content_report_details_placeholder')}" aria-describedby="content-report-character-count content-report-validation" class="mt-2 w-full resize-y rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100"></textarea>
+                            <div class="mt-1 flex items-start justify-between gap-3">
+                                <p id="content-report-validation" role="status" aria-live="polite" class="text-xs text-rose-600"></p>
+                                <p id="content-report-character-count" class="shrink-0 text-right text-xs text-slate-500">${t('content_report_character_count').replace('{count}', '0')}</p>
+                            </div>
+                        </section>
+                        <div class="mt-6 flex justify-end gap-2 border-t border-slate-100 pt-4">
                             <button type="button" onclick="closeModal()" class="rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-100">${t('comment_report_cancel')}</button>
-                            <button type="submit" class="rounded-xl bg-rose-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-rose-700">${t('comment_report_submit')}</button>
+                            <button id="content-report-submit" type="submit" disabled class="rounded-xl bg-rose-600 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-50">${t('content_report_submit')}</button>
                         </div>
                     </form>
                 </div>`;
+            container.querySelector('[data-report-category="spam"]')?.focus({ preventScroll: true });
         }
 
-        function submitCommentReport(event, type, ownerId, commentId) {
+        function selectContentReportCategory(category) {
+            const input = document.getElementById('content-report-category');
+            const detailsStep = document.getElementById('content-report-details-step');
+            const textarea = document.getElementById('content-report-details');
+            if (!input || !detailsStep || !textarea) return;
+            input.value = category;
+            detailsStep.classList.remove('hidden');
+            textarea.required = category === 'other';
+            document.querySelectorAll('[data-report-category]').forEach(button => {
+                const selected = button.dataset.reportCategory === category;
+                button.setAttribute('aria-pressed', String(selected));
+                button.classList.toggle('border-primary-500', selected);
+                button.classList.toggle('bg-primary-50', selected);
+                button.classList.toggle('text-primary-800', selected);
+                button.classList.toggle('border-slate-200', !selected);
+            });
+            document.getElementById('content-report-validation').textContent = '';
+            updateContentReportDetails(textarea);
+            textarea.focus({ preventScroll: true });
+        }
+
+        function updateContentReportDetails(input) {
+            const count = document.getElementById('content-report-character-count');
+            const category = document.getElementById('content-report-category')?.value;
+            const submit = document.getElementById('content-report-submit');
+            if (count) count.textContent = t('content_report_character_count').replace('{count}', String(input.value.length));
+            if (submit) submit.disabled = !category || (category === 'other' && !input.value.trim());
+        }
+
+        function submitContentReport(event, type, ownerId, contentId) {
             event.preventDefault();
+            const content = findReportTarget(type, ownerId, contentId);
+            const entityType = type.startsWith('entity') ? type.slice(6).toLowerCase() : null;
+            const category = document.getElementById('content-report-category')?.value;
+            const detailsInput = document.getElementById('content-report-details');
+            const details = String(detailsInput?.value || '').trim();
+            const validation = document.getElementById('content-report-validation');
+            const isOwnedContent = entityType
+                ? isCurrentAccountEntity(entityType, content, ownerId)
+                : isCurrentAccountContent(content);
+            if (!content || content.reportedByCurrentUser || content.reported || isOwnedContent) {
+                closeModal();
+                return;
+            }
+            if (!category || (category === 'other' && !details)) {
+                if (validation) validation.textContent = t(category ? 'content_report_details_required' : 'content_report_reason_required');
+                if (category === 'other') detailsInput?.focus();
+                return;
+            }
             const wasReviewsModalOpen = Boolean(document.getElementById('ngo-reviews-modal-list'));
             const wasFieldCommentsModalOpen = Boolean(document.getElementById('field-article-comments-modal-list'));
             const wasProjectCommentsModalOpen = Boolean(document.getElementById('project-comments-modal-list'));
             const wasProfileCommentsModalOpen = Boolean(document.getElementById('profile-comments-modal-list'));
-            let comment = null;
-            if (type === 'review') comment = ngoData.reviews.find(item => item.id === commentId);
-            if (type === 'field') comment = ngoData.updates.find(item => item.id === ownerId)?.comments.find(item => item.id === commentId);
-            if (type === 'project') comment = getExpandedProjectComments(ownerId).find(item => item.id === commentId);
-            if (type === 'profilePost') {
-                const source = findProfileActivitySource(ownerId);
-                comment = (source?.comments || source?.replies || []).find(item => item.id === commentId);
+            content.reportedByCurrentUser = true;
+            content.reportCategory = category;
+            content.reportDetails = details;
+            if (entityType === 'organization' && !state.reportedOrganizationIds.includes(content.id)) {
+                state.reportedOrganizationIds.push(content.id);
             }
-            if (!comment) {
-                closeModal();
-                return;
-            }
-            comment.reportedByCurrentUser = true;
+            const returnContext = contentReportReturnContext;
+            contentReportReturnContext = null;
             closeModal();
             showToast(t('comment_report_success'), 'success');
-            if (type === 'review') {
+            if (entityType) {
+                renderApp();
+                if (returnContext?.type === 'event') {
+                    openEventDetailsModal(returnContext.groupId, returnContext.eventId);
+                } else if (returnContext?.type === 'project') {
+                    openExpandedProjectModal(returnContext.projectId);
+                }
+            } else if (type === 'feedPost' || type === 'feedComment') {
+                renderApp();
+            } else if (type === 'review') {
                 if (wasReviewsModalOpen) openNGOReviewsModal();
                 else renderApp();
             } else if (type === 'field' && wasFieldCommentsModalOpen) {
@@ -12027,14 +12364,17 @@
                 like.append(thumb, likesCount);
                 like.addEventListener('click', () => toggleFieldArticleCommentLike(update.id, comment.id));
 
-                const report = document.createElement('button');
-                report.type = 'button';
-                report.className = `ml-1 mt-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold ${comment.reportedByCurrentUser ? 'text-rose-600' : 'text-slate-400 hover:text-rose-600'}`;
-                report.innerHTML = `<i class="fa-regular fa-flag" aria-hidden="true"></i>${comment.reportedByCurrentUser ? t('comment_reported') : t('comment_report')}`;
-                report.addEventListener('click', () => openCommentReportModal('field', update.id, comment.id));
-
                 header.append(author, time);
-                body.append(header, text, like, report);
+                body.append(header, text, like);
+                if (!isCurrentAccountContent(comment)) {
+                    const report = document.createElement('button');
+                    report.type = 'button';
+                    report.disabled = Boolean(comment.reportedByCurrentUser);
+                    report.className = `ml-1 mt-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold ${comment.reportedByCurrentUser ? 'cursor-default text-rose-600' : 'text-slate-400 hover:text-rose-600'}`;
+                    report.innerHTML = `<i class="fa-regular fa-flag" aria-hidden="true"></i>${comment.reportedByCurrentUser ? t('comment_reported') : t('comment_report')}`;
+                    report.addEventListener('click', () => openCommentReportModal('field', update.id, comment.id));
+                    body.append(report);
+                }
                 item.append(avatar, body);
                 return item;
             }));
@@ -12655,7 +12995,7 @@
                             <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-300"><span class="mr-1 font-bold text-slate-900 dark:text-slate-100">${escapeHTML(comment.author || state.currentUser.name)}</span>${escapeHTML(comment.text || '')}</p>
                             <div class="mt-1 flex items-center gap-2">
                                 <button type="button" aria-pressed="${Boolean(comment.likedByCurrentUser)}" onclick="toggleProfileCommentLike('${postId}', '${escapeHTML(comment.id || '')}')" class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold ${comment.likedByCurrentUser ? 'text-primary-700' : 'text-slate-500 hover:text-primary-700'}"><i class="fa-${comment.likedByCurrentUser ? 'solid' : 'regular'} fa-thumbs-up" aria-hidden="true"></i>${t('comment_like')} <span>${Number(comment.likes) || 0}</span></button>
-                                <button type="button" onclick="openCommentReportModal('profilePost', '${postId}', '${escapeHTML(comment.id || '')}')" class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold ${comment.reportedByCurrentUser ? 'text-rose-600' : 'text-slate-500 hover:text-rose-600'}"><i class="fa-regular fa-flag" aria-hidden="true"></i>${comment.reportedByCurrentUser ? t('comment_reported') : t('comment_report')}</button>
+                                ${!isCurrentAccountContent(comment) ? `<button type="button" ${comment.reportedByCurrentUser ? 'disabled' : `onclick="openCommentReportModal('profilePost', '${postId}', '${escapeHTML(comment.id || '')}')"`} class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold ${comment.reportedByCurrentUser ? 'cursor-default text-rose-600' : 'text-slate-500 hover:text-rose-600'}"><i class="fa-regular fa-flag" aria-hidden="true"></i>${comment.reportedByCurrentUser ? t('comment_reported') : t('comment_report')}</button>` : ''}
                             </div>
                         </div>
                     </div>
@@ -13190,6 +13530,7 @@
                                     <p class="mt-2 text-right text-xs font-bold text-primary-700">${project.targetGoal > 0 ? Math.min(Math.round((project.amountRaised / project.targetGoal) * 100), 100) : 0}%</p>
                                     `}
                                     <p class="mt-4 text-xs font-semibold text-slate-700">${escapeHTML(project.location || 'Kenya')}</p>
+                                    ${renderEntityReportButton('project', project, '', 'mt-4 w-full justify-center')}
                                 </aside>
                             </section>
 
@@ -13266,7 +13607,7 @@
                         <p class="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-600">${escapeHTML(comment.text || '')}</p>
                         <div class="mt-2 flex items-center gap-2">
                             <button type="button" aria-pressed="${Boolean(comment.likedByCurrentUser)}" onclick="toggleExpandedProjectCommentLike('${escapeHTML(projectId)}', '${escapeHTML(comment.id)}')" class="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold ${comment.likedByCurrentUser ? 'text-primary-700' : 'text-slate-500 hover:text-primary-700'}"><i class="fa-${comment.likedByCurrentUser ? 'solid' : 'regular'} fa-thumbs-up" aria-hidden="true"></i>${t('comment_like')} <span>${Number(comment.likes) || 0}</span></button>
-                            <button type="button" onclick="openCommentReportModal('project', '${escapeHTML(projectId)}', '${escapeHTML(comment.id)}')" class="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold ${comment.reportedByCurrentUser ? 'text-rose-600' : 'text-slate-500 hover:text-rose-600'}"><i class="fa-regular fa-flag" aria-hidden="true"></i>${comment.reportedByCurrentUser ? t('comment_reported') : t('comment_report')}</button>
+                            ${!isCurrentAccountContent(comment) ? `<button type="button" ${comment.reportedByCurrentUser ? 'disabled' : `onclick="openCommentReportModal('project', '${escapeHTML(projectId)}', '${escapeHTML(comment.id)}')"`} class="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold ${comment.reportedByCurrentUser ? 'cursor-default text-rose-600' : 'text-slate-500 hover:text-rose-600'}"><i class="fa-regular fa-flag" aria-hidden="true"></i>${comment.reportedByCurrentUser ? t('comment_reported') : t('comment_report')}</button>` : ''}
                         </div>
                     </div>
                 </article>`;
@@ -13392,14 +13733,16 @@
 
             const isPost = type === 'post';
             const isEvent = type === 'event';
+            const isOrganization = type === 'organization';
+            const organization = isOrganization ? getNGODirectoryEntries().find(item => item.id === itemId) : null;
             const sourceGroup = isEvent ? state.groups.find(group => group.id === groupId) : null;
             const event = sourceGroup?.upcomingEvents?.find(item => item.id === itemId);
-            const project = isEvent ? null : state.projects.find(item => item.id === itemId);
+            const project = isEvent || isOrganization ? null : state.projects.find(item => item.id === itemId);
             const postGroup = isPost ? state.groups.find(group => group.id === groupId) : null;
             const sourcePost = isPost
                 ? [...(postGroup?.posts || []), ...(postGroup?.eventPosts || [])].find(item => item.id === itemId)
                 : null;
-            if (isPost ? !sourcePost || !postGroup : (isEvent ? !event || !sourceGroup : !project)) {
+            if (isPost ? !sourcePost || !postGroup : (isEvent ? !event || !sourceGroup : (isOrganization ? !organization : !project))) {
                 showToast(t('browse_repost_error'), 'info');
                 return;
             }
@@ -13408,6 +13751,8 @@
                 ? (groupPostText(sourcePost, 'text') || groupText(postGroup, 'name'))
                 : isEvent
                 ? groupEventText(event, 'title')
+                : isOrganization
+                ? organization.name
                 : localizedProjectText(project, 'title');
             if (document.getElementById('browse-repost-modal')) return;
             browseRepostReturnFocus = document.activeElement;
@@ -13421,8 +13766,8 @@
                 <section class="my-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-floating sm:p-6" onclick="event.stopPropagation()">
                     <header class="flex items-start justify-between gap-4">
                         <div>
-                            <h2 id="browse-repost-title" class="text-lg font-black text-slate-900">${t(isPost ? 'home_feed_repost_modal_title' : 'browse_repost_modal_title')}</h2>
-                            <p class="mt-1 text-xs leading-relaxed text-slate-500">${t(isPost ? 'home_feed_repost_modal_description' : 'browse_repost_modal_description')}</p>
+                            <h2 id="browse-repost-title" class="text-lg font-black text-slate-900">${t(isPost ? 'home_feed_repost_modal_title' : isOrganization ? 'ngo_repost_modal_title' : 'browse_repost_modal_title')}</h2>
+                            <p class="mt-1 text-xs leading-relaxed text-slate-500">${t(isPost ? 'home_feed_repost_modal_description' : isOrganization ? 'ngo_repost_modal_description' : 'browse_repost_modal_description')}</p>
                             <p class="mt-3 line-clamp-2 text-sm font-semibold text-slate-800">${escapeHTML(title)}</p>
                         </div>
                         <button type="button" aria-label="${t('close')}" onclick="closeBrowseRepostModal()" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
@@ -13471,9 +13816,11 @@
 
             const isPost = type === 'post';
             const isEvent = type === 'event';
+            const isOrganization = type === 'organization';
+            const organization = isOrganization ? getNGODirectoryEntries().find(item => item.id === itemId) : null;
             const sourceGroup = isEvent ? state.groups.find(group => group.id === groupId) : null;
             const sourceEvent = sourceGroup?.upcomingEvents?.find(item => item.id === itemId);
-            const project = isEvent ? null : state.projects.find(item => item.id === itemId);
+            const project = isEvent || isOrganization ? null : state.projects.find(item => item.id === itemId);
             const postGroup = isPost ? state.groups.find(group => group.id === groupId) : null;
             const sourcePost = isPost
                 ? [...(postGroup?.posts || []), ...(postGroup?.eventPosts || [])].find(item => item.id === itemId)
@@ -13487,7 +13834,7 @@
             const sourcePostEvent = sourcePost?.eventId
                 ? sourcePostEventGroup?.upcomingEvents?.find(item => item.id === sourcePost.eventId)
                 : null;
-            if (isPost ? !sourcePost || !postGroup : (isEvent ? !sourceEvent || !sourceGroup : !project)) {
+            if (isPost ? !sourcePost || !postGroup : (isEvent ? !sourceEvent || !sourceGroup : (isOrganization ? !organization : !project))) {
                 closeBrowseRepostModal();
                 showToast(t('browse_repost_error'), 'info');
                 return;
@@ -13497,6 +13844,8 @@
                 ? (groupPostText(sourcePost, 'text') || groupText(postGroup, 'name'))
                 : isEvent
                 ? groupEventText(sourceEvent, 'title')
+                : isOrganization
+                ? organization.name
                 : localizedProjectText(project, 'title');
             const thoughts = String(document.getElementById('browse-repost-thoughts')?.value || '').trim();
             const roleKey = state.currentUser.role === 'ngo' ? 'group_role_ngo' : 'group_role_member';
@@ -13506,9 +13855,10 @@
                 role: t(roleKey),
                 roleKey,
                 authorPhoto: state.currentUser.avatar,
-                text: isPost ? thoughts : thoughts || t(isEvent ? 'browse_repost_event_text' : 'browse_repost_project_text').replace('{title}', title),
-                image: isPost ? null : project?.coverImage || null,
-                projectId: isPost ? null : project?.id || null,
+                text: isPost ? thoughts : thoughts || t(isOrganization ? 'ngo_repost_text' : isEvent ? 'browse_repost_event_text' : 'browse_repost_project_text').replace('{title}', title),
+                image: isPost ? null : project?.coverImage || organization?.coverImage || null,
+                projectId: isPost || isOrganization ? null : project?.id || null,
+                organizationId: organization?.id || null,
                 eventId: sourceEvent?.id || null,
                 eventGroupId: sourceGroup?.id || null,
                 comments: [],
@@ -13533,7 +13883,7 @@
                 selectedCommunityCategory = null;
                 renderApp();
             }
-            showToast(t('browse_repost_success'), 'success');
+            showToast(t(isOrganization ? 'ngo_repost_success' : 'browse_repost_success'), 'success');
         }
 
         function renderBrowsePage(canvas) {
@@ -13586,6 +13936,7 @@
                                 <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(groupEventText(event, 'title'))}" onclick="event.stopPropagation(); repostBrowseItem('event', '${escapeHTML(event.id)}', '${escapeHTML(group.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                                     <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
                                 </button>
+                                ${renderEntityReportButton('event', event, group.id, 'px-3')}
                             </div>
                         </div>
                     </article>
@@ -13702,6 +14053,7 @@
                         <button type="button" onclick="openExpandedProjectModal('${selectedProject.id}')" class="flex w-full items-center justify-center gap-2 rounded-xl border border-primary-200 bg-primary-50 px-4 py-2.5 text-xs font-bold text-primary-700 transition-colors hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                             <i class="fa-solid fa-expand" aria-hidden="true"></i> ${t('project_expand_view')}
                         </button>
+                        ${renderEntityReportButton('project', selectedProject, '', 'w-full justify-center')}
                         ${isVolunteerProject(selectedProject) ? '' : `<div>
                             <label for="${volunteerRoleId}" class="block text-[10px] font-mono font-bold uppercase text-slate-500">${t('project_volunteer_role')}</label>
                             <select id="${volunteerRoleId}" ${volunteerCommitment ? 'disabled' : ''} class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-slate-50">
@@ -13804,6 +14156,7 @@
                                         <button type="button" title="${t('browse_repost')}" aria-label="${t('browse_repost')}: ${escapeHTML(localizedProjectText(proj, 'title'))}" onclick="event.stopPropagation(); repostBrowseItem('project', '${escapeHTML(proj.id)}')" class="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-subtle transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
                                             <i class="fa-solid fa-retweet" aria-hidden="true"></i>${t('browse_repost')}
                                         </button>
+                                        ${renderEntityReportButton('project', proj, '', 'px-3')}
                                     </span>
                                 </article>
                                 ${state.selectedBrowseProjectId === proj.id ? mobileDetailPanel : ''}
